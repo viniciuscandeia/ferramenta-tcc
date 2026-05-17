@@ -1,0 +1,233 @@
+{
+  "main": {
+    "id": "9462afe993bccce8",
+    "type": "split",
+    "children": [
+      {
+        "id": "b21f424e50a08742",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "dbb84dd3b5f89432",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Nova aba"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6d7b5dc0b2e04f8b",
+    "type": "split",
+    "children": [
+      {
+        "id": "05331a132a97b632",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b93d6a6ad5def38d",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "28f3619c23f52883",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "3b8bcd1213bfe9b2",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 255.50260543823242
+  },
+  "right": {
+    "id": "1b1952853c59513b",
+    "type": "split",
+    "children": [
+      {
+        "id": "9ef064e0203727ea",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bb406ac383d41985",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Arquivos.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos para Arquivos"
+            }
+          },
+          {
+            "id": "e1f2e817d875252b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Arquivos.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída para Arquivos"
+            }
+          },
+          {
+            "id": "4df64cd0d95c9990",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "854ff5af0ec4e5f2",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Arquivos.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário de Arquivos"
+            }
+          },
+          {
+            "id": "9ae3434f906833af",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-ghost",
+              "title": "all-properties"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "dbb84dd3b5f89432",
+  "lastOpenFiles": [
+    "docs/Software Requirements",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Livro Completo.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 9 - Gerência de Requisitos.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 8 - Análise de Requisitos.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 7 - Elicitação de Requisitos.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 6 - Atividades da Engenharia de Requisitos.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 5 - Tipos de Requisitos, Restrições e Premissas.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 1 - Engenharia de Requisitos.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 4 - Dificuldades Comuns com Requisitos.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 3 - A Importância da Engenharia de Requisitos.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/PDF/Capítulo 2 - Requisito.pdf",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 3 - A Importância da Engenharia de Requisitos.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 8 - Análise de Requisitos.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 1 - Engenharia de Requisitos.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 7 - Elicitação de Requisitos.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 5 - Tipos de Requisitos, Restrições e Premissas.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 4 - Dificuldades Comuns com Requisitos.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 2 - Requisito.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 9 - Gerência de Requisitos.md",
+    "docs/Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 6 - Atividades da Engenharia de Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 3 - A Importância da Engenharia de Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 8 - Análise de Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 1 - Engenharia de Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 7 - Elicitação de Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 5 - Tipos de Requisitos, Restrições e Premissas.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 9 - Gerência de Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 6 - Atividades da Engenharia de Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 4 - Dificuldades Comuns com Requisitos.md",
+    "Engenharia de Requisitos - Software Orientado ao Negócio/Markdown/Capítulo 2 - Requisito.md",
+    "output/Capítulo 1 - Engenharia de Requisitos.md",
+    "Markdown/Capítulo 9 - Gerência de Requisitos.md",
+    "Markdown/Capítulo 8 - Análise de Requisitos.md",
+    "Markdown/Capítulo 7 - Elicitação de Requisitos.md",
+    "Markdown/Capítulo 6 - Atividades da Engenharia de Requisitos.md",
+    "Markdown/Capítulo 5 - Tipos de Requisitos, Restrições e Premissas.md",
+    "Markdown/Capítulo 4 - Dificuldades Comuns com Requisitos.md",
+    "Mapa.canvas",
+    "Sem título.canvas",
+    "Avaliação/gst-ugly/menor/Pasted image 20260222200748.png",
+    "Avaliação/gst-ugly/menor/Pasted image 20260222200741.png",
+    "Avaliação/gst-ugly/menor/Pasted image 20260222200658.png",
+    "Avaliação/gst-ugly/menor/Pasted image 20260222200733.png",
+    "Avaliação/gst-ugly/menor/Pasted image 20260222200721.png",
+    "Avaliação/gst-bad/maior/Pasted image 20260222200227.png",
+    "Avaliação/gst-bad/maior/Pasted image 20260222200338.png",
+    "Avaliação/gst-bad/maior/Pasted image 20260222200309.png",
+    "Avaliação/gst-bad/maior/Pasted image 20260222200258.png",
+    "Avaliação/gst-bad/maior/Pasted image 20260222200243.png"
+  ]
+}
