@@ -1,7 +1,7 @@
 ---
 name: clarificacao-pos-visao
-description: >
-  
+description: >-
+  Quando há lacunas críticas de escopo, terminologia ou restrições após capturar a visão inicial. Ativada pelo agente quando 2 ou mais categorias têm lacunas críticas. Use when critical gaps remain after milestone 1 vision capture.
 ---
 
 # Adapter Claude Code — clarificacao-pos-visao

@@ -4,27 +4,26 @@ description: Verifica e reescreve texto para remover jargão técnico de ER, gar
 when_to_use: Antes de qualquer exibição de texto ao usuário — perguntas, resumos, artefatos, confirmações.
 ---
 
-# Skill: traducao-leigo
+## Filosofia desta skill (Regras Absolutas)
 
-**Decisão:** D19 — Enforcement de jargão em runtime
-**Tipo:** Transversal — disponível para todos os sub-agentes
-**Estado:** apátrida — sem memória entre invocações
+1. **Em dúvida, substituir.** Critério D1: "se um dono de negócio sem formação em TI pode não entender o termo → reescrever". A régua é o usuário final, não o desenvolvedor.
+2. **Verificação em cascata obrigatória.** Substituição pode introduzir novo termo proibido ("documentação de requisitos" vira "artefato do projeto" → "artefato" ainda é jargão). Verificar o texto reescrito novamente antes de retornar.
+3. **Strip de blocos `<!-- internal -->` antes de exibir.** Conteúdo marcado `<!-- internal -->` nunca chega ao usuário — remover o bloco completo, não só a marcação.
 
----
+<HARD-GATE>
+- NÃO executar sem texto de entrada definido
+- ⛔ STOP se texto de entrada vier de bloco `<!-- internal -->` — não reescrever nem exibir; remover integralmente
+</HARD-GATE>
 
-## ENTRADA
+## Fase 0 — Inicialização
 
-Receber um trecho de texto (string) que será apresentado ao usuário.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar se texto contém blocos `<!-- internal -->...</ internal -->` — remover antes de processar
+3. Se após remoção o texto for vazio: retornar vazio (não há nada para exibir)
 
----
+## Fase 1 — Verificação de Termos Proibidos
 
-## PROCESSO
-
-### 1. Verificar presença de termos proibidos
-
-Checar se o texto contém qualquer termo da blacklist:
-
-**Termos proibidos e substituições:**
+Checar presença de qualquer termo da blacklist D1:
 
 | Termo proibido (e variantes) | Substituição |
 |---|---|
@@ -51,50 +50,43 @@ Checar se o texto contém qualquer termo da blacklist:
 | artefato | documento, arquivo do projeto |
 | fluxo de trabalho, workflow | passo a passo |
 
-### 2. Reescrever
+## Fase 2 — Reescrita e Verificação em Cascata
 
-Se algum termo proibido foi encontrado:
-- Substituir pelo equivalente leigo
-- Manter o sentido original completo
-- Manter tom conversacional e natural em português brasileiro
+**Se termos proibidos encontrados:**
+1. Substituir pelo equivalente leigo da tabela
+2. Manter sentido original completo
+3. Manter tom conversacional e natural em português brasileiro
+4. Passar o texto reescrito pela Fase 1 novamente — substituições em cascata podem introduzir novos termos
 
-Se nenhum termo proibido foi encontrado:
-- Retornar o texto original sem alteração
+**Se nenhum termo proibido:**
+- Retornar texto original sem alteração
 
-### 3. Verificação pós-reescrita
-
-Após a substituição, passar o texto reescrito pela verificação novamente para garantir que não sobraram termos da blacklist (substituições em cascata podem introduzir novos termos problemáticos).
-
----
-
-## SAÍDA
+## Fase 3 — Saída
 
 Texto reescrito em linguagem de negócio, sem jargão de ER, pronto para exibição ao usuário.
 
----
+**Exemplo:**
 
-## EXEMPLO
-
-**Entrada (com jargão):**
+Entrada (com jargão):
 ```
 Identificamos os seguintes stakeholders para o projeto:
 - Usuário final (persona: comprador)
-- Administrador do sistema
-
 Os requisitos funcionais levantados na elicitação incluem...
 ```
 
-**Saída (sem jargão):**
+Saída (sem jargão):
 ```
 Identificamos as seguintes pessoas envolvidas no projeto:
 - A pessoa que vai usar o produto (perfil: comprador)
-- O administrador do sistema
-
 O que o produto precisa fazer, com base no que entendemos até agora, inclui...
 ```
 
----
+<!-- internal -->
+## Anti-Padrão: Termo Técnico Aprovado Por Parecer Comum
 
-## REGRA DE OURO
+**Como acontece:** "gateway de pagamento" não é substituído porque "gateway" parece comum ao desenvolvedor. "Fluxo de aprovação" passa porque "fluxo" não está literalmente na blacklist. O usuário leigo não reconhece nenhum dos dois como linguagem do seu negócio.
 
-Em caso de dúvida sobre um termo: se um dono de negócio sem formação em TI pode não entender o termo, reescrever.
+**Como detectar:** Aplicar o critério D1 estritamente — a pergunta é "um dono de negócio sem formação em TI entende este termo?", não "este termo parece técnico para mim?".
+
+**O que fazer:** Se a resposta à pergunta D1 for "talvez não" → substituir ou reformular. O custo de sobrestimar a complexidade é zero; o custo de subestimá-la é confundir o usuário no gate.
+<!-- /internal -->

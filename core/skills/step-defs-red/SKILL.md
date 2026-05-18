@@ -1,40 +1,36 @@
 ---
 name: step-defs-red
-description: Gera arquivos de step definitions em estado RED (falham imediatamente — sem implementação real) para os 3 frameworks alvo: Pytest-BDD (Python), Cucumber-js (JavaScript/TypeScript) e SpecFlow (.NET C#). Lê spec/*.feature gerado por gherkin-spec e gera 1 step def file por .feature em cada framework. Estado RED garantido: NotImplementedError (Python), throw new Error('PENDING') (JS), throw new PendingStepException() (C#).
-when_to_use: Invocada pelo documenter como Passo 4 do Processo M3. Depende de gherkin-spec (Passo 3) ter executado. Entrada: spec/*.feature. Saída: tests/unit/ e tests/acceptance/ com step defs RED em 3 frameworks.
+description: >-
+  Gera os arquivos de código de teste em estado vermelho (estrutura criada, implementação propositalmente ausente) para três frameworks: Python, JavaScript e C#.
+  Use no Marco 3, após gerar os cenários Gherkin, para criar a estrutura de testes que o time de desenvolvimento vai implementar.
+  Generate RED state step definitions for Pytest-BDD, Cucumber-js, and SpecFlow from spec/*.feature; 3 files per feature; no user interaction; candidate R5.
 ---
 
-# Skill: step-defs-red
+## Filosofia desta skill (Regras Absolutas)
 
-Gera arquivos de step definitions em estado RED para Pytest-BDD, Cucumber-js e SpecFlow.
-Estado RED significa: estrutura criada, nenhum step implementado — todos lançam erro imediatamente.
+1. **Crítico de estado RED.** Todo step deve lançar erro imediatamente — sem lógica real, sem mocks, sem `pass` silencioso. Step que não falha não é RED. RED é o contrato com o desenvolvedor.
+2. **3 frameworks, sem exceção.** 1 feature = 3 arquivos (Pytest-BDD + Cucumber-js + SpecFlow). Gerar em 1 ou 2 frameworks e silenciar o terceiro é omissão.
+3. **Espelhar nomenclatura de `spec/` exatamente.** RF-001 em spec → rf-001 em tests/. Qualquer divergência quebra a rastreabilidade do `srs-ireb-template` seção 6.
 
----
+<HARD-GATE>
+- NÃO executar antes de `gherkin-spec` (Passo 3) concluído
+- NÃO executar sem arquivos em `spec/*.feature` (lista_deve vazia = nada para gerar)
+- ⛔ STOP se contagem de arquivos gerados ≠ N_features × 3 — verificar qual framework falhou antes de sinalizar conclusão
+</HARD-GATE>
 
-## Processo (5 passos)
+## Fase 0 — Inicialização
 
-1. Ler todos os arquivos `spec/*.feature` gerados por gherkin-spec
-2. Para cada `.feature`: extrair todos os textos de steps Given/When/Then
-3. Para cada `.feature`: gerar arquivo Pytest-BDD (Seção A)
-4. Para cada `.feature`: gerar arquivo Cucumber-js (Seção B)
-5. Para cada `.feature`: gerar arquivo SpecFlow (Seção C)
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Listar todos os arquivos em `spec/*.feature` (excluir `_skipped.md`)
+3. Para cada `.feature`: extrair todos os textos de steps Given/When/Then
 
----
+## Fase 1 — Geração Pytest-BDD (Python)
 
-## Seção A — Pytest-BDD (Python)
+**Localização:** `tests/unit/<rf-id>-<slug>_steps.py`
 
-### Localização de saída
-
-`tests/unit/<rf-id>-<slug>_steps.py` — espelhando a nomenclatura de `spec/`
-
-### Convenção de nomenclatura
-
-| Arquivo `.feature` | Arquivo step def |
+| Feature | Step def |
 |---|---|
 | `spec/rf-001-cadastro-produto.feature` | `tests/unit/rf-001-cadastro-produto_steps.py` |
-| `spec/rf-002-busca-produto.feature` | `tests/unit/rf-002-busca-produto_steps.py` |
-
-### Estrutura do arquivo
 
 ```python
 # tests/unit/rf-001-cadastro-produto_steps.py
@@ -58,8 +54,7 @@ def entao_<slug_do_step>():
     raise NotImplementedError("Step RED — implementar antes de rodar")
 ```
 
-### Exemplo completo
-
+**Exemplo concreto:**
 ```python
 # tests/unit/rf-001-cadastro-produto_steps.py
 import pytest
@@ -82,22 +77,13 @@ def entao_produto_no_catalogo():
     raise NotImplementedError("Step RED — implementar antes de rodar")
 ```
 
----
+## Fase 2 — Geração Cucumber-js (JavaScript/TypeScript)
 
-## Seção B — Cucumber-js (JavaScript/TypeScript)
+**Localização:** `tests/acceptance/<rf-id>-<slug>.steps.js`
 
-### Localização de saída
-
-`tests/acceptance/<rf-id>-<slug>.steps.js` (ou `.ts` se o projeto usar TypeScript)
-
-### Convenção de nomenclatura
-
-| Arquivo `.feature` | Arquivo step def |
+| Feature | Step def |
 |---|---|
 | `spec/rf-001-cadastro-produto.feature` | `tests/acceptance/rf-001-cadastro-produto.steps.js` |
-| `spec/rf-002-busca-produto.feature` | `tests/acceptance/rf-002-busca-produto.steps.js` |
-
-### Estrutura do arquivo
 
 ```javascript
 // tests/acceptance/<rf-id>-<slug>.steps.js
@@ -116,8 +102,7 @@ Then('<texto do step Then>', function () {
 });
 ```
 
-### Exemplo completo
-
+**Exemplo concreto:**
 ```javascript
 // tests/acceptance/rf-001-cadastro-produto.steps.js
 const { Given, When, Then } = require('@cucumber/cucumber');
@@ -135,22 +120,13 @@ Then('o produto aparece no catálogo', function () {
 });
 ```
 
----
+## Fase 3 — Geração SpecFlow (.NET C#)
 
-## Seção C — SpecFlow (.NET C#)
+**Localização:** `tests/acceptance/<RfId><Slug>Steps.cs` — PascalCase sem hifens
 
-### Localização de saída
-
-`tests/acceptance/<RfId><Slug>Steps.cs` — nomenclatura PascalCase sem hifens
-
-### Convenção de nomenclatura
-
-| Arquivo `.feature` | Arquivo step def |
+| Feature | Step def |
 |---|---|
 | `spec/rf-001-cadastro-produto.feature` | `tests/acceptance/Rf001CadastroProdutoSteps.cs` |
-| `spec/rf-002-busca-produto.feature` | `tests/acceptance/Rf002BuscaProdutoSteps.cs` |
-
-### Estrutura do arquivo
 
 ```csharp
 // tests/acceptance/<RfId><Slug>Steps.cs
@@ -179,8 +155,7 @@ public class <RfId><Slug>Steps
 }
 ```
 
-### Exemplo completo
-
+**Exemplo concreto:**
 ```csharp
 // tests/acceptance/Rf001CadastroProdutoSteps.cs
 using TechTalk.SpecFlow;
@@ -208,13 +183,23 @@ public class Rf001CadastroProdutoSteps
 }
 ```
 
----
+## Fase 4 — Saída
 
-## Regras
+N features × 3 arquivos gerados:
+- `tests/unit/<rf-id>-<slug>_steps.py` × N (Pytest-BDD)
+- `tests/acceptance/<rf-id>-<slug>.steps.js` × N (Cucumber-js)
+- `tests/acceptance/<RfId><Slug>Steps.cs` × N (SpecFlow)
 
-- Gerar **1 arquivo step def por `.feature` por framework** (total: N features × 3 arquivos)
-- **Estado RED garantido** — todos os corpos de step devem lançar erro imediatamente, sem nenhuma lógica real
-- **Não implementar** nenhum step — o objetivo é criar a estrutura para o desenvolvedor preencher
-- **Espelhar a nomenclatura** de `spec/` (mesmo rf-id e slug)
-- Pytest-BDD vai para `tests/unit/`; Cucumber-js e SpecFlow vão para `tests/acceptance/`
-- **Sem interação com o usuário** — skill opera inteiramente sobre artefatos do sistema de arquivos
+Verificar: contagem = N_features × 3. Se divergir: ⛔ STOP.
+
+Sinalizar ao `documenter`: step-defs-red concluído → prosseguir para `testing-strategy` (Passo 5).
+
+<!-- internal -->
+## Anti-Padrão: Step Def em 1 Framework, Silêncio nos Outros 2
+
+**Como acontece:** A skill gera apenas Pytest-BDD para todos os features (loop parou na Fase 1) e registra sucesso. Cucumber-js e SpecFlow ficam sem cobertura — o `readme-tests` vai gerar instruções para frameworks sem arquivos.
+
+**Como detectar:** Verificar contagem final: N_features × 3. Se ≠ → identificar qual Fase falhou (1, 2 ou 3) e qual feature causou o problema.
+
+**O que fazer:** Falha em 1 framework para 1 feature não para a geração dos outros frameworks — registrar a falha em `_pendencias.md` e continuar. Só ⛔ STOP se contagem final divergir após os 3 passes.
+<!-- /internal -->

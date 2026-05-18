@@ -1,7 +1,7 @@
 ---
 name: testing-strategy
-description: >
-  
+description: >-
+  Para gerar estratégia de testes para cada requisito de qualidade como performance, segurança, usabilidade. Operação técnica interna do documenter. Use to generate testing strategy for each non-functional requirement.
 ---
 
 # Adapter Gemini CLI — testing-strategy
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/testing-strategy/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

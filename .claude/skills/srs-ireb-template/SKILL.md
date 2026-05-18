@@ -1,7 +1,7 @@
 ---
 name: srs-ireb-template
-description: >
-  
+description: >-
+  Para montar o documento completo do projeto com as 6 seções padrão IREB ISO 29148. Operação interna após todos os requisitos estarem formatados. Use to assemble the complete SRS with 6 IREB sections.
 ---
 
 # Adapter Claude Code — srs-ireb-template

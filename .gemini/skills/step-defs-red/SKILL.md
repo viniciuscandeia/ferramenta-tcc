@@ -1,7 +1,7 @@
 ---
 name: step-defs-red
-description: >
-  
+description: >-
+  Para gerar código de teste inicial RED que falha propositalmente em Python, JavaScript e C#. Operação técnica interna. Use to generate RED step definitions for Pytest-BDD, Cucumber-js and SpecFlow.
 ---
 
 # Adapter Gemini CLI — step-defs-red
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/step-defs-red/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

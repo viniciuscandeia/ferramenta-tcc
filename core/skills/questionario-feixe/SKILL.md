@@ -1,117 +1,104 @@
 ---
 name: questionario-feixe
-description: Skill condicional — agrupa perguntas de detalhamento por tema (feixes) para cobrir áreas do sistema sem cobertura após as Rondas 1–4. Ativa apenas se ≥ 3 áreas com lacunas de detalhamento. Máximo 2 feixes (2 chamadas AskUserQuestion de 4 perguntas cada).
-when_to_use: Invocada pelo collector na Ronda 5 da Fase A SOMENTE SE ≥ 3 áreas do sistema ainda não têm detalhamento claro após entrevista-estruturada + cenario-narrativa + recomendacao-dominio + recomendacao-implicitos.
+description: >-
+  Faz perguntas temáticas em grupos para cobrir áreas do produto que ainda ficaram sem informação suficiente — ativa apenas quando há lacunas em 3 ou mais áreas.
+  Use na Ronda 5 do Marco 2, somente se as rondas anteriores deixaram ≥ 3 áreas sem detalhamento.
+  Conditional thematic questionnaire for layperson stakeholder; covers uncovered system areas with structured question bundles.
 ---
 
-# Skill: questionario-feixe
+## Filosofia desta skill (Regras Absolutas)
 
-**Marco:** M2 — Consenso de Escopo (Fase A, Ronda 5 — condicional)
-**Invocada por:** `collector`
+1. **Condicional rigorosa — padrão é não executar.** < 3 áreas sem cobertura = o modeler pode inferir ou criar pautas. Executar por precaução desperdiça turnos do usuário.
+2. **Máximo 2 feixes, 2 chamadas.** Um feixe = 1 tema = 1 chamada `AskUserQuestion`. Dois feixes é o limite. Mais que isso = nova iteração de elicitação, não Ronda 5.
+3. **Choice e yesno apenas — nunca text nesta ronda.** Respostas abertas aqui produzem dados não-estruturados que o modeler não consegue classificar diretamente.
 
----
+<HARD-GATE>
+- NÃO executar antes de `recomendacao-implicitos` concluída (verificar seção `## Implícitos Confirmados` em `elicitacao-raw.md`)
+- NÃO executar se `elicitacao-raw.md` tem < 3 áreas com cobertura insuficiente (contar áreas conforme tabela na Fase 1)
+- ⛔ STOP se houver tentativa de 3ª chamada `AskUserQuestion` — 2 feixes é o máximo absoluto; excesso vai para `pautas-reelicitacao`
+</HARD-GATE>
 
-## CONDIÇÃO DE ATIVAÇÃO
+## Fase 0 — Inicialização e Verificação da Condição
 
-**Ativar se e somente se:** após completar as Rondas 1–4, verificar o `elicitacao-raw.md` acumulado e constatar que ≥ 3 das seguintes áreas ainda não têm informação suficiente para classificação pelo modeler:
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar pré-condição: `## Implícitos Confirmados` existe em `elicitacao-raw.md`
+3. Avaliar cobertura de `elicitacao-raw.md` por área:
 
 | Área | Sinal de cobertura insuficiente |
 |---|---|
-| Autenticação/acesso | Nada sobre login, perfis de usuário ou permissões |
-| Notificações/comunicação | Nada sobre como o sistema comunica eventos ao usuário |
-| Dados/histórico | Nada sobre o que o sistema precisa armazenar ou consultar |
-| Integrações externas | Nada sobre APIs, serviços externos ou importação/exportação |
-| Administração/configuração | Nada sobre como gestores configuram ou administram o sistema |
-| Relatórios/consultas | Nada sobre como usuários consultam o histórico ou geram relatórios |
+| Autenticação/acesso | Nada sobre login, perfis ou permissões |
+| Notificações/comunicação | Nada sobre como o sistema comunica eventos |
+| Dados/histórico | Nada sobre o que armazenar ou consultar |
+| Integrações externas | Nada sobre APIs ou importação/exportação |
+| Administração/configuração | Nada sobre como gestores configuram o sistema |
+| Relatórios/consultas | Nada sobre como usuários consultam histórico ou geram relatórios |
 
-**Não ativar se:** ≤ 2 áreas com lacunas (o modeler pode inferir ou criar pautas específicas em `pautas-reelicitacao.md`).
+4. Contar áreas com cobertura insuficiente. Se < 3: retornar ao `collector` com `skill_skipped: true, motivo: "< 3 áreas sem cobertura"`.
 
----
+## Fase 1 — Seleção dos Feixes
 
-## ESTRUTURA DE FEIXE
+Selecionar as 2 áreas com maior lacuna de cobertura. Para cada uma, montar 1 feixe de 3–4 perguntas (choice/yesno).
 
-Cada feixe é um lote temático de 3–4 perguntas. Máximo de 2 feixes por execução (1 chamada por feixe, D14).
-
-### Exemplo — Feixe "Acesso e perfis"
-
+**Exemplo — Feixe "Acesso e perfis":**
 ```
 Algumas perguntas rápidas sobre quem vai usar o sistema:
 
-1. Como cada pessoa vai entrar no produto? 
-   (A) Com e-mail e senha  
-   (B) Com conta do Google / redes sociais  
-   (C) Sem login — qualquer pessoa acessa
+1. Como cada pessoa vai entrar no produto?
+   (A) Com e-mail e senha  (B) Com conta do Google/redes sociais  (C) Sem login — qualquer pessoa acessa
 
-2. Existem perfis diferentes de usuário com permissões diferentes?
-   (A) Sim — ex: administrador vê mais coisas que o usuário comum
-   (B) Não — todo mundo tem acesso igual
+2. Existem perfis diferentes com permissões diferentes?
+   (A) Sim — ex: administrador vê mais coisas que o usuário comum  (B) Não — todo mundo tem acesso igual
 
 3. Se alguém esquecer a senha, como vai recuperar o acesso?
-   (A) Por e-mail  
-   (B) Por SMS  
-   (C) Não precisa — o sistema vai usar login social
+   (A) Por e-mail  (B) Por SMS  (C) Vai usar login social — não precisa
 
-4. Existe necessidade de controle de sessão?
-   (Ex: deslogar automaticamente após X minutos de inatividade)
-   (A) Sim, por segurança  
-   (B) Não, pode ficar sempre conectado
+4. Precisa deslogar automaticamente após inatividade?
+   (A) Sim, por segurança  (B) Não, pode ficar sempre conectado
 ```
 
-### Exemplo — Feixe "Histórico e relatórios"
-
+**Exemplo — Feixe "Histórico e relatórios":**
 ```
 Sobre consultas e histórico no produto:
 
-1. Os usuários precisam ver um histórico das ações que fizeram?
-   (A) Sim — ex: histórico de compras, histórico de aulas concluídas
-   (B) Não é necessário
+1. Os usuários precisam ver histórico das ações que fizeram?
+   (A) Sim — ex: histórico de compras, aulas concluídas  (B) Não é necessário
 
-2. Algum perfil de usuário precisa de relatórios ou resumos?
-   (A) Sim — ex: gerente quer ver relatório de vendas, pai quer ver progresso do filho
-   (B) Não
+2. Algum perfil precisa de relatórios ou resumos?
+   (A) Sim — ex: gerente quer relatório de vendas  (B) Não
 
 3. As informações do histórico precisam ser exportadas?
-   (A) Sim — ex: exportar para Excel, PDF
-   (B) Não é necessário
+   (A) Sim — ex: Excel, PDF  (B) Não é necessário
 
-4. Por quanto tempo o sistema precisa guardar o histórico?
-   (A) Para sempre  
-   (B) Por um período específico (ex: 1 ano, 2 anos)  
-   (C) Não sei ainda
+4. Por quanto tempo guardar o histórico?
+   (A) Para sempre  (B) Por período específico (ex: 1 ano)  (C) Não sei ainda
 ```
 
----
+## Fase 2 — Coleta
 
-## PROCESSO
+1 chamada `AskUserQuestion` por feixe (máximo 2 chamadas). Nunca juntar 2 feixes em 1 chamada (mistura temas, confunde usuário).
 
-1. Verificar condição de ativação (≥ 3 áreas sem cobertura)
-2. Selecionar as 2 áreas com maior lacuna de cobertura
-3. Para cada área selecionada, montar 1 feixe (3–4 perguntas choice/yesno)
-4. Invocar `AskUserQuestion` para cada feixe (1 chamada por feixe, máximo 2 chamadas)
-5. Registrar respostas em `elicitacao-raw.md`, seção "Detalhamentos Adicionais (questionario-feixe)"
+## Fase 3 — Saída
 
----
-
-## SAÍDA
+Acrescentar seção em `elicitacao-raw.md`:
 
 ```markdown
 ## Detalhamentos Adicionais (questionario-feixe — Fase A)
 
 ### Feixe 1 — [Tema]
-**P1:** [resposta]
-**P2:** [resposta]
-**P3:** [resposta]
-**P4:** [resposta]
+**P1:** [resposta]  **P2:** [resposta]  **P3:** [resposta]  **P4:** [resposta]
 
 ### Feixe 2 — [Tema] (se aplicável)
 ...
 ```
 
----
+Sinalizar ao `collector`: questionario-feixe concluído → Fase A encerrada → passar `elicitacao-raw.md` para `modeler`.
 
-## REGRAS (D14 + D19)
+<!-- internal -->
+## Anti-Padrão: Ativação com < 3 Áreas
 
-- Perguntas: apenas choice ou yesno (não text) — respostas estruturadas facilitam classificação pelo modeler
-- Máximo 2 feixes / 2 chamadas AskUserQuestion nesta skill
-- Proibido mencionar "feixe", "questionário", "domínio" ao usuário — usar "algumas perguntas rápidas sobre [tema]"
-- Se condição não atendida: não executar; registrar no log do collector "questionario-feixe: não ativado (< 3 áreas com lacuna)"
+**Como acontece:** O collector ativa questionario-feixe após Ronda 4 por precaução ("pode ser que falte algo"). Apenas 2 áreas têm lacuna real. A skill executa 2 feixes extras — 8 perguntas adicionais que o modeler teria coberto com 2 pautas simples de reelicitação.
+
+**Como detectar:** Verificar contagem de áreas com cobertura insuficiente antes de qualquer execução. Se < 3: rejeitar ativação imediatamente.
+
+**O que fazer:** Retornar ao `collector` com `skill_skipped: true`. Registrar no log: "questionario-feixe: não ativado (N áreas com lacuna — mínimo é 3)". O modeler cria pautas específicas para o que faltar.
+<!-- /internal -->

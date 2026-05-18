@@ -1,7 +1,7 @@
 ---
 name: gherkin-spec
-description: >
-  
+description: >-
+  Para gerar arquivos de especificação executável feature para cada necessidade essencial do projeto. Operação técnica interna do documenter. Use to generate Gherkin feature files for must-have requirements.
 ---
 
 # Adapter Claude Code — gherkin-spec

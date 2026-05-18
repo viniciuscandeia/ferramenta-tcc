@@ -1,124 +1,121 @@
 ---
 name: entrevista-estruturada
-description: Conduz entrevista estruturada com o usuário leigo usando 4 perguntas-âncora adaptadas do material Dani (ERS n10) e IREB §4.2. Coleta rotina, frustrações, visão ideal e restrições percebidas. Saída: seção de elicitacao-raw.md.
-when_to_use: Invocada pelo collector na Ronda 1 da Fase A (sempre) ou na Fase B quando skill-alvo de uma pauta. Única chamada AskUserQuestion com exatamente 4 perguntas (ou menos se foco em pauta específica).
+description: >-
+  Conduz conversa estruturada para entender como o usuário trabalha hoje, o que incomoda e o que seria ideal.
+  Use no início do Marco 2, para coletar rotina, frustrações e restrições percebidas do usuário.
+  Structured interview for layperson stakeholder; captures daily routine, pain points, ideal vision, and constraints.
 ---
 
-# Skill: entrevista-estruturada
+## Filosofia desta skill (Regras Absolutas)
 
-**Referências:** IREB §4.2 (técnicas de elicitação) · Material Dani n10 (4 perguntas-âncora)
-**Marco:** M2 — Consenso de Escopo (Fase A, Ronda 1 — ou Fase B focada)
-**Invocada por:** `collector`
+1. **Facilitador empático** — o usuário não sabe nomear o que quer, mas sabe descrever o que o incomoda. Começar pelo problema, não pela solução.
+2. **Adaptar ao projeto concreto** — nunca usar os templates genéricos literais. Substituir `[produto]`, `[tarefa]`, `[perfil]` pelo contexto real de `visao-produto-normativo.md` antes de perguntar.
+3. **"Não sei" não é vazio — é premissa.** Resposta de incerteza vai para `03.4-premissas.md`, não é ignorada.
 
----
+<HARD-GATE>
+- NÃO executar se Gate 1 não foi aprovado (verificar `visao-produto-leigo.md` + `visao-produto-normativo.md` existem)
+- ⛔ STOP após Fase A se P1 (rotina) e P2 (frustrações) retornarem ≤ 2 palavras cada (sem dados suficientes para derivar RFs) — re-sondar com exemplo concreto antes de registrar
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Capturar o contexto operacional real do usuário — como ele trabalha hoje, o que o incomoda, como imagina que deveria ser, e quais limitações ele percebe. Estas 4 dimensões são as âncoras da elicitação de Dani e cobrem o essencial para derivar RFs, RNFs e restrições.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar Gate 1 aprovado: `visao-produto-normativo.md` existe
+3. Detectar modo: **Fase A** (Ronda 1 — entrevista completa) ou **Fase B** (pauta específica de `pautas-reelicitacao.md`)
+4. Extrair de `visao-produto-normativo.md`: nome do produto, perfil principal, tarefa principal → personalizar perguntas
 
----
+## Fase 1 — Coleta (adapta conforme modo)
 
-## MODO FASE A (Ronda 1 — entrevista completa)
+### Modo Fase A — Ronda 1 (4 perguntas-âncora)
 
-### As 4 perguntas-âncora
+Adaptar ao contexto do projeto (substituir placeholders por dados reais de `visao-produto-normativo.md`):
 
-Adaptar ao contexto do projeto (substituir `[produto]`, `[perfil]`, `[tarefa]` pelos dados de `visao-produto-normativo.md`):
-
-**Pergunta 1 — Rotina atual (atividades cotidianas)**
+**Pergunta 1 — Rotina atual (text):**
 ```
 Como você [ou seus clientes/usuários] realiza [tarefa principal do produto] hoje?
 Descreva o passo a passo — pode ser informal.
 ```
 
-**Pergunta 2 — Frustrações e problemas**
+**Pergunta 2 — Frustrações e problemas (text):**
 ```
 O que mais incomoda ou atrapalha nesse processo hoje?
 O que você gostaria que fosse diferente?
 ```
 
-**Pergunta 3 — Visão ideal**
+**Pergunta 3 — Visão ideal (text):**
 ```
 Se o [produto] funcionasse do jeito ideal para você, como seria?
 O que ele precisaria fazer que hoje não é possível?
 ```
 
-**Pergunta 4 — Restrições percebidas**
+**Pergunta 4 — Restrições percebidas (text):**
 ```
 Existe alguma regra, limitação de tempo ou orçamento, ou tecnologia que o produto precisa respeitar?
 (Ex: precisa funcionar no celular, precisa estar pronto até uma data específica, tem alguma lei que se aplica?)
 ```
 
-### Execução Fase A
+Invocar `AskUserQuestion` com as 4 perguntas adaptadas (1 chamada única — D14).
 
-1. Invocar `AskUserQuestion` com as 4 perguntas adaptadas ao contexto do projeto
-2. Tipo de pergunta: `text` para todas (respostas livres)
-3. Registrar respostas em `elicitacao-raw.md`, seção "Rotina e Necessidades":
-   ```markdown
-   ## Rotina e Necessidades (entrevista-estruturada — Fase A)
-   
-   **P1 — Rotina atual:** [resposta]
-   **P2 — Frustrações:** [resposta]
-   **P3 — Visão ideal:** [resposta]
-   **P4 — Restrições percebidas:** [resposta]
-   ```
+### Modo Fase B — Foco em pauta
 
----
+Quando invocada pelo collector para resolver pauta específica de `pautas-reelicitacao.md`:
+formular 1–3 perguntas diretas sobre a lacuna. Consolidar múltiplas pautas compatíveis em 1 chamada (D14, máx 4 perguntas).
 
-## MODO FASE B (focado em pauta)
+Exemplos por tipo de pauta:
 
-Quando invocada pelo collector em modo Fase B (pauta específica de `pautas-reelicitacao.md`):
-
-### Adaptação das perguntas
-
-Formular 1–3 perguntas diretas sobre a lacuna específica da pauta. Exemplos:
-
-**Pauta: "RF sem critério de aceitação"**
+**RF sem critério de aceitação (text):**
 ```
 Como você vai saber que [funcionalidade X] funcionou do jeito certo?
 O que precisa aparecer na tela ou acontecer para você confirmar que deu certo?
 ```
 
-**Pauta: "RNF sem métrica de tempo de resposta"**
+**RNF sem métrica (choice):**
 ```
-Quando você usa [funcionalidade Y], quanto tempo de espera seria aceitável para você?
-(Ex: "até 2 segundos é ok", "tem que ser instantâneo")
-```
-
-**Pauta: "Restrição legal sem detalhe"**
-```
-Você mencionou que o produto precisa seguir [lei/regra X].
-Isso significa que os usuários precisam dar permissão explícita para usar os dados deles?
-Ou existe alguma regra mais específica que você sabe que se aplica?
+Quando você usa [funcionalidade Y], quanto tempo de espera seria aceitável?
+(A) Até 2 segundos  (B) Até 5 segundos  (C) Precisa ser instantâneo
 ```
 
-**Pauta: "Premissa não confirmada"**
+**Restrição legal sem detalhe (yesno):**
+```
+Você mencionou [lei/regra X]. Isso significa que os usuários precisam dar permissão explícita para o uso dos dados?
+```
+
+**Premissa não confirmada (yesno):**
 ```
 Nós assumimos que [premissa]. Isso está correto para o seu caso?
 ```
 
-### Execução Fase B
+## Fase 2 — Registro em `elicitacao-raw.md`
 
-1. Invocar `AskUserQuestion` com 1–3 perguntas (choice ou yesno para pautas binárias, text para abertos)
-2. Máximo 4 perguntas por chamada (batching D14) — consolidar múltiplas pautas numa chamada se compatíveis
-3. Registrar respostas em `elicitacao-raw.md`, seção "Detalhamentos (iteração N)":
-   ```markdown
-   ## Detalhamentos — iteração 1 (entrevista-estruturada focada)
-   
-   **Pauta CONF-001:** [resposta que resolve a lacuna]
-   **Pauta RNF-002 métrica:** [resposta com valor concreto]
-   ```
+**Fase A:**
+```markdown
+## Rotina e Necessidades (entrevista-estruturada — Fase A)
 
----
+**P1 — Rotina atual:** [resposta]
+**P2 — Frustrações:** [resposta]
+**P3 — Visão ideal:** [resposta]
+**P4 — Restrições percebidas:** [resposta]
+```
 
-## REGRAS DE APLICAÇÃO (D14 + D19)
+**Fase B:**
+```markdown
+## Detalhamentos — iteração N (entrevista-estruturada focada)
 
-- Perguntas em linguagem de negócio — nunca mencionar "requisito", "elicitação", "RNF", "critério de aceitação" ao usuário
-- Todas as 4 perguntas da Fase A em um único `AskUserQuestion` (1 chamada só)
-- Fase B: consolidar perguntas de pautas compatíveis numa única chamada quando possível
-- Se usuário responde "não sei" ou "depende": registrar a incerteza como premissa em `03.4-premissas.md`
+**Pauta [ID]:** [resposta que resolve a lacuna]
+```
 
----
+Se usuário responde "não sei" em qualquer pergunta: registrar em `03.4-premissas.md` como `[premissa — a confirmar]`.
 
-## SAÍDA
+## Fase 3 — Saída
 
-Seção adicionada a `elicitacao-raw.md` com as respostas estruturadas. Não gerar artefatos finais — o `modeler` processa `elicitacao-raw.md` nos Passos 1–5 da Fase B.
+Seção adicionada a `elicitacao-raw.md`. Sinalizar ao `collector`: entrevista-estruturada concluída → prosseguir para `cenario-narrativa` (Fase A) ou retornar resultado da pauta (Fase B).
+
+<!-- internal -->
+## Anti-Padrão: Resposta Monossilábica Aceita
+
+**Como acontece:** P1 (rotina) retorna "faço manualmente" e P2 (frustrações) retorna "demora muito". Essas respostas são registradas sem sondagem — o modeler não conseguirá derivar nenhum RF concreto.
+
+**Como detectar:** Resposta P1 ou P2 ≤ 5 palavras OU ausência de verbos de ação.
+
+**O que fazer:** Re-perguntar com exemplo do próprio domínio. "Entendo! Para me ajudar a entender melhor — quando você diz 'faço manualmente', você quer dizer que anota num caderno, usa uma planilha, ou algo diferente?" Não registrar até ter resposta com ≥ 1 ação descrita.
+<!-- /internal -->

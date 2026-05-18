@@ -1,7 +1,7 @@
 ---
 name: entrevista-estruturada
-description: >
-  
+description: >-
+  Para coletar rotinas atuais, frustrações e visão ideal via 4 perguntas estruturadas. Use quando precisa entender como você faz hoje, o que te incomoda, como seria ideal. Use to collect routines, frustrations and ideal vision via structured interview.
 ---
 
 # Adapter Claude Code — entrevista-estruturada

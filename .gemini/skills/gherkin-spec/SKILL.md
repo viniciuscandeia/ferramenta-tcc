@@ -1,7 +1,7 @@
 ---
 name: gherkin-spec
-description: >
-  
+description: >-
+  Para gerar arquivos de especificação executável feature para cada necessidade essencial do projeto. Operação técnica interna do documenter. Use to generate Gherkin feature files for must-have requirements.
 ---
 
 # Adapter Gemini CLI — gherkin-spec
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/gherkin-spec/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

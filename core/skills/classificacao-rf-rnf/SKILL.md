@@ -1,33 +1,43 @@
 ---
 name: classificacao-rf-rnf
-description: Classifica itens de elicitacao-raw.md nos tipos RF (o que faz), RNF (como se comporta), Restrição (escolha imposta) e Premissa (pressuposto aceito). Gera rascunhos de 03.1-funcionais.md, 03.2-qualidade.md, 03.3-restricoes.md e 03.4-premissas.md (condicional). Segue IREB §1.1 e 9 buckets Wiegers Ch7.
-when_to_use: Invocada pelo modeler no Passo 1 da Fase B do workflow M2. Entrada obrigatória: elicitacao-raw.md completo.
+description: >-
+  Classifica cada item coletado nas fases anteriores em: o que o sistema faz (funcional), como se comporta (comportamental), o que está imposto de fora (restrição) ou o que foi assumido (premissa).
+  Use no início da modelagem do Marco 2, com o material de elicitação completo em mãos.
+  Classify elicited items into RF/RNF/Restriction/Premise types per IREB §1.1 and Wiegers quality buckets; no user interaction.
 ---
 
-# Skill: classificacao-rf-rnf
+## Filosofia desta skill (Regras Absolutas)
 
-**Referências:** IREB §1.1 · Wiegers Software Requirements Ch7 (9 quality attribute buckets)
-**Marco:** M2 — Consenso de Escopo (Fase B, Passo 1)
-**Invocada por:** `modeler`
+1. **Crítico rigoroso de tipo** — RF e RNF têm fronteiras claras: RF descreve **o que** o sistema faz; RNF descreve **como** se comporta com métrica mensurável. Misturar os dois gera artefatos irrastreáveis em M3.
+2. **Ambíguo = flag, não descarte.** Item que não se encaixa claramente em nenhum tipo recebe `[AMBÍGUO]` e vai para revisão — nunca é silenciosamente descartado.
+3. **Sem interação com usuário.** Esta skill opera 100% sobre texto coletado. Nenhuma pergunta é feita. Lacunas vão para `pautas-reelicitacao` (Passo 5).
 
----
+<HARD-GATE>
+- NÃO executar se `elicitacao-raw.md` está ausente ou vazio — Fase A do collector não concluiu
+- NÃO executar antes do `modeler` iniciar Fase B (verificar que `elicitacao-raw.md` foi passado como input)
+- ⛔ STOP se `elicitacao-raw.md` contém 0 itens classificáveis — registrar em `_pendencias.md` e notificar `modeler`
+</HARD-GATE>
 
-## TIPOS DE ITEM (definições canônicas)
+## Fase 0 — Inicialização
 
-| Tipo | Pergunta-guia | Exemplo leigo |
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar `elicitacao-raw.md` existe e não está vazio
+3. Verificar `visao-produto-normativo.md` acessível (contexto de domínio)
+
+## Fase 1 — Classificação
+
+**Tipos canônicos (IREB §1.1):**
+
+| Tipo | Pergunta-guia | Exemplo |
 |---|---|---|
-| **RF — Requisito Funcional** | "O que o sistema precisa fazer?" | "O sistema DEVE permitir que o usuário faça login" |
-| **RNF — Requisito Não-Funcional** | "Como o sistema precisa se comportar?" | "O sistema DEVE responder em < 2s para 95% das requisições" |
-| **Restrição** | "Qual decisão está imposta de fora — tecnologia, lei, prazo, orçamento?" | "O sistema DEVE cumprir a LGPD (Lei 13.709/2018)" |
-| **Premissa** | "O que estamos assumindo sem ter confirmação?" | "Assumimos que todos os usuários têm smartphone com Android 10+" |
+| **RF** | "O que o sistema precisa fazer?" | "O sistema DEVE permitir login" |
+| **RNF** | "Como o sistema precisa se comportar (mensurável)?" | "O sistema DEVE responder em < 2s" |
+| **Restrição** | "Qual decisão está imposta de fora — lei, prazo, tecnologia, orçamento?" | "O sistema DEVE cumprir LGPD" |
+| **Premissa** | "O que estamos assumindo sem confirmação?" | "Assumimos Android 10+" |
 
-**Distinção RNF vs Restrição:** RNF descreve qualidade mensurável de comportamento (performance, disponibilidade, usabilidade). Restrição é uma escolha imposta externamente que o sistema não pode ignorar (lei, tecnologia mandatória, prazo fixo, orçamento).
+**Distinção RNF vs Restrição:** RNF = qualidade mensurável de comportamento. Restrição = escolha imposta externamente que o sistema não pode ignorar.
 
----
-
-## BUCKETS DE QUALIDADE (Wiegers Ch7 — para RNFs)
-
-Ao classificar RNFs, identificar qual bucket se aplica:
+**Buckets de qualidade para RNFs (Wiegers Ch7):**
 
 | # | Bucket | Métrica-base |
 |---|---|---|
@@ -35,99 +45,65 @@ Ao classificar RNFs, identificar qual bucket se aplica:
 | 2 | Capacidade/Escalabilidade | usuários simultâneos, volume de dados |
 | 3 | Disponibilidade/Confiabilidade | uptime %, MTBF, MTTR |
 | 4 | Segurança | nível de autenticação, criptografia, OWASP |
-| 5 | Usabilidade | tempo de aprendizado, taxa de erro do usuário |
+| 5 | Usabilidade | tempo de aprendizado, taxa de erro |
 | 6 | Manutenibilidade | tempo para corrigir bug, cobertura de testes |
 | 7 | Portabilidade | plataformas suportadas, formatos de arquivo |
-| 8 | Privacidade/Conformidade | leis aplicáveis (LGPD, GDPR, etc.) |
-| 9 | Acessibilidade | nível WCAG, suporte a tecnologias assistivas |
+| 8 | Privacidade/Conformidade | LGPD, GDPR, etc. |
+| 9 | Acessibilidade | nível WCAG, tecnologias assistivas |
 
----
+**Algoritmo por item:**
+1. **RF?** Descreve ação/funcionalidade que o sistema executa → `RF-NNN`
+2. **RNF?** Descreve qualidade mensurável (bucket acima) → `RNF-NNN` + bucket; sem métrica → `LACUNA` no campo
+3. **Restrição?** Escolha imposta de fora → `REST-NNN` + subtipo (legal/técnica/organizacional/temporal)
+4. **Premissa?** Pressuposto não-verificado → `PREM-NNN`
+5. **Nenhum:** item irrelevante ou já coberto → descartar (registrar motivo)
 
-## PROCESSO
+Itens ambíguos → flag `[AMBÍGUO]` para revisão do modeler.
 
-### Entrada
+Sem duplicatas: dois itens que descrevem a mesma coisa → consolidar em 1 com ambas as fontes anotadas.
 
-- `elicitacao-raw.md` (completo — produzido pelo collector)
-- `visao-produto-normativo.md` (contexto do domínio e stakeholders)
+## Fase 2 — Saída
 
-### Algoritmo de classificação
-
-Para cada item em `elicitacao-raw.md`:
-
-1. **RF:** O item descreve uma ação ou funcionalidade que o sistema executa?
-   - SIM → classificar como RF; atribuir ID `RF-NNN`
-   - NÃO → continuar
-
-2. **RNF:** O item descreve uma qualidade de comportamento mensurável (um dos 9 buckets)?
-   - SIM → classificar como RNF; atribuir ID `RNF-NNN`; identificar bucket
-   - Se não tem métrica explícita → marcar como lacuna para `pautas-reelicitacao`
-   - NÃO → continuar
-
-3. **Restrição:** O item descreve uma escolha imposta de fora (lei, tecnologia, prazo, orçamento)?
-   - SIM → classificar como Restrição; atribuir ID `REST-NNN`; classificar subtipo: legal / técnica / organizacional / temporal
-   - NÃO → continuar
-
-4. **Premissa:** O item é um pressuposto não-verificado que afeta o escopo?
-   - SIM → classificar como Premissa; atribuir ID `PREM-NNN`
-   - NÃO → descartar (item irrelevante ou já coberto por outro)
-
-### Sem interação com usuário nesta skill
-
-Classificação é feita pelo modelo sem perguntas ao usuário. Itens ambíguos são marcados com flag `[AMBÍGUO]` para revisão pelo modeler.
-
----
-
-## SAÍDA
-
-### 03.1-funcionais.md (rascunho)
-
+**03.1-funcionais.md (rascunho):**
 ```markdown
-# Funcionalidades do Sistema (rascunho)
-
 | ID | Descrição | Modal | MoSCoW | Fonte |
 |---|---|---|---|---|
 | RF-001 | [descrição em EARS] | DEVE/DEVERIA/PODE | — | elicitacao-raw §N |
-| RF-002 | ... | ... | — | ... |
 ```
+*Modal e MoSCoW preenchidos na skill `priorizacao` (Passo 2).*
 
-*Campo Modal preenchido na skill `priorizacao` (Passo 2).*
-*Campo MoSCoW preenchido na skill `priorizacao` (Passo 2).*
-
-### 03.2-qualidade.md (rascunho)
-
+**03.2-qualidade.md (rascunho):**
 ```markdown
-# Qualidade e Comportamento do Sistema (rascunho)
-
 | ID | Bucket | Descrição | Métrica | Modal | Fonte |
 |---|---|---|---|---|---|
 | RNF-001 | Desempenho | [descrição] | [métrica ou LACUNA] | DEVE | ... |
 ```
 
-### 03.3-restricoes.md (rascunho)
-
+**03.3-restricoes.md (rascunho):**
 ```markdown
-# Restrições do Projeto (rascunho)
-
 | ID | Subtipo | Descrição | Origem | Fonte |
 |---|---|---|---|---|
-| REST-001 | legal | LGPD — dados pessoais devem ter consentimento explícito | Lei 13.709/2018 | ... |
+| REST-001 | legal | LGPD — dados pessoais com consentimento | Lei 13.709/2018 | ... |
 ```
 
-### 03.4-premissas.md (rascunho — só se detectadas)
-
+**03.4-premissas.md (rascunho — só se detectadas):**
 ```markdown
-# Premissas Aceitas (rascunho)
-
 | ID | Descrição | Impacto se falsa |
 |---|---|---|
 | PREM-001 | [premissa] | [o que muda no escopo] |
 ```
 
----
+## Fase 3 — Sinalização
 
-## REGRAS DE QUALIDADE
+Sinalizar ao `modeler`: classificação concluída → prosseguir para `priorizacao` (Passo 2).
+Reportar: N RFs, N RNFs, N Restrições, N Premissas, N itens AMBÍGUO, N lacunas de métrica.
 
-- Todo RF deve ter exatamente um sujeito, um verbo de ação, e um objeto (estrutura EARS mínima)
-- Todo RNF sem métrica explícita → criar pauta em `pautas-reelicitacao.md` (lacuna a resolver)
-- Não duplicar: se dois itens de `elicitacao-raw.md` descrevem a mesma coisa, consolidar em 1 item com ambas as fontes anotadas
-- IDs sequenciais e estáveis: RF-001, RF-002... (não renumerar entre iterações)
+<!-- internal -->
+## Anti-Padrão: Ambíguo Classificado como RF por Default
+
+**Como acontece:** Item "O sistema deve ser seguro" não tem métrica (deveria ser RNF/Segurança) mas é classificado como RF porque tem estrutura "o sistema deve [verbo]". `03.1-funcionais.md` fica inflado com pseudo-RFs que o `priorizacao` não consegue tratar corretamente.
+
+**Como detectar:** RF com verbo "ser" + adjetivo qualitativo ("ser seguro", "ser rápido", "ser fácil") — esses são RNFs disfarçados. Detectar por padrão `DEVE ser [adjetivo]`.
+
+**O que fazer:** Reclassificar como RNF + bucket adequado. Se não houver métrica, marcar `LACUNA` e criar pauta. Nunca registrar adjetivo qualitativo como RF.
+<!-- /internal -->

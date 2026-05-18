@@ -1,76 +1,57 @@
 ---
 name: recomendacao-implicitos
-description: Sugere RFs/RNFs implícitos (o "óbvio não-dito") usando os catálogos rfs-tipicos.md e rnfs-tipicos.md com algoritmo de filtragem em 3 camadas (D-S4.3) para produzir 5–10 candidatos em vez de 38. Confirma com o usuário em 1 lote de 4 perguntas. Referência: Livro SON §4.4.
-when_to_use: Invocada pelo collector na Ronda 4 da Fase A. Sempre executar após recomendacao-dominio. 1 chamada AskUserQuestion com até 4 perguntas de confirmação.
+description: >-
+  Sugere funcionalidades que sistemas similares costumam ter mas que o usuário não mencionou — o "óbvio não-dito".
+  Use na Ronda 4 do Marco 2, após confirmar o tipo de produto com o usuário.
+  Implicit requirement recommendation for layperson stakeholder; uses 3-layer filtering to present only 5-10 relevant candidates.
 ---
 
-# Skill: recomendacao-implicitos
+## Filosofia desta skill (Regras Absolutas)
 
-**Referências:** Livro SON §4.4 (implícitos) · `catalogos-seed/rfs-tipicos.md` · `catalogos-seed/rnfs-tipicos.md`
-**Marco:** M2 — Consenso de Escopo (Fase A, Ronda 4)
-**Invocada por:** `collector`
+1. **O "óbvio não-dito" existe em todo projeto.** Ninguém menciona "recuperação de senha" porque assume que é automático. Esta skill torna o implícito explícito — e confirmado.
+2. **Filtragem 3 camadas é obrigatória.** Apresentar o catálogo completo de 38 itens ao usuário é sobrecarga cognitiva. O algoritmo produz 5–10 candidatos. Sem exceção.
+3. **Rastrear origem de cada item confirmado.** Cada RF/RNF confirmado deve ter referência ao catálogo + categoria + item — a rastreabilidade começa aqui.
 
----
+<HARD-GATE>
+- NÃO executar antes de `recomendacao-dominio` concluída (verificar seção `## Recomendações de Domínio` em `elicitacao-raw.md`)
+- NÃO executar se `catalogos-seed/rfs-tipicos.md` ou `rnfs-tipicos.md` não estiverem acessíveis — registrar em `_pendencias.md` e pular
+- ⛔ STOP se algoritmo de filtragem 3 camadas produz 0 candidatos após Camadas 1+2+3 — registrar "projeto atípico, sem implícitos do catálogo" e pular para `questionario-feixe`
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Capturar o "óbvio não-dito" — funcionalidades e comportamentos que o usuário assume como garantidos mas não menciona explicitamente. Exemplo: numa loja virtual, o usuário menciona "carrinho de compras" mas não menciona "confirmação por e-mail do pedido" — isso é implícito.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar pré-condição: `## Recomendações de Domínio` existe em `elicitacao-raw.md`
+3. Acessar `catalogos-seed/rfs-tipicos.md` + `catalogos-seed/rnfs-tipicos.md`
 
----
+## Fase 1 — Algoritmo de Filtragem (3 Camadas)
 
-## PROCESSAMENTO — ALGORITMO DE FILTRAGEM EM 3 CAMADAS (D-S4.3)
+**Entrada:** `catalogos-seed/rfs-tipicos.md`, `rnfs-tipicos.md`, `elicitacao-raw.md` acumulado, `visao-produto-normativo.md`.
 
-### Entrada
+**Camada 1 — Eliminar categorias já cobertas:**
+Para cada categoria do catálogo: se ≥ 2 itens confirmados em `visao-produto-normativo.md` ou `elicitacao-raw.md` → pular categoria inteira.
+Manter apenas categorias com cobertura zero ou parcial (≤ 1 item confirmado).
 
-- `catalogos-seed/rfs-tipicos.md` (RFs genéricos por categoria)
-- `catalogos-seed/rnfs-tipicos.md` (RNFs por bucket de qualidade)
-- `elicitacao-raw.md` (acumulado até a Ronda 3)
-- `visao-produto-normativo.md` (contexto)
+**Camada 2 — Eliminar itens já elicitados:**
+Dentro das categorias restantes: para cada item, verificar se já aparece em `elicitacao-raw.md` (por texto similar ou equivalente). Se aparece → pular o item.
 
-### Camada 1 — Eliminar categorias já cobertas
+**Camada 3 — Priorizar por relevância:**
+Dos itens restantes:
+1. Itens marcados ⭐ no catálogo (alta frequência universal): incluir sempre
+2. Itens com match no domínio confirmado pela `recomendacao-dominio`: incluir
+3. Itens de domínio diferente: excluir
+4. Selecionar top 5–10 por prioridade decrescente (⭐ primeiro, depois match de domínio)
 
-Para cada categoria do catálogo (`rfs-tipicos.md`):
-1. Verificar se `visao-produto-normativo.md` ou `elicitacao-raw.md` já menciona itens desta categoria
-2. Se a categoria está suficientemente coberta (≥ 2 itens confirmados): **pular a categoria inteira**
-3. Manter apenas categorias com cobertura zero ou parcial (≤ 1 item confirmado)
+## Fase 2 — Construção das Perguntas
 
-**Objetivo:** reduzir de todas as categorias do catálogo para apenas as que ainda têm lacunas.
+Com os 5–10 candidatos filtrados, montar 1 lote de até 4 perguntas. Agrupar candidatos similares numa pergunta `choice` (confirmar múltiplos de uma vez).
 
-### Camada 2 — Eliminar itens já elicitados
+**Pré-aviso obrigatório antes do lote** (aplicar `traducao-leigo`):
+> "Agora vou sugerir algumas funcionalidades que sistemas como o seu costumam precisar — você me diz se fazem sentido para o seu projeto."
 
-Dentro das categorias restantes:
-1. Para cada item do catálogo, verificar se já aparece em `elicitacao-raw.md` (por texto similar ou equivalente)
-2. Se aparece: **pular o item**
-3. Manter apenas itens genuinamente ausentes
-
-**Objetivo:** evitar perguntar sobre o que o usuário já confirmou.
-
-### Camada 3 — Priorizar por relevância
-
-Dos itens restantes após as Camadas 1 e 2:
-1. Itens marcados com ⭐ no catálogo (alta frequência universal): incluir sempre
-2. Itens que fazem match com o domínio confirmado pela `recomendacao-dominio`: incluir
-3. Itens de domínio diferente do projeto: excluir
-4. Selecionar top 5–10 itens por prioridade decrescente (⭐ primeiro, depois match de domínio)
-
-**Objetivo:** apresentar ao usuário apenas os candidatos mais relevantes — não todos os 38 itens do catálogo.
-
----
-
-## CONSTRUÇÃO DAS PERGUNTAS
-
-Com os 5–10 candidatos filtrados, montar 1 lote de até 4 perguntas de confirmação:
-
-### Estratégia de agrupamento
-
-- Agrupar candidatos similares numa mesma pergunta (choice com múltiplas opções)
-- Máximo 4 perguntas no lote (D14)
-- Preferir choice sobre yesno (permite confirmar múltiplos itens de uma vez)
-
-### Exemplo de pergunta agrupada
-
+**Exemplo de pergunta agrupada:**
 ```
-Destas funcionalidades comuns que ainda não mencionamos, quais fariam sentido para o seu produto?
+Destas funcionalidades que ainda não mencionamos, quais fariam sentido para o seu produto?
 (Pode marcar mais de uma)
 (A) Confirmação por e-mail após ação do usuário (ex: compra, cadastro, pedido)
 (B) Recuperação de senha / acesso esquecido
@@ -78,16 +59,13 @@ Destas funcionalidades comuns que ainda não mencionamos, quais fariam sentido p
 (D) Nenhuma dessas por enquanto
 ```
 
-### Pré-aviso obrigatório antes do lote
+## Fase 3 — Coleta
 
-Apresentar ao usuário antes de invocar `AskUserQuestion`:
-> "Agora vou sugerir algumas funcionalidades que sistemas como o seu costumam precisar — você me diz se fazem sentido para o seu projeto."
+1 única chamada `AskUserQuestion` com ≤ 4 perguntas (D14).
 
-(Aplicar `traducao-leigo` sobre o pré-aviso antes de exibir)
+## Fase 4 — Saída
 
----
-
-## REGISTRO NO elicitacao-raw.md
+Acrescentar seção em `elicitacao-raw.md`:
 
 ```markdown
 ## Implícitos Confirmados (recomendacao-implicitos — Fase A)
@@ -102,21 +80,17 @@ Apresentar ao usuário antes de invocar `AskUserQuestion`:
 - RF-IMPL-001: [descrição] — origem: `rfs-tipicos.md`, categoria [X], item [Y]
 - RNF-IMPL-001: [descrição] — origem: `rnfs-tipicos.md`, bucket [Z]
 
-**Itens rejeitados pelo usuário:** [lista resumida — para referência futura]
+**Itens rejeitados pelo usuário:** [lista resumida]
 ```
 
----
+Sinalizar ao `collector`: recomendacao-implicitos concluída → prosseguir para `questionario-feixe` (se condição atendida) ou encerrar Fase A.
 
-## REGRAS (D14 + D19)
+<!-- internal -->
+## Anti-Padrão: Lista Completa do Catálogo Sem Filtragem
 
-- 1 única chamada AskUserQuestion com ≤ 4 perguntas
-- Proibido perguntar sobre mais de 10 candidatos no total (resultado do filtro de 3 camadas)
-- Proibido mencionar "catálogo", "implícito", "seed", "requisito" ao usuário
-- Usar linguagem: "funcionalidades que sistemas como o seu costumam precisar" em vez de "requisitos implícitos"
-- Rastrear origem: cada item confirmado deve ter referência ao catálogo + categoria + item de origem
+**Como acontece:** A skill pula as Camadas 1 e 2 por "eficiência" e apresenta os 38 itens do catálogo genérico em 10 perguntas. Usuário responde "sim" para metade por exaustão ou confusão — `elicitacao-raw.md` fica inflado com RFs irrelevantes.
 
----
+**Como detectar:** Se o número de candidatos antes da Fase 2 > 10, a filtragem falhou. Verificar contagem antes de construir perguntas.
 
-## SAÍDA
-
-Seção adicionada a `elicitacao-raw.md` com candidatos filtrados + confirmação do usuário + rastreabilidade de origem.
+**O que fazer:** Reexecutar Camadas 1+2+3. Se ainda > 10 após 3 camadas, aplicar corte hard: top 10 por prioridade de camada. Nunca apresentar > 10 candidatos em 4 perguntas.
+<!-- /internal -->

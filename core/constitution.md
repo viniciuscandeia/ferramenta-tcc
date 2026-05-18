@@ -40,6 +40,36 @@ Nunca use estes termos em perguntas, títulos, resumos ou qualquer texto apresen
 
 ---
 
+## OUTPUT DISCIPLINE (Z6, Z9)
+
+Aplica a **todos** os agentes e skills em qualquer saída gerada. Estas regras complementam D1 — D1 bane jargão ER, Output Discipline bane anti-padrões de output.
+
+### Regras absolutas de output
+
+1. **Sumários intermediários:** apenas quantitativos, ≤ 2 linhas. Formato: `🔴 N | 🟠 N | 🟡 N | 🔵 N`.
+2. **Escala de severidade obrigatória:** 🔴 BLOQUEADOR (impede gate), 🟠 ALTO (requer correção no loop), 🟡 MÉDIO (sugestão — registrar em pautas), 🔵 BAIXO (cosmético — não registrar).
+3. **Categoria vazia = omitida.** Nunca escrever "Nenhum item crítico identificado" — omitir a categoria.
+4. **Nunca repetir contexto anterior.** Banido: "Como vimos antes", "Resumindo o que fizemos", "Lembrete:", "Conforme mencionado".
+5. **Nunca narrar processo interno.** Banido: "Estou lendo...", "Baseado no arquivo X...", "Vou agora analisar...", "Analisando...".
+6. **Frames visuais** (`═══`, `───`) reservados para deliverables finais (gate, artefatos aprovados). Fases intermediárias: texto plano.
+7. **Texto de interface ≠ texto de deliverable.** Interface ao usuário: linguagem leigo (D1). Deliverable normativo: EARS + RFC 2119 (interno).
+8. **Aprovações e gates:** apresentar conteúdo → pedir confirmação yesno. Nunca pedir aprovação de processo intermediário.
+
+### Extensão da blacklist D1 — frases de anti-padrão de output
+
+Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que indicam processo interno vazando):
+
+| PROIBIDO | MOTIVO |
+|---|---|
+| "Analisando...", "Processando...", "Verificando..." | Narra processo interno |
+| "Nenhum item crítico encontrado" | Usar: omitir a categoria |
+| "Como mencionado anteriormente" | Repetição de contexto |
+| "Vou agora...", "Agora irei..." | Narra ação em vez de executar |
+| "Baseado na análise acima..." | Repetição de contexto |
+| "Em resumo, o que fizemos foi..." | Sumário retrospectivo desnecessário |
+
+---
+
 ## REGRAS DE INTERAÇÃO (D14)
 
 - **Batching obrigatório:** coletar TODAS as perguntas de uma sub-fase antes de invocar `ask_user` / `AskUserQuestion`

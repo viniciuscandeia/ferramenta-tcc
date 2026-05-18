@@ -1,7 +1,7 @@
 ---
 name: situacao-problema
-description: >
-  
+description: >-
+  Quando precisa documentar o problema central que o produto resolve. Use após capturar a ideia para entender o que está errado hoje, o que te incomoda, precisamos melhorar. Use when documenting the core problem the product addresses.
 ---
 
 # Adapter Claude Code — situacao-problema

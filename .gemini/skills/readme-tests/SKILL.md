@@ -1,7 +1,7 @@
 ---
 name: readme-tests
-description: >
-  
+description: >-
+  Para gerar guia de como configurar e rodar os testes nos 3 frameworks suportados. Operação técnica interna. Use to generate README-TESTS.md documenting test setup and execution for all 3 frameworks.
 ---
 
 # Adapter Gemini CLI — readme-tests
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/readme-tests/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

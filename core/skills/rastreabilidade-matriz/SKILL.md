@@ -4,99 +4,69 @@ description: Gera rastreabilidade.md com matriz bidirecional ligando Objetivo de
 when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: visao-produto-normativo.md + 03.1-funcionais.md + 03.2-qualidade.md + SRS-completo.md + spec/*.feature. Saída: rastreabilidade.md.
 ---
 
-# Skill: rastreabilidade-matriz
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** IREB §3.8 (rastreabilidade) + catalogos-seed/conceitos/qualidade-e-validacao.md §4
-**Marco:** M3 — Detalhamento (Fase B, Passo 3)
-**Invocada por:** `checker`
+1. **"—" vs "❌" é o controle de qualidade central.** "—" = ausência intencional por design (RNF sem spec, RF DEVERIA em `_skipped.md`). "❌" = gap real. Confundir os dois mascara gaps ou gera alarmes falsos para o checker.
+2. **Gerar a matriz mesmo incompleta.** Célula "❌" é mais informativa que linha ausente. Omitir linha = silenciar gap = pior resultado que registrar o problema explicitamente.
+3. **Resumo de Gaps é obrigatório** — alimenta o checker para consolidação final e decisão de Gate 3.
 
----
+<HARD-GATE>
+- NÃO executar antes de `validacao-checklist-ireb` e `analyze-cross-artifact` concluídas
+- NÃO executar sem `visao-produto-normativo.md` (Fases 1 e 6 impossíveis sem ela)
+- ⛔ STOP se `spec/` não existe — Fases 4 e 5 dependem de spec/
+</HARD-GATE>
 
-## CONCEITO DE RASTREABILIDADE BIDIRECIONAL
+## Fase 0 — Inicialização
 
-**Forward tracing (M1 → test):** A partir de um objetivo de negócio, consigo chegar até o teste que valida sua implementação?
-- Objetivo M1 → RF → Seção SRS → `.feature` → Step def
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar artefatos obrigatórios: `visao-produto-normativo.md`, `03.1-funcionais.md`, `03.2-qualidade.md`, `SRS-completo.md`, `spec/`
+3. Carregar `spec/_skipped.md` — lista de RFs DEVERIA/PODE sem spec (ausência intencional, não gap)
 
-**Backward tracing (test → M1):** A partir de um teste ou spec, consigo rastrear de volta até a necessidade de negócio que o originou?
-- Step def → `.feature` → RF → Objetivo M1 → Stakeholder
+## Fase 1 — Extrair Objetivos de M1
 
-Lacunas em qualquer elo desta cadeia são candidatos a issues de Omissão para `analyze-cross-artifact`.
+- Ler `visao-produto-normativo.md`: funcionalidades-chave + problema-resolvido + perfis de stakeholder
+- Criar lista numerada de objetivos de negócio (texto curto, máx. 5 palavras por objetivo)
 
----
+## Fase 2 — Mapear Objetivos → RF/RNF
 
-## COLUNAS DA MATRIZ
-
-| Objetivo M1 | RF/RNF ID | Modal | Seção SRS | Spec (.feature) | Test (step def) | Stakeholder origem |
-|---|---|---|---|---|---|---|
-
-**Regras por coluna:**
-
-- **Objetivo M1:** extraído de `visao-produto-normativo.md` (funcionalidades-chave + problema-resolvido); usar texto curto descritivo
-- **RF/RNF ID:** ID exato como aparece nos artefatos M2 (ex.: RF-001, RNF-002, REST-001)
-- **Modal:** `DEVE` / `DEVERIA` / `PODE` / `—` (para restrições sem modal)
-- **Seção SRS:** referência de seção no SRS (ex.: §3.1, §4.2, §5.1); "—" se ausente (gap)
-- **Spec (.feature):** nome do arquivo em `spec/` (ex.: `rf-001-cadastro.feature`); "—" para RNFs/Restrições (por design, não gap); "❌" para RF DEVE sem spec (gap CRITICAL)
-- **Test (step def):** `✅` se step defs existem em `tests/`; nome da estratégia para RNFs (ex.: `strategy: OWASP ZAP`); "—" para restrições; "❌" se `.feature` existe mas step defs ausentes (gap HIGH)
-- **Stakeholder origem:** perfil de stakeholder de M1 que originou a necessidade (ex.: Artesão, Comprador, Todos)
-
----
-
-## PROCESSO
-
-### Passo 1 — Extrair objetivos de M1
-
-- Ler `visao-produto-normativo.md`
-- Identificar: funcionalidades-chave declaradas + problema-resolvido + perfis de stakeholder
-- Criar lista numerada de objetivos de negócio (texto curto, máx. 5 palavras)
-
-### Passo 2 — Mapear objetivos → RF/RNF
-
-- Para cada objetivo de M1: localizar em `03.1-funcionais.md` os RFs que o cobrem (≥ 1 por objetivo)
-- Para RNFs de `03.2-qualidade.md`: associar ao objetivo de negócio mais próximo (ex.: RNF de performance → objetivo de experiência do usuário)
+- Para cada objetivo M1: localizar RFs cobrindo em `03.1-funcionais.md` (≥ 1 por objetivo esperado)
+- Para RNFs de `03.2-qualidade.md`: associar ao objetivo de negócio mais próximo
 - Para restrições de `03.3-restricoes.md` (se disponível): associar ao objetivo ou stakeholder mais relacionado
 
-### Passo 3 — Mapear RF/RNF → SRS
+## Fase 3 — Mapear RF/RNF → SRS
 
-- Para cada RF/RNF: localizar a seção correspondente no `SRS-completo.md`
+- Para cada RF/RNF: localizar seção em `SRS-completo.md`
 - Registrar seção exata (§3.X para RFs, §4.X para RNFs, §5.X para restrições)
 - RF/RNF não encontrado no SRS: registrar "❌ ausente" na coluna Seção SRS
 
-### Passo 4 — Mapear RF → Spec
+## Fase 4 — Mapear RF → Spec e Spec → Step Defs
 
-- Para cada RF com modal `DEVE`: localizar `.feature` correspondente em `spec/`
-- Convenção de nomenclatura: `spec/rf-{id-lowercase}-{descricao-curta}.feature`
-- RF DEVE sem `.feature`: registrar "❌" na coluna Spec
-- RF DEVERIA / PODE: verificar `spec/_skipped.md`; se listado, registrar "— (skipped)" na coluna Spec
-- RNFs e Restrições: registrar "—" na coluna Spec (ausência intencional por design)
+**RF → Spec:**
+- RF DEVE: verificar `spec/rf-{id-lowercase}-*.feature` em `spec/`; ausente → "❌"
+- RF DEVERIA/PODE: verificar em `spec/_skipped.md`; se listado → "— (skipped)"; se não listado → "❌"
+- RNFs e Restrições: "—" por design (ausência intencional, não gap)
 
-### Passo 5 — Mapear Spec → Step defs
+**Spec → Step defs:**
+- Para cada `.feature` encontrado: verificar step defs em `tests/unit/` e `tests/acceptance/`
+- Presentes (3 frameworks) → "✅"; `.feature` sem step defs → "❌"
+- Para RNFs com estratégia em `TESTING-STRATEGY.md`: registrar `strategy: [ferramenta]`
 
-- Para cada `.feature` encontrado no Passo 4: verificar existência de step defs em `tests/`
-- Step defs presentes: registrar `✅`
-- `.feature` sem step defs: registrar "❌"
-- Para RNFs com estratégia em `TESTING-STRATEGY.md`: registrar `strategy: [ferramenta]` (ex.: `strategy: OWASP ZAP`, `strategy: k6`)
+## Fase 5 — Preencher Stakeholder Origem
 
-### Passo 6 — Preencher stakeholder origem
+- Para cada RF/RNF: identificar perfil de stakeholder de `visao-produto-normativo.md` que originou a necessidade
+- Usar nomes exatamente como definidos no documento (não parafrasear)
+- Múltiplos stakeholders: listar separados por vírgula ou usar "Todos"
 
-- Para cada RF/RNF: identificar qual perfil de stakeholder de M1 originou a necessidade
-- Usar os nomes de perfil exatamente como definidos em `visao-produto-normativo.md`
-- Se múltiplos stakeholders: listar separados por vírgula ou usar "Todos"
+## Fase 6 — Saída
 
-### Passo 7 — Gerar rastreabilidade.md
-
-- Montar a matriz completa com todas as linhas
-- Adicionar seção de resumo com contagens de gaps
-
----
-
-## SAÍDA — rastreabilidade.md
+Salvar como `rastreabilidade.md`:
 
 ```markdown
 # Matriz de Rastreabilidade
 
 > Gerado automaticamente pelo checker em M3 Passo 3.
 > Forward tracing: Objetivo M1 → RF/RNF → SRS → Spec → Test
-> Backward tracing: qualquer linha com "❌" indica gap na cadeia de rastreabilidade.
+> Backward tracing: qualquer "❌" indica gap na cadeia de rastreabilidade.
 
 | Objetivo M1 | RF/RNF | Modal | Seção SRS | Spec | Test | Stakeholder |
 |---|---|---|---|---|---|---|
@@ -123,15 +93,14 @@ Lacunas em qualquer elo desta cadeia são candidatos a issues de Omissão para `
 | RNF sem estratégia de teste | 0 | — |
 ```
 
----
+Sinalizar ao `checker`: rastreabilidade-matriz concluída → gaps não reportados em `analyze-cross-artifact` devem ser considerados para consolidação final antes de Gate 3.
 
-## REGRAS DE QUALIDADE
+<!-- internal -->
+## Anti-Padrão: RF DEVERIA/PODE Marcado como Gap
 
-- Gerar a matriz mesmo que haja células vazias — célula "❌" é mais informativa do que não existir a linha
-- Usar "—" para ausências esperadas por design (RNFs, Restrições, RF DEVERIA/PODE em _skipped.md)
-- Usar "❌" para ausências que indicam gap real (RF DEVE sem spec, .feature sem step defs, RF sem SRS)
-- Sem interação com usuário — geração automática
-- Preservar IDs exatamente como nos artefatos-fonte
-- Restrições (`REST-`) têm "—" em Spec e Test por design — não registrar como gap
-- A seção de Resumo de Gaps é obrigatória — alimenta a decisão do checker sobre issues adicionais
-- Este artefato é informativo para Gate 3 — gaps aqui que ainda não foram reportados em analyze-cross-artifact devem ser considerados pelo checker para consolidação final
+**Como acontece:** RF-009 com modal DEVERIA não tem `.feature` → coluna Spec marcada "❌" → reportado como gap de Omissão → checker escala para CRITICAL desnecessariamente, bloqueando Gate 3 por issue esperado por design.
+
+**Como detectar:** "❌" em Spec para RF com modal DEVERIA ou PODE — verificar se consta em `spec/_skipped.md`.
+
+**O que fazer:** RF DEVERIA/PODE listado em `spec/_skipped.md` → registrar "— (skipped)", não "❌". RF DEVERIA/PODE **não** listado em `_skipped.md` → registrar "❌" e reportar como issue de processo (por que não foi para _skipped.md?).
+<!-- /internal -->

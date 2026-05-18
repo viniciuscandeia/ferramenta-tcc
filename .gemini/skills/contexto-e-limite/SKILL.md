@@ -1,7 +1,7 @@
 ---
 name: contexto-e-limite
-description: >
-  
+description: >-
+  Quando precisa definir o que está dentro e fora do projeto. Use para esclarecer o que o sistema faz, o que não é responsabilidade do sistema, onde termina o produto. Use when clarifying what is in and out of scope.
 ---
 
 # Adapter Gemini CLI — contexto-e-limite
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/contexto-e-limite/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

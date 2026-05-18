@@ -1,7 +1,7 @@
 ---
 name: requisito-ears
-description: >
-  
+description: >-
+  Para formatar todos os requisitos funcionais e de qualidade com estrutura EARS e modais RFC 2119 DEVE DEVERIA PODE. Operação técnica interna do documenter. Use to format requirements with EARS syntax and RFC 2119 modals.
 ---
 
 # Adapter Claude Code — requisito-ears

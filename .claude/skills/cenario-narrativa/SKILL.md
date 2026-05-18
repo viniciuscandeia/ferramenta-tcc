@@ -1,7 +1,7 @@
 ---
 name: cenario-narrativa
-description: >
-  
+description: >-
+  Para coletar cenários narrativos um dia normal de perfil e extrair necessidades implícitas. Use quando precisa de me descreva um dia típico, como você usaria o sistema no dia a dia. Use to collect day-in-the-life narratives and extract implicit needs.
 ---
 
 # Adapter Claude Code — cenario-narrativa

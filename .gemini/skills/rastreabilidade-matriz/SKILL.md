@@ -1,7 +1,7 @@
 ---
 name: rastreabilidade-matriz
-description: >
-  
+description: >-
+  Para gerar a matriz de rastreabilidade que conecta objetivos de negócio, requisitos, SRS, specs e testes. Operação do checker no Marco 3. Use to generate bidirectional traceability matrix linking business goals to test artifacts.
 ---
 
 # Adapter Gemini CLI — rastreabilidade-matriz
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/rastreabilidade-matriz/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

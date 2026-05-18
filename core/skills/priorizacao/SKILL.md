@@ -1,150 +1,98 @@
 ---
 name: priorizacao
-description: Atribui modal RFC 2119 (DEVE/DEVERIA/PODE) e campo de prioridade de negócio a cada RF e RNF classificado. Usa MoSCoW como base obrigatória; aciona Kano e IEEE como sub-rotinas automáticas conforme gatilhos (D9). Usuário nunca vê os nomes das técnicas.
-when_to_use: Invocada pelo modeler no Passo 2 da Fase B após classificacao-rf-rnf. Entrada: rascunhos de 03.1-funcionais.md e 03.2-qualidade.md.
+description: >-
+  Atribui nível de importância e obrigatoriedade a cada funcionalidade e comportamento levantado — define o que vem primeiro, o que vem depois e o que fica de fora desta versão.
+  Use após classificar os itens do Marco 2, antes de verificar conflitos.
+  Assign RFC 2119 modals and MoSCoW priority to classified RF/RNF items; triggers Kano and IEEE sub-routines automatically per D9.
 ---
 
-# Skill: priorizacao
+## Filosofia desta skill (Regras Absolutas)
 
-**Decisão:** D9 — MoSCoW MVP + Kano + IEEE como sub-rotinas  
-**Referências:** Wiegers Software Requirements · IEEE 830 · Kano Model · RFC 2119
-**Marco:** M2 — Consenso de Escopo (Fase B, Passo 2)
-**Invocada por:** `modeler`
+1. **MoSCoW sempre, sem exceção.** Não existe item sem prioridade. "Não sei" do usuário = `DEVERIA_TER` por padrão conservador + flag para revisão.
+2. **Kano e IEEE são sub-rotinas automáticas, não opcionais.** Os gatilhos de D9 são verificados a cada execução — se atendidos, as sub-rotinas rodam. Pular = violação de D9.
+3. **Nunca perguntar ao usuário sobre prioridade diretamente.** O usuário não conhece MoSCoW, Kano nem IEEE. A prioridade é inferida do contexto de negócio e das restrições declaradas.
 
----
+<HARD-GATE>
+- NÃO executar antes de `classificacao-rf-rnf` concluída (verificar que `03.1-funcionais.md` e `03.2-qualidade.md` existem com itens)
+- ⛔ STOP se `03.1-funcionais.md` contém 0 itens — retornar ao modeler com erro de pré-condição
+</HARD-GATE>
 
-## MAPEAMENTO DE SAÍDA (único para todas as sub-rotinas)
+## Fase 0 — Inicialização
 
-| Valor interno (modeler) | Apresentado ao usuário | Modal RFC 2119 |
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar `03.1-funcionais.md` e `03.2-qualidade.md` existem e têm itens
+3. Acessar `03.3-restricoes.md` e `visao-produto-normativo.md` para âncoras de prioridade
+
+## Fase 1 — MoSCoW (sempre executar)
+
+**Mapeamento de saída:**
+
+| Valor interno | Apresentado ao usuário | Modal RFC 2119 |
 |---|---|---|
 | `DEVE_TER` | "vem primeiro / é essencial" | `DEVE` |
 | `DEVERIA_TER` | "vem logo depois / importante mas não crítico" | `DEVERIA` |
 | `PODERIA_TER` | "fica para depois / bom ter se der" | `PODE` |
-| `NAO_TERA` | "fica fora desta versão" | (sem modal — fora do escopo) |
+| `NAO_TERA` | "fica fora desta versão" | (sem modal) |
 
----
+**Critérios MoSCoW por item:**
+- **DEVE_TER:** sem este item o produto falha ou viola restrição legal. "Se removermos, o produto não funciona ou é ilegal?"
+- **DEVERIA_TER:** importante com alternativa temporária. "O produto funciona com limitação aceitável?"
+- **PODERIA_TER:** desejável, postergável sem impacto mínimo. "Funciona normalmente sem este item?"
+- **NAO_TERA:** explicitamente fora do escopo desta versão
 
-## SUB-ROTINA 1 — MoSCoW (SEMPRE EXECUTAR)
+**Âncoras de consistência:**
+- Restrição legal em `03.3-restricoes.md` → RFs que implementam = `DEVE_TER`
+- Funcionalidades-chave de `visao-produto-normativo.md` → geralmente `DEVE_TER`
+- Itens vindos apenas de catálogo (`recomendacao-implicitos`) → geralmente `PODERIA_TER`
 
-### Critério de prioridade
+## Fase 2 — Sub-Rotina Kano (condicional — D9)
 
-Para cada RF/RNF:
-
-- **DEVE_TER (DEVE):** Item sem o qual o produto não pode funcionar ou viola uma restrição legal. Critério: "Se removermos este item, o produto falha ou é ilegal?"
-- **DEVERIA_TER (DEVERIA):** Item importante que tem alternativa temporária. Critério: "Se removermos este item agora, o produto funciona com limitação aceitável?"
-- **PODERIA_TER (PODE):** Item desejável mas postergável sem impacto na usabilidade mínima. Critério: "O produto funciona normalmente sem este item?"
-- **NAO_TERA:** Item reconhecidamente fora do escopo desta versão (registrar para versões futuras)
-
-### Âncoras de referência
-
-Ao atribuir MoSCoW, verificar consistência com:
-- Restrições de `03.3-restricoes.md`: toda restrição legal/regulatória implica `DEVE` nos RFs que a implementam
-- Funcionalidades-chave de `visao-produto-normativo.md`: geralmente são `DEVE_TER`
-- Items surgidos apenas de catálogo (recomendacao-implicitos): geralmente começam como `PODERIA_TER`
-
----
-
-## SUB-ROTINA 2 — Kano (CONDICIONAL — D-S4.2)
-
-### Gatilho de ativação
-
-Ativar **automaticamente** se e somente se:
-- RFs com `DEVERIA_TER` ou `PODERIA_TER` ≥ 8, **E**
-- Stakeholders distintos identificados em M1 ≥ 2
-
-### O que o Kano adiciona
-
-Reordena os itens `DEVERIA_TER`/`PODERIA_TER` com base em 3 categorias:
-
-| Categoria Kano | Lógica | Impacto na prioridade |
-|---|---|---|
-| **Obrigatório** (must-be) | Se ausente, usuário fica insatisfeito; se presente, não gera satisfação extra | Promover para `DEVE_TER` se não estava |
-| **Proporcional** (one-dimensional) | Quanto mais, melhor — satisfação proporcional à presença | Manter posição atual |
-| **Encantador** (attractive) | Surpreende positivamente quando presente; não causa insatisfação se ausente | Reclassificar para `PODERIA_TER` se estava como `DEVERIA_TER` |
-
-### Processo simplificado (sem perguntar ao usuário sobre Kano)
+**Gatilho:** ativar automaticamente se RFs com `DEVERIA_TER` + `PODERIA_TER` ≥ 8 E stakeholders distintos ≥ 2.
 
 Para cada item `DEVERIA_TER`/`PODERIA_TER`:
-1. Verificar: "Se o sistema **não tiver** este item, o usuário vai reclamar ativamente?"
-   - SIM → categoria Obrigatório → promover para `DEVE_TER`
-2. Verificar: "Este item **surpreende positivamente** o usuário quando presente?"
-   - SIM → categoria Encantador → reclassificar como `PODERIA_TER` (encantamento é bônus, não obrigação)
-3. Caso contrário → categoria Proporcional → manter posição atual
 
----
+| Pergunta interna | Categoria Kano | Ação |
+|---|---|---|
+| "Se ausente, usuário reclama ativamente?" → SIM | Obrigatório (must-be) | Promover para `DEVE_TER` |
+| "Surpreende positivamente quando presente?" → SIM | Encantador (attractive) | Reclassificar para `PODERIA_TER` |
+| Nenhum dos dois | Proporcional (one-dimensional) | Manter posição atual |
 
-## SUB-ROTINA 3 — IEEE (CONDICIONAL — D-S4.2)
+## Fase 3 — Sub-Rotina IEEE (condicional — D9)
 
-### Gatilho de ativação
+**Gatilho:** ativar automaticamente se total RF + RNF ≥ 25 E `03.3-restricoes.md` tem restrição de prazo fixo.
 
-Ativar **automaticamente** se e somente se:
-- Total de RFs + RNFs ≥ 25, **E**
-- `03.3-restricoes.md` contém restrição de prazo fixo (data limite explícita)
+Ordenar `DEVE_TER` em sequência de implementação:
 
-### O que o IEEE adiciona
+| Critério | Peso | Resultado |
+|---|---|---|
+| Estabilidade (improvável de mudar) | Alta → primeiro | campo `ordem_impl: N` |
+| Dependências (outros RFs dependem deste?) | Muitas → primeiro | |
+| Risco (incerto de implementar?) | Alto risco → primeiro (fail fast) | |
 
-Ordena os `DEVE_TER` em sequência de implementação com base em:
+## Fase 4 — Saída
 
-| Critério | Peso |
-|---|---|
-| Estabilidade (quão improvável de mudar) | Alta → implementar primeiro |
-| Dependência (outros RFs dependem deste?) | Muitas dependências → implementar primeiro |
-| Risco (quão incerto é implementar?) | Alto risco → implementar primeiro (fail fast) |
-
-### Saída do IEEE
-
-Adicionar campo `ordem_impl: N` aos RFs `DEVE_TER` (1 = primeiro a implementar).
-
----
-
-## PROCESSO UNIFICADO
-
-### Entrada
-
-- `03.1-funcionais.md` rascunho (do Passo 1)
-- `03.2-qualidade.md` rascunho (do Passo 1)
-- `visao-produto-normativo.md` (funcionalidades-chave + stakeholders)
-- `03.3-restricoes.md` rascunho (para verificar gatilho IEEE)
-
-### Execução
-
-1. Aplicar MoSCoW a todos os itens
-2. Verificar gatilhos de Kano e IEEE — ativar sub-rotinas se condições atendidas
-3. Aplicar sub-rotinas ativas e ajustar campos de prioridade
-4. Atualizar `03.1-funcionais.md` e `03.2-qualidade.md` com campos preenchidos
-5. Sem interação com usuário
-
-### Sem perguntas ao usuário
-
-Esta skill opera inteiramente com base nas respostas já coletadas. Nenhuma pergunta sobre "o que é mais importante" é feita diretamente ao usuário — o modeler infere a partir do contexto de negócio e das restrições declaradas.
-
----
-
-## SAÍDA
-
-### 03.1-funcionais.md (atualizado)
+Atualizar `03.1-funcionais.md` e `03.2-qualidade.md` com campos preenchidos:
 
 ```markdown
 | ID | Descrição | Modal | MoSCoW | Kano | ordem_impl | Fonte |
 |---|---|---|---|---|---|---|
-| RF-001 | O sistema DEVE permitir que o usuário cadastre um produto com nome, preço e foto | DEVE | DEVE_TER | — | 1 | cenario-narrativa §2 |
+| RF-001 | O sistema DEVE permitir cadastro de produto com nome, preço e foto | DEVE | DEVE_TER | — | 1 | cenario-narrativa §2 |
 | RF-002 | O sistema DEVERIA enviar confirmação por e-mail após pedido | DEVERIA | DEVERIA_TER | Proporcional | — | recomendacao-implicitos |
 | RF-003 | O sistema PODE exibir sugestões de produtos relacionados | PODE | PODERIA_TER | Encantador | — | recomendacao-dominio |
 ```
 
-### 03.2-qualidade.md (atualizado)
+Itens `NAO_TERA` → seção "Fora do escopo desta versão" ao final de `03.1-funcionais.md`.
 
-```markdown
-| ID | Bucket | Descrição | Métrica | Modal | MoSCoW | Fonte |
-|---|---|---|---|---|---|---|
-| RNF-001 | Desempenho | O sistema DEVE responder a buscas de produtos em menos de 2 segundos para 95% das requisições | < 2s / P95 | DEVE | DEVE_TER | entrevista-estruturada |
-```
+Criar pauta para `pautas-reelicitacao` (Passo 5) se: RNF `DEVE_TER` sem métrica OU RF `DEVE` sem critério de aceitação claro.
 
----
+Sinalizar ao `modeler`: priorizacao concluída → prosseguir para `glossario` (Passo 3).
 
-## REGRAS DE QUALIDADE
+<!-- internal -->
+## Anti-Padrão: Modal Inferido Sem Verificar Gatilhos Kano
 
-- RNFs classificados como `DEVE_TER` sem métrica → criar pauta para `pautas-reelicitacao` (lacuna crítica)
-- Todo item com modal `DEVE` precisa ter critério de aceitação claro (senão → pauta)
-- Items `NAO_TERA` não entram nos artefatos — registrar em seção separada "Fora do escopo desta versão" no final de `03.1-funcionais.md`
-- Não usar os termos "MoSCoW", "Kano", "IEEE", "prioridade" em qualquer saída apresentada ao usuário
+**Como acontece:** `DEVERIA_TER` é atribuído a 10 itens sem ativar Kano (gatilho: ≥ 8 itens e ≥ 2 stakeholders). Resultado: 3 itens que seriam "Obrigatório" (Kano) ficam como `DEVERIA` — potencial retrabalho no Gate 2 quando o usuário percebe que algo essencial foi marcado como secundário.
+
+**Como detectar:** Antes de finalizar Fase 1, contar `DEVERIA_TER` + `PODERIA_TER` e stakeholders. Se gatilho atendido e Kano não executou → executar agora.
+
+**O que fazer:** Verificar gatilho explicitamente no início da Fase 2. Não assumir que "8 itens ou mais é raro" — em projetos médios com catálogo, essa contagem é a norma.
+<!-- /internal -->

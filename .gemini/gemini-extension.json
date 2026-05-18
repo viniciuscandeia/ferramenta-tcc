@@ -3,42 +3,70 @@
   "version": "0.1.0",
   "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
   "author": "Vinicius Candeia",
-  "systemPrompt": "ferramenta-tcc/core/orchestrator.md",
-  "constitution": "ferramenta-tcc/core/constitution.md",
+  "systemPrompt": "core/orchestrator.md",
+  "constitution": "core/constitution.md",
   "commands": [
     {
       "name": "iniciar-projeto",
       "description": "Inicia ou retoma o processo de documentação do projeto de software",
-      "file": "ferramenta-tcc/.gemini/commands/iniciar-projeto.toml"
+      "file": ".gemini/commands/iniciar-projeto.toml"
     }
   ],
   "agents": [
     {
       "name": "stakeholder-identifier",
       "description": "Define visão, situação-problema, pessoas envolvidas e contexto do projeto (Marco 1)",
-      "file": "ferramenta-tcc/.gemini/agents/stakeholder-identifier.md"
+      "file": ".gemini/agents/stakeholder-identifier.md"
     },
     {
       "name": "collector",
       "description": "Realiza elicitação estruturada das necessidades do projeto (Marco 2 — elicitação)",
-      "file": "ferramenta-tcc/.gemini/agents/collector.md"
+      "file": ".gemini/agents/collector.md"
     },
     {
       "name": "modeler",
       "description": "Classifica, prioriza e estrutura os requisitos levantados (Marco 2 — modelagem)",
-      "file": "ferramenta-tcc/.gemini/agents/modeler.md"
+      "file": ".gemini/agents/modeler.md"
     },
     {
       "name": "checker",
       "description": "Valida consistência e qualidade do SRS e artefatos de spec (Marco 3 + M4)",
-      "file": "ferramenta-tcc/.gemini/agents/checker.md"
+      "file": ".gemini/agents/checker.md"
     },
     {
       "name": "documenter",
       "description": "Gera SRS completo, specs Gherkin, step defs RED e estratégia de testes (Marco 3)",
-      "file": "ferramenta-tcc/.gemini/agents/documenter.md"
+      "file": ".gemini/agents/documenter.md"
     }
   ],
-  "engine": "ferramenta-tcc/core/",
-  "note": "Gemini CLI não suporta sub-agentes reais (sem Task()). Sub-agentes implementados via persona adoption no mesmo contexto. Estado compartilhado via arquivos em disco."
+  "engine": "core/",
+  "skills": [
+    { "name": "vision-box", "file": ".gemini/skills/vision-box/SKILL.md" },
+    { "name": "situacao-problema", "file": ".gemini/skills/situacao-problema/SKILL.md" },
+    { "name": "stakeholder-mapping", "file": ".gemini/skills/stakeholder-mapping/SKILL.md" },
+    { "name": "contexto-e-limite", "file": ".gemini/skills/contexto-e-limite/SKILL.md" },
+    { "name": "clarificacao-pos-visao", "file": ".gemini/skills/clarificacao-pos-visao/SKILL.md" },
+    { "name": "entrevista-estruturada", "file": ".gemini/skills/entrevista-estruturada/SKILL.md" },
+    { "name": "cenario-narrativa", "file": ".gemini/skills/cenario-narrativa/SKILL.md" },
+    { "name": "recomendacao-dominio", "file": ".gemini/skills/recomendacao-dominio/SKILL.md" },
+    { "name": "recomendacao-implicitos", "file": ".gemini/skills/recomendacao-implicitos/SKILL.md" },
+    { "name": "questionario-feixe", "file": ".gemini/skills/questionario-feixe/SKILL.md" },
+    { "name": "classificacao-rf-rnf", "file": ".gemini/skills/classificacao-rf-rnf/SKILL.md" },
+    { "name": "priorizacao", "file": ".gemini/skills/priorizacao/SKILL.md" },
+    { "name": "glossario", "file": ".gemini/skills/glossario/SKILL.md" },
+    { "name": "conflitos-detect", "file": ".gemini/skills/conflitos-detect/SKILL.md" },
+    { "name": "pautas-reelicitacao", "file": ".gemini/skills/pautas-reelicitacao/SKILL.md" },
+    { "name": "requisito-ears", "file": ".gemini/skills/requisito-ears/SKILL.md" },
+    { "name": "srs-ireb-template", "file": ".gemini/skills/srs-ireb-template/SKILL.md" },
+    { "name": "gherkin-spec", "file": ".gemini/skills/gherkin-spec/SKILL.md" },
+    { "name": "step-defs-red", "file": ".gemini/skills/step-defs-red/SKILL.md" },
+    { "name": "testing-strategy", "file": ".gemini/skills/testing-strategy/SKILL.md" },
+    { "name": "readme-tests", "file": ".gemini/skills/readme-tests/SKILL.md" },
+    { "name": "validacao-checklist-ireb", "file": ".gemini/skills/validacao-checklist-ireb/SKILL.md" },
+    { "name": "analyze-cross-artifact", "file": ".gemini/skills/analyze-cross-artifact/SKILL.md" },
+    { "name": "rastreabilidade-matriz", "file": ".gemini/skills/rastreabilidade-matriz/SKILL.md" },
+    { "name": "traducao-leigo", "file": ".gemini/skills/traducao-leigo/SKILL.md" },
+    { "name": "traducao-gate", "file": ".gemini/skills/traducao-gate/SKILL.md" }
+  ],
+  "note": "Gemini CLI não suporta sub-agentes reais (sem Task()). Sub-agentes implementados via persona adoption no mesmo contexto. Estado compartilhado via arquivos em disco. Skills registradas para forward-compat — verificar suporte a skill discovery na versão atual do Gemini CLI."
 }

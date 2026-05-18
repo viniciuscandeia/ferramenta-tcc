@@ -1,7 +1,7 @@
 ---
 name: analyze-cross-artifact
-description: >
-  
+description: >-
+  Para detectar inconsistências entre artefatos de diferentes fases — visão, elicitação, SRS e especificações. Detecta omissões, contradições e itens inexequíveis. Use to detect cross-artifact inconsistencies including omission, contradiction and infeasibility.
 ---
 
 # Adapter Claude Code — analyze-cross-artifact

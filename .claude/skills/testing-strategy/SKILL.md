@@ -1,7 +1,7 @@
 ---
 name: testing-strategy
-description: >
-  
+description: >-
+  Para gerar estratégia de testes para cada requisito de qualidade como performance, segurança, usabilidade. Operação técnica interna do documenter. Use to generate testing strategy for each non-functional requirement.
 ---
 
 # Adapter Claude Code — testing-strategy

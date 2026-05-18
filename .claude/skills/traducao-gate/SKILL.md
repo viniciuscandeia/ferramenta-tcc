@@ -1,7 +1,7 @@
 ---
 name: traducao-gate
-description: >
-  
+description: >-
+  Para gerar duas versões de artefatos de confirmação de fase — versão técnica normativa e versão em linguagem acessível para aprovação do usuário. Use at milestone gates to generate both normative and layperson versions of artifacts.
 ---
 
 # Adapter Claude Code — traducao-gate

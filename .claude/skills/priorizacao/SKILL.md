@@ -1,7 +1,7 @@
 ---
 name: priorizacao
-description: >
-  
+description: >-
+  Para definir o que é essencial, recomendado ou opcional em cada necessidade do projeto. Use para perguntar o que vem primeiro, o que é indispensável, o que pode ficar para depois. Use to prioritize requirements and assign must, should, may importance levels.
 ---
 
 # Adapter Claude Code — priorizacao

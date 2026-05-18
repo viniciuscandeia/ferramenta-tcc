@@ -1,7 +1,7 @@
 ---
 name: glossario
-description: >
-  
+description: >-
+  Para detectar termos do domínio sem definição clara e construir o glossário do projeto. Use quando há palavras específicas do negócio que podem gerar ambiguidade entre as partes. Use to detect undefined domain terms and build the project glossary.
 ---
 
 # Adapter Gemini CLI — glossario
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/glossario/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

@@ -1,7 +1,7 @@
 ---
 name: validacao-checklist-ireb
-description: >
-  
+description: >-
+  Para verificar a qualidade do documento de requisitos contra os 12 critérios IREB §3.8. Operação interna do checker. Use to validate the SRS against 12 IREB quality criteria including correctness, completeness and consistency.
 ---
 
 # Adapter Claude Code — validacao-checklist-ireb

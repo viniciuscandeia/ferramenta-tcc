@@ -1,7 +1,7 @@
 ---
 name: recomendacao-implicitos
-description: >
-  
+description: >-
+  Para sugerir requisitos implícitos como login, segurança, notificações, auditoria — o óbvio não-dito. Use para confirmar você precisa de controle de acesso, quer receber alertas. Use to surface implicit requirements not yet mentioned by the stakeholder.
 ---
 
 # Adapter Claude Code — recomendacao-implicitos
