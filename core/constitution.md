@@ -75,6 +75,7 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 - **Batching obrigatório:** coletar TODAS as perguntas de uma sub-fase antes de invocar `ask_user` / `AskUserQuestion`
 - **Máximo 4 perguntas por chamada** — restrição da primitiva
 - **Proibido:** invocar `ask_user` individualmente por gap detectado
+- **Tool call estruturado obrigatório:** perguntas devem ser invocadas via `ask_user`/`AskUserQuestion` como TOOL CALL com campos separados. NUNCA escrever perguntas como prosa no chat. NUNCA encadear múltiplas perguntas numa única frase como "X e também Y, e Z?".
 - **Tipos permitidos:** `choice`, `text`, `yesno`
 - **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `ask_user`/`AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
 

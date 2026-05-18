@@ -37,6 +37,11 @@ ENTRADA
   │  → Máximo 1 chamada AskUserQuestion, 3 perguntas, choice/yesno
   │  → Atualiza visao-produto.md inline
   ▼
+[5.5] vision-box Fase 2.5  ← CONDICIONAL (slots pendentes)
+  │  Ativar SE: `_pendencias.md` tem `vision-box: benefício pendente` OU `vision-box: diferencial pendente`
+  │  → Inferir slot do contexto M1 coletado; confirmar via ask_user (3 opções)
+  │  → Remover pendência se confirmado; manter `[a definir]` se não confirmado
+  ▼
 [6] traducao-gate
   │  → Gera: visao-produto-normativo.md (IREB §3.3.3)
   │  → Gera: visao-produto-leigo.md (linguagem de negócio)
@@ -55,7 +60,10 @@ ENTRADA
 - Invocar skill `core/skills/vision-box/SKILL.md`
 - Input: nenhum (primeira interação com o usuário)
 - Output: seção "Visão do Produto"
-- Perguntas ao usuário: 1 lote de 4 (nome, público, benefício, diferencial)
+- Perguntas ao usuário: **2 sub-lotes** (cada um = 1 tool call `ask_user`/`AskUserQuestion`):
+  - Sub-lote A: nome + público-alvo
+  - Sub-lote B: benefício + diferencial — cada um com opção choice "Ainda não pensei nisso"
+- Se usuário pular benefício ou diferencial: registrar `vision-box: [slot] pendente` em `_pendencias.md`; slot preenchido com `[a definir]`
 
 ### [2] situacao-problema
 - Invocar skill `core/skills/situacao-problema/SKILL.md`

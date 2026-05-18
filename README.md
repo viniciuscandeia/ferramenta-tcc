@@ -32,8 +32,8 @@ claude plugin install ferramenta-tcc@ferramenta-tcc
 
 Confirmar instalação:
 ```bash
-gemini extension list   # deve mostrar "ferramenta-tcc 0.1.0"
-claude plugin list      # deve mostrar "ferramenta-tcc 0.1.0"
+gemini extension list   # deve mostrar "ferramenta-tcc 0.2.0"
+claude plugin list      # deve mostrar "ferramenta-tcc 0.2.0"
 ```
 
 ---
