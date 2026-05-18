@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
   "author": "Vinicius Candeia",
-  "systemPrompt": "core/orchestrator.md",
-  "constitution": "core/constitution.md",
   "commands": [
     {
       "name": "iniciar-projeto",
@@ -39,7 +37,6 @@
       "file": ".gemini/agents/documenter.md"
     }
   ],
-  "engine": "core/",
   "skills": [
     { "name": "vision-box", "file": ".gemini/skills/vision-box/SKILL.md" },
     { "name": "situacao-problema", "file": ".gemini/skills/situacao-problema/SKILL.md" },

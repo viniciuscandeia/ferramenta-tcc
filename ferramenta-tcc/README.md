@@ -61,8 +61,12 @@ Responda as perguntas como faria com um analista de requisitos humano.
 ```
 ferramenta-tcc/
 ├── gemini-extension.json  # Manifesto Gemini CLI
+├── GEMINI.md              # Entry-point Gemini CLI (carregado automaticamente como contexto global)
 ├── .claude-plugin/
 │   └── plugin.json        # Manifesto Claude Code
+├── settings.json          # Entry-point Claude Code (ativa agente orchestrator como thread principal)
+├── agents/
+│   └── orchestrator.md    # Agente principal Claude Code (thread principal quando plugin habilitado)
 ├── core/                  # Engine canônico (orquestrador, agentes, skills, constitution)
 │   ├── orchestrator.md
 │   ├── constitution.md
@@ -76,6 +80,7 @@ ferramenta-tcc/
 ```
 
 Engine canônico em `core/`. Adapters em `.gemini/` e `.claude/` são thin wrappers sem lógica de negócio.
+`GEMINI.md` e `settings.json` forçam os CLIs a adotarem o orquestrador como thread principal desde o primeiro turno.
 Veja `CATALOGO.md` para o índice completo de agentes e skills.
 
 ---
