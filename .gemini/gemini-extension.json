@@ -68,5 +68,6 @@
     { "name": "traducao-leigo", "file": ".gemini/skills/traducao-leigo/SKILL.md" },
     { "name": "traducao-gate", "file": ".gemini/skills/traducao-gate/SKILL.md" }
   ],
+  "repository": "https://github.com/viniciuscandeia/ferramenta-tcc",
   "note": "Gemini CLI não suporta sub-agentes reais (sem Task()). Sub-agentes implementados via persona adoption no mesmo contexto. Estado compartilhado via arquivos em disco. Skills registradas para forward-compat — verificar suporte a skill discovery na versão atual do Gemini CLI."
 }

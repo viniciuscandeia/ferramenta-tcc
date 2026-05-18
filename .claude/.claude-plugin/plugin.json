@@ -171,5 +171,6 @@
   ],
   "engine": "core/",
   "entrypoint": "core/orchestrator.md",
-  "constitution": "core/constitution.md"
+  "constitution": "core/constitution.md",
+  "repository": "https://github.com/viniciuscandeia/ferramenta-tcc"
 }
