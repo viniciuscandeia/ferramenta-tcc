@@ -1,0 +1,44 @@
+{
+  "name": "ferramenta-tcc",
+  "version": "0.1.0",
+  "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
+  "author": "Vinicius Candeia",
+  "commands": [
+    {
+      "name": "iniciar-projeto",
+      "description": "Inicia ou retoma o processo de documentação do projeto de software",
+      "file": ".claude/commands/iniciar-projeto.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "stakeholder-identifier",
+      "description": "Define visão, situação-problema, pessoas envolvidas e contexto do projeto (Marco 1)",
+      "file": ".claude/agents/stakeholder-identifier.md"
+    },
+    {
+      "name": "collector",
+      "description": "Realiza elicitação estruturada das necessidades do projeto (Marco 2 — elicitação)",
+      "file": ".claude/agents/collector.md"
+    },
+    {
+      "name": "modeler",
+      "description": "Classifica, prioriza e estrutura os requisitos levantados (Marco 2 — modelagem)",
+      "file": ".claude/agents/modeler.md"
+    },
+    {
+      "name": "checker",
+      "description": "Valida consistência e qualidade do SRS e artefatos de spec (Marco 3 + M4)",
+      "file": ".claude/agents/checker.md"
+    },
+    {
+      "name": "documenter",
+      "description": "Gera SRS completo, specs Gherkin, step defs RED e estratégia de testes (Marco 3)",
+      "file": ".claude/agents/documenter.md"
+    }
+  ],
+  "skills": [],
+  "engine": "core/",
+  "entrypoint": "core/orchestrator.md",
+  "constitution": "core/constitution.md"
+}

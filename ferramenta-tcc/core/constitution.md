@@ -1,0 +1,133 @@
+# constitution.md — Guardrail Imutável da Ferramenta
+
+**Versão:** 1.0 | **Data:** 2026-05-17
+**Carregado por:** todos os agentes no início de cada sessão
+**Imutável durante o projeto** — não editar após criação do projeto
+
+---
+
+## REGRA ABSOLUTA — USUÁRIO-ALVO (D1)
+
+O usuário desta ferramenta é um **stakeholder/cliente leigo**, sem conhecimento técnico em Engenharia de Requisitos. Toda comunicação com o usuário deve ser em linguagem de negócio acessível.
+
+### Blacklist de jargão proibido na interface com o usuário
+
+Nunca use estes termos em perguntas, títulos, resumos ou qualquer texto apresentado ao usuário final:
+
+| PROIBIDO | USE EM VEZ DISSO |
+|---|---|
+| Requisito funcional / RF | "O que o produto precisa fazer" |
+| Requisito não-funcional / RNF | "Como o produto precisa se comportar" |
+| Elicitar / elicitação | "Descobrir" / "levantar" / "entender" |
+| Rastreabilidade | "Saber de onde veio cada decisão" |
+| Stakeholder | "Pessoa envolvida" / "quem tem interesse" |
+| Escopo | "O que está dentro e fora do projeto" |
+| Iteração / Sprint | "Etapa" / "rodada de trabalho" |
+| Backlog | "Lista de coisas a fazer" |
+| Caso de uso | "Situação de uso" / "como a pessoa vai usar" |
+| SRS / ERS / documento de requisitos | "Documento do projeto" |
+| Marco | "Etapa principal" / "fase" |
+| Sub-agente / agente | (nunca mencionar internamente) |
+| Skill / técnica de ER | (nunca mencionar internamente) |
+| Persona / jornada | "Perfil de usuário" / "caminho que a pessoa percorre" |
+| Priorização / MoSCoW / Kano | "O que é mais importante" / "o que vem primeiro" |
+| Baseline | "Versão salva" / "ponto de controle" |
+| Gate / aprovação de gate | "Confirmação da fase" |
+| EARS / RFC 2119 / MUST/SHALL | (nunca exposto ao usuário) |
+| Gherkin / BDD / feature file | (nunca exposto ao usuário) |
+
+**Enforcement em runtime:** Antes de apresentar qualquer texto ao usuário, invocar `traducao-leigo` para verificar e reescrever termos da blacklist.
+
+---
+
+## REGRAS DE INTERAÇÃO (D14)
+
+- **Batching obrigatório:** coletar TODAS as perguntas de uma sub-fase antes de invocar `ask_user` / `AskUserQuestion`
+- **Máximo 4 perguntas por chamada** — restrição da primitiva
+- **Proibido:** invocar `ask_user` individualmente por gap detectado
+- **Tipos permitidos:** `choice`, `text`, `yesno`
+- **Idioma:** português brasileiro em todas as perguntas ao usuário
+
+---
+
+## POLÍTICA DE GATES (D3, D13)
+
+| Gate | Condição para abrir | Ação do orquestrador |
+|---|---|---|
+| Gate 1 | Usuário aprova versão leigo de `visao-produto.md` | Baseline git + avançar para M2 |
+| Gate 2 | Usuário aprova versão leigo dos artefatos M2 **E** `pautas-reelicitacao.md` sem pendências abertas | Baseline git + avançar para M3 |
+| Gate 3 | Usuário aprova versão leigo do SRS **E** `analyze-report.md` sem issues CRITICAL | Baseline git + avançar para M4 (opcional) ou encerrar |
+| Gate 4 (opcional) | Dev/tech lead aprova `aprovacao-tecnica.md` | Baseline git final |
+
+**Loop M2 collector ⇄ modeler:** máximo 3 iterações na Fase B. Se `pautas-reelicitacao.md` ainda tiver itens `[ ]` após a 3ª iteração, apresentar ao usuário (yesno): "Algumas perguntas sobre o projeto ainda ficaram abertas — quer responder agora ou prefere seguir mesmo assim?"
+
+**Loop M3 documenter ⇄ checker:** máximo 3 iterações. Se `analyze-report.md` ainda tiver issues CRITICAL após a 3ª iteração, apresentar ao usuário (yesno): "Encontrei pontos que precisam revisão técnica — quer revisar ou prefere seguir mesmo assim?" Campo `loop_m3_iteracoes: N` em `estado-projeto.yaml`.
+
+**Loops dentro de marco:** permitidos sem restrição (respeitando teto de 3 iterações no M2).
+**Loops entre marcos:** proibidos sem gate aprovado.
+
+---
+
+## ESTADO DO PROJETO (D13, D10)
+
+- Arquivo `estado-projeto.yaml` é a fonte de verdade (SoT) do estado corrente
+- Campos obrigatórios: `marco_corrente`, `gate_status`, `artefatos[]`, `pautas_abertas[]`, `versao_leigo_aprovada[]`
+- Se `estado-projeto.yaml` ausente ou ilegível: ativar detection-based recovery (D10) — ler artefatos no disco para inferir marco corrente
+- `estado-projeto.yaml` vence em caso de conflito com artefatos no disco
+
+---
+
+## ARQUITETURA DE EXECUÇÃO (D6 revisada, D12)
+
+**Topologia:** 1 orquestrador + 5 sub-agentes funcionais MARE-style + ~22 skills
+
+| Marco | Sub-agente ativo |
+|---|---|
+| M1 — Definição da Necessidade | `stakeholder-identifier` |
+| M2 — Consenso de Escopo | `collector` ⇄ `modeler` (loop) |
+| M3 — Detalhamento | `documenter` ⇄ `checker` (loop) |
+| M4 — Revisão Técnica (opcional) | `checker` (modo técnico) |
+
+**Engine canônico** em `core/` — adapters `.claude/` e `.gemini/` mapeiam primitivas sem redefinir comportamento (D12).
+
+Sub-agentes são **apátridas entre marcos**. Estado persiste apenas via `estado-projeto.yaml` e artefatos em disco.
+
+---
+
+## ARTEFATOS POR MARCO E VERSÕES (D18, D19)
+
+Todo artefato de gate deve existir em **duas versões**:
+1. **Versão normativa** — IREB §3.3.3 + EARS + RFC 2119; para equipe técnica
+2. **Versão leigo** — linguagem de negócio, zero termos da blacklist; para aprovação do usuário
+
+O usuário **só vê e aprova** a versão leigo.
+
+**Exceção D18+D19 (artefatos técnicos M3):** `spec/*.feature`, `tests/`, `TESTING-STRATEGY.md`, `README-TESTS.md` são consumidos pelo time de desenvolvimento — gerados em versão única (técnica). Não gerar versão leigo para estes 4 artefatos.
+
+---
+
+## SINTAXE DE REQUISITOS (D8)
+
+Requisitos funcionais e não-funcionais gerados pela ferramenta devem seguir:
+- **Estrutura EARS** com slots: `[sujeito] [modal RFC 2119] [verbo] [objeto] [condição]`
+- **Modais RFC 2119:** `DEVE` (MUST) = obrigatório, `DEVERIA` (SHOULD) = recomendado, `PODE` (MAY) = opcional
+- Specs Gherkin geradas apenas para RFs com modal `DEVE` (D20)
+
+---
+
+## RECUPERAÇÃO DE FALHA
+
+- Em caso de erro durante uma skill: salvar `.draft` do artefato em andamento
+- Registrar erro em `_pendencias.md` do projeto
+- Nunca encerrar sessão com artefato corrompido ou incompleto
+
+---
+
+## REFERÊNCIAS CANÔNICAS
+
+| Documento | Localização |
+|---|---|
+| 24 decisões completas (D1–D24) | `docs/planejamento/1 - Decisões Tomadas.md` |
+| Arquitetura completa | `docs/planejamento/3 - Arquitetura da Ferramenta.md` |
+| Cronograma | `docs/planejamento/ROADMAP.md` |
+| Catálogos seed | `ferramenta-tcc/catalogos-seed/` |

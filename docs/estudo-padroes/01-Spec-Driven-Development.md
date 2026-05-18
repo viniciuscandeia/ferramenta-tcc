@@ -1,7 +1,7 @@
 # Spec-Driven Development (SDD)
 
 **Referência principal:** GitHub Spec Kit (`github/spec-kit`); marcusgoll/Spec-Flow  
-**Ver também:** [`03-BDD-Convergencia-SDD-TDD.md`](03-BDD-Convergencia-SDD-TDD.md) (onde spec e teste convergem)
+**Ver também:** [`03-BDD-Convergencia-SDD-TDD.md`](03-BDD-Convergencia-SDD-TDD.md) (onde spec e teste convergem), [`05-SDD-Avancado-Statecharts-Prompts.md`](05-SDD-Avancado-Statecharts-Prompts.md) (SDD avançado e agentes)
 
 ---
 

@@ -29,39 +29,43 @@ A **ferramenta** vive inteiramente em `ferramenta-tcc/`. Tudo fora dela é pesqu
 
 ## Arquitetura big-picture
 
-A ferramenta tem **4 camadas**:
+A ferramenta tem **3 camadas** (topologia MARE-style — arXiv 2405.03256; D6 revisada 2026-05-17):
 
 ```
-Orquestração: Marcos 1 / 2 / 3 com gates de aprovação humana
-      ↓
-6 Agentes-etapa: Visão | Elicitação | Análise | SRS | Validação | Gerência
-      ↓ invocam sob demanda
-5 Sub-agentes transversais: NLP | Implícitos | Conflitos | Recomendação | Visualização
-      ↓ cada agente chama suas
-~30 Skills (SKILL.md) — uma por técnica/seção, reutilizando ask_user
+1 Orquestrador (core/orchestrator.md)  ← entry-point único /iniciar-projeto
+      ↓ roteia por marco, gerencia 4 gates, baseline git pós-gate
+5 Sub-agentes funcionais ER (core/agents/)
+   M1: stakeholder-identifier
+   M2: collector ⇄ modeler  (loop interno)
+   M3: documenter ⇄ checker (loop interno)
+   M4: checker (modo técnico) — opcional, D24
+      ↓ cada sub-agente invoca
+~22 Skills (core/skills/) + 4 transversais
+   + catálogos seed em catalogos-seed/
 ```
 
-**Estado compartilhado = file-system.** O agente Gerência infere o marco corrente lendo artefatos em disco (`detection-based recovery`, D10). Nenhum agente depende de sessão persistente.
+**Estado compartilhado:** `estado-projeto.yaml` (D13, SoT primário) + file-system (detection-based D10, fallback). `constitution.md` (D15) carregado por todos em runtime. Nenhum agente depende de sessão persistente.
 
 ### Marcos e gates
 
-| Marco | Agentes | Gate |
-|---|---|---|
-| Marco 1 — Definição da Necessidade | Visão do Produto | Gate 1: usuário aprova os 4 artefatos (`situacao-problema.md`, `vision-box.md`, `stakeholders.md`, `contexto-e-limite.md`) |
-| Marco 2 — Consenso de Escopo | Elicitação ⇄ Análise (loop) | Gate 2: bloqueado enquanto `pautas-reelicitacao.md` tiver pendências |
-| Marco 3 — Detalhamento | SRS ⇄ Validação (loop) | Gate 3: leigo aprova `aprovacao-cliente.md` (sem jargão) |
+| Marco | Sub-agentes | Artefatos esperados | Gate |
+|---|---|---|---|
+| Marco 1 — Definição da Necessidade | `stakeholder-identifier` | `visao-produto.md` (versão leigo + normativa) | Gate 1: leigo aprova versão leigo |
+| Marco 2 — Consenso de Escopo | `collector` ⇄ `modeler` (loop) | `03.1-funcionais.md`, `03.2-qualidade.md`, `glossario.md`, `pautas-reelicitacao.md` — 2 versões | Gate 2: leigo aprova; bloqueado se `pautas-reelicitacao.md` tem pendências |
+| Marco 3 — Detalhamento | `documenter` ⇄ `checker` (loop) | `SRS-completo.md` + `spec/*.feature` + `tests/` + `TESTING-STRATEGY.md` + `README-TESTS.md` | Gate 3: leigo aprova versão leigo do SRS; CRITICAL do analyze bloqueia |
+| Marco 4 — Revisão Técnica (D24, opcional) | `checker` (modo técnico) | `revisao-tecnica.md` + `aprovacao-tecnica.md` | Gate 4: desenvolvedor/tech lead aprova |
 
-**Agente Gerência** é transversal — cria baselines, commits e changelog após cada gate.
+**Orquestrador** cria baselines (snapshot + tag git) após cada gate. `constitution.md` + `estado-projeto.yaml` são os guardrails de runtime.
 
-### Distinção agente / sub-agente / skill
+### Distinção orquestrador / sub-agente / skill
 
 | Tipo | Isolamento de contexto | Tem estado? | Definido em |
 |---|---|---|---|
-| Agente-etapa | Sessão completa do CLI | Sim (conversação) | `.gemini/agents/<nome>.md` |
-| Sub-agente transversal | Contexto isolado | **Não** (apátrida) | `.gemini/agents/<nome>.md` |
-| Skill | Carregada no contexto do invocador | Compartilha a sessão | `.gemini/skills/<nome>/SKILL.md` |
+| Orquestrador | Sessão completa do CLI | Sim | `core/orchestrator.md` → adapter |
+| Sub-agente funcional ER | Contexto isolado (Claude Code) / persona mesmo contexto (Gemini CLI) | **Não** (apátrida entre marcos) | `core/agents/<nome>.md` → adapter |
+| Skill | Carregada no contexto do invocador | Compartilha a sessão | `core/skills/<nome>/SKILL.md` → adapter |
 
-Sub-agentes **não podem chamar outros sub-agentes** (limitação do Gemini CLI).
+Sub-agentes **não podem chamar outros sub-agentes** (limitação do Gemini CLI — usa persona adoption).
 
 ### Primitiva de interação
 
@@ -94,8 +98,9 @@ Estas expressões são **proibidas** em qualquer prompt ou pergunta gerada para 
 
 - **Skills sempre com frontmatter `name` + `description`** — necessário para auto-detecção por match de descrição pelo Gemini CLI.
 - **Catálogos seed em `ferramenta-tcc/catalogos-seed/`** contêm conhecimento destilado das referências bibliográficas. A ferramenta **não** lê `referencias/` em runtime.
-- **Empacotamento (D11)**: `gemini-extension.json` e `.claude-plugin/plugin.json` devem ser criados em paralelo ao desenvolvimento, não como etapa final.
-- **Recuperação de falha em agentes**: salvar `.draft` + registrar em `_pendencias.md`. Nunca encerrar sessão com erro.
+- **Empacotamento (D11)**: `gemini-extension.json` e `.claude-plugin/plugin.json` criados na Semana 3 (início), não como etapa final.
+- **Engine canônico (D12)**: toda lógica em `ferramenta-tcc/core/`. Adapters `.gemini/` e `.claude/` são thin wrappers — sem lógica de negócio.
+- **Recuperação de falha em agentes**: `estado-projeto.yaml` (D13) é SoT; detection-based (D10) é fallback. Salvar `.draft` + registrar em `_pendencias.md`. Nunca encerrar sessão com erro.
 
 ---
 
@@ -103,16 +108,14 @@ Estas expressões são **proibidas** em qualquer prompt ou pergunta gerada para 
 
 Não há toolchain (sem build, lint, ou testes unitários automatizados). O projeto é composto de prompts em Markdown.
 
-**Testes E2E são executados manualmente no Gemini CLI:**
+**Testes E2E são executados manualmente no Gemini CLI e Claude Code:**
 
-1. Ler os casos em `ferramenta-tcc/tests/marco-1/casos.md` (3 casos canônicos).
-2. Executar cada caso no Gemini CLI com o agente `visao-produto`.
-3. Preencher `ferramenta-tcc/tests/marco-1/checklist.md` com `[x]` / `[ ]`.
-4. Salvar resultados em `ferramenta-tcc/tests/marco-1/execucoes/execucao-NN-<descritor>/` com os 4 artefatos + checklist + `notas.md`.
+1. Ler os casos em `ferramenta-tcc/tests/marco-{N}/casos.md` (3 casos canônicos por marco).
+2. Executar `/iniciar-projeto` em cada caso nas **duas plataformas** (Gemini CLI + Claude Code).
+3. Preencher `ferramenta-tcc/tests/marco-{N}/checklist.md` com `[x]` / `[ ]`.
+4. Salvar resultados em `ferramenta-tcc/tests/marco-{N}/execucoes/execucao-NN-<descritor>/` com artefatos + checklist + `notas.md`.
 
-Critério de "passou": checklist 100% `[x]`.
-
-Semanas futuras terão pastas equivalentes em `ferramenta-tcc/tests/marco-2/` e `marco-3/`.
+Critério de "passou": checklist 100% `[x]`; CRITICAL do analyze = 0 antes do Gate M3.
 
 ---
 
@@ -134,9 +137,9 @@ Referência completa: `docs/planejamento/2 - Vocabulário Técnico: Agentes, Ski
 
 | Arquivo | Conteúdo |
 |---|---|
-| `docs/planejamento/3 - Arquitetura da Ferramenta.md` | Arquitetura completa: 11 agentes, 5 sub-agentes, ~30 skills, diretórios de saída, cronograma |
-| `docs/planejamento/1 - Decisões Tomadas.md` | 11 decisões fundadoras (D1–D11) com justificativas; comparação com Problem-Based-SRS |
+| `docs/planejamento/3 - Arquitetura da Ferramenta.md` | **Arquitetura canônica** (este é o doc de referência): 1 orquestrador + 5 sub-agentes MARE-style + ~22 skills, 4 marcos e gates, engine D12 |
+| `docs/planejamento/1 - Decisões Tomadas.md` | 24 decisões (D1–D24) com justificativas; comparação com Problem-Based-SRS |
 | `docs/planejamento/2 - Vocabulário Técnico: Agentes, Skills e Subagentes.md` | Definições plataforma-neutras + tabela de equivalências |
 | `docs/planejamento/ROADMAP.md` | Progresso semana-a-semana; próximo passo concreto |
 | `sandbox/ask_user_instructions.md` | Referência da primitiva `ask_user` (tipos, parâmetros, exemplos) |
-| `ferramenta-tcc/.gemini/agents/visao-produto.md` | Agente de referência — único marco completamente implementado |
+| `ferramenta-tcc/catalogos-seed/` | Catálogos seed (únicos artefatos da ferramenta já implementados) |

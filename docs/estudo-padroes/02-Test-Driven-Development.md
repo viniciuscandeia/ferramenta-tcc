@@ -1,7 +1,7 @@
 # Test-Driven Development (TDD)
 
 **Referência principal:** Kent Beck — *Test-Driven Development by Example* (2002)  
-**Ver também:** [`03-BDD-Convergencia-SDD-TDD.md`](03-BDD-Convergencia-SDD-TDD.md) (variante ATDD/BDD)
+**Ver também:** [`03-BDD-Convergencia-SDD-TDD.md`](03-BDD-Convergencia-SDD-TDD.md) (variante ATDD/BDD), [`06-TDD-Avancado-e-IA.md`](06-TDD-Avancado-e-IA.md) (TDD avançado e IA)
 
 ---
 

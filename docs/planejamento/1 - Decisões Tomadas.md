@@ -15,7 +15,7 @@
 | D3 | **Fluxo entre agentes** | Marcos com gates de aprovação | Linear com loops; Orquestrador central; Sequencial rígido | Pedagogicamente claro para o leigo; alinhado ao Livro SON §6.2-§6.4 (Marco 1, 2, 3) |
 | D4 | **Template de SRS** | IREB §3.3.3 (ISO/IEC/IEEE 29148) | IEEE 830 alinhado à professora; Template Livro 1; Híbrido | Padrão internacional defensável academicamente |
 | D5 | **Formatos de entrada** | Aceitar frase / situação-problema / texto livre | Apenas frase curta; Apenas situação-problema; Apenas texto longo | Flexibilidade para o leigo que não sabe qual formato usar |
-| D6 | **Funções transversais** | Sub-agentes invocáveis | Skills compartilhadas; Embutidas em cada agente; Mix | Maior isolamento e defensabilidade como "arquitetura multi-agente" |
+| D6 | **Funções transversais** | 5 sub-agentes funcionais ER (MARE-style) — *revisada 2026-05-17* | Sub-agentes transversais invocáveis (original); Skills compartilhadas; Embutidas | Alinhamento com MARE (arXiv 2405.03256); redução 11→6 unidades (−45%); funções transversais redistribuídas como skills + orquestrador |
 | D7 | **Granularidade interna** | Abordagem híbrida (agente-etapa + skills por técnica) | Lean (só agentes-etapa); Hierárquico denso (sub-agentes por técnica) | Reuso máximo com prompts focados; sem explosão de agentes como na opção hierárquica |
 | D8 | **Sintaxe de requisitos** | EARS + slots estruturados + RFC 2119 | Apenas EARS; Apenas slots; Apenas RFC 2119 | Combina legibilidade EARS, disciplina linguística (slots sujeito/verbo/objeto/condição) e rigor normativo; inspirado no Problem-Based-SRS (Gorski & Stadzisz, RESI 2016) |
 | D9 | **Skill de priorização** | Skill única `priorizacao` com sub-rotinas | 3 skills separadas (MoSCoW, Kano, IEEE) | Reduz superfície de manutenção sem perder técnicas; MoSCoW executado sempre (MVP); Kano e IEEE como sub-rotinas stretch acessíveis pela mesma skill |
@@ -56,10 +56,18 @@
 - Distância dos exemplos da professora: mitigação = manter `checklist-livro-1.md` em paralelo
 - RFC 2119/BCP 14 sobreposta ao EARS para linguagem normativa MUST/SHOULD/MAY (ver D8)
 
-### D6 — Sub-agentes invocáveis (vs. skills)
-- Sub-agentes têm ciclo de vida próprio; recebem contexto, processam, retornam resultado
-- Nenhum sub-agente transversal tem estado próprio entre invocações
-- Diferença de granularidade: sub-agente = capacidade de processamento; skill = técnica/roteiro específico
+### D6 — Funções transversais (*revisada 2026-05-17 para topologia MARE-style*)
+
+**Arquitetura adotada:** 5 sub-agentes funcionais ER (`stakeholder-identifier`, `collector`, `modeler`, `checker`, `documenter`) em vez dos 6 sub-agentes transversais originais (Implícitos/Conflitos/NLP/Visualização/Recomendação/Gerência).
+
+Redistribuição das funções dos ex-transversais:
+- **Implícitos + Recomendação** → skills `recomendacao-implicitos` e `recomendacao-dominio` (consomem `catalogos-seed/`)
+- **Conflitos** → skill `conflitos-detect` dentro do `checker`
+- **NLP** → nativo do LLM (sem componente separado)
+- **Visualização** → adiado para v2
+- **Gerência** → absorvido pelo orquestrador + skills `estado-yaml` e `baseline-git`
+
+Princípio preservado: modularidade e isolamento entre etapas ER. Sub-agentes funcionais são apátridas entre marcos; no Gemini CLI usam persona adoption (sem `Task()` real).
 
 ### D7 — Abordagem híbrida
 - Cada agente-etapa é dono do fluxo da sua etapa, mas delega técnicas específicas a skills
@@ -179,7 +187,7 @@ O **Problem-Based-SRS** (Rafael Gorski, github.com/RafaelGorski/Problem-Based-SR
 | Plataforma | Claude Code plugin + multi-LLM (*AgentSkills*) | Gemini CLI (Claude Code como porte futuro) |
 | Primitiva de interação | Prosa livre via CLI convencional | `ask_user` tipado (choice / text / yesno) |
 | Padrão de saída | ISO/IEC/IEEE 29148 + RFC 2119 | IREB §3.3.3 (mesma família ISO 29148) |
-| Arquitetura | 1 orquestrador + 9 skills | 11 agentes + ~30 skills |
+| Arquitetura | 1 orquestrador + 9 skills | 1 orquestrador + 5 sub-agentes MARE-style + ~22 skills *(D6 revisada)* |
 | Tratamento de implícitos | Não cobre | Sub-agente Implícitos + catálogos seed |
 | Tratamento de conflitos | Não cobre | Sub-agente Conflitos (IREB §4.4, 6 tipos) |
 
