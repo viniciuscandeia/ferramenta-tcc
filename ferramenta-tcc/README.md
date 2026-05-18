@@ -13,21 +13,21 @@ specs Gherkin + step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, S
 ### Gemini CLI
 
 ```bash
-# A partir do diretório que contém esta pasta (ferramenta-tcc/)
-gemini extension install /caminho/para/ferramenta-tcc
+# Via GitHub (recomendado):
+gemini extension install https://github.com/viniciuscandeia/ferramenta-tcc
 
-# Ou, após publicação no GitHub público:
-# gemini extension install https://github.com/viniciuscandeia/ferramenta-tcc
+# Ou via path local (clone antes):
+# gemini extension install /caminho/para/ferramenta-tcc
 ```
 
 ### Claude Code
 
 ```bash
-# A partir do diretório que contém esta pasta (ferramenta-tcc/)
-claude plugin install /caminho/para/ferramenta-tcc
+# Via GitHub (recomendado):
+claude plugin install https://github.com/viniciuscandeia/ferramenta-tcc
 
-# Ou, após publicação no GitHub público:
-# claude plugin install https://github.com/viniciuscandeia/ferramenta-tcc
+# Ou via path local (clone antes):
+# claude plugin install /caminho/para/ferramenta-tcc
 ```
 
 Confirmar instalação:
