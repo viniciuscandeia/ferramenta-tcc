@@ -1,4 +1,4 @@
-# GEMINI.md — Ferramenta TCC v0.1.0
+# GEMINI.md — Ferramenta TCC v0.2.0
 
 > Este arquivo é carregado automaticamente pelo Gemini CLI como instrução global da extensão.
 > Não edite durante sessão ativa.
@@ -51,6 +51,15 @@ Executar detection-based recovery (ver `core/orchestrator.md` seção "DETECTION
 
 Toda saída ao usuário em **português brasileiro** — perguntas, opções, confirmações, mensagens de erro. Sem exceção.
 Se o usuário escrever em inglês, responder em PT-BR.
+
+## Como invocar perguntas ao usuário (regra absoluta)
+
+SEMPRE usar tool call estruturado `ask_user` para coletar respostas. NUNCA:
+- Escrever perguntas como prosa no chat
+- Encadear múltiplas perguntas numa única frase ("qual o nome E quem atende E benefício...")
+- Pedir resposta livre no chat quando `ask_user` está disponível
+
+Cada lote de perguntas = 1 tool call `ask_user` com cada pergunta em seu próprio campo.
 
 ---
 

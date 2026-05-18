@@ -6,6 +6,12 @@ description: >-
   Capture product vision for a layperson stakeholder; map name, audience, benefit, and differentiator.
 ---
 
+## Como invocar perguntas (regra absoluta)
+
+SEMPRE usar tool call estruturado `ask_user` (Gemini) / `AskUserQuestion` (Claude).
+NUNCA escrever as perguntas como prosa no chat. NUNCA encadear múltiplas perguntas em uma frase.
+Cada sub-lote = 1 tool call com seus campos separados.
+
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Facilitador gentil** — nunca pressiono, nunca julgo. Cada resposta é válida; meu papel é expandir, não corrigir.
@@ -25,9 +31,9 @@ description: >-
 
 ## Fase 1 — Coleta
 
-Coletar TODAS antes de invocar `AskUserQuestion` (D14 — batching obrigatório, máx 4 perguntas).
+Coletar em 2 sub-lotes sequenciais. Cada sub-lote = 1 tool call `ask_user`/`AskUserQuestion`. Nunca comprimir em prosa.
 
-**Lote Vision Box:**
+**Sub-lote A — Identificação** (sempre — 1 tool call, 2 perguntas text):
 
 1. **Nome do produto** (text):
    ```
@@ -39,15 +45,21 @@ Coletar TODAS antes de invocar `AskUserQuestion` (D14 — batching obrigatório,
    Quem vai usar esse produto? Pense nas pessoas que mais vão se beneficiar com ele.
    ```
 
-3. **Principal benefício** (text):
-   ```
-   Qual é o maior benefício que seu produto oferece? Se você tivesse que convencer alguém em uma frase, o que diria?
-   ```
+**Sub-lote B — Proposta de valor** (após resposta do Sub-lote A — 1 tool call, 2 perguntas):
 
-4. **Diferencial** (text):
+3. **Principal benefício** (text — mas apresentar também opção choice de pular):
    ```
-   Por que alguém escolheria esse produto em vez de fazer a mesma coisa de outro jeito (manualmente, com outra ferramenta, etc.)?
+   Em uma frase: qual o maior benefício do seu produto?
    ```
+   Opção choice visível: `"Ainda não pensei nisso — me ajude a descobrir depois"`
+   Se usuário escolher essa opção: registrar `vision-box: benefício pendente` em `_pendencias.md`; slot = `[a definir]`
+
+4. **Diferencial** (text — mas apresentar também opção choice de pular):
+   ```
+   O que faz seu produto diferente do que já existe? (pode ser bem informal)
+   ```
+   Opção choice visível: `"Ainda não pensei nisso — me ajude a descobrir depois"`
+   Se usuário escolher essa opção: registrar `vision-box: diferencial pendente` em `_pendencias.md`; slot = `[a definir]`
 
 ## Fase 2 — Síntese
 
@@ -77,6 +89,25 @@ Montar bloco Vision Box com as respostas:
 - Se "como fazem hoje" não ficar claro pela resposta 4: usar "processo manual" como fallback
 - Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
 - Se resposta 2 ou 3 for genérica (≤ 5 palavras ou keywords: "útil", "ganhar", "todo mundo", "melhorar"): oferecer opções choice antes de sintetizar
+
+## Fase 2.5 — Inferência de slots pendentes (condicional)
+
+Executada ANTES do `traducao-gate`, após situacao-problema + stakeholder-mapping + contexto-e-limite terem coletado contexto.
+
+SE `_pendencias.md` contém `vision-box: benefício pendente` OU `vision-box: diferencial pendente`:
+
+1. Ler contexto coletado pelas skills anteriores
+2. Tentar inferir o slot pendente do contexto disponível
+3. Apresentar inferência via `ask_user`/`AskUserQuestion` (3 opções):
+   ```
+   Pelo que conversamos, o maior benefício do [nome] parece ser: [síntese inferida]. Confirma?
+   ```
+   Opções: `"Sim, é isso"` / `"Não, eu explico melhor"` / `"Ainda não consigo dizer"`
+4. Se "Sim": atualizar slot, remover pendência do `_pendencias.md`
+5. Se "Não, eu explico melhor": coletar text, atualizar slot, remover pendência
+6. Se "Ainda não consigo dizer" OU inferência impossível: manter `[a definir]`
+   - Versão normativa: `[a definir — a elicitar em iteração futura]`
+   - Versão leigo: omitir o campo
 
 ## Fase 3 — Saída
 
