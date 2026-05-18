@@ -23,11 +23,11 @@ gemini extension install https://github.com/viniciuscandeia/ferramenta-tcc
 ### Claude Code
 
 ```bash
-# Via GitHub (recomendado):
-claude plugin install https://github.com/viniciuscandeia/ferramenta-tcc
+# Adicionar o repo como fonte de plugins (uma vez):
+claude plugin marketplace add viniciuscandeia/ferramenta-tcc
 
-# Ou via path local (clone antes):
-# claude plugin install /caminho/para/ferramenta-tcc
+# Instalar o plugin:
+claude plugin install ferramenta-tcc@ferramenta-tcc
 ```
 
 Confirmar instalação:
@@ -60,16 +60,19 @@ Responda as perguntas como faria com um analista de requisitos humano.
 
 ```
 ferramenta-tcc/
-├── core/              # Engine canônico (orquestrador, agentes, skills, constitution)
+├── gemini-extension.json  # Manifesto Gemini CLI
+├── .claude-plugin/
+│   └── plugin.json        # Manifesto Claude Code
+├── core/                  # Engine canônico (orquestrador, agentes, skills, constitution)
 │   ├── orchestrator.md
 │   ├── constitution.md
-│   ├── agents/        # 5 sub-agentes funcionais (M1–M4)
-│   └── skills/        # 26 skills especializadas
-├── .gemini/           # Adapter Gemini CLI (thin wrappers + manifest)
-├── .claude/           # Adapter Claude Code (thin wrappers + manifest)
-├── catalogos-seed/    # Conhecimento destilado de domínios e requisitos típicos
-├── tests/             # Casos canônicos E2E + checklists por marco
-└── CATALOGO.md        # Índice completo de agentes e skills
+│   ├── agents/            # 5 sub-agentes funcionais (M1–M4)
+│   └── skills/            # 26 skills especializadas
+├── .gemini/               # Adapter Gemini CLI (commands/agents/skills wrappers)
+├── .claude/               # Adapter Claude Code (commands/agents/skills wrappers)
+├── catalogos-seed/        # Conhecimento destilado de domínios e requisitos típicos
+├── tests/                 # Casos canônicos E2E + checklists por marco
+└── CATALOGO.md            # Índice completo de agentes e skills
 ```
 
 Engine canônico em `core/`. Adapters em `.gemini/` e `.claude/` são thin wrappers sem lógica de negócio.
