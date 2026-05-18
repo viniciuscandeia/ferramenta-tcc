@@ -1,7 +1,7 @@
 ---
 name: vision-box
-description: >
-  
+description: >-
+  Quando o stakeholder descreve o que quer construir pela primeira vez. Use quando alguém diz quero criar um app pra, preciso de um sistema que, minha ideia é criar. Use when stakeholder describes their product idea — I want to build, I need a system that.
 ---
 
 # Adapter Gemini CLI — vision-box
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/vision-box/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

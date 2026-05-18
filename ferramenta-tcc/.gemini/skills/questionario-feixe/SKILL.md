@@ -1,7 +1,7 @@
 ---
 name: questionario-feixe
-description: >
-  
+description: >-
+  Quando há áreas do sistema sem cobertura suficiente após as elicitações principais. Agrupa perguntas temáticas para cobrir lacunas. Use when areas of the system lack sufficient coverage after main elicitation rounds.
 ---
 
 # Adapter Gemini CLI — questionario-feixe
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/questionario-feixe/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

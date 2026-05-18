@@ -1,80 +1,82 @@
 ---
 name: glossario
-description: Detecta termos do domínio usados pelo usuário sem definição clara e constrói glossario.md com definição, exemplos e sinônimos. Previne ambiguidade nos artefatos M2 e M3. Referência: Wiegers Ch11 (anti-ambiguidade).
-when_to_use: Invocada pelo modeler no Passo 3 da Fase B. Entrada: elicitacao-raw.md + rascunhos M2. Sem interação com usuário — opera sobre texto já coletado.
+description: >-
+  Identifica termos do projeto que podem gerar confusão e cria definições claras para cada um — evitando que a mesma palavra signifique coisas diferentes para pessoas diferentes.
+  Use no Marco 2, após classificar e priorizar os itens, operando sobre o texto já coletado.
+  Build project glossary from collected artifacts; detects domain terms, acronyms, and polysemous words; no user interaction.
 ---
 
-# Skill: glossario
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** Wiegers Software Requirements Ch11 (ambiguidade e glossário)
-**Marco:** M2 — Consenso de Escopo (Fase B, Passo 3)
-**Invocada por:** `modeler`
+1. **Crítico de ambiguidade** — "cliente" pode significar quem compra, quem usa, ou quem contratou o software. Ambiguidade silenciosa em M2 vira bug de requisito em M3. Cada termo polissêmico entra no glossário.
+2. **Sem interação com usuário.** O glossário é construído do material já coletado. Perguntar sobre termos gera jargão desnecessário — o texto do usuário já contém a definição implícita.
+3. **Termo com definição incerta não é silenciado.** Flag `[DEFINIÇÃO INCERTA]` + pauta em `pautas-reelicitacao` — melhor uma lacuna visível do que uma definição errada.
 
----
+<HARD-GATE>
+- NÃO executar antes de `priorizacao` concluída (verificar que `03.1-funcionais.md` tem campo Modal preenchido)
+- NÃO executar com `elicitacao-raw.md` ausente
+- ⛔ STOP se resultado tem 0 termos candidatos — revisar critérios (frequência mínima pode ser muito alta para projeto pequeno) e reexecutar com critério relaxado
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Construir `glossario.md` com todos os termos do domínio que:
-1. Aparecem ≥ 2 vezes nos artefatos M2 (sinal de importância)
-2. Têm definição ambígua ou implícita (risco de interpretação divergente)
-3. São acrônimos, termos técnicos do negócio, ou palavras com múltiplos sentidos no domínio
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar `elicitacao-raw.md`, `03.1-funcionais.md`, `03.2-qualidade.md`, `visao-produto-normativo.md` acessíveis
+3. Concatenar textos de entrada (exceto metadados/cabeçalhos)
 
-O glossário é insumo direto da Seção 5 do SRS IREB §3.3.3 — o `documenter` consome `glossario.md` em M3.
+## Fase 1 — Detecção de Candidatos
 
----
+**Critérios de inclusão (≥ 1 para entrar):**
 
-## HEURÍSTICA DE DETECÇÃO
-
-### Termos candidatos ao glossário
-
-Incluir termos que atendam ≥ 1 dos critérios:
-
-| Critério | Exemplos de termos típicos |
+| Critério | Exemplos |
 |---|---|
 | Substantivo do domínio com freq ≥ 2 | "pedido", "catálogo", "sessão", "perfil", "relatório" |
 | Acrônimo não-expandido | "SKU", "LGPD", "CPF", "API", "SLA" |
-| Termo com múltiplos sentidos no contexto | "cliente" (quem compra? quem contratou o software?), "usuário" (admin ou consumidor?) |
+| Termo com múltiplos sentidos no contexto | "cliente" (comprador? empresa contratante?), "usuário" (admin ou consumidor?) |
 | Termo técnico do negócio sem equivalente óbvio | "frete grátis a partir de X", "controle parental", "nível de progressão" |
-| Termo que gerou pergunta de clarificação | qualquer item que precise de `clarificacao-pos-visao` ou pauta |
+| Termo que gerou pergunta de clarificação | qualquer item de `clarificacao-pos-visao` ou pauta existente |
 
-### Exclusão
+**Exclusões:**
+- Termos do português corrente sem ambiguidade ("nome", "senha", "botão")
+- Termos da blacklist D1 (nunca aparecem ao usuário)
+- Termos de ER internos ao modeler
 
-Não incluir no glossário:
-- Termos do português corrente sem ambiguidade no contexto (ex: "nome", "senha", "botão")
-- Termos da blacklist D1 (esses não aparecem ao usuário de qualquer forma)
-- Termos de ER que o modeler usa internamente mas nunca expõe ao usuário
+**Algoritmo:**
+1. Extrair todos os substantivos e substantivos compostos dos textos concatenados
+2. Contar frequência de cada termo
+3. Termos freq ≥ 2: verificar se têm definição explícita → sem definição = candidato
+4. Termos freq < 2: verificar outros critérios (acrônimo, polissemia, domínio)
+5. Para definições incertas: marcar `[DEFINIÇÃO INCERTA]`
 
----
+## Fase 2 — Construção das Entradas
 
-## PROCESSO
+Para cada termo candidato, construir entrada com 3 campos obrigatórios:
 
-### Entrada
+```markdown
+**[Termo]**
+Definição: [explicação em linguagem de negócio, sem jargão técnico]
+Exemplos: [1–2 exemplos concretos do contexto do projeto]
+Sinônimos usados no projeto: [outros termos para a mesma coisa, ou "nenhum"]
+```
 
-- `elicitacao-raw.md`
-- `03.1-funcionais.md` rascunho
-- `03.2-qualidade.md` rascunho
-- `visao-produto-normativo.md`
+**Exemplo preenchido:**
+```markdown
+**Pedido**
+Definição: Solicitação formal de compra feita por um cliente após escolher produtos. Um pedido tem número único, data, lista de itens, valor total e status (aguardando, em preparo, enviado, entregue).
+Exemplos: "Pedido #1042 — 3 itens — R$ 89,90 — status: enviado"
+Sinônimos usados no projeto: "compra" (nas respostas do usuário), "solicitação" (no e-mail de confirmação)
 
-### Algoritmo
+**LGPD**
+Definição: Lei Geral de Proteção de Dados (Lei 13.709/2018). Regula como dados pessoais de usuários brasileiros devem ser coletados, armazenados e usados. Implica: consentimento explícito, direito de exclusão e política de privacidade.
+Exemplos: "O usuário deve poder solicitar exclusão de sua conta e dados associados."
+Sinônimos usados no projeto: "proteção de dados", "lei de dados"
+```
 
-1. Concatenar todos os textos de entrada (exceto seções de metadados/cabeçalho)
-2. Extrair todos os substantivos e substantivos compostos
-3. Contar frequência de cada termo
-4. Para termos com freq ≥ 2: verificar se têm definição explícita nos artefatos
-   - Se não têm: candidatos ao glossário
-5. Para termos com freq < 2: verificar se atendem aos outros critérios (acrônimo, ambiguidade, domínio)
-6. Montar `glossario.md` com os termos candidatos + definições inferidas do contexto
-7. Se um termo é central mas a definição é incerta: marcar com `[DEFINIÇÃO INCERTA]` para criar pauta em `pautas-reelicitacao`
+Mínimo 5 termos para qualquer projeto. Se menos: relaxar critério de frequência para 1 ocorrência.
 
-### Sem interação com usuário
+## Fase 3 — Saída
 
-O glossário é construído automaticamente a partir dos textos coletados. Não perguntar ao usuário sobre termos do glossário (isso geraria jargão técnico desnecessário).
-
----
-
-## SAÍDA
-
-### glossario.md
+Criar `glossario.md`:
 
 ```markdown
 # Glossário do Projeto
@@ -83,41 +85,19 @@ O glossário é construído automaticamente a partir dos textos coletados. Não 
 
 ---
 
-**[Termo]**
-Definição: [explicação em linguagem de negócio, sem jargão técnico]
-Exemplos: [1–2 exemplos concretos do contexto do projeto]
-Sinônimos usados no projeto: [outros termos usados para a mesma coisa, se houver]
-
----
-
-**[Próximo termo]**
-...
+[entradas por ordem alfabética]
 ```
 
-### Exemplo preenchido
+Criar pauta em `pautas-reelicitacao.md` para cada termo marcado `[DEFINIÇÃO INCERTA]`.
 
-```markdown
-# Glossário do Projeto
+Sinalizar ao `modeler`: glossário concluído → prosseguir para `conflitos-detect` (Passo 4).
 
-**Pedido**
-Definição: Solicitação formal de compra feita por um cliente após escolher produtos no carrinho. Um pedido tem número único, data, lista de itens, valor total e status (aguardando, em preparo, enviado, entregue).
-Exemplos: "Pedido #1042 — 3 itens — R$ 89,90 — status: enviado"
-Sinônimos usados no projeto: "compra" (nas respostas do usuário), "solicitação" (no e-mail de confirmação)
+<!-- internal -->
+## Anti-Padrão: Termo Polissêmico com Uma Só Definição
 
----
+**Como acontece:** "cliente" aparece 8 vezes em elicitacao-raw.md. O glossário registra apenas a definição de "quem compra" porque foi a mais frequente. Mas em 2 ocorrências, "cliente" significava "empresa que contratou o software". O checker M3 não detecta a ambiguidade porque o glossário parece completo.
 
-**LGPD**
-Definição: Lei Geral de Proteção de Dados (Lei 13.709/2018). Regula como dados pessoais de usuários brasileiros devem ser coletados, armazenados e usados. Implica: consentimento explícito, direito de exclusão e política de privacidade.
-Exemplos: "O usuário deve poder solicitar exclusão de sua conta e dados associados."
-Sinônimos usados no projeto: "proteção de dados", "lei de dados" (nas respostas do usuário)
-```
+**Como detectar:** Após construir a definição, reler as ocorrências no texto com a definição em mente. Se 1+ ocorrência parece inconsistente com a definição construída → adicionar variante ao campo "Sinônimos" ou dividir em 2 entradas ("cliente (comprador)" e "cliente (contratante)").
 
----
-
-## REGRAS DE QUALIDADE
-
-- Mínimo de 5 termos para projetos de qualquer domínio (se menos → revisar critérios e incluir termos óbvios do contexto)
-- Cada termo tem obrigatoriamente: Definição + Exemplos + Sinônimos (campo pode ser "nenhum" se aplicável)
-- Termos marcados `[DEFINIÇÃO INCERTA]` devem gerar entrada em `pautas-reelicitacao.md`
-- Glossário usa uma única versão (linguagem natural) — D18 não se aplica (não tem versão normativa separada)
-- Acrônimos: expandir completamente na primeira entrada; formato "SIGLA — Forma expandida"
+**O que fazer:** Dividir o termo em 2 entradas distintas com nomes específicos. Ambiguidade de domínio vai para 2 verbetes — nunca para 1 verbete com nota de rodapé.
+<!-- /internal -->

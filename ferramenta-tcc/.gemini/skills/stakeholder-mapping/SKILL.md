@@ -1,7 +1,7 @@
 ---
 name: stakeholder-mapping
-description: >
-  
+description: >-
+  Quando precisa identificar quem usa, quem decide e quem é afetado pelo produto. Use para mapear quem vai usar, quem aprova, quem é impactado. Use when mapping people involved in or affected by the project.
 ---
 
 # Adapter Gemini CLI — stakeholder-mapping
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/stakeholder-mapping/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

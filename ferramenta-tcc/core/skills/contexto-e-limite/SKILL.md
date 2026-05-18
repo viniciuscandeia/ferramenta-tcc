@@ -1,24 +1,29 @@
 ---
 name: contexto-e-limite
-description: Define o contexto do sistema (o que está no escopo) e os limites (o que está fora). Evita expectativas não-alinhadas e reduz re-elicitação por escopo mal definido. Produz quarto componente de visao-produto.md.
-when_to_use: Quarta skill do Marco 1, após stakeholder-mapping. Última skill antes de clarificacao-pos-visao (condicional).
+description: >-
+  Define o que o produto vai fazer e o que está fora do projeto — evita expectativas erradas antes da próxima fase.
+  Use após mapear as pessoas envolvidas, para fechar o escopo do Marco 1.
+  Define system context and boundaries for a layperson stakeholder; identifies integrations and restrictions.
 ---
 
-# Skill: contexto-e-limite
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** IREB §3.3.3 Parte II — Contexto e Limite do Sistema
-**Marco:** M1 — Definição da Necessidade
-**Ordem no workflow:** 4ª skill
+1. **Facilitador de limites** — "O que está fora" é tão importante quanto "o que está dentro". Nunca pular ou minimizar as exclusões.
+2. **Restrição sem tipo = não é restrição.** Se o usuário diz "tem algumas restrições", sondar: prazo, orçamento, tecnologia ou legal. Genérico não vai para o artefato.
+3. **Contradição dentro/fora é pior que ausência.** Se o usuário listou algo em "o que faz" que contraria "o que não faz", sinalizar imediatamente antes de registrar.
 
----
+<HARD-GATE>
+- NÃO executar antes de `stakeholder-mapping` concluído (verificar que `## Pessoas Envolvidas` existe em `visao-produto.md`)
+- ⛔ STOP se respostas 1 e 2 forem semanticamente idênticas (usuário não entendeu a distinção dentro/fora) — re-explicar com exemplo concreto antes de continuar
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Estabelecer explicitamente o que o produto vai e não vai fazer. Ambiguidades no contexto e limites são a principal fonte de conflitos entre cliente e equipe técnica — definir agora previne retrabalho caro nas fases seguintes.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar pré-condição: `## Pessoas Envolvidas` existe em `visao-produto.md`
+3. Extrair de skills anteriores: funcionalidades já mencionadas em Situação-Problema → usadas para validar consistência em Fase 2
 
----
-
-## PERGUNTAS AO USUÁRIO
+## Fase 1 — Coleta
 
 **Lote único (≤ 4 perguntas):**
 
@@ -42,28 +47,24 @@ Estabelecer explicitamente o que o produto vai e não vai fazer. Ambiguidades no
    Existe alguma restrição importante? (ex: prazo, orçamento, tecnologia específica que deve ser usada, regras legais que o produto precisa respeitar)
    ```
 
----
+## Fase 2 — Síntese
 
-## PROCESSAMENTO
-
-Com as respostas, gerar as seções de contexto e limite:
-
-### Estrutura da saída (versão normativa)
+Gerar seção de contexto e limites:
 
 ```markdown
 ## Contexto e Limites do Projeto
 
 ### O que está no projeto
 
-[Bullet list com o que o produto vai fazer — resposta 1 + inferências das skills anteriores]
+[Bullet list — resposta 1 + inferências das skills anteriores, verificando consistência com Situação-Problema]
 
 ### O que está fora do projeto
 
-[Bullet list com exclusões explícitas — resposta 2]
+[Bullet list — exclusões explícitas da resposta 2]
 
 ### Integrações previstas
 
-[Bullet list de sistemas externos com que o produto se conecta — resposta 3]
+[Bullet list de sistemas externos — resposta 3]
 [Se nenhuma: "Nenhuma integração identificada nesta fase."]
 
 ### Restrições
@@ -75,38 +76,37 @@ Com as respostas, gerar as seções de contexto e limite:
 [Se nenhuma: "Nenhuma restrição identificada nesta fase."]
 ```
 
-### Regras de geração
+**Regras de síntese:**
 
-- "O que está no projeto" deve ser consistente com as funcionalidades listadas em Situação-Problema
-- Verificar contradições: se o usuário listou algo em "o que faz" que contraria "o que não faz", sinalizar como lacuna a resolver
-- Se integrações forem mencionadas: registrar como "a detalhar em fase seguinte" — não aprofundar agora
-- Restrições devem ser classificadas por tipo (prazo, orçamento, técnica, legal)
-- Aplicar `traducao-leigo` antes de qualquer exibição ao usuário
+- "O que está no projeto" deve ser consistente com funcionalidades listadas em Situação-Problema — divergência = flag de lacuna
+- Integrações mencionadas: registrar como "a detalhar em fase seguinte" — não aprofundar agora
+- Restrições classificadas por tipo; restrição vaga → marcar como `[a detalhar]`
+- Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
 
----
+## Fase 3 — Detecção de Lacunas (para `clarificacao-pos-visao` — D16)
 
-## DETECÇÃO DE LACUNAS CRÍTICAS (para clarificacao-pos-visao — D16)
-
-Após gerar os artefatos, verificar lacunas nas 3 categorias críticas:
+Verificar 3 categorias críticas e retornar relatório ao `stakeholder-identifier`:
 
 | Categoria | Lacuna crítica se |
 |---|---|
-| Escopo funcional | "O que está no projeto" tem menos de 3 itens OU contradiz a Situação-Problema |
-| Terminologia do domínio | Há termos do domínio usados pelo usuário sem definição clara |
+| Escopo funcional | "O que está no projeto" tem < 3 itens OU contradiz Situação-Problema |
+| Terminologia do domínio | Termos do domínio sem definição clara no material coletado |
 | Restrições de negócio | Restrições legais ou de prazo mencionadas mas não detalhadas |
 
-Retornar ao `stakeholder-identifier`:
-- Lista de lacunas por categoria
-- Contagem total de categorias com lacuna
+Retornar: lista de categorias com lacuna + contagem total. O `stakeholder-identifier` decide se ativa `clarificacao-pos-visao` (D16: só se ≥ 2 categorias).
 
-O `stakeholder-identifier` decide se ativa `clarificacao-pos-visao` (D16: só se ≥ 2 categorias com lacuna).
+## Fase 4 — Saída
 
----
+1. Append seção `## Contexto e Limites do Projeto` em `visao-produto.md`
+2. Retornar relatório de lacunas ao `stakeholder-identifier`
+3. Sinalizar conclusão → `stakeholder-identifier` avalia lacunas → prosseguir para `clarificacao-pos-visao` (se ≥ 2) ou `traducao-gate` (se < 2)
 
-## SAÍDA
+<!-- internal -->
+## Anti-Padrão: Dentro/Fora Copia Funcionalidades Sem Distinguir
 
-Seção "## Contexto e Limites do Projeto" para compor `visao-produto.md`.
+**Como acontece:** Resposta 1 ("vai fazer") e resposta 2 ("não vai fazer") têm overlap — o usuário lista o mesmo item em ambas com redação diferente (ex: "controlar estoque" em Dentro e "não vai controlar entradas de estoque" em Fora).
 
-Relatório de lacunas críticas (para decisão de ativar `clarificacao-pos-visao`).
+**Como detectar:** Tokenizar bullet lists de ambas as seções; checar overlap de substantivos-chave. Overlap > 30% = flag.
 
-Sinalizar ao `stakeholder-identifier` que contexto-e-limite concluído → avaliar lacunas → prosseguir para `clarificacao-pos-visao` (se necessário) ou diretamente para `traducao-gate`.
+**O que fazer:** ⛔ STOP — re-apresentar as duas listas lado a lado e perguntar qual das interpretações é a correta antes de prosseguir. Nunca registrar ambiguidade silenciosamente.
+<!-- /internal -->

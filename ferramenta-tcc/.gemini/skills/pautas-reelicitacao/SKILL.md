@@ -1,7 +1,7 @@
 ---
 name: pautas-reelicitacao
-description: >
-  
+description: >-
+  Para identificar lacunas nos artefatos de M2 que impedem avançar para a próxima confirmação de fase. Operação interna sem interação com o usuário. Use to identify gaps in milestone 2 artifacts that block the gate.
 ---
 
 # Adapter Gemini CLI — pautas-reelicitacao
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/pautas-reelicitacao/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

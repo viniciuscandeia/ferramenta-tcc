@@ -1,7 +1,7 @@
 ---
 name: srs-ireb-template
-description: >
-  
+description: >-
+  Para montar o documento completo do projeto com as 6 seções padrão IREB ISO 29148. Operação interna após todos os requisitos estarem formatados. Use to assemble the complete SRS with 6 IREB sections.
 ---
 
 # Adapter Gemini CLI — srs-ireb-template
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/srs-ireb-template/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

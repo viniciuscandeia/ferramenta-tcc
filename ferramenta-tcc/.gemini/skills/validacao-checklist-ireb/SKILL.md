@@ -1,7 +1,7 @@
 ---
 name: validacao-checklist-ireb
-description: >
-  
+description: >-
+  Para verificar a qualidade do documento de requisitos contra os 12 critérios IREB §3.8. Operação interna do checker. Use to validate the SRS against 12 IREB quality criteria including correctness, completeness and consistency.
 ---
 
 # Adapter Gemini CLI — validacao-checklist-ireb
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/validacao-checklist-ireb/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

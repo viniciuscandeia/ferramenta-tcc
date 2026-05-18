@@ -1,93 +1,77 @@
 ---
 name: pautas-reelicitacao
-description: Identifica lacunas nos artefatos M2 que impedem avanço para Gate 2 e gera pautas-reelicitacao.md com checkboxes e skill-alvo para resolução. Arquivo vazio = Gate 2 pode abrir. Referência: Livro SON cap. 8 Fig. 8.3.
-when_to_use: Invocada pelo modeler no Passo 5 da Fase B. Determina se o loop collector⇄modeler deve continuar. Sem interação com usuário.
+description: >-
+  Lista o que ainda precisa ser detalhado antes de encerrar o Marco 2 — cada item em aberto indica uma pergunta que precisa de resposta para a próxima fase começar.
+  Use no final da modelagem do Marco 2, para decidir se o loop de elicitação deve continuar ou se a fase pode ser fechada.
+  Generate re-elicitation agenda from M2 artifacts; determines loop stop condition; assigns target skill per gap; no user interaction.
 ---
 
-# Skill: pautas-reelicitacao
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** Livro SON cap. 8 Fig. 8.3 (critérios de completude de elicitação)
-**Marco:** M2 — Consenso de Escopo (Fase B, Passo 5)
-**Invocada por:** `modeler`
+1. **Critério de parada do loop M2.** Arquivo vazio (ou sem `[ ]`) = Gate 2 pode abrir. Arquivo com ≥ 1 `[ ]` = loop retorna ao `collector`. Nada mais determina essa decisão.
+2. **Pauta vaga = inútil.** "Revisar RNFs" não é pauta. "RNF-002 sem métrica de disponibilidade — qual % de uptime é aceitável?" é pauta. Cada item deve ter ID do artefato, descrição da lacuna, e `(skill-alvo: nome-da-skill)`.
+3. **Sem interação com usuário.** A detecção é automática. As perguntas serão feitas pelo `collector` em modo focado na próxima iteração.
 
----
+<HARD-GATE>
+- NÃO executar antes de `conflitos-detect` concluída (Passo 4)
+- NÃO executar se `03.1-funcionais.md` ou `03.2-qualidade.md` estão ausentes (sem artefatos para auditar)
+- ⛔ STOP se `glossario.md` está ausente — sem glossário, verificação de termos incertos é impossível; registrar em `_pendencias.md`
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Ser o **critério de parada do loop M2**. Se esta skill produz `pautas-reelicitacao.md` vazio (ou sem itens `[ ]`), o Gate 2 pode abrir. Se produz ≥ 1 item `[ ]`, o loop retorna ao `collector` em modo focado.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar todos os artefatos de entrada: `03.1-funcionais.md`, `03.2-qualidade.md`, `03.3-restricoes.md`, `03.4-premissas.md` (se existir), `glossario.md`, `conflitos-detectados.md` (se existir)
 
----
+## Fase 1 — Varredura por Tipo de Lacuna
 
-## TIPOS DE LACUNA QUE GERAM PAUTA
+Para cada tipo de lacuna, varrer os artefatos e registrar entradas:
 
-| Tipo de lacuna | Critério de detecção | Skill-alvo no collector |
+| Tipo | Sinal | Skill-alvo |
 |---|---|---|
-| RF sem critério de aceitação | RF em `03.1-funcionais.md` não tem condição verificável ("o sistema DEVE fazer X" — mas como saber se fez?) | `entrevista-estruturada` (pergunta focada) |
-| RNF sem métrica | RNF em `03.2-qualidade.md` com campo Métrica = `LACUNA` | `entrevista-estruturada` (pergunta focada) |
-| Restrição sem detalhe suficiente | `03.3-restricoes.md` tem restrição legal/técnica sem referência normativa ou valor explícito | `entrevista-estruturada` (pergunta focada) |
-| Conflito não resolvido | `conflitos-detectados.md` tem item com `status: aberto` que afeta escopo ou modal de RF | `entrevista-estruturada` ou `cenario-narrativa` |
-| Termo do glossário com `[DEFINIÇÃO INCERTA]` | `glossario.md` tem entrada marcada | `entrevista-estruturada` (pergunta de terminologia) |
-| Premissa crítica sem validação | `03.4-premissas.md` tem premissa cujo impacto é alto e não foi confirmada pelo usuário | `entrevista-estruturada` (yesno de confirmação) |
+| RF sem critério de aceitação | RF em `03.1-funcionais.md` sem condição verificável | `entrevista-estruturada` |
+| RNF sem métrica | `03.2-qualidade.md` com campo Métrica = `LACUNA` | `entrevista-estruturada` |
+| Restrição sem detalhe | `03.3-restricoes.md` com restrição legal sem referência normativa | `entrevista-estruturada` |
+| Conflito não resolvido | `conflitos-detectados.md` com `status: aberto` afetando escopo ou modal | `entrevista-estruturada` ou `cenario-narrativa` |
+| Termo com `[DEFINIÇÃO INCERTA]` | `glossario.md` com flag | `entrevista-estruturada` |
+| Premissa crítica sem validação | `03.4-premissas.md` com impacto alto não confirmado | `entrevista-estruturada` |
 
----
+**Filtragem por criticidade:**
+- Lacuna que afeta RF `DEVE`, RNF `DEVE`, ou restrição legal → **sempre gera pauta**
+- Lacuna que afeta RF `DEVERIA` → gera pauta se não há informação suficiente para inferência
+- Lacuna que afeta RF `PODE` / `PODERIA_TER` → não gera pauta (cosmético; resolver em M3 se necessário)
 
-## PROCESSO
+## Fase 2 — Saída
 
-### Entrada
-
-- `03.1-funcionais.md` rascunho (com campos modal e MoSCoW preenchidos)
-- `03.2-qualidade.md` rascunho (com campo Métrica)
-- `03.3-restricoes.md` rascunho
-- `03.4-premissas.md` (se existir)
-- `glossario.md`
-- `conflitos-detectados.md` (se existir)
-
-### Algoritmo
-
-Para cada tipo de lacuna acima:
-
-1. Varrer os artefatos buscando o sinal de detecção
-2. Para cada lacuna encontrada:
-   - Verificar se é **crítica** (afeta RF `DEVE`, RNF `DEVE`, ou restrição legal) → sempre gera pauta
-   - Verificar se é **importante** (afeta RF `DEVERIA`) → gera pauta se não há informação suficiente para inferência
-   - Verificar se é **cosmética** (afeta RF `PODE` ou PODERIA_TER) → não gera pauta (resolver em M3 se necessário)
-3. Criar entrada em `pautas-reelicitacao.md` para cada lacuna crítica ou importante
-
-### Sem interação com usuário
-
-A detecção é automática. As perguntas de re-elicitação serão feitas pelo `collector` em modo focado na próxima iteração do loop.
-
----
-
-## SAÍDA
-
-### pautas-reelicitacao.md (vazio = Gate pode abrir)
-
+**Com pautas:**
 ```markdown
 # Pautas de Detalhamento
 
 > Itens que precisam de informação adicional antes de finalizar esta fase.
 > Quando todos os itens estiverem marcados `[x]`, a próxima fase pode começar.
 
-- [ ] RF-005 não tem critério de aceitação claro: como saber se o sistema "enviou a notificação com sucesso"? (skill-alvo: entrevista-estruturada)
+- [ ] RF-005 não tem critério de aceitação: como saber se o sistema "enviou a notificação com sucesso"? (skill-alvo: entrevista-estruturada)
 - [ ] RNF-002 sem métrica de disponibilidade: qual % de uptime é aceitável? (skill-alvo: entrevista-estruturada)
-- [ ] LGPD em REST-001 sem referência ao art. específico: aplicar arts. 7–9 (consentimento) ou arts. 14–15 (menores)? (skill-alvo: entrevista-estruturada)
+- [ ] REST-001 LGPD sem referência ao artigo específico: arts. 7–9 (consentimento) ou arts. 14–15 (menores)? (skill-alvo: entrevista-estruturada)
 ```
 
-### Arquivo vazio (sem pautas)
-
+**Sem pautas:**
 ```markdown
 # Pautas de Detalhamento
 
 > Nenhuma pauta aberta. Gate 2 pode ser apresentado ao usuário.
 ```
 
----
+Sinalizar ao `modeler`: resultado do Passo 5 — pautas abertas: N.
+- N = 0 → Gate 2 pode abrir
+- N ≥ 1 → retornar ao `collector` com o arquivo de pautas como instrução
 
-## REGRAS DE QUALIDADE
+<!-- internal -->
+## Anti-Padrão: Pauta Sem Skill-Alvo Identificado
 
-- Cada pauta tem: checkbox `[ ]` + descrição da lacuna + `(skill-alvo: nome-da-skill)`
-- Pautas devem ser específicas: "RNF-002 sem métrica de disponibilidade" é válido; "revisar RNFs" não é
-- O collector em modo focado recebe este arquivo como instrução: "resolver pautas marcadas `[ ]` usando a skill-alvo indicada"
-- Ao resolver uma pauta, o `modeler` marca `[x]` no item correspondente
-- `pautas-reelicitacao.md` persiste após M2 — o `checker` (M3) pode criar novas pautas se necessário
+**Como acontece:** "Revisar seção de segurança" é criada como pauta sem skill-alvo. O `collector` em modo focado não sabe qual skill invocar para resolver — a pauta se perpetua indefinidamente entre iterações.
+
+**Como detectar:** Pauta sem o sufixo `(skill-alvo: nome-da-skill)` é inválida. Verificar todas as entradas antes de salvar o arquivo.
+
+**O que fazer:** Toda pauta DEVE ter skill-alvo explícito. Se a lacuna é ambígua quanto à skill, usar `entrevista-estruturada` como default seguro — ela cobre todos os tipos via perguntas adaptadas. Nunca registrar pauta sem `(skill-alvo: ...)`.
+<!-- /internal -->

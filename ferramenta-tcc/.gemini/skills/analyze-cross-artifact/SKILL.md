@@ -1,7 +1,7 @@
 ---
 name: analyze-cross-artifact
-description: >
-  
+description: >-
+  Para detectar inconsistências entre artefatos de diferentes fases — visão, elicitação, SRS e especificações. Detecta omissões, contradições e itens inexequíveis. Use to detect cross-artifact inconsistencies including omission, contradiction and infeasibility.
 ---
 
 # Adapter Gemini CLI — analyze-cross-artifact
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/analyze-cross-artifact/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

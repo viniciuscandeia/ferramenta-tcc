@@ -1,7 +1,7 @@
 ---
 name: step-defs-red
-description: >
-  
+description: >-
+  Para gerar código de teste inicial RED que falha propositalmente em Python, JavaScript e C#. Operação técnica interna. Use to generate RED step definitions for Pytest-BDD, Cucumber-js and SpecFlow.
 ---
 
 # Adapter Claude Code — step-defs-red

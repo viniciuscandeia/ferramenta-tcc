@@ -1,7 +1,7 @@
 ---
 name: recomendacao-dominio
-description: >
-  
+description: >-
+  Para sugerir funcionalidades típicas do domínio do projeto como educação, saúde, e-commerce, gestão. Use após identificar o domínio para confirmar esses recursos fazem sentido para você. Use to recommend typical domain-specific features.
 ---
 
 # Adapter Gemini CLI — recomendacao-dominio
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/recomendacao-dominio/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

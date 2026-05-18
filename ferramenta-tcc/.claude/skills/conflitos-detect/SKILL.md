@@ -1,7 +1,7 @@
 ---
 name: conflitos-detect
-description: >
-  
+description: >-
+  Para detectar quando dois requisitos ou stakeholders têm necessidades contraditórias entre si. Operação interna após modelagem. Use to detect conflicts between requirements or between stakeholders' needs.
 ---
 
 # Adapter Claude Code — conflitos-detect

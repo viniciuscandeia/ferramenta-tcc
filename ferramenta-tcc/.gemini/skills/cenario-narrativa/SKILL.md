@@ -1,7 +1,7 @@
 ---
 name: cenario-narrativa
-description: >
-  
+description: >-
+  Para coletar cenários narrativos um dia normal de perfil e extrair necessidades implícitas. Use quando precisa de me descreva um dia típico, como você usaria o sistema no dia a dia. Use to collect day-in-the-life narratives and extract implicit needs.
 ---
 
 # Adapter Gemini CLI — cenario-narrativa
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/cenario-narrativa/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

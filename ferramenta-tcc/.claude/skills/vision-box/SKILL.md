@@ -1,7 +1,7 @@
 ---
 name: vision-box
-description: >
-  
+description: >-
+  Quando o stakeholder descreve o que quer construir pela primeira vez. Use quando alguém diz quero criar um app pra, preciso de um sistema que, minha ideia é criar. Use when stakeholder describes their product idea — I want to build, I need a system that.
 ---
 
 # Adapter Claude Code — vision-box

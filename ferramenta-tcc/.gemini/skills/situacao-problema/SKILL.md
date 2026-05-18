@@ -1,7 +1,7 @@
 ---
 name: situacao-problema
-description: >
-  
+description: >-
+  Quando precisa documentar o problema central que o produto resolve. Use após capturar a ideia para entender o que está errado hoje, o que te incomoda, precisamos melhorar. Use when documenting the core problem the product addresses.
 ---
 
 # Adapter Gemini CLI — situacao-problema
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/situacao-problema/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

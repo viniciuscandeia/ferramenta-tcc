@@ -1,59 +1,51 @@
 ---
 name: cenario-narrativa
-description: Solicita ao usuário 1–2 cenários narrativos "um dia normal de [perfil]" e extrai RFs candidatos implícitos do texto. Baseado no material Dani n08 (cenários como técnica de elicitação). Saída: cenários + RFs candidatos em elicitacao-raw.md.
-when_to_use: Invocada pelo collector na Ronda 2 da Fase A. Sempre executar após entrevista-estruturada. Única chamada AskUserQuestion com 1–2 perguntas de texto livre.
+description: >-
+  Pede ao usuário que conte como seria um dia típico de uso do produto e extrai funcionalidades implícitas da narrativa.
+  Use após a entrevista inicial do Marco 2, para capturar o que o usuário assume mas não menciona explicitamente.
+  Elicit implicit requirements from layperson stakeholder via narrative scenarios; extracts RF candidates silently.
 ---
 
-# Skill: cenario-narrativa
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** Material Dani n08 (cenários e narrativas em ER)
-**Marco:** M2 — Consenso de Escopo (Fase A, Ronda 2)
-**Invocada por:** `collector`
+1. **Narrativa > pergunta abstrata.** Usuários leigos descrevem funcionalidades muito melhor contando histórias do que respondendo perguntas diretas. A pergunta "o que o sistema deve fazer?" produz lista pobre; "como seria um dia típico?" produz fluxo rico.
+2. **Extração é silenciosa.** Nunca dizer ao usuário "estou extraindo requisitos" ou "encontrei uma funcionalidade implícita" — narrar processo interno viola Output Discipline (Z9).
+3. **Cenário curto demais = dado insuficiente.** Narrativa < 3 sentenças não tem granularidade para extração. Sondar com "pode contar um pouco mais?" antes de registrar.
 
----
+<HARD-GATE>
+- NÃO executar antes de `entrevista-estruturada` concluída (verificar seção `## Rotina e Necessidades` em `elicitacao-raw.md`)
+- ⛔ STOP se cenário recebido tem < 3 sentenças — sondar expansão antes de avançar para extração
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Capturar fluxos de uso reais através da narrativa do próprio usuário. Usuários leigos descrevem funcionalidades muito melhor quando contam histórias do que quando respondem perguntas abstratas. O cenário narrativo revela RFs implícitos que as perguntas diretas da Ronda 1 não capturaram.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar pré-condição: `## Rotina e Necessidades` existe em `elicitacao-raw.md`
+3. Identificar perfis distintos de `visao-produto-normativo.md` → determinar 1 ou 2 cenários (máx 2)
 
----
+## Fase 1 — Coleta
 
-## PERGUNTAS
+Adaptar perfis ao projeto (usar nomes/papéis de `visao-produto-normativo.md`).
 
-Adaptar os perfis ao projeto (usar nomes/papéis de `visao-produto-normativo.md`):
-
-**Cenário 1 — Usuário principal**
+**Cenário 1 — Usuário principal (text):**
 ```
 Imagine um dia típico de [nome do perfil principal] usando [nome do produto].
 
 Descreva como seria a experiência desde o começo: o que ele faz primeiro no produto, o que acontece em seguida, como termina a interação. Pode ser informal — como se estivesse contando uma história.
 ```
 
-**Cenário 2 — Perfil secundário (se houver decisor/afetado distinto)**
+**Cenário 2 — Perfil secundário, se perfis distintos com fluxos diferentes (text):**
 ```
 E para [nome do perfil secundário], como seria um uso típico?
 ```
 
-### Quando usar 1 vs 2 cenários
+**Regra de decisão:** 1 cenário se projeto com perfil único; 2 cenários se perfis distintos com fluxos diferentes. Máximo 2 — exceder viola D14.
 
-- 1 cenário: projeto com perfil de usuário único (ex: artesão vendendo produtos)
-- 2 cenários: projeto com perfis distintos com fluxos diferentes (ex: criança e pai no app educacional)
-- Máximo 2 cenários — mais que isso gera lotes além do limite D14
+Invocar `AskUserQuestion` com 1 ou 2 perguntas tipo `text` (1 chamada única).
 
-### Execução
+## Fase 2 — Extração Silenciosa de RFs Candidatos
 
-1. Invocar `AskUserQuestion` com 1 ou 2 perguntas do tipo `text`
-2. Registrar os cenários em `elicitacao-raw.md`
-
----
-
-## EXTRAÇÃO DE RFs CANDIDATOS
-
-Após receber os cenários, **sem perguntar nada ao usuário**, extrair RFs candidatos:
-
-### Heurísticas de extração
-
-Para cada ação descrita no cenário, verificar:
+Sem interação adicional com o usuário, extrair RFs candidatos usando heurísticas:
 
 | Padrão no texto | RF candidato |
 |---|---|
@@ -62,10 +54,14 @@ Para cada ação descrita no cenário, verificar:
 | "[usuário] vê / consulta / verifica [X]" | O sistema DEVE exibir [X] |
 | "[usuário] recebe [notificação/e-mail/mensagem]" | O sistema DEVE enviar [notificação] ao [usuário] quando [condição] |
 | "[usuário] aprova / cancela / rejeita [X]" | O sistema DEVE permitir que [usuário] [ação] [X] |
-| "[usuário] não consegue / tenta e falha" | O sistema DEVE [comportamento correto] — lacuna → pauta |
-| "[usuário] não precisa / não quer" | Item a avaliar como NAO_TERA |
+| "[usuário] não consegue / tenta e falha" | Lacuna → flag para `pautas-reelicitacao` |
+| "[usuário] não precisa / não quer" | Candidato a NAO_TERA |
 
-### Formato de extração
+Se ação descrita sem resultado esperado: registrar como lacuna ("Usuário mencionou [ação X] mas não descreveu resultado — possível pauta").
+
+## Fase 3 — Saída
+
+Acrescentar seção em `elicitacao-raw.md`:
 
 ```markdown
 ## Cenários Narrativos (cenario-narrativa — Fase A)
@@ -76,33 +72,16 @@ Para cada ação descrita no cenário, verificar:
 ### RFs candidatos extraídos do Cenário 1
 - RF-CAND-001: O sistema DEVE [ação extraída] — fonte: "Cenário 1, [trecho]"
 - RF-CAND-002: O sistema DEVERIA [ação extraída] — fonte: "Cenário 1, [trecho]"
-
-### Cenário 2 — [Nome do segundo perfil] (se aplicável)
-[Texto]
-
-### RFs candidatos extraídos do Cenário 2
-- RF-CAND-003: ...
 ```
 
----
+Sinalizar ao `collector`: cenario-narrativa concluída → prosseguir para `recomendacao-dominio`.
 
-## NOTAS SOBRE LACUNAS
+<!-- internal -->
+## Anti-Padrão: Extração Sem Verificar Vagueza
 
-Se o usuário descreve uma ação mas não explica o resultado esperado:
-- Registrar como lacuna: "Usuário mencionou [ação X] mas não descreveu o resultado — possível pauta para `entrevista-estruturada` na Fase B"
-- Não interromper o fluxo da Ronda 2 — a lacuna será tratada pelo `modeler` em `pautas-reelicitacao`
+**Como acontece:** O usuário diz "aí eu acesso o sistema e vejo o que precisa". A extração produz "RF: O sistema DEVE exibir o que precisa" — que não é um requisito, é uma frase vaga.
 
----
+**Como detectar:** RF candidato tem objeto genérico ("o que precisa", "as informações", "os dados") sem especificação. Detectar por ausência de substantivo específico no objeto.
 
-## REGRAS (D14 + D19)
-
-- Máximo 2 perguntas nesta skill (tipo `text`)
-- Não usar termos da blacklist D1 nas perguntas
-- A extração de RFs é silenciosa (não exibir ao usuário "extraindo requisitos" ou similar)
-- RFs candidatos são rascunhos: o modeler classifica e consolida no Passo 1 da Fase B
-
----
-
-## SAÍDA
-
-Seção adicionada a `elicitacao-raw.md` com cenários + RFs candidatos extraídos.
+**O que fazer:** Marcar o RF candidato como `[VAGO — especificar objeto]` no elicitacao-raw.md e criar pauta automática para `entrevista-estruturada` Fase B. Nunca registrar RF vago como candidato válido.
+<!-- /internal -->

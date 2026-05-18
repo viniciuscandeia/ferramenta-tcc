@@ -1,7 +1,7 @@
 ---
 name: traducao-leigo
-description: >
-  
+description: >-
+  Para verificar e reescrever texto removendo jargão técnico de ER antes de apresentar ao usuário leigo. Invocada por qualquer agente antes de exibir texto ao usuário. Use to verify and remove technical jargon before presenting any text to the layperson user.
 ---
 
 # Adapter Claude Code — traducao-leigo

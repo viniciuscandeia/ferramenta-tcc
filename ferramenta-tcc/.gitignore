@@ -1,0 +1,8 @@
+# Execuções de teste locais — cada usuário gera as próprias
+tests/marco-*/execucoes/*
+!tests/marco-*/execucoes/.gitkeep
+
+# OS
+.DS_Store
+
+# Não distribuível — fica no monorepo pai, fora desta pasta

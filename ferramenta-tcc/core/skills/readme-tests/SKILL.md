@@ -1,24 +1,32 @@
 ---
 name: readme-tests
-description: Gera README-TESTS.md documentando como configurar e rodar os testes nos 3 frameworks: Pytest-BDD (Python), Cucumber-js (JavaScript/TypeScript) e SpecFlow (.NET C#). Cada seção inclui: pré-requisitos, comandos de instalação, comando para rodar todos os testes, comando para rodar teste específico, e estrutura de pastas esperada. Referência: D23.
-when_to_use: Invocada pelo documenter como Passo 6 do Processo M3. Depende de step-defs-red (Passo 4) ter executado. Saída: README-TESTS.md na raiz do projeto.
+description: >-
+  Gera o guia de instalação e execução dos testes para os três frameworks gerados — documentando como rodar, o que esperar e por que os testes falham inicialmente.
+  Use no Marco 3, após gerar os arquivos de código de teste, para produzir a documentação de execução.
+  Generate README-TESTS.md with setup and run instructions for Pytest-BDD, Cucumber-js, and SpecFlow; substitute real slugs from spec/; candidate R5.
 ---
 
-# Skill: readme-tests
+## Filosofia desta skill (Regras Absolutas)
 
-Gera `README-TESTS.md` documentando como instalar dependências e executar os testes
-nos 3 frameworks gerados por step-defs-red. Inclui avisos sobre estado RED.
+1. **Crítico de concretude** — instrução sem comando exato é inútil. Cada framework tem: pré-requisitos, instalação, comando para rodar tudo, comando para rodar 1 teste, e estrutura de pastas esperada.
+2. **Substituir marcadores pelos slugs reais.** `<slug>` é um marcador do template — o arquivo final deve ter `rf-001-cadastro-produto`, não `<slug>`. Entregar template sem substituição = entregar rascunho como artefato.
+3. **Estado RED é documentado explicitamente.** O README deixa claro que os testes falharão e por quê. Ocultar o estado RED confunde o desenvolvedor.
 
----
+<HARD-GATE>
+- NÃO executar antes de `step-defs-red` (Passo 4) concluído
+- NÃO executar se `tests/unit/` e `tests/acceptance/` estão vazios (nada para documentar)
+- ⛔ STOP se slugs reais não puderem ser derivados de `spec/*.feature` — não entregar README com marcadores não-substituídos
+</HARD-GATE>
 
-## Processo
+## Fase 0 — Inicialização
 
-Preenchimento de template: a skill gera `README-TESTS.md` substituindo os
-marcadores abaixo com informações específicas do projeto (nome do produto, IDs dos RFs reais).
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar `tests/unit/`, `tests/acceptance/` existem e têm arquivos
+3. Coletar slugs reais de `spec/*.feature` para substituição nos exemplos
 
----
+## Fase 1 — Montagem do README
 
-## Template de saída — README-TESTS.md
+Gerar `README-TESTS.md` substituindo todos os marcadores `<slug>` e `<rf-id>` por slugs reais do projeto:
 
 ```markdown
 # README: Como Rodar os Testes
@@ -45,40 +53,29 @@ projeto/
 ## Seção A — Pytest-BDD (Python)
 
 ### Pré-requisitos
-
-- Python ≥ 3.9
-- pip
+- Python ≥ 3.9 · pip
 
 ### Instalar dependências
-
 ```bash
 pip install pytest pytest-bdd
 ```
-
-Ou, se o projeto tiver `requirements.txt`:
-
-```bash
-pip install -r requirements.txt
-```
+Ou: `pip install -r requirements.txt`
 
 ### Rodar todos os testes
-
 ```bash
 pytest tests/unit/
 ```
 
 ### Rodar um teste específico
-
 ```bash
-pytest tests/unit/rf-001-cadastro-produto_steps.py -v
+pytest tests/unit/[rf-id-real]-[slug-real]_steps.py -v
 ```
 
 ### Estrutura esperada
-
 ```
 tests/unit/
-├── rf-001-<slug>_steps.py
-├── rf-002-<slug>_steps.py
+├── [rf-id-1]-[slug-1]_steps.py
+├── [rf-id-2]-[slug-2]_steps.py
 └── ...
 ```
 
@@ -87,40 +84,28 @@ tests/unit/
 ## Seção B — Cucumber-js (JavaScript/TypeScript)
 
 ### Pré-requisitos
-
-- Node.js ≥ 18
-- npm
+- Node.js ≥ 18 · npm
 
 ### Instalar dependências
-
-```bash
-npm install
-```
-
-Ou instalar diretamente:
-
 ```bash
 npm install @cucumber/cucumber
 ```
 
 ### Rodar todos os testes
-
 ```bash
 npx cucumber-js
 ```
 
 ### Rodar um teste específico
-
 ```bash
-npx cucumber-js spec/rf-001-<slug>.feature
+npx cucumber-js spec/[rf-id-real]-[slug-real].feature
 ```
 
 ### Estrutura esperada
-
 ```
 tests/acceptance/
-├── rf-001-<slug>.steps.js
-├── rf-002-<slug>.steps.js
+├── [rf-id-1]-[slug-1].steps.js
+├── [rf-id-2]-[slug-2].steps.js
 └── ...
 ```
 
@@ -129,34 +114,28 @@ tests/acceptance/
 ## Seção C — SpecFlow (.NET C#)
 
 ### Pré-requisitos
-
-- .NET SDK ≥ 6.0
-- NuGet: SpecFlow, SpecFlow.NUnit (ou SpecFlow.xUnit)
+- .NET SDK ≥ 6.0 · NuGet: SpecFlow, SpecFlow.NUnit (ou SpecFlow.xUnit)
 
 ### Instalar dependências
-
 ```bash
 dotnet restore
 ```
 
 ### Rodar todos os testes
-
 ```bash
 dotnet test
 ```
 
 ### Rodar um teste específico
-
 ```bash
-dotnet test --filter "FullyQualifiedName~Rf001"
+dotnet test --filter "FullyQualifiedName~[RfIdPascalCase]"
 ```
 
 ### Estrutura esperada
-
 ```
 tests/acceptance/
-├── Rf001<Slug>Steps.cs
-├── Rf002<Slug>Steps.cs
+├── [RfId1Slug1]Steps.cs
+├── [RfId2Slug2]Steps.cs
 └── ...
 ```
 
@@ -173,12 +152,22 @@ Ao rodar os testes agora, você verá falhas como:
 Isso é esperado. Os testes só passarão após implementação real dos step definitions.
 ```
 
----
+## Fase 2 — Substituição de Marcadores
 
-## Regras
+Substituir `[rf-id-real]`, `[slug-real]`, `[RfIdPascalCase]` pelos slugs reais coletados em Fase 0. Usar o 1º RF como exemplo nos comandos de "Rodar um teste específico".
 
-- **Sem interação com o usuário** — skill opera inteiramente sobre artefatos do sistema de arquivos
-- **Substituir marcadores `<slug>`** pelos IDs e slugs reais dos RFs do projeto
-- **Manter comandos em blocos de código** — nunca texto corrido
-- **Declarar claramente o estado RED** no topo do documento e na seção final
-- **Usar português** para prosa; manter comandos e termos técnicos em inglês/original
+## Fase 3 — Saída
+
+Salvar como `README-TESTS.md` na raiz do projeto.
+
+Sinalizar ao `documenter`: readme-tests concluído → Passos 1-6 do documenter completos → prosseguir para `traducao-gate` (Passo 7, SRS).
+
+<!-- internal -->
+## Anti-Padrão: Template Entregue Sem Substituição de Slugs
+
+**Como acontece:** A skill gera o README com os marcadores do template literais: `tests/unit/<rf-id>-<slug>_steps.py`. O desenvolvedor não consegue usar o arquivo sem descobrir os nomes reais dos arquivos gerados.
+
+**Como detectar:** Verificar presença de `<` e `>` no texto final gerado — qualquer marcador não-substituído é erro.
+
+**O que fazer:** Fase 2 é obrigatória: varrer o texto gerado por regex `<[^>]+>` antes de salvar. Se encontrar marcadores: buscar os slugs reais em `spec/*.feature` e substituir. Nunca salvar com marcadores.
+<!-- /internal -->

@@ -1,33 +1,33 @@
 ---
 name: vision-box
-description: Captura a essência do produto em linguagem de negócio usando a técnica Vision Box — o usuário descreve o produto como se fosse a caixa de um produto de prateleira. Produz o primeiro componente de visao-produto.md.
-when_to_use: Primeira skill do Marco 1, após saudação. Sempre executada antes de situacao-problema.
+description: >-
+  Captura a essência do produto em linguagem de negócio — primeira pergunta sobre o que o usuário quer construir.
+  Use quando o usuário descreve o produto pela primeira vez ou ao iniciar o projeto.
+  Capture product vision for a layperson stakeholder; map name, audience, benefit, and differentiator.
 ---
 
-# Skill: vision-box
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** Material Dani `ers-apoio-marco-01-visao-do-produto.md`
-**Marco:** M1 — Definição da Necessidade
-**Ordem no workflow:** 1ª skill
+1. **Facilitador gentil** — nunca pressiono, nunca julgo. Cada resposta é válida; meu papel é expandir, não corrigir.
+2. **Resposta vaga não é informação.** Se o usuário diz "para todo mundo" ou "quero ganhar dinheiro", ofereço 2–3 opções concretas via `choice` antes de prosseguir.
+3. **Zero jargão de produto.** Nunca menciono "Vision Box", "técnica", "metodologia", "requisito" — essas palavras não existem para o usuário (D1).
 
----
+<HARD-GATE>
+- NÃO executar se `visao-produto.md` já contém seção `## Visão do Produto` (idempotência — evitar duplicação)
+- ⛔ STOP e registrar em `_pendencias.md` se o usuário pular nome E benefício principal simultaneamente (campos mínimos para síntese)
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Capturar, em linguagem de negócio, a essência do que o usuário quer construir:
-- Para quem é o produto
-- Qual é o principal benefício
-- Por que as pessoas vão querer usar
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar `estado-projeto.yaml`; se ausente: inicializar com `marco_corrente: M1`
+3. Checar idempotência: se `## Visão do Produto` já existe em `visao-produto.md`, pular para Fase 3 (sinalização)
 
-A metáfora da "caixa de produto" ajuda o usuário leigo a pensar no produto pelo ponto de vista do cliente, não da tecnologia.
+## Fase 1 — Coleta
 
----
+Coletar TODAS antes de invocar `AskUserQuestion` (D14 — batching obrigatório, máx 4 perguntas).
 
-## PERGUNTAS AO USUÁRIO
-
-Coletar todas as perguntas antes de invocar `AskUserQuestion` (D14 — batching).
-
-**Lote de perguntas Vision Box (máximo 4):**
+**Lote Vision Box:**
 
 1. **Nome do produto** (text):
    ```
@@ -49,13 +49,9 @@ Coletar todas as perguntas antes de invocar `AskUserQuestion` (D14 — batching)
    Por que alguém escolheria esse produto em vez de fazer a mesma coisa de outro jeito (manualmente, com outra ferramenta, etc.)?
    ```
 
----
+## Fase 2 — Síntese
 
-## PROCESSAMENTO
-
-Com as respostas do usuário, gerar o componente Vision Box:
-
-### Estrutura Vision Box
+Montar bloco Vision Box com as respostas:
 
 ```markdown
 ## Visão do Produto
@@ -75,17 +71,31 @@ Com as respostas do usuário, gerar o componente Vision Box:
 **Nosso produto:** [diferencial — resposta 4 reformulada]
 ```
 
-### Regras de geração
+**Regras de síntese:**
 
-- Inferir a classificação do produto (app, plataforma, sistema) a partir do contexto das respostas — não perguntar explicitamente (reduziria complexidade ao usuário)
-- Se "como fazem hoje" não ficar claro pela resposta 4, inferir com "processo manual" como fallback
-- Todo o texto deve estar em linguagem de negócio — aplicar `traducao-leigo` antes de exibir ao usuário
-- Tom: positivo, focado no benefício, sem jargão técnico
+- Inferir classificação do produto (app, plataforma, sistema) do contexto — não perguntar explicitamente
+- Se "como fazem hoje" não ficar claro pela resposta 4: usar "processo manual" como fallback
+- Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
+- Se resposta 2 ou 3 for genérica (≤ 5 palavras ou keywords: "útil", "ganhar", "todo mundo", "melhorar"): oferecer opções choice antes de sintetizar
 
----
+## Fase 3 — Saída
 
-## SAÍDA
+1. Append seção `## Visão do Produto` em `visao-produto.md` (criar arquivo se inexistente)
+2. Registrar em `estado-projeto.yaml`:
+   ```yaml
+   artefatos:
+     - nome: visao-produto.md
+       marco: M1
+       iteracao: 1
+   ```
+3. Sinalizar ao `stakeholder-identifier`: Vision Box concluído → prosseguir para `situacao-problema`
 
-Seção "## Visão do Produto" para compor `visao-produto.md`.
+<!-- internal -->
+## Anti-Padrão: Benefício Genérico Não Sondado
 
-Sinalizar ao `stakeholder-identifier` que Vision Box concluído → prosseguir para `situacao-problema`.
+**Como acontece:** Usuário responde "Quero que o produto seja útil" ou "Para ganhar mais dinheiro". A síntese aceita a resposta literal e o campo "Que:" fica vazio de significado.
+
+**Como detectar:** Resposta 3 tem ≤ 5 palavras OU contém keywords: "útil", "ganhar", "todo mundo", "melhorar", "ajudar".
+
+**O que fazer:** Re-perguntar via `choice` com exemplos concretos do domínio inferido. Exemplo: "Qual desses se aproxima mais do benefício principal? (a) Economizar tempo no dia a dia; (b) Reduzir erros que causam prejuízo; (c) Ter visibilidade de algo difícil de acompanhar; (d) Outro."
+<!-- /internal -->

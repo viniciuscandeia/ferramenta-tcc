@@ -1,7 +1,7 @@
 ---
 name: questionario-feixe
-description: >
-  
+description: >-
+  Quando há áreas do sistema sem cobertura suficiente após as elicitações principais. Agrupa perguntas temáticas para cobrir lacunas. Use when areas of the system lack sufficient coverage after main elicitation rounds.
 ---
 
 # Adapter Claude Code — questionario-feixe

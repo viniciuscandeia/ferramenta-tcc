@@ -1,112 +1,98 @@
 ---
 name: conflitos-detect
-description: Detecta conflitos entre requisitos ou stakeholders usando os 6 tipos IREB §4.4 e propõe estratégias de resolução. Gera conflitos-detectados.md apenas se ≥ 1 conflito encontrado. Versão M2 foca em duplicatas, contradições escopo-limite e conflitos entre stakeholders — expansão completa em M3 via analyze-cross-artifact.
-when_to_use: Invocada pelo modeler no Passo 4 da Fase B. Sempre executar, mas só criar arquivo de saída se ≥ 1 conflito. Sem interação com usuário.
+description: >-
+  Verifica se há contradições, duplicatas ou inconsistências entre os itens levantados — e registra cada problema com estratégia de resolução.
+  Use no Marco 2, após priorizar e construir o glossário, antes de verificar o que ainda está pendente.
+  Detect conflicts between requirements and stakeholders per IREB §4.4; runs 5 checks automatically; no user interaction.
 ---
 
-# Skill: conflitos-detect
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** IREB §4.4 (6 tipos de conflito + 4 estratégias de resolução)
-**Marco:** M2 — Consenso de Escopo (Fase B, Passo 4)
-**Invocada por:** `modeler`
+1. **Crítico de consistência** — 5 verificações sempre, na ordem definida. Pular uma verificação porque "o projeto é simples" = falsa segurança. Conflito não detectado em M2 vira CRITICAL em `analyze-cross-artifact` (M3).
+2. **Falso positivo = pauta, não silêncio.** Incerto se é conflito real? Registrar como CONF com status `a-verificar`. Melhor 1 pauta desnecessária do que 1 conflito ignorado.
+3. **O modeler não resolve conflitos.** Registrar com estratégia recomendada; a decisão humana vem depois. Status inicial sempre `aberto`.
 
----
+<HARD-GATE>
+- NÃO executar antes de `priorizacao` e `glossario` concluídas
+- NÃO executar se `03.1-funcionais.md` não existe ou está vazio (nada para verificar)
+- ⛔ STOP se qualquer arquivo de entrada estiver corrompido ou ilegível — registrar em `_pendencias.md` antes de prosseguir
+</HARD-GATE>
 
-## TIPOS DE CONFLITO (IREB §4.4)
+## Fase 0 — Inicialização
 
-| Tipo | Descrição | Sinal de detecção |
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar `03.1-funcionais.md`, `03.2-qualidade.md`, `03.3-restricoes.md`, `visao-produto-normativo.md`, `elicitacao-raw.md`, `glossario.md` acessíveis
+
+## Fase 1 — 5 Verificações Sequenciais
+
+**Tipos de conflito (IREB §4.4):**
+
+| Tipo | Descrição | Sinal |
 |---|---|---|
-| **Interesse** | Stakeholders querem coisas opostas | RF-X favorece Stakeholder A mas prejudica B |
-| **Dados** | Mesma informação definida diferente em dois lugares | Campo "status" tem valores diferentes em RF-010 e RF-015 |
-| **Processo** | Fluxos incompatíveis — A exige B antes de C, mas C já iniciou | RF de fluxo A contradiz fluxo B |
-| **Recursos** | Dois requisitos disputam o mesmo recurso limitado (tempo, hardware, orçamento) | RF de alta disponibilidade vs. restrição de orçamento mínimo |
-| **Valor** | Prioridades inconsistentes — item marcado `DEVE` em um lugar e `PODE` em outro | RF-005 `DEVE` em 03.1-funcionais vs. implicado como `PODE` em cenario-narrativa |
-| **Semântico** | Mesmo termo significa coisas diferentes para stakeholders distintos | "cliente" = pessoa que compra vs. "cliente" = empresa que contratou o sistema |
+| **Interesse** | Stakeholders querem coisas opostas | RF-X favorece A mas prejudica B |
+| **Dados** | Mesma informação definida diferente em dois lugares | "status" com valores diferentes em dois RFs |
+| **Processo** | Fluxos incompatíveis | RF de fluxo A contradiz fluxo B |
+| **Recursos** | Dois requisitos disputam recurso limitado | Alta disponibilidade vs. orçamento mínimo |
+| **Valor** | Prioridades inconsistentes | Mesmo item `DEVE` em um lugar e `PODE` em outro |
+| **Semântico** | Mesmo termo com sentidos diferentes por stakeholder | "cliente" = comprador vs. empresa contratante |
 
----
+**Verificação 1 — Duplicatas:**
+Dois IDs descrevendo a mesma funcionalidade com texto diferente? Candidatos: itens de fontes diferentes (entrevista vs. recomendacao-implicitos vs. recomendacao-dominio).
 
-## ESTRATÉGIAS DE RESOLUÇÃO (IREB §4.4)
+**Verificação 2 — Contradições escopo-limite:**
+Um RF diz que o sistema FAZ X mas `visao-produto-normativo.md` lista X como "fora do sistema"? Um RF implica integração com sistema externo não declarado em M1?
+
+**Verificação 3 — Prioridades inconsistentes (conflito de Valor):**
+Mesmo item tem `DEVE` em um lugar e `PODERIA` em outro? Item marcado `NAO_TERA` mas aparece como RF com modal em outro artefato?
+
+**Verificação 4 — Conflito de interesse entre stakeholders:**
+RF favorece fortemente um perfil e prejudica outro? Cruzar stakeholders de `visao-produto-normativo.md` com RFs que os afetam.
+
+**Verificação 5 — Conflitos semânticos:**
+Cruzar `glossario.md` com `elicitacao-raw.md`: mesmo termo com definições diferentes em contextos distintos? Termos do glossário com `[DEFINIÇÃO INCERTA]` geram conflito potencial.
+
+**Estratégias de resolução (IREB §4.4):**
 
 | Estratégia | Quando usar |
 |---|---|
-| **Acordo** | Stakeholders podem dialogar e convergir — registrar decisão tomada |
-| **Compromisso** | Nenhum lado cede totalmente — solução meio-a-meio documentada |
-| **Votação** | Múltiplos stakeholders com peso igual — maioria decide |
-| **Análise de alternativas** | Nenhuma das posições é possível — propor terceira opção |
+| **Acordo** | Stakeholders podem dialogar e convergir |
+| **Compromisso** | Nenhum lado cede totalmente — meio-a-meio |
+| **Votação** | Múltiplos stakeholders com peso igual |
+| **Análise de alternativas** | Nenhuma posição é possível — propor terceira opção |
 
----
+## Fase 2 — Saída
 
-## PROCESSO
+**0 conflitos:** não criar `conflitos-detectados.md`. Registrar na saída do modeler: "conflitos-detect: 0 conflitos em M2."
 
-### Entrada
-
-- `03.1-funcionais.md` rascunho (após priorizacao)
-- `03.2-qualidade.md` rascunho
-- `03.3-restricoes.md` rascunho
-- `visao-produto-normativo.md` (stakeholders + contexto)
-- `elicitacao-raw.md`
-
-### Verificações M2 (escopo desta versão)
-
-Focar nas verificações de maior impacto em M2:
-
-**Verificação 1 — Duplicatas**
-- Dois IDs descrevendo a mesma funcionalidade com texto diferente?
-- Candidatos: itens criados por fontes diferentes (entrevista vs. recomendacao-implicitos vs. recomendacao-dominio)
-
-**Verificação 2 — Contradições escopo-limite**
-- Um RF diz que o sistema FAZ X, mas `visao-produto-normativo.md` lista X como "fora do sistema"?
-- Um RF implica integração com sistema externo que não foi declarado em M1?
-
-**Verificação 3 — Prioridades inconsistentes (conflito de Valor)**
-- Mesmo item tem `DEVE` em um lugar e `PODERIA` em outro?
-- Item marcado como "fora do escopo" (NAO_TERA) mas aparece como RF com modal em outro artefato?
-
-**Verificação 4 — Conflito entre stakeholders (conflito de Interesse)**
-- RF favorece fortemente um perfil de usuário e prejudica outro?
-- Exemplo: RF "O sistema DEVE simplificar o fluxo para o comprador" vs. RF "O sistema DEVE exigir dados detalhados para o vendedor"
-
-**Verificação 5 — Termos semânticos (conflito Semântico)**
-- Cruzar `glossario.md` com `elicitacao-raw.md`: mesmo termo com definições diferentes em contextos distintos?
-
-### Sem interação com usuário
-
-Detecção automática. Se conflito requer decisão humana: registrar no `conflitos-detectados.md` com estratégia recomendada; o orquestrador ou o `checker` (M3) poderá escalar ao usuário se necessário.
-
----
-
-## SAÍDA
-
-### Nenhum conflito detectado
-
-Não criar `conflitos-detectados.md`. Registrar apenas na saída do modeler: "conflitos-detect: 0 conflitos detectados em M2."
-
-### ≥ 1 conflito detectado → conflitos-detectados.md
+**≥ 1 conflito → criar `conflitos-detectados.md`:**
 
 ```markdown
 # Conflitos Detectados — M2
 
-> Gerado automaticamente. Conflitos não resolvidos podem bloquear Gate 3 (analyze-cross-artifact — D17).
+> Conflitos não resolvidos podem bloquear Gate 3 (analyze-cross-artifact — D17).
 
 ---
 
-## CONF-001 — [Tipo de conflito]: [Descrição curta]
+## CONF-001 — [Tipo]: [Descrição curta]
 
 **Tipo IREB §4.4:** [Interesse / Dados / Processo / Recursos / Valor / Semântico]
-**Itens envolvidos:** RF-005, RF-012 (ou stakeholders A vs. B)
+**Itens envolvidos:** RF-005, RF-012
 **Descrição:** [O que está em conflito e por quê]
 **Estratégia recomendada:** [Acordo / Compromisso / Votação / Análise de alternativas]
-**Status:** `aberto` | `resolvido`
-**Resolução (se resolvido):** [Como foi resolvido]
-
----
+**Status:** `aberto`
+**Resolução:** —
 ```
 
----
+Conflito tipo Semântico com definição já em `glossario.md` → pode marcar `resolvido` automaticamente.
 
-## REGRAS DE QUALIDADE
+Sinalizar ao `modeler`: conflitos-detect concluído → prosseguir para `pautas-reelicitacao` (Passo 5).
 
-- Um mesmo par de itens pode ter no máximo 1 conflito registrado (consolidar múltiplos aspectos num único CONF)
-- Status inicial sempre `aberto` — o modeler não resolve conflitos sozinho
-- Conflitos do tipo Semântico que têm definição já no `glossario.md` podem ser marcados `resolvido` automaticamente (o glossário resolve a ambiguidade)
-- `conflitos-detectados.md` é input do `checker` em M3 (`analyze-cross-artifact`) — não remover o arquivo após M2
+<!-- internal -->
+## Anti-Padrão: Sinonímia Classificada como Conflito Semântico
+
+**Como acontece:** "pedido" e "compra" são usados como sinônimos pelo usuário, mas o sistema os registra como 2 termos distintos e cria CONF-001 (conflito semântico). O modeler perde tempo gerenciando conflito que não existe.
+
+**Como detectar:** Antes de criar conflito semântico, verificar campo "Sinônimos usados no projeto" no `glossario.md` para ambos os termos. Se um é sinônimo do outro: conflito não existe.
+
+**O que fazer:** Cruzar `glossario.md` antes de registrar conflito semântico. Dois sinônimos = 1 verbete com 2 formas, não conflito. Criar CONF apenas se os termos têm definições genuinamente distintas para o mesmo referente.
+<!-- /internal -->

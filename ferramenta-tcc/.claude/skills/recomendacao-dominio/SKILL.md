@@ -1,7 +1,7 @@
 ---
 name: recomendacao-dominio
-description: >
-  
+description: >-
+  Para sugerir funcionalidades típicas do domínio do projeto como educação, saúde, e-commerce, gestão. Use após identificar o domínio para confirmar esses recursos fazem sentido para você. Use to recommend typical domain-specific features.
 ---
 
 # Adapter Claude Code — recomendacao-dominio

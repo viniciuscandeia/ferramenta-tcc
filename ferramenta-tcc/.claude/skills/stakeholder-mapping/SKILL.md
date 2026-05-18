@@ -1,7 +1,7 @@
 ---
 name: stakeholder-mapping
-description: >
-  
+description: >-
+  Quando precisa identificar quem usa, quem decide e quem é afetado pelo produto. Use para mapear quem vai usar, quem aprova, quem é impactado. Use when mapping people involved in or affected by the project.
 ---
 
 # Adapter Claude Code — stakeholder-mapping

@@ -1,0 +1,124 @@
+# estado-projeto.yaml — Template comentado (Z20, Z21)
+#
+# Este arquivo é criado pelo orquestrador no início de cada projeto.
+# É a Fonte de Verdade (SoT) do estado corrente (D13).
+# Em caso de ausência ou ilegibilidade: ativar detection-based recovery (D10).
+#
+# INSTRUÇÃO DE USO: Copiar para a raiz do projeto do usuário com nome `estado-projeto.yaml`.
+# Remover os comentários (#) do arquivo em produção.
+
+# ──────────────────────────────────────────────
+# ESTADO CORRENTE
+# ──────────────────────────────────────────────
+
+marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
+modo: padrao                # padrao | express  (Z15 — express reduz loops e rigor de checker)
+
+gate_status:
+  gate_1: pendente           # pendente | aprovado | bloqueado
+  gate_2: pendente           # bloqueado se pautas-reelicitacao.md tiver itens [ ]
+  gate_3: pendente           # bloqueado se analyze-report.md tiver issues BLOQUEADOR (🔴)
+  gate_4: nao_solicitado     # nao_solicitado | pendente | aprovado
+
+# ──────────────────────────────────────────────
+# CONTROLE DE LOOPS
+# ──────────────────────────────────────────────
+
+loop_m2_iteracoes: 0         # incrementado a cada retorno ao collector (máx: 3 — constitution §POLÍTICA DE GATES)
+loop_m3_iteracoes: 0         # incrementado a cada retorno ao documenter (máx: 3)
+
+# ──────────────────────────────────────────────
+# ARTEFATOS — com audit trail (Z21)
+# ──────────────────────────────────────────────
+
+artefatos:
+  # Formato por artefato: nome | marco | iteracao | modo | gate | aprovado_em
+  - nome: visao-produto-leigo.md
+    marco: M1
+    iteracao: 1
+    modo: leigo              # leigo | normativo | tecnico
+    gate: gate_1
+    aprovado_em: null        # "2026-06-01T10:30:00" quando aprovado
+
+  - nome: visao-produto-normativo.md
+    marco: M1
+    iteracao: 1
+    modo: normativo
+    gate: gate_1
+    aprovado_em: null
+
+  # Marco 2 — acrescentar quando gerados:
+  # - nome: 03.1-funcionais.md
+  # - nome: 03.1-funcionais-leigo.md
+  # - nome: 03.2-qualidade.md
+  # - nome: 03.2-qualidade-leigo.md
+  # - nome: 03.3-restricoes.md
+  # - nome: 03.3-restricoes-leigo.md
+  # - nome: glossario.md
+  # - nome: pautas-reelicitacao.md  (condicional)
+  # - nome: conflitos-detectados.md (condicional — apenas se ≥ 1 conflito)
+  # - nome: 03.4-premissas.md       (condicional — apenas se premissas detectadas)
+
+  # Marco 3 — acrescentar quando gerados:
+  # - nome: SRS-completo.md
+  # - nome: SRS-completo-leigo.md
+  # - nome: analyze-report.md
+  # - nome: rastreabilidade.md      (condicional)
+  # spec/*.feature e tests/ são técnicos — não gerar versão leigo (D18, D19)
+
+pautas_abertas: []           # lista de IDs de pautas abertas em pautas-reelicitacao.md
+
+versao_leigo_aprovada: []    # lista de artefatos com versão leigo aprovada pelo usuário
+
+ultima_atualizacao: "2026-05-18T00:00:00"
+
+# ──────────────────────────────────────────────
+# PASS LOG — APPEND-ONLY (Z20)
+# ──────────────────────────────────────────────
+#
+# REGRA: Nunca sobrescrever uma entrada existente.
+# Cada execução do checker ACRESCENTA uma nova entrada abaixo.
+# O histórico de diagnósticos É o artefato de auditoria.
+
+passes: []
+# Formato de cada entrada quando executada pelo checker:
+# - iteracao: 1
+#   marco: M3
+#   agente: checker
+#   data: "2026-06-01T11:00:00"
+#   resumo_quantitativo: "🔴 0 | 🟠 2 | 🟡 1 | 🔵 0"
+#   artefato: analyze-report.md
+#   resolvidos_vs_anterior: []   # IDs resolvidos em relação à iteração anterior
+#   persistem: []                # IDs que persistem da iteração anterior
+#   novos: []                    # IDs novos nesta iteração
+
+# ──────────────────────────────────────────────
+# EXEMPLO: estado após Gate 1 aprovado
+# ──────────────────────────────────────────────
+#
+# marco_corrente: M2
+# modo: padrao
+# gate_status:
+#   gate_1: aprovado
+#   gate_2: pendente
+#   gate_3: pendente
+#   gate_4: nao_solicitado
+# loop_m2_iteracoes: 0
+# loop_m3_iteracoes: 0
+# artefatos:
+#   - nome: visao-produto-leigo.md
+#     marco: M1
+#     iteracao: 1
+#     modo: leigo
+#     gate: gate_1
+#     aprovado_em: "2026-06-01T10:30:00"
+#   - nome: visao-produto-normativo.md
+#     marco: M1
+#     iteracao: 1
+#     modo: normativo
+#     gate: gate_1
+#     aprovado_em: "2026-06-01T10:30:00"
+# pautas_abertas: []
+# versao_leigo_aprovada: [visao-produto-leigo.md]
+# ultima_atualizacao: "2026-06-01T10:30:00"
+# passes: []

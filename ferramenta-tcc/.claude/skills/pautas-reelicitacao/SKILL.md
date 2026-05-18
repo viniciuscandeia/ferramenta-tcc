@@ -1,7 +1,7 @@
 ---
 name: pautas-reelicitacao
-description: >
-  
+description: >-
+  Para identificar lacunas nos artefatos de M2 que impedem avançar para a próxima confirmação de fase. Operação interna sem interação com o usuário. Use to identify gaps in milestone 2 artifacts that block the gate.
 ---
 
 # Adapter Claude Code — pautas-reelicitacao

@@ -130,23 +130,48 @@ Após inicialização, rotear para o sub-agente do marco corrente:
 
 O orquestrador mantém `estado-projeto.yaml` atualizado após cada ação significativa.
 
-**Estrutura mínima:**
+**Schema completo (Z20, Z21 — ver template em `catalogos-seed/estado-projeto.exemplo.yaml`):**
 ```yaml
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
+modo: padrao                # padrao | express (Z15)
 gate_status:
   gate_1: pendente           # pendente | aprovado | bloqueado
   gate_2: pendente
   gate_3: pendente
   gate_4: nao_solicitado    # nao_solicitado | pendente | aprovado
 artefatos:
-  - visao-produto-leigo.md
-  - visao-produto-normativo.md
+  - nome: visao-produto-leigo.md
+    marco: M1
+    iteracao: 1
+    modo: leigo             # leigo | normativo | tecnico
+    gate: gate_1
+    aprovado_em: null       # timestamp quando aprovado
 pautas_abertas: []
-loop_m2_iteracoes: 0     # incrementado a cada volta ao collector
-loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter
+loop_m2_iteracoes: 0     # incrementado a cada volta ao collector (máx: 3)
+loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter (máx: 3)
 versao_leigo_aprovada: []
-ultima_atualizacao: "2026-05-20T10:00:00"
+ultima_atualizacao: "2026-05-18T00:00:00"
+# Pass log — append-only (Z20). Nunca sobrescrever entradas existentes.
+passes: []
+# Formato de cada Pass:
+# - iteracao: 1
+#   marco: M3
+#   agente: checker
+#   data: "..."
+#   resumo_quantitativo: "🔴 0 | 🟠 2 | 🟡 1 | 🔵 0"
+#   artefato: analyze-report.md
+#   resolvidos_vs_anterior: []
+#   persistem: []
+#   novos: []
 ```
+
+**Regra Pass log (Z20):** `analyze-report.md` e `pautas-reelicitacao.md` nunca são sobrescritos após iteração 1. Cada nova iteração de checker/modeler **acrescenta** seção `## Análise — Iteração N — <data>` com sumário quantitativo e diff vs iteração anterior. O orquestrador também acrescenta entrada em `passes[]` no yaml.
+
+**Invariantes de execução (Z18):**
+- NUNCA invocar mais de 2 sub-agentes simultaneamente (Claude Code: `Task()` paralelo limitado a 2)
+- Sub-agentes NUNCA editam artefatos diretamente — apenas o orquestrador escreve
+- NUNCA pular etapa de síntese após retorno de sub-agente
+- NUNCA retry de sub-agente falhado na mesma iteração — registrar em `_pendencias.md` e continuar
 
 ---
 

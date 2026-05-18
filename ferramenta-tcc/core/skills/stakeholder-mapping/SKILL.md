@@ -1,32 +1,31 @@
 ---
 name: stakeholder-mapping
-description: Identifica e mapeia as pessoas envolvidas no projeto — quem usa, quem decide, quem é afetado. Produz tabela de personas/papéis para o terceiro componente de visao-produto.md.
-when_to_use: Terceira skill do Marco 1, após situacao-problema. Executada antes de contexto-e-limite.
+description: >-
+  Identifica e mapeia todas as pessoas envolvidas no projeto — quem usa, quem decide, quem é afetado.
+  Use após documentar o problema, quando é preciso saber quem tem interesse no produto.
+  Map stakeholders for a layperson project; produces a roles table with type of involvement.
 ---
 
-# Skill: stakeholder-mapping
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** Livro 2, cap. 1 (Identificação de Stakeholders)
-**Marco:** M1 — Definição da Necessidade
-**Ordem no workflow:** 3ª skill
+1. **Extrair antes de perguntar** — sempre ler skills anteriores e pré-popular a tabela com pessoas já mencionadas. Nunca repetir pergunta sobre quem já foi nomeado.
+2. **Decisor explícito é obrigatório** — sem decisor identificado, o Gate 1 não pode ser aprovado. Se o usuário não souber, registrar como "a identificar" e marcar como pendência aberta.
+3. **Afetado indireto é frequentemente omitido** — sondar proativamente: clientes dos clientes, equipes de suporte, parceiros externos. O usuário raramente os menciona sem estímulo.
 
----
+<HARD-GATE>
+- NÃO executar antes de `situacao-problema` concluído (verificar que `## Situação-Problema` existe em `visao-produto.md`)
+- ⛔ STOP se pré-processamento extrai 0 pessoas das skills anteriores (indica que M1 está corrompido ou vazio) — registrar em `_pendencias.md`
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização e Pré-Processamento
 
-Identificar todas as pessoas que têm interesse, serão afetadas, ou precisam aprovar o projeto. O mapeamento correto evita que requisitos importantes sejam ignorados por falta de representação de algum grupo.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar pré-condição: `## Situação-Problema` deve existir em `visao-produto.md`
+3. **Pré-processamento:** extrair pessoas já mencionadas em Vision Box (público-alvo) e Situação-Problema (usuários, afetados). Usá-las como ponto de partida — não repetir nas perguntas.
 
----
+## Fase 1 — Coleta
 
-## PRÉ-PROCESSAMENTO
-
-Antes de perguntar ao usuário, extrair das respostas anteriores (Vision Box + Situação-Problema) os grupos de pessoas já mencionados. Usá-los como ponto de partida para as perguntas — não repetir o que já foi dito.
-
----
-
-## PERGUNTAS AO USUÁRIO
-
-**Lote único (≤ 4 perguntas):**
+**Lote único (≤ 4 perguntas), personalizando com pessoas já extraídas:**
 
 1. **Usuários diretos** (text):
    ```
@@ -48,15 +47,10 @@ Antes de perguntar ao usuário, extrair das respostas anteriores (Vision Box + S
    ```
    Tem algum grupo de pessoas que NÃO deve ter acesso ou não deve ser impactado pelo produto?
    ```
-   *(Esta pergunta ajuda a delimitar o escopo — formulada em linguagem simples)*
 
----
+## Fase 2 — Síntese
 
-## PROCESSAMENTO
-
-Com as respostas + dados já extraídos das skills anteriores, gerar a tabela de pessoas envolvidas:
-
-### Estrutura da tabela (versão normativa)
+Montar tabela de pessoas envolvidas, fazendo merge dos extraídos no pré-processamento com as respostas do Lote 1:
 
 ```markdown
 ## Pessoas Envolvidas
@@ -72,18 +66,26 @@ Com as respostas + dados já extraídos das skills anteriores, gerar a tabela de
 - **Afetado** — impactado pelos resultados, mas não usa diretamente
 - **Restrito** — não deve ter acesso
 
-### Regras de geração
+**Regras de síntese:**
 
-- Cada grupo mencionado vira uma linha na tabela
-- Inferir "necessidade principal" com base no contexto — sinalizar como "[inferido]" se incerto
-- Se o usuário não souber responder alguma pergunta: registrar o papel como "a identificar" na tabela
+- Cada grupo mencionado (pré-processamento + Lote 1) vira uma linha na tabela
+- Inferir "necessidade principal" com base no contexto — marcar como `[inferido]` se incerto
+- Se usuário não souber responder: registrar papel como "a identificar" na tabela e adicionar à `pautas_abertas` em `estado-projeto.yaml`
 - Verificar consistência com Vision Box (público-alvo) e Situação-Problema (usuários principais)
-- Aplicar `traducao-leigo` antes de exibição ao usuário
+- Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
 
----
+## Fase 3 — Saída
 
-## SAÍDA
+1. Append seção `## Pessoas Envolvidas` em `visao-produto.md`
+2. Atualizar `estado-projeto.yaml` — se houver "a identificar": adicionar à lista `pautas_abertas`
+3. Sinalizar ao `stakeholder-identifier`: mapeamento concluído → prosseguir para `contexto-e-limite`
 
-Seção "## Pessoas Envolvidas" para compor `visao-produto.md`.
+<!-- internal -->
+## Anti-Padrão: Pré-Processamento Perde Pessoa de Texto Longo
 
-Sinalizar ao `stakeholder-identifier` que mapeamento concluído → prosseguir para `contexto-e-limite`.
+**Como acontece:** Em inputs ricos como o Caso 2 M1 (texto longo da médica), o pré-processamento lê só o Vision Box e perde pessoas mencionadas na narrativa longa de Situação-Problema (ex: "plano de saúde" mencionado como exigência regulatória no corpo do texto).
+
+**Como detectar:** Checar se cada pessoa/entidade nomeada em `## Situação-Problema` aparece como linha na tabela final. Varredura simples: tokenizar nomes próprios e substantivos de papel (médico, recepcionista, plano, fornecedor) e cruzar com a tabela.
+
+**O que fazer:** Fail-safe — adicionar qualquer pessoa/entidade não capturada como linha extra com papel `[a confirmar]`. Melhor uma linha a mais para revisar do que uma omissão silenciosa.
+<!-- /internal -->

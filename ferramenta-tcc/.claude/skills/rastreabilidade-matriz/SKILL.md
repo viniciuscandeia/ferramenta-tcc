@@ -1,7 +1,7 @@
 ---
 name: rastreabilidade-matriz
-description: >
-  
+description: >-
+  Para gerar a matriz de rastreabilidade que conecta objetivos de negócio, requisitos, SRS, specs e testes. Operação do checker no Marco 3. Use to generate bidirectional traceability matrix linking business goals to test artifacts.
 ---
 
 # Adapter Claude Code — rastreabilidade-matriz

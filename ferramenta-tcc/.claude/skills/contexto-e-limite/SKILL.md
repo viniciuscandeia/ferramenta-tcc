@@ -1,7 +1,7 @@
 ---
 name: contexto-e-limite
-description: >
-  
+description: >-
+  Quando precisa definir o que está dentro e fora do projeto. Use para esclarecer o que o sistema faz, o que não é responsabilidade do sistema, onde termina o produto. Use when clarifying what is in and out of scope.
 ---
 
 # Adapter Claude Code — contexto-e-limite

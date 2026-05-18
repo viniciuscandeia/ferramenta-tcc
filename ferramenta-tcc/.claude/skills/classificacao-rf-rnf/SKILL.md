@@ -1,7 +1,7 @@
 ---
 name: classificacao-rf-rnf
-description: >
-  
+description: >-
+  Para classificar itens coletados em o que faz, como se comporta, restrições e premissas do projeto. Use após elicitação completa para organizar tudo que foi descoberto. Use to classify collected items into functional, quality requirements, constraints and assumptions.
 ---
 
 # Adapter Claude Code — classificacao-rf-rnf

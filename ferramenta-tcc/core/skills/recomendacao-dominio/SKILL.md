@@ -1,80 +1,79 @@
 ---
 name: recomendacao-dominio
-description: Detecta o domínio do projeto a partir de visao-produto-normativo.md (matching contra 5 catálogos de domínio), confirma com o usuário e faz 4 perguntas sobre seções do catálogo. Saída: RFs/RNFs/restrições confirmados em elicitacao-raw.md.
-when_to_use: Invocada pelo collector na Ronda 3 da Fase A. Sempre executar após cenario-narrativa. Duas chamadas AskUserQuestion: 1 yesno/choice para confirmar domínio + 1 lote de 4 perguntas.
+description: >-
+  Identifica o tipo de produto (loja virtual, app de saúde, painel de relatórios etc.) e sugere funcionalidades típicas daquele setor para confirmar com o usuário.
+  Use na Ronda 3 do Marco 2, após os cenários narrativos.
+  Domain-based requirement recommendation for layperson stakeholder; matches project to domain catalog and confirms via structured questions.
 ---
 
-# Skill: recomendacao-dominio
+## Filosofia desta skill (Regras Absolutas)
 
-**Catálogos:** `ferramenta-tcc/catalogos-seed/dominios/`
-**Marco:** M2 — Consenso de Escopo (Fase A, Ronda 3)
-**Invocada por:** `collector`
+1. **Confirmação de domínio é obrigatória — nunca assumir.** Detecção automática pode errar. O usuário confirma; o catálogo executa. Pular a confirmação = dados de domínio errado invadem `elicitacao-raw.md`.
+2. **Perguntas do catálogo são choice ou yesno — nunca text.** Respostas estruturadas aqui facilitam a classificação do modeler mais tarde. Questão aberta nesta ronda = dado não-classificável.
+3. **Zero termos técnicos visíveis.** Nunca mencionar "catálogo", "domínio", "seed", "classificação". Usar "o seu tipo de produto" em vez de "domínio".
 
----
+<HARD-GATE>
+- NÃO executar antes de `cenario-narrativa` concluída (verificar seção `## Cenários Narrativos` em `elicitacao-raw.md`)
+- NÃO executar se nenhum catálogo em `catalogos-seed/dominios/` tem ≥ 2 keyword matches E catálogo genérico não está disponível — registrar em `_pendencias.md` e pular esta ronda
+- ⛔ STOP se usuário nega o domínio detectado E seleciona "outro" — usar catálogos genéricos sem nova pergunta de confirmação
+</HARD-GATE>
 
-## OBJETIVO
+## Fase 0 — Inicialização
 
-Usar o conhecimento pré-compilado dos catálogos de domínio para sugerir funcionalidades, stakeholders e restrições típicas do setor do projeto — reduzindo o esforço do usuário e aumentando a completude da elicitação.
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Verificar pré-condição: `## Cenários Narrativos` existe em `elicitacao-raw.md`
+3. Acessar catálogos disponíveis em `catalogos-seed/dominios/`
 
----
+## Fase 1 — Detecção Automática do Domínio
 
-## DOMÍNIOS DISPONÍVEIS
+Ler `visao-produto-normativo.md` (seções: nome, público-alvo, funcionalidades-chave, contexto). Contar matches de keywords:
 
-| Domínio | Arquivo | Keywords de detecção |
+| Domínio | Arquivo | Keywords |
 |---|---|---|
-| E-commerce | `catalogos-seed/dominios/ecommerce.md` | loja, venda, produto, compra, pedido, carrinho, pagamento, frete, cliente, estoque |
-| Educação | `catalogos-seed/dominios/educacao.md` | aprender, curso, aula, aluno, professor, ensino, escola, turma, nota, quiz, exercício |
-| Saúde | `catalogos-seed/dominios/saude.md` | saúde, médico, paciente, consulta, prontuário, agendamento, farmácia, exame, receita |
-| Mobile | `catalogos-seed/dominios/mobile.md` | app, aplicativo, celular, smartphone, notificação push, offline, GPS, câmera |
-| Dashboard | `catalogos-seed/dominios/dashboard.md` | relatório, análise, gráfico, métricas, indicadores, painel, filtro, exportar |
+| E-commerce | `dominios/ecommerce.md` | loja, venda, produto, compra, pedido, carrinho, pagamento, frete, cliente, estoque |
+| Educação | `dominios/educacao.md` | aprender, curso, aula, aluno, professor, ensino, escola, turma, nota, quiz, exercício |
+| Saúde | `dominios/saude.md` | saúde, médico, paciente, consulta, prontuário, agendamento, farmácia, exame, receita |
+| Mobile | `dominios/mobile.md` | app, aplicativo, celular, smartphone, notificação push, offline, GPS, câmera |
+| Dashboard | `dominios/dashboard.md` | relatório, análise, gráfico, métricas, indicadores, painel, filtro, exportar |
 
----
+Selecionar domínio com maior contagem. Empate: mais específico vence. Nenhum com ≥ 2 matches → usar genérico e pular Fase 2.
 
-## PROCESSO
+## Fase 2 — Confirmação com o Usuário
 
-### Etapa 1 — Detecção automática do domínio
+**1 chamada `AskUserQuestion` com 1 pergunta:**
 
-1. Ler `visao-produto-normativo.md` (seções: nome do produto, público-alvo, funcionalidades-chave, contexto)
-2. Contar matches de keywords para cada domínio
-3. Selecionar o domínio com maior contagem de matches
-4. Se empate: selecionar o mais específico (ex: ecommerce > mobile se ambos têm matches)
-5. Se nenhum domínio tem ≥ 2 matches: usar `rfs-tipicos.md` + `rnfs-tipicos.md` genéricos (pular confirmação)
-
-### Etapa 2 — Confirmação com o usuário (1 chamada AskUserQuestion)
-
-**Opção A — Domínio único detectado (yesno):**
+**Domínio único (yesno):**
 ```
-O seu projeto parece ser do tipo [nome do domínio em linguagem leiga — ex: "loja virtual", "app educacional", "sistema de saúde"].
+O seu projeto parece ser do tipo [nome do domínio em linguagem leiga — ex: "loja virtual", "app de saúde"].
 Isso está certo?
 ```
 
-**Opção B — Múltiplos domínios plausíveis (choice):**
+**Múltiplos domínios plausíveis (choice):**
 ```
 Qual categoria descreve melhor o seu projeto?
-(A) [Domínio 1 — ex: Loja virtual / e-commerce]
+(A) [Domínio 1 — ex: Loja virtual]
 (B) [Domínio 2 — ex: App de gestão mobile]
 (C) Nenhum dos dois — é algo diferente
 ```
 
-**Se usuário confirma:** prosseguir com catálogo do domínio confirmado
-**Se usuário nega/seleciona "outro":** usar catálogo genérico (`rfs-tipicos.md` + `rnfs-tipicos.md`)
+Se confirmado: usar catálogo do domínio. Se negado: usar catálogo genérico (`rfs-tipicos.md` + `rnfs-tipicos.md`).
 
-### Etapa 3 — 4 perguntas do catálogo (1 lote AskUserQuestion)
+## Fase 3 — 4 Perguntas do Catálogo
 
-Ler o arquivo de domínio e formular 4 perguntas — uma por seção principal do catálogo:
+**1 chamada `AskUserQuestion` com 4 perguntas (choice ou yesno):**
 
-**Estrutura típica dos catálogos (adaptar ao domínio):**
-
-| Seção do catálogo | Pergunta para o usuário |
+| Seção do catálogo | Pergunta |
 |---|---|
-| Stakeholders típicos | "Além de [usuários já identificados], existem outros perfis que vão usar ou ser afetados pelo produto? (Ex: [exemplos do catálogo])" |
-| Funcionalidades típicas | "Qual dessas funcionalidades comuns em [domínio] faz sentido para o seu produto? [lista choice de 3–4 opções]" |
-| RNFs típicos | "Existem requisitos de [desempenho/segurança/privacidade] que você já sabe que precisa cumprir? (Ex: [exemplos do catálogo])" |
-| Restrições típicas | "Existe alguma lei, regulação ou padrão que o produto precisa seguir? (Ex: [exemplos específicos do domínio])" |
+| Stakeholders típicos | "Além de [usuários já identificados], existem outros perfis? (Ex: [exemplos do catálogo])" |
+| Funcionalidades típicas | "Qual dessas funcionalidades comuns faz sentido para o seu produto? [choice 3-4 opções]" |
+| RNFs típicos | "Há requisitos de [desempenho/segurança/privacidade] que precisa cumprir? (Ex: [exemplos])" |
+| Restrições típicas | "Há lei, regulação ou padrão que o produto precisa seguir? (Ex: [exemplos do domínio])" |
 
-**Tipo de pergunta:** choice (lista de opções) ou yesno — **não usar text** nesta ronda (garante respostas estruturadas)
+**Tipo obrigatório:** choice ou yesno — nunca `text` nesta fase.
 
-### Etapa 4 — Registrar no elicitacao-raw.md
+## Fase 4 — Saída
+
+Acrescentar seção em `elicitacao-raw.md`:
 
 ```markdown
 ## Recomendações de Domínio (recomendacao-dominio — Fase A)
@@ -88,18 +87,14 @@ Ler o arquivo de domínio e formular 4 perguntas — uma por seção principal d
 **Restrições confirmadas:** [lista com referência legal se houver]
 ```
 
----
+Sinalizar ao `collector`: recomendacao-dominio concluída → prosseguir para `recomendacao-implicitos`.
 
-## REGRAS (D14 + D19)
+<!-- internal -->
+## Anti-Padrão: Domínio Confirmado Sem yesno Claro
 
-- Etapa 2: 1 chamada AskUserQuestion com 1 pergunta (yesno ou choice)
-- Etapa 3: 1 chamada AskUserQuestion com exatamente 4 perguntas (lote único)
-- Total desta skill: máximo 2 chamadas AskUserQuestion
-- Proibido mencionar "catálogo", "domínio", "seed", "classificação" ao usuário
-- Usar linguagem: "o seu tipo de produto" em vez de "o seu domínio"
+**Como acontece:** A detecção automática retorna "saúde" com 3 matches. A skill pula a Fase 2 por "confiança alta" e vai direto para as 4 perguntas do catálogo de saúde. Mas o projeto é de saúde animal (pet shop), não saúde humana — as perguntas de catálogo (prontuário, CFM) ficam completamente erradas.
 
----
+**Como detectar:** Verificar se Fase 2 foi executada. Se não: flag `confirmation_skipped: true` — proibido em qualquer contagem de matches.
 
-## SAÍDA
-
-Seção adicionada a `elicitacao-raw.md` com domínio confirmado + funcionalidades/RNFs/restrições do catálogo validadas pelo usuário.
+**O que fazer:** Fase 2 é sempre obrigatória independente do número de matches. O custo de 1 pergunta de confirmação é zero; o custo de catálogo errado é re-elicitação completa em Fase B.
+<!-- /internal -->

@@ -4,86 +4,58 @@ description: Aplica os 12 critérios de qualidade IREB §3.8 sobre o SRS gerado 
 when_to_use: Invocada pelo checker no Passo 1 do Processo M3. Entrada: SRS-completo.md + 03.1-funcionais.md + 03.2-qualidade.md. Saída: seção em analyze-report.md (não arquivo separado).
 ---
 
-# Skill: validacao-checklist-ireb
+## Filosofia desta skill (Regras Absolutas)
 
-**Referência:** IREB §3.8 (12 critérios de qualidade de requisitos)
-**Marco:** M3 — Detalhamento (Fase B, Passo 1)
-**Invocada por:** `checker`
+1. **Crítico de evidência** — marcar critério como OK sem citar trecho do artefato não é verificação. Toda OK precisa de evidência; toda violação precisa de citação.
+2. **Verificar todos antes de reportar.** 12 critérios × N requisitos = N×12 verificações. Parar no primeiro CRITICAL silencia violações subsequentes que podem ser igualmente bloqueadoras.
+3. **Não duplicar analyze-cross-artifact.** Issues de Omissão e Contradição entre marcos pertencem ao Passo 2. Este passo verifica critérios de qualidade interna de cada requisito.
 
----
+<HARD-GATE>
+- NÃO executar sem `SRS-completo.md` + `03.1-funcionais.md` + `03.2-qualidade.md`
+- NÃO executar se Gate 2 não foi aprovado (modais RFC 2119 devem estar preenchidos)
+- ⛔ STOP se qualquer artefato-fonte estiver vazio ou corrompido — reportar em `_pendencias.md`
+</HARD-GATE>
 
-## 6 CRITÉRIOS POR REQUISITO INDIVIDUAL
+## Fase 0 — Inicialização
 
-Aplicar a cada RF e RNF listado em `03.1-funcionais.md` e `03.2-qualidade.md`:
+1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+2. Extrair de `03.1-funcionais.md`: lista de IDs de RF com modais
+3. Extrair de `03.2-qualidade.md`: lista de IDs de RNF com modais e métricas declaradas
+4. Contar totais: N_RF e N_RNF para controle de completude
 
-| Critério | Pergunta de verificação | Exemplo de violação | Severidade |
-|---|---|---|---|
-| **Adequado** | O requisito descreve algo realmente necessário, sem superespecificar a solução? | RF especifica tecnologia ("DEVE usar PostgreSQL") em vez de comportamento | MEDIUM |
-| **Necessário** | Existe justificativa de negócio rastreável até um objetivo declarado em M1? | RF sem ligação a nenhum objetivo de `visao-produto-normativo.md` | HIGH |
-| **Sem ambiguidade** | O requisito tem uma única interpretação possível? | Termos vagos: "rápido", "fácil", "intuitivo", "adequado", "flexível" | MEDIUM |
-| **Completo** | O requisito é auto-suficiente, sem lacunas ou referências pendentes? | "[TBD]", "[VERIFICAR]", "[pendente]", "[a definir]" no texto do requisito | CRITICAL |
-| **Compreensível** | A versão leigo é entendível por não-técnico? A versão normativa é precisa o suficiente para um técnico? | Versão leigo usa jargão; versão normativa é ambígua | MEDIUM |
-| **Verificável** | Existe forma objetiva de testar se o requisito foi atendido? | RNF sem métrica quantificável ("o sistema deve ser seguro"); RF sem critério de aceitação claro | HIGH (RNF sem métrica) / MEDIUM (RF sem critério aceite) |
+## Fase 1 — Verificação por Requisito Individual
 
----
-
-## 6 CRITÉRIOS POR SRS COMO DOCUMENTO
-
-Aplicar ao `SRS-completo.md` como um todo:
+Para cada RF e RNF (N_RF + N_RNF requisitos), verificar 6 critérios na ordem da tabela:
 
 | Critério | Pergunta de verificação | Exemplo de violação | Severidade |
 |---|---|---|---|
-| **Completude** | Todos os RFs de `03.1-funcionais.md` e RNFs de `03.2-qualidade.md` aparecem no SRS? | RF-009 presente em `03.1-funcionais.md` mas ausente na seção 3 do SRS | CRITICAL |
-| **Consistência** | O SRS é internamente coerente — nenhuma seção contradiz outra? | §3.1 diz "usuário DEVE confirmar e-mail" e §3.5 diz "login sem cadastro prévio possível" | CRITICAL |
-| **Viabilidade** | Os requisitos são realizáveis com os recursos e restrições declaradas em `03.3-restricoes.md`? | RNF exige 99,999% de disponibilidade com orçamento de R$500/mês | HIGH |
-| **Verificabilidade** | Todos os requisitos do SRS são testáveis em conjunto? | Múltiplos RNFs sem métricas — impossível criar critério de aceite do sistema | HIGH |
-| **Modificabilidade** | A estrutura do SRS permite alterar 1 requisito sem impacto em cascata em outros? | RF referenciado por ID em 5 outros RFs — qualquer alteração quebra a cadeia | LOW |
-| **Rastreabilidade** | Todos os requisitos do SRS têm origem rastreável até M1 ou M2? | RF no SRS sem origem declarada e sem correspondente em `03.1-funcionais.md` | HIGH |
+| **Adequado** | O requisito descreve comportamento, não solução técnica? | RF especifica tecnologia ("DEVE usar PostgreSQL") | MEDIUM |
+| **Necessário** | Existe ligação rastreável até objetivo declarado em M1? | RF sem correspondente em `visao-produto-normativo.md` | HIGH |
+| **Sem ambiguidade** | Uma única interpretação possível? | Termos vagos: "rápido", "fácil", "intuitivo", "adequado" | MEDIUM |
+| **Completo** | Auto-suficiente, sem lacunas ou referências pendentes? | `[TBD]`, `[VERIFICAR]`, `[pendente]` no texto | CRITICAL |
+| **Compreensível** | Versão leigo entendível por não-técnico? Normativa precisa? | Versão leigo usa jargão; normativa ambígua | MEDIUM |
+| **Verificável** | Existe forma objetiva de testar o atendimento do requisito? | RNF sem métrica quantificável ("o sistema deve ser seguro") | HIGH (RNF) / MEDIUM (RF) |
 
----
-
-## PROCESSO
-
-### Entrada
-
-- `SRS-completo.md` — documento gerado pelo documenter (Fase A)
-- `03.1-funcionais.md` — lista fonte de verdade dos RFs (M2, após Gate 2)
-- `03.2-qualidade.md` — lista fonte de verdade dos RNFs (M2, após Gate 2)
-
-### Passo 1 — Carregar listas de referência
-
-Extrair de `03.1-funcionais.md`:
-- Lista de todos os IDs de RF (ex.: RF-001, RF-002, ...) com seus modais RFC 2119
-
-Extrair de `03.2-qualidade.md`:
-- Lista de todos os IDs de RNF com seus modais e métricas declaradas
-
-### Passo 2 — Verificar cada requisito individualmente
-
-Para cada RF e RNF:
-1. Localizar no `SRS-completo.md` a seção correspondente
-2. Verificar os 6 critérios individuais na ordem da tabela acima
-3. Registrar cada violação com: ID do critério + ID do RF/RNF + descrição da violação + severidade
+Registrar cada violação: ID do critério + ID do RF/RNF + descrição da violação + severidade.
 
 Não parar na primeira violação — verificar todos os 6 critérios para todos os requisitos.
 
-### Passo 3 — Verificar o SRS como documento
+## Fase 2 — Verificação do SRS como Documento
 
-Após varrer todos os requisitos individualmente:
-1. Verificar completude: cruzar lista de IDs de `03.1-funcionais.md` contra seção 3 do SRS; cruzar lista de IDs de `03.2-qualidade.md` contra seção 4 do SRS
-2. Verificar consistência: buscar afirmações contraditórias entre seções do SRS
-3. Verificar viabilidade: comparar RNFs com `03.3-restricoes.md` (se disponível)
-4. Verificar verificabilidade: RNFs sem métrica quantificável (número, percentual, tempo)
-5. Verificar modificabilidade: RFs referenciados por ID em muitos outros (acoplamento excessivo)
-6. Verificar rastreabilidade: RFs no SRS sem correspondente em `03.1-funcionais.md` nem em `visao-produto-normativo.md`
+Após varrer todos os requisitos individualmente, verificar 6 critérios de documento:
 
-### Passo 4 — Escrever seção no analyze-report.md
+| Critério | Pergunta de verificação | Exemplo de violação | Severidade |
+|---|---|---|---|
+| **Completude** | Todos os IDs de `03.1` e `03.2` aparecem no SRS? | RF-009 ausente na seção 3 | CRITICAL |
+| **Consistência** | Nenhuma seção contradiz outra? | §3.1 diz "cadastro obrigatório"; §3.7 diz "acesso sem cadastro" | CRITICAL |
+| **Viabilidade** | Requisitos realizáveis com restrições de `03.3-restricoes.md`? | 99,999% uptime com orçamento R$500/mês | HIGH |
+| **Verificabilidade** | Todos os requisitos testáveis em conjunto? | Múltiplos RNFs sem métricas — sem critério de aceite do sistema | HIGH |
+| **Modificabilidade** | Alterar 1 requisito gera impacto em cascata em outros? | RF referenciado por ID em 5 outros RFs | LOW |
+| **Rastreabilidade** | Todos têm origem rastreável até M1 ou M2? | RF no SRS sem correspondente em `03.1` nem em `visao-produto-normativo.md` | HIGH |
 
-Agregar todas as violações encontradas e escrever a seção abaixo. Se não houver violações em uma tabela, escrever "Nenhuma violação encontrada."
+## Fase 3 — Saída
 
----
-
-## SAÍDA — Seção adicionada ao analyze-report.md
+Escrever seção no `analyze-report.md`:
 
 ```markdown
 ## Validação IREB §3.8
@@ -105,13 +77,14 @@ Agregar todas as violações encontradas e escrever a seção abaixo. Se não ho
 | Consistência | §3.2 afirma "cadastro obrigatório" e §3.7 afirma "acesso sem cadastro possível" | CRITICAL |
 ```
 
----
+Sinalizar ao `checker`: validacao-checklist-ireb concluída → prosseguir para `analyze-cross-artifact` (Passo 2).
 
-## REGRAS DE QUALIDADE
+<!-- internal -->
+## Anti-Padrão: Critério Marcado OK Sem Evidência
 
-- Sem interação com usuário — análise automática
-- Agregar todas as violações antes de escrever a seção (não parar no primeiro CRITICAL)
-- Usar português do Brasil nas descrições das violações
-- Preservar IDs de RF/RNF exatamente como aparecem nos artefatos-fonte
-- Se um RF não for encontrado no SRS: registrar como violação de Completude (CRITICAL), não ignorar
-- Não duplicar issues que serão cobertos por `analyze-cross-artifact` no Passo 2
+**Como acontece:** Skill verifica critério Verificável para RNF-002 e registra "OK — requisito verificável" sem citar a métrica que prova a verificabilidade. O critério Completo é marcado OK para RF-007 sem verificar se "[VERIFICAR]" aparece no texto do requisito.
+
+**Como detectar:** Verificação que resulta em OK sem citar trecho do artefato que confirma a satisfação do critério.
+
+**O que fazer:** Toda OK deve citar o trecho exato que satisfaz o critério. Toda violação deve citar o trecho ou evidência que a comprova. "OK" sem evidência = não verificado = falso negativo potencial.
+<!-- /internal -->

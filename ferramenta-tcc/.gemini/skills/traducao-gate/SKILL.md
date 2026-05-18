@@ -1,7 +1,7 @@
 ---
 name: traducao-gate
-description: >
-  
+description: >-
+  Para gerar duas versões de artefatos de confirmação de fase — versão técnica normativa e versão em linguagem acessível para aprovação do usuário. Use at milestone gates to generate both normative and layperson versions of artifacts.
 ---
 
 # Adapter Gemini CLI — traducao-gate
@@ -9,7 +9,7 @@ description: >
 Lógica canônica: `ferramenta-tcc/core/skills/traducao-gate/SKILL.md`
 
 > **Nota:** Gemini CLI não tem first-class skill discovery via manifesto (usa persona adoption).
-> Este wrapper é documentação e forward-compat — não assume invocação automática pelo runtime.
+> Este wrapper é documentação e forward-compat.
 
 ## Instruções de execução (Gemini CLI)
 

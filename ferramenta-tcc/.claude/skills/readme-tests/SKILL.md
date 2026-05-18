@@ -1,7 +1,7 @@
 ---
 name: readme-tests
-description: >
-  
+description: >-
+  Para gerar guia de como configurar e rodar os testes nos 3 frameworks suportados. Operação técnica interna. Use to generate README-TESTS.md documenting test setup and execution for all 3 frameworks.
 ---
 
 # Adapter Claude Code — readme-tests
