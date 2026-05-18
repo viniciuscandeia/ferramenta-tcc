@@ -9,9 +9,9 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 
 ## Instruções para o Gemini CLI
 
-1. Carregar `ferramenta-tcc/core/constitution.md`
-2. Carregar `ferramenta-tcc/core/agents/documenter.md` como definição completa
-3. Carregar `ferramenta-tcc/core/workflows/m3-srs-specs-tests.md`
+1. Carregar `core/constitution.md`
+2. Carregar `core/agents/documenter.md` como definição completa
+3. Carregar `core/workflows/m3-srs-specs-tests.md`
 4. **Adotar a persona do documenter** no contexto atual (persona adoption — sem Task() real)
 5. **Não usar `ask_user`** — documenter não interage com o usuário diretamente
 6. Ler/escrever artefatos via FileSystem

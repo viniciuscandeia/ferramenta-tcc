@@ -9,9 +9,9 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 
 ## Instruções para o Gemini CLI
 
-1. Carregar `ferramenta-tcc/core/constitution.md`
-2. Carregar `ferramenta-tcc/core/agents/collector.md` como definição completa
-3. Carregar `ferramenta-tcc/core/workflows/m2-requisitos.md` — seguir seção "FASE A" ou "FASE B" conforme `estado-projeto.yaml`
+1. Carregar `core/constitution.md`
+2. Carregar `core/agents/collector.md` como definição completa
+3. Carregar `core/workflows/m2-requisitos.md` — seguir seção "FASE A" ou "FASE B" conforme `estado-projeto.yaml`
 4. **Adotar a persona do collector** no contexto atual (persona adoption — sem Task() real)
 5. Usar `ask_user` (choice, text, yesno) para toda interação com o usuário
 6. Salvar `elicitacao-raw.md` via FileSystem

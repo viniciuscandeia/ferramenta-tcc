@@ -9,9 +9,9 @@ Este arquivo é um wrapper fino para Claude Code. Toda a lógica está em `core/
 
 ## Instruções para o agente Claude Code
 
-1. Carregar `ferramenta-tcc/core/constitution.md`
-2. Carregar `ferramenta-tcc/core/agents/collector.md` como definição completa do sub-agente
-3. Carregar `ferramenta-tcc/core/workflows/m2-requisitos.md` — seguir seção "FASE A" ou "FASE B" conforme `estado-projeto.yaml`
+1. Carregar `core/constitution.md`
+2. Carregar `core/agents/collector.md` como definição completa do sub-agente
+3. Carregar `core/workflows/m2-requisitos.md` — seguir seção "FASE A" ou "FASE B" conforme `estado-projeto.yaml`
 4. Executar conforme especificado no core agent
 5. Usar `AskUserQuestion` para toda interação com o usuário (não usar Bash para perguntas)
 6. Salvar `elicitacao-raw.md` na pasta do projeto corrente

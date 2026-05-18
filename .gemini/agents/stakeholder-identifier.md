@@ -9,9 +9,9 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 
 ## Instruções para o Gemini CLI
 
-1. Carregar `ferramenta-tcc/core/constitution.md`
-2. Carregar `ferramenta-tcc/core/agents/stakeholder-identifier.md` como definição completa
-3. Carregar `ferramenta-tcc/core/workflows/m1-visao.md` como sequência de execução
+1. Carregar `core/constitution.md`
+2. Carregar `core/agents/stakeholder-identifier.md` como definição completa
+3. Carregar `core/workflows/m1-visao.md` como sequência de execução
 4. **Adotar a persona do stakeholder-identifier** no contexto atual (persona adoption — sem Task() real)
 5. Usar `ask_user` (choice, text, yesno) para toda interação com o usuário
 6. Salvar artefatos na pasta do projeto corrente

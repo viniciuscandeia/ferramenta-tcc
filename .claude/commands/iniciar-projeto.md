@@ -4,7 +4,7 @@ description: Inicia ou retoma o processo de documentação de requisitos do proj
 
 # /iniciar-projeto
 
-Ler e executar `ferramenta-tcc/core/orchestrator.md`.
+Ler e executar `core/orchestrator.md`.
 
 O orquestrador irá:
 1. Carregar `core/constitution.md` (guardrail imutável)
