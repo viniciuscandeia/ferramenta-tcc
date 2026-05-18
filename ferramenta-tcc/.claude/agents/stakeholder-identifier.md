@@ -9,9 +9,9 @@ Este arquivo é um wrapper fino para Claude Code. Toda a lógica está em `core/
 
 ## Instruções para o agente Claude Code
 
-1. Carregar `ferramenta-tcc/core/constitution.md`
-2. Carregar `ferramenta-tcc/core/agents/stakeholder-identifier.md` como definição completa do sub-agente
-3. Carregar `ferramenta-tcc/core/workflows/m1-visao.md` como sequência de execução
+1. Carregar `core/constitution.md`
+2. Carregar `core/agents/stakeholder-identifier.md` como definição completa do sub-agente
+3. Carregar `core/workflows/m1-visao.md` como sequência de execução
 4. Executar conforme especificado no core agent
 5. Usar `AskUserQuestion` para toda interação com o usuário (não usar Bash para perguntas)
 6. Salvar artefatos na pasta do projeto corrente

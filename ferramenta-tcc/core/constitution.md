@@ -76,7 +76,7 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 - **Máximo 4 perguntas por chamada** — restrição da primitiva
 - **Proibido:** invocar `ask_user` individualmente por gap detectado
 - **Tipos permitidos:** `choice`, `text`, `yesno`
-- **Idioma:** português brasileiro em todas as perguntas ao usuário
+- **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `ask_user`/`AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
 
 ---
 
@@ -160,4 +160,4 @@ Requisitos funcionais e não-funcionais gerados pela ferramenta devem seguir:
 | 24 decisões completas (D1–D24) | `docs/planejamento/1 - Decisões Tomadas.md` |
 | Arquitetura completa | `docs/planejamento/3 - Arquitetura da Ferramenta.md` |
 | Cronograma | `docs/planejamento/ROADMAP.md` |
-| Catálogos seed | `ferramenta-tcc/catalogos-seed/` |
+| Catálogos seed | `catalogos-seed/` |

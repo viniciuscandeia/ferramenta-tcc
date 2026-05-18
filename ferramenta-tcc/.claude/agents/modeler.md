@@ -9,9 +9,9 @@ Este arquivo é um wrapper fino para Claude Code. Toda a lógica está em `core/
 
 ## Instruções para o agente Claude Code
 
-1. Carregar `ferramenta-tcc/core/constitution.md`
-2. Carregar `ferramenta-tcc/core/agents/modeler.md` como definição completa do sub-agente
-3. Carregar `ferramenta-tcc/core/workflows/m2-requisitos.md` — seguir somente a seção "FASE B"
+1. Carregar `core/constitution.md`
+2. Carregar `core/agents/modeler.md` como definição completa do sub-agente
+3. Carregar `core/workflows/m2-requisitos.md` — seguir somente a seção "FASE B"
 4. Executar conforme especificado no core agent (5 passos + traducao-gate)
 5. **Não interagir diretamente com o usuário** — toda interação passa pelo orquestrador
 6. Sinalizar ao orquestrador o resultado: pautas abertas (continuar loop) ou pautas zeradas (Gate 2)
