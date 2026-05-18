@@ -1,0 +1,18 @@
+[command]
+name = "iniciar-projeto"
+description = "Inicia ou retoma o processo de documentação de requisitos do projeto"
+
+[command.instructions]
+content = """
+Ler e executar `ferramenta-tcc/core/orchestrator.md`.
+
+O orquestrador irá:
+1. Carregar `ferramenta-tcc/core/constitution.md` (guardrail imutável)
+2. Verificar estado do projeto (`estado-projeto.yaml` ou detection-based)
+3. Rotear para o sub-agente do marco corrente via persona adoption
+4. Conduzir o usuário pelas fases de documentação com perguntas estruturadas via ask_user
+
+Nota para o Gemini CLI: Sub-agentes são implementados como persona adoption no mesmo contexto.
+Ao alternar entre sub-agentes, adotar a persona descrita em `.gemini/agents/<nome>.md` e
+carregar o workflow correspondente.
+"""
