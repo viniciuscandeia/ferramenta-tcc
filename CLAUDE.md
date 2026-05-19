@@ -133,6 +133,71 @@ Referência completa: `docs/planejamento/2 - Vocabulário Técnico: Agentes, Ski
 
 ---
 
+## Estrutura de repositórios e fluxo de release (git)
+
+### Dois repos distintos
+
+| Repo | URL | Conteúdo |
+|---|---|---|
+| **Monorepo local** | `~/Desktop/TCC/` (sem remote público) | Tudo: `ferramenta-tcc/` + `docs/` + `referencias/` + `sandbox/` |
+| **Repo público da ferramenta** | `https://github.com/viniciuscandeia/ferramenta-tcc` | Apenas conteúdo de `ferramenta-tcc/` (na raiz, sem o prefixo) |
+
+O remote `origin` do monorepo **aponta para o repo público**. O remote não é um espelho do monorepo — é um subconjunto filtrado.
+
+### Por que os históricos divergem
+
+`git pull` no monorepo **nunca deve ser executado** — os commits locais e remotos têm hashes diferentes porque representam o mesmo conteúdo em estruturas de árvore distintas. A divergência é esperada e permanente. Ignorar avisos de "8 commits each".
+
+### Fluxo de release (a cada nova versão)
+
+```
+# 1. Editar código em ferramenta-tcc/ + docs/ normalmente
+# 2. Bump version nos manifestos:
+#    ferramenta-tcc/.claude-plugin/plugin.json → "version": "X.Y.Z"
+#    ferramenta-tcc/gemini-extension.json      → "version": "X.Y.Z"
+# 3. Commit no monorepo (inclui docs/ se quiser, não vai para remote)
+git add ferramenta-tcc/... docs/...
+git commit -m "vX.Y.Z: descrição"
+
+# 4. Extrair somente ferramenta-tcc/ em branch temporária
+git subtree split --prefix=ferramenta-tcc -b ferramenta-only-vN
+
+# 5. Push branch temporária → main do repo público (fast-forward)
+git push origin ferramenta-only-vN:main
+
+# 6. Tag de versão
+git tag vX.Y.Z
+git push origin vX.Y.Z
+
+# 7. Limpar branch temporária
+git branch -D ferramenta-only-vN
+```
+
+**Histórico de branches temporárias usadas:**
+- `ferramenta-only-v6` → v0.2.0
+- `ferramenta-only-v7` → v0.3.0
+- Próxima: `ferramenta-only-v8` → v0.4.0 (incrementar N sempre)
+
+### O que vai para o repo público vs. fica no monorepo
+
+| Vai para GitHub | Fica só local |
+|---|---|
+| `ferramenta-tcc/core/` | `docs/planejamento/` |
+| `ferramenta-tcc/.claude/` | `docs/superpowers/` |
+| `ferramenta-tcc/.gemini/` | `referencias/` |
+| `ferramenta-tcc/catalogos-seed/` | `sandbox/` |
+| `ferramenta-tcc/tests/` | Qualquer arquivo fora de `ferramenta-tcc/` |
+| `ferramenta-tcc/*.json` (manifestos) | |
+
+### Semver adotado
+
+`MAJOR.MINOR.PATCH` — convenção:
+- **PATCH** (0.x.**Z**): correção de bug, sem comportamento novo
+- **MINOR** (0.**Y**.0): feature nova, sem quebra de API
+- **MAJOR** (**X**.0.0): mudança arquitetural ou de interface
+
+---
+
 ## Documentos essenciais para ler primeiro
 
 | Arquivo | Conteúdo |
