@@ -50,6 +50,48 @@ Vamos começar?
 
 ---
 
+## TABELA CANÔNICA DE ARTEFATOS — NOMES VÁLIDOS
+
+**REGRA ABSOLUTA:** NUNCA inventar nomes de arquivo. Os únicos nomes de artefato válidos são os listados abaixo.
+**PROIBIDO criar:** `vision-box.md`, `necessidades.md`, `fluxos.md`, `srs.md`, `requisitos.md`, `documento.md` ou qualquer variante não-listada.
+
+### M1 — Artefatos obrigatórios
+| Arquivo | Tipo |
+|---|---|
+| `visao-produto-normativo.md` | Normativo (interno) |
+| `visao-produto-leigo.md` | Leigo (aprovação Gate 1) |
+
+### M2 — Artefatos obrigatórios
+| Arquivo | Tipo | Gate |
+|---|---|---|
+| `elicitacao-raw.md` | Interno | — |
+| `03.1-funcionais.md` | Normativo | Gate 2 |
+| `03.1-funcionais-leigo.md` | Leigo | Gate 2 |
+| `03.2-qualidade.md` | Normativo | Gate 2 |
+| `03.2-qualidade-leigo.md` | Leigo | Gate 2 |
+| `03.3-restricoes.md` | Normativo | Gate 2 |
+| `03.3-restricoes-leigo.md` | Leigo | Gate 2 |
+| `glossario.md` | Compartilhado | Gate 2 |
+| `pautas-reelicitacao.md` | Interno | Gate 2 |
+| `03.4-premissas.md` | Condicional | — |
+| `conflitos-detectados.md` | Condicional | — |
+
+### M3 — Artefatos obrigatórios
+| Arquivo | Tipo | Gate |
+|---|---|---|
+| `SRS-completo.md` | Normativo | Gate 3 |
+| `SRS-completo-leigo.md` | Leigo | Gate 3 |
+| `spec/*.feature` | Técnico | Gate 3 |
+| `spec/_skipped.md` | Técnico | Gate 3 |
+| `tests/unit/` | Técnico | Gate 3 |
+| `tests/acceptance/` | Técnico | Gate 3 |
+| `TESTING-STRATEGY.md` | Técnico | Gate 3 |
+| `README-TESTS.md` | Técnico | Gate 3 |
+| `analyze-report.md` | Interno | Gate 3 |
+| `rastreabilidade.md` | Técnico | Gate 3 |
+
+---
+
 ## ROTEAMENTO POR MARCO
 
 Após inicialização, rotear para o sub-agente do marco corrente:
@@ -70,63 +112,119 @@ Após inicialização, rotear para o sub-agente do marco corrente:
 
 ### Gate 1 — Após M1
 
-**Pré-condição:** `stakeholder-identifier` sinalizou conclusão e gerou `visao-produto.md` (versões leigo + normativa).
+**PRE-FLIGHT CHECK OBRIGATÓRIO (executar ANTES de apresentar qualquer coisa ao usuário):**
 
-**Ação do orquestrador:**
-1. Verificar que `visao-produto.md` (leigo) existe e não está vazio
-2. Invocar `traducao-leigo` sobre o resumo para confirmação final de ausência de jargão
-3. Apresentar versão leigo ao usuário via `AskUserQuestion` (yesno):
+```
+VERIFICAR (obrigatório — bloquear se falhar):
+  [ ] visao-produto-normativo.md existe e não está vazio
+  [ ] visao-produto-leigo.md existe e não está vazio
+  [ ] dados_projeto.nome ≠ "Ainda não definido" e ≠ vazio
+
+SE qualquer verificação FALHAR:
+  → escrever em estado-projeto.yaml: gate_1_bloqueado: "motivo"
+  → RE-INVOCAR stakeholder-identifier para completar artefatos
+  → NÃO apresentar gate ao usuário
+  → NÃO marcar gate_1: aprovado
+
+VERIFICAR blacklist D1 em visao-produto-leigo.md:
+  → invocar traducao-leigo sobre o conteúdo
+  → se termos proibidos encontrados: reescrever antes de apresentar
+```
+
+**Ação do orquestrador (somente após pre-flight passar):**
+1. Apresentar versão leigo ao usuário via `AskUserQuestion` (yesno):
    ```
    Aqui está o resumo do que documentamos sobre seu projeto:
    [conteúdo de visao-produto-leigo.md]
    
    Está correto? Posso seguir para a próxima fase?
    ```
-4. Se SIM: criar baseline git (tag `gate-1-aprovado`), atualizar `estado-projeto.yaml`, avançar M2
-5. Se NÃO: retornar ao `stakeholder-identifier` com feedback do usuário; **não** avançar marco
+2. Se SIM: registrar em `versao_leigo_aprovada[]`, criar baseline git (tag `gate-1-aprovado`), atualizar `estado-projeto.yaml`, avançar M2
+3. Se NÃO: retornar ao `stakeholder-identifier` com feedback do usuário; **não** avançar marco
+
+**INVARIANTE:** `gate_1_status: aprovado` só pode ser escrito em `estado-projeto.yaml` após `AskUserQuestion` retornar SIM.
 
 ### Gate 2 — Após M2
 
-**Pré-condições obrigatórias:**
-- `03.1-funcionais.md` e `03.1-funcionais-leigo.md` existem
-- `03.2-qualidade.md` e `03.2-qualidade-leigo.md` existem
-- `03.3-restricoes.md` e `03.3-restricoes-leigo.md` existem
-- `glossario.md` existe
-- `pautas-reelicitacao.md` sem itens marcados como `[ ]` (pendências abertas)
+**PRE-FLIGHT CHECK OBRIGATÓRIO (executar ANTES de apresentar qualquer coisa ao usuário):**
 
-**Arquivos condicionais** (não bloqueiam gate se ausentes, mas registrar ausência no yaml):
-- `03.4-premissas.md` — gerado apenas se `modeler` detectou premissas implícitas
-- `conflitos-detectados.md` — gerado apenas se `conflitos-detect` encontrou ≥ 1 conflito
+```
+VERIFICAR (obrigatório — bloquear se qualquer um falhar):
+  [ ] 03.1-funcionais.md existe e não está vazio
+  [ ] 03.1-funcionais-leigo.md existe e não está vazio
+  [ ] 03.2-qualidade.md existe e não está vazio
+  [ ] 03.2-qualidade-leigo.md existe e não está vazio
+  [ ] 03.3-restricoes.md existe e não está vazio
+  [ ] 03.3-restricoes-leigo.md existe e não está vazio
+  [ ] glossario.md existe com ≥ 1 entrada
+  [ ] pautas-reelicitacao.md existe
+  [ ] loop_m2_iteracoes ≥ 1 (loop rodou ao menos uma vez)
+  [ ] pautas-reelicitacao.md NÃO tem itens [ ] (pendências abertas)
 
-**Bloqueio ativo se `pautas-reelicitacao.md` tiver pendências:** retornar ao loop `collector ⇄ modeler`.
+SE qualquer verificação FALHAR:
+  → escrever em estado-projeto.yaml: gate_2_bloqueado: "motivo"
+  → RE-INVOCAR collector ⇄ modeler para completar
+  → NÃO apresentar gate ao usuário
+  → NÃO marcar gate_2: aprovado
 
-**Ação ao abrir gate:**
+VERIFICAR blacklist D1 nas versões -leigo:
+  → invocar traducao-leigo sobre conteúdo de cada -leigo
+  → reescrever antes de apresentar se necessário
+
+ARQUIVOS CONDICIONAIS (não bloqueiam gate, mas registrar ausência no yaml):
+  - 03.4-premissas.md — só se modeler detectou premissas implícitas
+  - conflitos-detectados.md — só se conflitos-detect encontrou ≥ 1 conflito
+```
+
+**Ação ao abrir gate (somente após pre-flight passar):**
 1. Apresentar resumo dos artefatos M2 (versões leigo) ao usuário
-2. Perguntar aprovação (yesno)
-3. Se SIM: baseline git (tag `gate-2-aprovado`), atualizar estado, avançar M3
+2. Perguntar aprovação (yesno) via `AskUserQuestion`
+3. Se SIM: registrar em `versao_leigo_aprovada[]`, baseline git (tag `gate-2-aprovado`), atualizar estado, avançar M3
 4. Se NÃO: retornar ao `collector` com feedback
+
+**INVARIANTE:** `gate_2_status: aprovado` só pode ser escrito após `AskUserQuestion` retornar SIM e todos os items acima verificados.
 
 ### Gate 3 — Após M3
 
-**Pré-condições obrigatórias:**
-- `SRS-completo.md` (normativo) e `SRS-completo-leigo.md` existem e não estão vazios
-- `analyze-report.md` existe sem issues de severidade CRITICAL (D17)
-- `spec/` contém ≥ 1 arquivo `.feature` (D20)
-- `tests/unit/` e `tests/acceptance/` existem e contêm step defs RED (D20)
-- `TESTING-STRATEGY.md` existe com ≥ 1 entrada por RNF (D21)
-- `README-TESTS.md` existe com ≥ 1 seção de framework (D23)
+**PRE-FLIGHT CHECK OBRIGATÓRIO (executar ANTES de apresentar qualquer coisa ao usuário):**
 
-**Arquivo condicional** (não bloqueia gate se ausente):
-- `rastreabilidade.md` — gerado se `rastreabilidade-matriz` executou com sucesso; registrar ausência no yaml
+```
+VERIFICAR (obrigatório — bloquear se qualquer um falhar):
+  [ ] SRS-completo.md existe, não está vazio, tem ≥ 6 seções H2
+  [ ] SRS-completo-leigo.md existe e não está vazio
+  [ ] analyze-report.md existe
+  [ ] analyze-report.md NÃO contém issues CRITICAL (D17)
+  [ ] spec/ contém ≥ 1 arquivo .feature
+  [ ] spec/_skipped.md existe (pode estar vazio)
+  [ ] tests/unit/ existe com ≥ 1 arquivo
+  [ ] tests/acceptance/ existe com ≥ 1 arquivo
+  [ ] TESTING-STRATEGY.md existe com ≥ 1 entrada
+  [ ] README-TESTS.md existe com ≥ 1 seção de framework
+  [ ] loop_m3_iteracoes ≥ 1 (loop checker rodou ao menos uma vez)
 
-**Bloqueio ativo se `analyze-report.md` tiver CRITICAL:** retornar ao loop `documenter ⇄ checker`.
+SE qualquer verificação FALHAR:
+  → escrever em estado-projeto.yaml: gate_3_bloqueado: "motivo"
+  → SE falta artefato de documenter: RE-INVOCAR documenter
+  → SE analyze-report tem CRITICAL: RE-INVOCAR checker
+  → NÃO apresentar gate ao usuário
+  → NÃO marcar gate_3: aprovado
 
-**Ação ao abrir gate:**
+VERIFICAR blacklist D1 em SRS-completo-leigo.md:
+  → invocar traducao-leigo sobre o conteúdo
+  → reescrever antes de apresentar se necessário
+
+ARQUIVO CONDICIONAL (não bloqueia gate, mas registrar ausência no yaml):
+  - rastreabilidade.md — gerado se rastreabilidade-matriz executou com sucesso
+```
+
+**Ação ao abrir gate (somente após pre-flight passar):**
 1. Apresentar resumo do SRS (versão leigo) ao usuário
 2. Exibir issues HIGH/MEDIUM como notas informativas (não bloqueiam)
-3. Perguntar aprovação (yesno)
-4. Se SIM: baseline git (tag `gate-3-aprovado`), atualizar estado, sinalizar M4 como opcional
+3. Perguntar aprovação (yesno) via `AskUserQuestion`
+4. Se SIM: registrar em `versao_leigo_aprovada[]`, baseline git (tag `gate-3-aprovado`), atualizar estado, sinalizar M4 como opcional
 5. Se NÃO: retornar ao `documenter` com feedback
+
+**INVARIANTE:** `gate_3_status: aprovado` só pode ser escrito após `AskUserQuestion` retornar SIM e todos os items acima verificados.
 
 ### Gate 4 — M4 Técnico (D24, opcional)
 
