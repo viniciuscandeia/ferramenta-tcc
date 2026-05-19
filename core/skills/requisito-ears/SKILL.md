@@ -1,5 +1,6 @@
 ---
 name: requisito-ears
+marco: [M3]
 description: >-
   Formata todos os itens funcionais e de comportamento com estrutura padronizada usando modais de obrigatoriedade (DEVE/DEVERIA/PODE) e padrões de condição (evento, estado, exceção, ubíquo, opcional).
   Use no início do Marco 3, com os itens classificados e priorizados do Marco 2.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `03.1-funcionais.md` e `03.2-qualidade.md` existem com campo modal preenchido
 3. Contar itens de entrada para verificação de completude na Fase 2
 

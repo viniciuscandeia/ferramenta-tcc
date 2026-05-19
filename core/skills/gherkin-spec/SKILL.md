@@ -1,5 +1,6 @@
 ---
 name: gherkin-spec
+marco: [M3]
 description: >-
   Gera cenários de teste legíveis para cada funcionalidade obrigatória (modal DEVE) — um arquivo por funcionalidade, com caminho feliz e casos de borda.
   Use no Marco 3, após montar o documento de especificação, para criar os arquivos de cenário de teste.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `03.1-funcionais.md` com campo modal e saída de `requisito-ears` (Passo 1)
 3. Separar RFs:
    - `lista_deve`: todos com modal == `DEVE`

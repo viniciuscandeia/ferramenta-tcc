@@ -1,5 +1,6 @@
 ---
 name: entrevista-estruturada
+marco: [M2]
 description: >-
   Conduz conversa estruturada para entender como o usuário trabalha hoje, o que incomoda e o que seria ideal.
   Use no início do Marco 2, para coletar rotina, frustrações e restrições percebidas do usuário.
@@ -19,7 +20,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar Gate 1 aprovado: `visao-produto-normativo.md` existe
 3. Detectar modo: **Fase A** (Ronda 1 — entrevista completa) ou **Fase B** (pauta específica de `pautas-reelicitacao.md`)
 4. Extrair de `visao-produto-normativo.md`: nome do produto, perfil principal, tarefa principal → personalizar perguntas

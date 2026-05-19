@@ -1,3 +1,25 @@
 {
-  "agent": "orchestrator"
+  "agent": "orchestrator",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/gate_guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/gate_guard.sh"
+          }
+        ]
+      }
+    ]
+  }
 }

@@ -1,5 +1,6 @@
 ---
 name: glossario
+marco: [M2]
 description: >-
   Identifica termos do projeto que podem gerar confusão e cria definições claras para cada um — evitando que a mesma palavra signifique coisas diferentes para pessoas diferentes.
   Use no Marco 2, após classificar e priorizar os itens, operando sobre o texto já coletado.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `elicitacao-raw.md`, `03.1-funcionais.md`, `03.2-qualidade.md`, `visao-produto-normativo.md` acessíveis
 3. Concatenar textos de entrada (exceto metadados/cabeçalhos)
 

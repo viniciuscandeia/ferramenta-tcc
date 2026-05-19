@@ -7,12 +7,19 @@ content = """
 Ler e executar `core/orchestrator.md`.
 
 O orquestrador irá:
-1. Carregar `core/constitution.md` (guardrail imutável)
+1. _(Constitution já injetada inline em GEMINI.md — D15. Não ler em runtime.)_
 2. Verificar estado do projeto (`estado-projeto.yaml` ou detection-based)
-3. Rotear para o sub-agente do marco corrente via persona adoption
+3. Identificar `marco_corrente` e carregar EXCLUSIVAMENTE `core/marcos/{marco_corrente}.md`
 4. Conduzir o usuário pelas fases de documentação com perguntas estruturadas via ask_user
 
 Nota para o Gemini CLI: Sub-agentes são implementados como persona adoption no mesmo contexto.
 Ao alternar entre sub-agentes, adotar a persona descrita em `.gemini/agents/<nome>.md` e
-carregar o workflow correspondente.
+carregar o slice do marco (`core/marcos/{marco_corrente}.md`) + workflow correspondente.
+
+Filtragem de skills por marco (C2):
+- Antes de invocar qualquer skill, verificar `estado-projeto.yaml.marco_corrente`
+- Invocar APENAS skills cujo campo `marco:` no frontmatter inclua o marco corrente
+- Exemplo: se marco_corrente=M1, NÃO invocar skills M2 (entrevista-estruturada, glossario, etc.)
+  nem skills M3 (srs-ireb-template, gherkin-spec, etc.)
+- Skills transversais (traducao-leigo, traducao-gate) têm marco: [M1, M2, M3] — sempre disponíveis
 """

@@ -9,7 +9,14 @@ Este arquivo é um wrapper fino para Claude Code. Toda a lógica está em `core/
 
 ## Instruções para o agente Claude Code
 
-1. Carregar `core/constitution.md`
+<!-- INLINE CONSTITUTION — D15 (Task() tem contexto isolado; injetar para evitar sandbox) -->
+1. **Guardrails imutáveis ativos:**
+   - Usuário leigo (D1): NUNCA usar RF, RNF, stakeholder, escopo, gate, EARS, Gherkin, sprint, backlog
+   - Output: sumários só quantitativos; nunca narrar processo; nunca repetir contexto
+   - Interação (D14): modeler não interage com usuário diretamente; toda comunicação via orquestrador
+   - Gates (D3): sem auto-aprovação; gate exige artefatos + versão leigo + `loop_mN_iteracoes ≥ 1` + yesno SIM
+   - Estado (D13): `estado-projeto.yaml` é SoT; se ausente usar detection-based recovery (D10)
+<!-- END INLINE CONSTITUTION -->
 2. Carregar `core/agents/modeler.md` como definição completa do sub-agente
 3. Carregar `core/workflows/m2-requisitos.md` — seguir somente a seção "FASE B"
 4. Executar conforme especificado no core agent (5 passos + traducao-gate)

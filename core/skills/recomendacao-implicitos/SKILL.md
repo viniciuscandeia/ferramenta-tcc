@@ -1,5 +1,6 @@
 ---
 name: recomendacao-implicitos
+marco: [M2]
 description: >-
   Sugere funcionalidades que sistemas similares costumam ter mas que o usuário não mencionou — o "óbvio não-dito".
   Use na Ronda 4 do Marco 2, após confirmar o tipo de produto com o usuário.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Recomendações de Domínio` existe em `elicitacao-raw.md`
 3. Acessar `catalogos-seed/rfs-tipicos.md` + `catalogos-seed/rnfs-tipicos.md`
 

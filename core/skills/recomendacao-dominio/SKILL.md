@@ -1,5 +1,6 @@
 ---
 name: recomendacao-dominio
+marco: [M2]
 description: >-
   Identifica o tipo de produto (loja virtual, app de saúde, painel de relatórios etc.) e sugere funcionalidades típicas daquele setor para confirmar com o usuário.
   Use na Ronda 3 do Marco 2, após os cenários narrativos.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Cenários Narrativos` existe em `elicitacao-raw.md`
 3. Acessar catálogos disponíveis em `catalogos-seed/dominios/`
 

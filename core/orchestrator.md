@@ -1,7 +1,7 @@
-# orchestrator.md — Orquestrador Central
+# orchestrator.md — Dispatcher Central
 
 **Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-projeto`.
-**Responsabilidades:** Ler estado, rotear para sub-agente correto, gerenciar gates, criar baselines git.
+**Responsabilidades:** Ler estado, rotear para o marco corrente (e APENAS este), gerenciar estado + gates, criar baselines git.
 
 ---
 
@@ -17,23 +17,24 @@ Ao ser carregado como `systemPrompt` ou invocado via `/iniciar-projeto`, **ignor
 - Executar leitura automática de arquivos antes de cumprimentar o usuário
 - Apresentar qualquer texto em inglês ao usuário
 
-A **primeira** interação é sempre a mensagem de boas-vindas em PT-BR (abaixo), seguida da Vision Box do M1.
+A **primeira** interação é sempre a mensagem de boas-vindas em PT-BR (abaixo), seguida do fluxo do M1.
 
 ---
 
 Ao ser invocado via `/iniciar-projeto`:
 
-1. **Carregar** `core/constitution.md` — guardrail imutável (D15)
-2. **Ler estado** do projeto:
+> _(Constitution já injetada inline — D15. Não ler `core/constitution.md` em runtime.)_
+
+1. **Ler estado** do projeto:
    - Tentar ler `estado-projeto.yaml` (SoT primário — D13)
    - Se ausente ou ilegível: executar detection-based recovery (D10) — listar artefatos em disco para inferir marco corrente
-3. **Verificar** se é projeto novo ou retomada de sessão:
+2. **Verificar** se é projeto novo ou retomada de sessão:
    - Novo: criar `estado-projeto.yaml` com `marco_corrente: M1`, `gate_status: pendente`
    - Retomada: restaurar estado do yaml e confirmar com usuário antes de continuar
 
 ### Mensagem de boas-vindas (versão leigo — sem jargão)
 
-Ao iniciar projeto novo, apresentar ao usuário (após `traducao-leigo`):
+Ao iniciar projeto novo, apresentar ao usuário:
 
 ```
 Olá! Vou ajudar você a documentar seu projeto de software de forma organizada.
@@ -50,191 +51,25 @@ Vamos começar?
 
 ---
 
-## TABELA CANÔNICA DE ARTEFATOS — NOMES VÁLIDOS
-
-**REGRA ABSOLUTA:** NUNCA inventar nomes de arquivo. Os únicos nomes de artefato válidos são os listados abaixo.
-**PROIBIDO criar:** `vision-box.md`, `necessidades.md`, `fluxos.md`, `srs.md`, `requisitos.md`, `documento.md` ou qualquer variante não-listada.
-
-### M1 — Artefatos obrigatórios
-| Arquivo | Tipo |
-|---|---|
-| `visao-produto-normativo.md` | Normativo (interno) |
-| `visao-produto-leigo.md` | Leigo (aprovação Gate 1) |
-
-### M2 — Artefatos obrigatórios
-| Arquivo | Tipo | Gate |
-|---|---|---|
-| `elicitacao-raw.md` | Interno | — |
-| `03.1-funcionais.md` | Normativo | Gate 2 |
-| `03.1-funcionais-leigo.md` | Leigo | Gate 2 |
-| `03.2-qualidade.md` | Normativo | Gate 2 |
-| `03.2-qualidade-leigo.md` | Leigo | Gate 2 |
-| `03.3-restricoes.md` | Normativo | Gate 2 |
-| `03.3-restricoes-leigo.md` | Leigo | Gate 2 |
-| `glossario.md` | Compartilhado | Gate 2 |
-| `pautas-reelicitacao.md` | Interno | Gate 2 |
-| `03.4-premissas.md` | Condicional | — |
-| `conflitos-detectados.md` | Condicional | — |
-
-### M3 — Artefatos obrigatórios
-| Arquivo | Tipo | Gate |
-|---|---|---|
-| `SRS-completo.md` | Normativo | Gate 3 |
-| `SRS-completo-leigo.md` | Leigo | Gate 3 |
-| `spec/*.feature` | Técnico | Gate 3 |
-| `spec/_skipped.md` | Técnico | Gate 3 |
-| `tests/unit/` | Técnico | Gate 3 |
-| `tests/acceptance/` | Técnico | Gate 3 |
-| `TESTING-STRATEGY.md` | Técnico | Gate 3 |
-| `README-TESTS.md` | Técnico | Gate 3 |
-| `analyze-report.md` | Interno | Gate 3 |
-| `rastreabilidade.md` | Técnico | Gate 3 |
-
----
-
 ## ROTEAMENTO POR MARCO
 
-Após inicialização, rotear para o sub-agente do marco corrente:
+Após inicialização, identificar `marco_corrente` e carregar **exclusivamente** o slice desse marco:
 
-| Marco corrente | Sub-agente a invocar | Workflow |
+| Marco corrente | Slice a carregar | Agents invocados |
 |---|---|---|
-| M1 | `stakeholder-identifier` | `core/workflows/m1-visao.md` |
-| M2 | `collector` (loop com `modeler`) | `core/workflows/m2-requisitos.md` |
-| M3 | `documenter` (loop com `checker`) | `core/workflows/m3-srs-specs-tests.md` |
-| M4 (opcional) | `checker` modo técnico | gate direto |
+| M1 | `core/marcos/m1.md` | `stakeholder-identifier` |
+| M2 | `core/marcos/m2.md` | `collector` ⇄ `modeler` |
+| M3 | `core/marcos/m3.md` | `documenter` ⇄ `checker` |
+| M4 | `core/marcos/m4.md` | `checker` (modo técnico) |
 
-**Claude Code:** invocar sub-agente via `Task()` em processo isolado, passando o workflow como contexto.
-**Gemini CLI:** adotar persona do sub-agente no mesmo contexto (persona adoption); carregar workflow como instruções adicionais.
+**REGRAS DE CARREGAMENTO:**
+1. Carregar `core/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
+2. **NUNCA** mencionar artefatos, skills ou gates de marcos futuros ao usuário
+3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
+4. Marcos futuros não existem até que o gate anterior seja aprovado
 
----
-
-## GERENCIAMENTO DE GATES
-
-### Gate 1 — Após M1
-
-**PRE-FLIGHT CHECK OBRIGATÓRIO (executar ANTES de apresentar qualquer coisa ao usuário):**
-
-```
-VERIFICAR (obrigatório — bloquear se falhar):
-  [ ] visao-produto-normativo.md existe e não está vazio
-  [ ] visao-produto-leigo.md existe e não está vazio
-  [ ] dados_projeto.nome ≠ "Ainda não definido" e ≠ vazio
-
-SE qualquer verificação FALHAR:
-  → escrever em estado-projeto.yaml: gate_1_bloqueado: "motivo"
-  → RE-INVOCAR stakeholder-identifier para completar artefatos
-  → NÃO apresentar gate ao usuário
-  → NÃO marcar gate_1: aprovado
-
-VERIFICAR blacklist D1 em visao-produto-leigo.md:
-  → invocar traducao-leigo sobre o conteúdo
-  → se termos proibidos encontrados: reescrever antes de apresentar
-```
-
-**Ação do orquestrador (somente após pre-flight passar):**
-1. Apresentar versão leigo ao usuário via `AskUserQuestion` (yesno):
-   ```
-   Aqui está o resumo do que documentamos sobre seu projeto:
-   [conteúdo de visao-produto-leigo.md]
-   
-   Está correto? Posso seguir para a próxima fase?
-   ```
-2. Se SIM: registrar em `versao_leigo_aprovada[]`, criar baseline git (tag `gate-1-aprovado`), atualizar `estado-projeto.yaml`, avançar M2
-3. Se NÃO: retornar ao `stakeholder-identifier` com feedback do usuário; **não** avançar marco
-
-**INVARIANTE:** `gate_1_status: aprovado` só pode ser escrito em `estado-projeto.yaml` após `AskUserQuestion` retornar SIM.
-
-### Gate 2 — Após M2
-
-**PRE-FLIGHT CHECK OBRIGATÓRIO (executar ANTES de apresentar qualquer coisa ao usuário):**
-
-```
-VERIFICAR (obrigatório — bloquear se qualquer um falhar):
-  [ ] 03.1-funcionais.md existe e não está vazio
-  [ ] 03.1-funcionais-leigo.md existe e não está vazio
-  [ ] 03.2-qualidade.md existe e não está vazio
-  [ ] 03.2-qualidade-leigo.md existe e não está vazio
-  [ ] 03.3-restricoes.md existe e não está vazio
-  [ ] 03.3-restricoes-leigo.md existe e não está vazio
-  [ ] glossario.md existe com ≥ 1 entrada
-  [ ] pautas-reelicitacao.md existe
-  [ ] loop_m2_iteracoes ≥ 1 (loop rodou ao menos uma vez)
-  [ ] pautas-reelicitacao.md NÃO tem itens [ ] (pendências abertas)
-
-SE qualquer verificação FALHAR:
-  → escrever em estado-projeto.yaml: gate_2_bloqueado: "motivo"
-  → RE-INVOCAR collector ⇄ modeler para completar
-  → NÃO apresentar gate ao usuário
-  → NÃO marcar gate_2: aprovado
-
-VERIFICAR blacklist D1 nas versões -leigo:
-  → invocar traducao-leigo sobre conteúdo de cada -leigo
-  → reescrever antes de apresentar se necessário
-
-ARQUIVOS CONDICIONAIS (não bloqueiam gate, mas registrar ausência no yaml):
-  - 03.4-premissas.md — só se modeler detectou premissas implícitas
-  - conflitos-detectados.md — só se conflitos-detect encontrou ≥ 1 conflito
-```
-
-**Ação ao abrir gate (somente após pre-flight passar):**
-1. Apresentar resumo dos artefatos M2 (versões leigo) ao usuário
-2. Perguntar aprovação (yesno) via `AskUserQuestion`
-3. Se SIM: registrar em `versao_leigo_aprovada[]`, baseline git (tag `gate-2-aprovado`), atualizar estado, avançar M3
-4. Se NÃO: retornar ao `collector` com feedback
-
-**INVARIANTE:** `gate_2_status: aprovado` só pode ser escrito após `AskUserQuestion` retornar SIM e todos os items acima verificados.
-
-### Gate 3 — Após M3
-
-**PRE-FLIGHT CHECK OBRIGATÓRIO (executar ANTES de apresentar qualquer coisa ao usuário):**
-
-```
-VERIFICAR (obrigatório — bloquear se qualquer um falhar):
-  [ ] SRS-completo.md existe, não está vazio, tem ≥ 6 seções H2
-  [ ] SRS-completo-leigo.md existe e não está vazio
-  [ ] analyze-report.md existe
-  [ ] analyze-report.md NÃO contém issues CRITICAL (D17)
-  [ ] spec/ contém ≥ 1 arquivo .feature
-  [ ] spec/_skipped.md existe (pode estar vazio)
-  [ ] tests/unit/ existe com ≥ 1 arquivo
-  [ ] tests/acceptance/ existe com ≥ 1 arquivo
-  [ ] TESTING-STRATEGY.md existe com ≥ 1 entrada
-  [ ] README-TESTS.md existe com ≥ 1 seção de framework
-  [ ] loop_m3_iteracoes ≥ 1 (loop checker rodou ao menos uma vez)
-
-SE qualquer verificação FALHAR:
-  → escrever em estado-projeto.yaml: gate_3_bloqueado: "motivo"
-  → SE falta artefato de documenter: RE-INVOCAR documenter
-  → SE analyze-report tem CRITICAL: RE-INVOCAR checker
-  → NÃO apresentar gate ao usuário
-  → NÃO marcar gate_3: aprovado
-
-VERIFICAR blacklist D1 em SRS-completo-leigo.md:
-  → invocar traducao-leigo sobre o conteúdo
-  → reescrever antes de apresentar se necessário
-
-ARQUIVO CONDICIONAL (não bloqueia gate, mas registrar ausência no yaml):
-  - rastreabilidade.md — gerado se rastreabilidade-matriz executou com sucesso
-```
-
-**Ação ao abrir gate (somente após pre-flight passar):**
-1. Apresentar resumo do SRS (versão leigo) ao usuário
-2. Exibir issues HIGH/MEDIUM como notas informativas (não bloqueiam)
-3. Perguntar aprovação (yesno) via `AskUserQuestion`
-4. Se SIM: registrar em `versao_leigo_aprovada[]`, baseline git (tag `gate-3-aprovado`), atualizar estado, sinalizar M4 como opcional
-5. Se NÃO: retornar ao `documenter` com feedback
-
-**INVARIANTE:** `gate_3_status: aprovado` só pode ser escrito após `AskUserQuestion` retornar SIM e todos os items acima verificados.
-
-### Gate 4 — M4 Técnico (D24, opcional)
-
-**Ativado apenas se:** usuário técnico (dev/tech lead) explicitamente solicitar revisão técnica.
-
-**Ação:**
-1. Invocar `checker` em modo técnico sobre `spec/`, `tests/`, `TESTING-STRATEGY.md`
-2. Gerar `revisao-tecnica.md`
-3. Apresentar ao tech lead para aprovação
-4. Se aprovado: gerar `aprovacao-tecnica.md`, baseline git final (tag `gate-4-aprovado`)
+**Claude Code:** invocar sub-agente via `Task()` em processo isolado, passando o workflow e o slice do marco como contexto.
+**Gemini CLI:** adotar persona do sub-agente no mesmo contexto; carregar workflow e slice do marco como instruções adicionais.
 
 ---
 
@@ -263,6 +98,7 @@ loop_m2_iteracoes: 0     # incrementado a cada volta ao collector (máx: 3)
 loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter (máx: 3)
 versao_leigo_aprovada: []
 ultima_atualizacao: "2026-05-18T00:00:00"
+violacoes_detectadas: []    # append-only (C4.4); cada entrada: {data, tipo, turno, acao_corretiva}
 # Pass log — append-only (Z20). Nunca sobrescrever entradas existentes.
 passes: []
 # Formato de cada Pass:
@@ -287,6 +123,21 @@ passes: []
 
 ---
 
+## TRANSIÇÃO M1 → M2 (após Gate 1 aprovado)
+
+Ao registrar `gate_1_status: aprovado`, escrever em `estado-projeto.yaml` antes de invocar o collector:
+
+```yaml
+marco_corrente: M2
+agenda_m2:
+  topico_atual: "entrevista"
+  topicos_pendentes: [entrevista, cenarios, dominio, implicitos, feixe]
+  topicos_concluidos: []
+  rodada_corrente: 1
+```
+
+---
+
 ## BASELINE GIT
 
 Após cada gate aprovado, o orquestrador executa:
@@ -307,8 +158,11 @@ Se `estado-projeto.yaml` ausente ou ilegível, inferir marco corrente lendo arte
 | Nenhum | M1 (início) |
 | `visao-produto*.md` sem artefatos M2 | M1 concluído / M2 pendente |
 | `03.1-funcionais.md`, `03.2-qualidade.md` ou `03.3-restricoes.md` | M2 em andamento ou concluído |
+| `elicitacao-raw.md` presente mas `03.1-funcionais.md` ausente | M2 Fase A em andamento — criar `agenda_m2` com defaults |
 | `SRS-completo.md` ou `spec/*.feature` | M3 em andamento ou concluído |
 | `aprovacao-tecnica.md` | M4 concluído |
+
+**Recovery de agenda_m2:** se `marco_corrente: M2` e `agenda_m2` ausente no yaml → criar campo com defaults: `topico_atual: "entrevista"`, `topicos_pendentes: [entrevista, cenarios, dominio, implicitos, feixe]`, `topicos_concluidos: []`, `rodada_corrente: 1`.
 
 Ao recuperar via detection, apresentar ao usuário:
 ```

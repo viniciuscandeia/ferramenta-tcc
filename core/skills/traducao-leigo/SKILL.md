@@ -1,5 +1,6 @@
 ---
 name: traducao-leigo
+marco: [M1, M2, M3]
 description: Verifica e reescreve texto para remover jargão técnico de ER, garantindo que o usuário leigo não receba termos da blacklist D1. Invocada por qualquer agente antes de apresentar texto ao usuário.
 when_to_use: Antes de qualquer exibição de texto ao usuário — perguntas, resumos, artefatos, confirmações.
 ---
@@ -17,7 +18,7 @@ when_to_use: Antes de qualquer exibição de texto ao usuário — perguntas, re
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar se texto contém blocos `<!-- internal -->...</ internal -->` — remover antes de processar
 3. Se após remoção o texto for vazio: retornar vazio (não há nada para exibir)
 

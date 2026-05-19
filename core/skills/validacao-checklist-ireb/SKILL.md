@@ -1,5 +1,6 @@
 ---
 name: validacao-checklist-ireb
+marco: [M3]
 description: Aplica os 12 critérios de qualidade IREB §3.8 sobre o SRS gerado pelo documenter — 6 critérios por requisito individual e 6 critérios por SRS como documento. Gera seção "Validação IREB §3.8" em analyze-report.md com 1 linha por violação (ID do critério + requisito afetado + severidade). Referência: catalogos-seed/conceitos/qualidade-e-validacao.md.
 when_to_use: Invocada pelo checker no Passo 1 do Processo M3. Entrada: SRS-completo.md + 03.1-funcionais.md + 03.2-qualidade.md. Saída: seção em analyze-report.md (não arquivo separado).
 ---
@@ -18,7 +19,7 @@ when_to_use: Invocada pelo checker no Passo 1 do Processo M3. Entrada: SRS-compl
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Extrair de `03.1-funcionais.md`: lista de IDs de RF com modais
 3. Extrair de `03.2-qualidade.md`: lista de IDs de RNF com modais e métricas declaradas
 4. Contar totais: N_RF e N_RNF para controle de completude

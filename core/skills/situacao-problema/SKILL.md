@@ -1,5 +1,6 @@
 ---
 name: situacao-problema
+marco: [M1]
 description: >-
   Documenta o problema central do projeto com tabela de 6 slots — o que está errado, quem sofre, qual o impacto e o que seria uma solução.
   Use após capturar a visão do produto, quando o usuário precisa detalhar o problema que quer resolver.
@@ -19,7 +20,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Visão do Produto` deve existir em `visao-produto.md`
 3. Extrair do Vision Box: público-alvo e nome do produto (usados para personalizar perguntas de Lote 2)
 

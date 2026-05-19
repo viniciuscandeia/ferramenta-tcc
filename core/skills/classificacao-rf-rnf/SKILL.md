@@ -1,5 +1,6 @@
 ---
 name: classificacao-rf-rnf
+marco: [M2]
 description: >-
   Classifica cada item coletado nas fases anteriores em: o que o sistema faz (funcional), como se comporta (comportamental), o que está imposto de fora (restrição) ou o que foi assumido (premissa).
   Use no início da modelagem do Marco 2, com o material de elicitação completo em mãos.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `elicitacao-raw.md` existe e não está vazio
 3. Verificar `visao-produto-normativo.md` acessível (contexto de domínio)
 

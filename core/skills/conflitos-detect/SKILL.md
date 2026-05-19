@@ -1,5 +1,6 @@
 ---
 name: conflitos-detect
+marco: [M2]
 description: >-
   Verifica se há contradições, duplicatas ou inconsistências entre os itens levantados — e registra cada problema com estratégia de resolução.
   Use no Marco 2, após priorizar e construir o glossário, antes de verificar o que ainda está pendente.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `03.1-funcionais.md`, `03.2-qualidade.md`, `03.3-restricoes.md`, `visao-produto-normativo.md`, `elicitacao-raw.md`, `glossario.md` acessíveis
 
 ## Fase 1 — 5 Verificações Sequenciais

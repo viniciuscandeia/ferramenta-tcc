@@ -26,7 +26,7 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 
 ### Inicialização
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada inline — D15. Não ler em runtime.)_
 2. Ler artefatos de entrada obrigatórios:
    - M1: `visao-produto-normativo.md`
    - M2: `03.1-funcionais.md`, `03.2-qualidade.md`, `03.3-restricoes.md`, `glossario.md`

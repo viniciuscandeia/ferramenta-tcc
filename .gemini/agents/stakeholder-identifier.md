@@ -9,7 +9,7 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 
 ## Instruções para o Gemini CLI
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada via GEMINI.md — D15. Não ler em runtime.)_
 2. Carregar `core/agents/stakeholder-identifier.md` como definição completa
 3. Carregar `core/workflows/m1-visao.md` como sequência de execução
 4. **Adotar a persona do stakeholder-identifier** no contexto atual (persona adoption — sem Task() real)

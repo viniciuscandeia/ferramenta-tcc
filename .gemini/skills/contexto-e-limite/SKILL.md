@@ -1,5 +1,6 @@
 ---
 name: contexto-e-limite
+marco: [M1]
 description: >-
   Quando precisa definir o que está dentro e fora do projeto. Use para esclarecer o que o sistema faz, o que não é responsabilidade do sistema, onde termina o produto. Use when clarifying what is in and out of scope.
 ---
@@ -13,7 +14,7 @@ Lógica canônica: `core/skills/contexto-e-limite/SKILL.md`
 
 ## Instruções de execução (Gemini CLI)
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Carregar `core/skills/contexto-e-limite/SKILL.md`
 3. Executar skill seguindo as fases e regras definidas no core
 4. Usar `ask_user` para toda interação com o usuário (máximo 4 perguntas por chamada)
