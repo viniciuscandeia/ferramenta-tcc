@@ -1,5 +1,6 @@
 ---
 name: questionario-feixe
+marco: [M2]
 description: >-
   Quando há áreas do sistema sem cobertura suficiente após as elicitações principais. Agrupa perguntas temáticas para cobrir lacunas. Use when areas of the system lack sufficient coverage after main elicitation rounds.
 ---
@@ -10,7 +11,7 @@ Lógica canônica: `core/skills/questionario-feixe/SKILL.md`
 
 ## Instruções de execução (Claude Code)
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Carregar `core/skills/questionario-feixe/SKILL.md`
 3. Executar skill seguindo as fases e regras definidas no core
 4. Usar `AskUserQuestion` para toda interação com o usuário (máximo 4 perguntas por chamada)

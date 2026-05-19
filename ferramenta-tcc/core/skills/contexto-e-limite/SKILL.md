@@ -1,5 +1,6 @@
 ---
 name: contexto-e-limite
+marco: [M1]
 description: >-
   Define o que o produto vai fazer e o que está fora do projeto — evita expectativas erradas antes da próxima fase.
   Use após mapear as pessoas envolvidas, para fechar o escopo do Marco 1.
@@ -19,7 +20,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Pessoas Envolvidas` existe em `visao-produto.md`
 3. Extrair de skills anteriores: funcionalidades já mencionadas em Situação-Problema → usadas para validar consistência em Fase 2
 

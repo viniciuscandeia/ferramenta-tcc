@@ -33,7 +33,7 @@ Revisar artefatos técnicos para aprovação de dev/tech lead:
 
 ## INICIALIZAÇÃO (Modo M3)
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada inline — D15. Não ler em runtime.)_
 2. Ler artefatos do `documenter`:
    - `SRS-completo.md` — documento principal gerado em M3
    - `spec/*.feature` — arquivos Gherkin por RF DEVE

@@ -1,5 +1,6 @@
 ---
 name: testing-strategy
+marco: [M3]
 description: >-
   Para gerar estratégia de testes para cada requisito de qualidade como performance, segurança, usabilidade. Operação técnica interna do documenter. Use to generate testing strategy for each non-functional requirement.
 ---
@@ -10,7 +11,7 @@ Lógica canônica: `core/skills/testing-strategy/SKILL.md`
 
 ## Instruções de execução (Claude Code)
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Carregar `core/skills/testing-strategy/SKILL.md`
 3. Executar skill seguindo as fases e regras definidas no core
 4. Usar `AskUserQuestion` para toda interação com o usuário (máximo 4 perguntas por chamada)

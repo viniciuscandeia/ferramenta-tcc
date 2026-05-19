@@ -1,5 +1,6 @@
 ---
 name: traducao-gate
+marco: [M1, M2, M3]
 description: Gera duas versões de um artefato de gate — versão normativa (IREB §3.3.3 + EARS + RFC 2119) e versão leigo (linguagem de negócio). O usuário aprova apenas a versão leigo; a equipe técnica recebe a versão normativa.
 when_to_use: Ao final de cada marco (M1, M2, M3) antes de apresentar artefatos ao usuário para aprovação no gate.
 ---
@@ -18,7 +19,7 @@ when_to_use: Ao final de cada marco (M1, M2, M3) antes de apresentar artefatos a
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar artefato normativo de entrada está completo e bem formado para o marco
 3. Confirmar nome do arquivo alvo e marco atual (M1, M2 ou M3)
 

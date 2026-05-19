@@ -1,5 +1,6 @@
 ---
 name: questionario-feixe
+marco: [M2]
 description: >-
   Faz perguntas temáticas em grupos para cobrir áreas do produto que ainda ficaram sem informação suficiente — ativa apenas quando há lacunas em 3 ou mais áreas.
   Use na Ronda 5 do Marco 2, somente se as rondas anteriores deixaram ≥ 3 áreas sem detalhamento.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização e Verificação da Condição
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Implícitos Confirmados` existe em `elicitacao-raw.md`
 3. Avaliar cobertura de `elicitacao-raw.md` por área:
 

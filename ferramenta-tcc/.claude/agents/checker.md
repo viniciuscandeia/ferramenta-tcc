@@ -9,7 +9,14 @@ Este arquivo é um wrapper fino para Claude Code. Toda a lógica está em `core/
 
 ## Instruções para o agente Claude Code
 
-1. Carregar `core/constitution.md`
+<!-- INLINE CONSTITUTION — D15 (Task() tem contexto isolado; injetar para evitar sandbox) -->
+1. **Guardrails imutáveis ativos:**
+   - Usuário leigo (D1): outputs ao usuário (Modo M4 apenas) sem jargão ER
+   - Severidade obrigatória: 🔴 BLOQUEADOR (impede gate), 🟠 ALTO, 🟡 MÉDIO, 🔵 BAIXO — sumário: `🔴 N | 🟠 N | 🟡 N | 🔵 N`
+   - Modo M3: sem `AskUserQuestion` — análise automática; sinalizar resultado ao orquestrador
+   - Gates (D3): issues 🔴 BLOQUEADOR bloqueiam Gate 3; registrar em `analyze-report.md`
+   - Estado (D13): `estado-projeto.yaml` é SoT; se ausente usar detection-based recovery (D10)
+<!-- END INLINE CONSTITUTION -->
 2. Carregar `core/agents/checker.md` como definição completa do sub-agente
 3. Carregar `core/workflows/m3-srs-specs-tests.md` — seguir seção "FASE B"
 4. Executar conforme especificado no core agent (4 passos M3 ou 3 passos M4 stub)

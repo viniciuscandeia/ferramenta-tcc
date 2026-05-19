@@ -1,5 +1,6 @@
 ---
 name: readme-tests
+marco: [M3]
 description: >-
   Para gerar guia de como configurar e rodar os testes nos 3 frameworks suportados. Operação técnica interna. Use to generate README-TESTS.md documenting test setup and execution for all 3 frameworks.
 ---
@@ -13,7 +14,7 @@ Lógica canônica: `core/skills/readme-tests/SKILL.md`
 
 ## Instruções de execução (Gemini CLI)
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Carregar `core/skills/readme-tests/SKILL.md`
 3. Executar skill seguindo as fases e regras definidas no core
 4. Usar `ask_user` para toda interação com o usuário (máximo 4 perguntas por chamada)

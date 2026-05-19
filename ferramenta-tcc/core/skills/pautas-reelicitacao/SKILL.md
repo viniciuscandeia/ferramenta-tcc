@@ -1,5 +1,6 @@
 ---
 name: pautas-reelicitacao
+marco: [M2]
 description: >-
   Lista o que ainda precisa ser detalhado antes de encerrar o Marco 2 — cada item em aberto indica uma pergunta que precisa de resposta para a próxima fase começar.
   Use no final da modelagem do Marco 2, para decidir se o loop de elicitação deve continuar ou se a fase pode ser fechada.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar todos os artefatos de entrada: `03.1-funcionais.md`, `03.2-qualidade.md`, `03.3-restricoes.md`, `03.4-premissas.md` (se existir), `glossario.md`, `conflitos-detectados.md` (se existir)
 
 ## Fase 1 — Varredura por Tipo de Lacuna

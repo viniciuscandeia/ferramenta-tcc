@@ -1,5 +1,6 @@
 ---
 name: testing-strategy
+marco: [M3]
 description: >-
   Define como cada comportamento de qualidade (desempenho, segurança, usabilidade etc.) será testado — com ferramenta, métrica e critério de aprovação para cada um.
   Use no Marco 3, após gerar os cenários de teste, para produzir o plano de estratégia de testes de qualidade.
@@ -19,7 +20,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `03.2-qualidade.md` existe com itens e campo Métrica preenchido
 3. Contar RNFs para verificação de completude na Fase 2
 

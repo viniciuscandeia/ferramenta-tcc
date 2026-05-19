@@ -1,5 +1,6 @@
 ---
 name: readme-tests
+marco: [M3]
 description: >-
   Gera o guia de instalação e execução dos testes para os três frameworks gerados — documentando como rodar, o que esperar e por que os testes falham inicialmente.
   Use no Marco 3, após gerar os arquivos de código de teste, para produzir a documentação de execução.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `tests/unit/`, `tests/acceptance/` existem e têm arquivos
 3. Coletar slugs reais de `spec/*.feature` para substituição nos exemplos
 

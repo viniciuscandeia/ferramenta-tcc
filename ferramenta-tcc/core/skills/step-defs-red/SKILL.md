@@ -1,5 +1,6 @@
 ---
 name: step-defs-red
+marco: [M3]
 description: >-
   Gera os arquivos de código de teste em estado vermelho (estrutura criada, implementação propositalmente ausente) para três frameworks: Python, JavaScript e C#.
   Use no Marco 3, após gerar os cenários Gherkin, para criar a estrutura de testes que o time de desenvolvimento vai implementar.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Listar todos os arquivos em `spec/*.feature` (excluir `_skipped.md`)
 3. Para cada `.feature`: extrair todos os textos de steps Given/When/Then
 

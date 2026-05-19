@@ -1,5 +1,6 @@
 ---
 name: stakeholder-mapping
+marco: [M1]
 description: >-
   Identifica e mapeia todas as pessoas envolvidas no projeto — quem usa, quem decide, quem é afetado.
   Use após documentar o problema, quando é preciso saber quem tem interesse no produto.
@@ -19,7 +20,7 @@ description: >-
 
 ## Fase 0 — Inicialização e Pré-Processamento
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Situação-Problema` deve existir em `visao-produto.md`
 3. **Pré-processamento:** extrair pessoas já mencionadas em Vision Box (público-alvo) e Situação-Problema (usuários, afetados). Usá-las como ponto de partida — não repetir nas perguntas.
 

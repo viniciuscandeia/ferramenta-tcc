@@ -23,7 +23,7 @@ Processar os resultados brutos da elicitação (`elicitacao-raw.md`) e estrutur�
 
 ### Inicialização
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada inline — D15. Não ler em runtime.)_
 2. Ler `elicitacao-raw.md` produzido pelo `collector`
 3. Ler `visao-produto-normativo.md` para contexto (stakeholders + domínio)
 4. Verificar `estado-projeto.yaml`: campo `loop_m2_iteracoes` (saber em qual iteração está)
@@ -31,6 +31,24 @@ Processar os resultados brutos da elicitação (`elicitacao-raw.md`) e estrutur�
 ### Processo Fase B
 
 Executar na ordem:
+
+**Passo 0 — Avanço de agenda M2**
+
+Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
+
+1. Ler `agenda_m2.topico_atual` atual
+2. Verificar `elicitacao-raw.md` na seção desse tópico:
+   - Tem ≥ 2 respostas concretas (não-vazias, não "não sei", não "tanto faz")?
+3. Se SIM (material suficiente):
+   - Mover `topico_atual` → `topicos_concluidos`
+   - Caso especial `feixe`: pular se `elicitacao-raw.md` indica < 3 áreas vagas
+   - Definir novo `topico_atual` = primeiro de `topicos_pendentes` restantes
+4. Se NÃO (material insuficiente):
+   - Manter `topico_atual`
+   - Registrar em `pautas-reelicitacao.md`: ronda `<topico_atual>` precisa repetir
+5. Decidir próxima ação:
+   - Se `topicos_pendentes` não-vazio → sinalizar orquestrador: "Invocar collector com topico_atual=`<próximo>`"
+   - Se `topicos_pendentes` vazio → prosseguir para Passo 1 (classificação)
 
 **Passo 1 — classificacao-rf-rnf**
 - Invocar `core/skills/classificacao-rf-rnf/SKILL.md`
@@ -65,9 +83,10 @@ Executar na ordem:
 - Lacunas que geram pauta: RFs sem critério de aceitação; RNFs sem métrica; restrições sem detalhe; conflitos não resolvidos
 - Saída: `pautas-reelicitacao.md`
 
-**Decisão pós-pautas:**
-- `pautas-reelicitacao.md` **vazio** → executar Passo 6
-- `pautas-reelicitacao.md` **não-vazio** → incrementar `loop_m2_iteracoes` no yaml; sinalizar orquestrador para retornar ao `collector` em modo focado
+**Decisão pós-pautas (C3 — agenda-driven):**
+- `agenda_m2.topicos_pendentes` **não-vazio** → ainda há rondas da Fase A a executar; sinalizar orquestrador para retornar ao `collector` com novo `topico_atual`
+- `agenda_m2.topicos_pendentes` **vazio** E `pautas-reelicitacao.md` **vazio** → executar Passo 6 (traducao-gate)
+- `agenda_m2.topicos_pendentes` **vazio** E `pautas-reelicitacao.md` **não-vazio** → incrementar `loop_m2_iteracoes` no yaml; sinalizar orquestrador para retornar ao `collector` em modo Fase B focado
 
 **Passo 6 — traducao-gate** (só quando pautas zeradas)
 - Invocar `core/skills/traducao-gate/SKILL.md`

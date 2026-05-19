@@ -1,5 +1,6 @@
 ---
 name: clarificacao-pos-visao
+marco: [M1]
 description: >-
   Resolve lacunas críticas detectadas no Marco 1 antes de avançar — ativa apenas se o produto ainda tiver pontos ambíguos em pelo menos duas áreas.
   Use após contexto-e-limite, somente se houver lacunas críticas em ≥ 2 categorias (escopo, terminologia, restrições).
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização e Verificação
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Receber relatório de lacunas do `stakeholder-identifier` (saído de `contexto-e-limite` Fase 3)
 3. Verificar condição D16: se `contagem_lacunas < 2`, retornar ao `stakeholder-identifier` sem executar
 

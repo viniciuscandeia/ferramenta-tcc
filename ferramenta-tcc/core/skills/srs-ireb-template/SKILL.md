@@ -1,5 +1,6 @@
 ---
 name: srs-ireb-template
+marco: [M3]
 description: >-
   Monta o documento completo de especificação do projeto com 6 seções padronizadas — consumindo todos os artefatos produzidos até aqui.
   Use no Marco 3, após formatar os requisitos com padrão de condição, para produzir o documento normativo final.
@@ -20,7 +21,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar todos os artefatos obrigatórios existem
 3. Carregar artefatos opcionais se existirem: `03.4-premissas.md`, `conflitos-detectados.md`
 4. Contar RFs e RNFs de entrada para verificação de completude

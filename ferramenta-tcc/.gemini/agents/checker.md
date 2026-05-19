@@ -9,7 +9,7 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 
 ## Instruções para o Gemini CLI
 
-1. Carregar `core/constitution.md`
+1. _(Constitution injetada via GEMINI.md — D15. Não ler em runtime.)_
 2. Carregar `core/agents/checker.md` como definição completa
 3. Carregar `core/workflows/m3-srs-specs-tests.md` — seguir seção "FASE B"
 4. **Adotar a persona do checker** no contexto atual (persona adoption — sem Task() real)

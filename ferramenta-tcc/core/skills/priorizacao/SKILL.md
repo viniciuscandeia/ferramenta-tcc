@@ -1,5 +1,6 @@
 ---
 name: priorizacao
+marco: [M2]
 description: >-
   Atribui nível de importância e obrigatoriedade a cada funcionalidade e comportamento levantado — define o que vem primeiro, o que vem depois e o que fica de fora desta versão.
   Use após classificar os itens do Marco 2, antes de verificar conflitos.
@@ -19,7 +20,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `03.1-funcionais.md` e `03.2-qualidade.md` existem e têm itens
 3. Acessar `03.3-restricoes.md` e `visao-produto-normativo.md` para âncoras de prioridade
 

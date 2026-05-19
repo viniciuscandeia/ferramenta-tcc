@@ -28,6 +28,25 @@ loop_m2_iteracoes: 0         # incrementado a cada retorno ao collector (máx: 3
 loop_m3_iteracoes: 0         # incrementado a cada retorno ao documenter (máx: 3)
 
 # ──────────────────────────────────────────────
+# AGENDA M2 — pacing state-driven (C3)
+# ──────────────────────────────────────────────
+# Criado pelo orquestrador ao avançar para M2 (após Gate 1 aprovado).
+# Define qual ronda o collector deve executar AGORA — apenas uma por turno.
+# Modeler avança topico_atual após cada execução.
+# Se marco_corrente=M2 mas agenda_m2 ausente: criar com defaults abaixo.
+
+agenda_m2:
+  topico_atual: "entrevista"     # ronda corrente — uma das 5
+  topicos_pendentes:             # ordem fixa da Fase A
+    - "entrevista"                # Ronda 1 → entrevista-estruturada
+    - "cenarios"                  # Ronda 2 → cenario-narrativa
+    - "dominio"                   # Ronda 3 → recomendacao-dominio
+    - "implicitos"                # Ronda 4 → recomendacao-implicitos
+    - "feixe"                     # Ronda 5 → questionario-feixe (condicional)
+  topicos_concluidos: []
+  rodada_corrente: 1              # incrementado quando todos topicos retornam à fase B
+
+# ──────────────────────────────────────────────
 # ARTEFATOS — com audit trail (Z21)
 # ──────────────────────────────────────────────
 
@@ -105,6 +124,11 @@ passes: []
 #   gate_4: nao_solicitado
 # loop_m2_iteracoes: 0
 # loop_m3_iteracoes: 0
+# agenda_m2:
+#   topico_atual: "cenarios"
+#   topicos_pendentes: [cenarios, dominio, implicitos, feixe]
+#   topicos_concluidos: [entrevista]
+#   rodada_corrente: 1
 # artefatos:
 #   - nome: visao-produto-leigo.md
 #     marco: M1

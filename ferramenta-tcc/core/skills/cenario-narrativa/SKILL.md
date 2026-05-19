@@ -1,5 +1,6 @@
 ---
 name: cenario-narrativa
+marco: [M2]
 description: >-
   Pede ao usuário que conte como seria um dia típico de uso do produto e extrai funcionalidades implícitas da narrativa.
   Use após a entrevista inicial do Marco 2, para capturar o que o usuário assume mas não menciona explicitamente.
@@ -19,7 +20,7 @@ description: >-
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Rotina e Necessidades` existe em `elicitacao-raw.md`
 3. Identificar perfis distintos de `visao-produto-normativo.md` → determinar 1 ou 2 cenários (máx 2)
 

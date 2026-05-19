@@ -1,5 +1,6 @@
 ---
 name: analyze-cross-artifact
+marco: [M3]
 description: Valida consistência entre artefatos de diferentes marcos: Visão (M1) ↔ Elicitação (M2) ↔ SRS (M3) ↔ Specs (M3). Detecta 4 tipos de defeito (Omissão, Contradição, Superespecificação, Inexequibilidade) com severidades CRITICAL/HIGH/MEDIUM/LOW. CRITICAL bloqueia Gate 3. Referência: D17 + catalogos-seed/conceitos/qualidade-e-validacao.md §5.
 when_to_use: Invocada pelo checker no Passo 2 do Processo M3. Depende de validacao-checklist-ireb (Passo 1) ter executado. Entrada: todos os artefatos M1+M2+M3. Saída: seção "Análise Cross-Artifact (D17)" adicionada a analyze-report.md.
 ---
@@ -18,7 +19,7 @@ when_to_use: Invocada pelo checker no Passo 2 do Processo M3. Depende de validac
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar presença: `visao-produto-normativo.md`, `03.1-funcionais.md`, `03.2-qualidade.md`, `SRS-completo.md`, `spec/`
 3. Carregar `spec/_skipped.md` — RFs DEVERIA/PODE sem spec são intencionais, não gaps
 

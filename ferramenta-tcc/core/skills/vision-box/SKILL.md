@@ -1,5 +1,6 @@
 ---
 name: vision-box
+marco: [M1]
 description: >-
   Captura a essência do produto em linguagem de negócio — primeira pergunta sobre o que o usuário quer construir.
   Use quando o usuário descreve o produto pela primeira vez ou ao iniciar o projeto.
@@ -25,7 +26,7 @@ Cada sub-lote = 1 tool call com seus campos separados.
 
 ## Fase 0 — Inicialização
 
-1. Carregar `core/constitution.md` (guardrail D1 + Output Discipline)
+1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `estado-projeto.yaml`; se ausente: inicializar com `marco_corrente: M1`
 3. Checar idempotência: se `## Visão do Produto` já existe em `visao-produto.md`, pular para Fase 3 (sinalização)
 
