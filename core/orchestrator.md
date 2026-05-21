@@ -68,7 +68,7 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
 
-**Claude Code:** invocar sub-agente via `Task()` em processo isolado, passando o workflow e o slice do marco como contexto.
+**Claude Code:** invocar sub-agente via `Agent` tool em processo isolado. Incluir no prompt de invocação: `"PLUGIN_ROOT={PLUGIN_ROOT}"` (o valor de PLUGIN_ROOT estabelecido na inicialização). Sub-agente usa PLUGIN_ROOT para resolver todos os `core/X` como `{PLUGIN_ROOT}/core/X`.
 **Gemini CLI:** adotar persona do sub-agente no mesmo contexto; carregar workflow e slice do marco como instruções adicionais. Executar a **Sequência canônica** (M1/M4) ou o **Loop fallback single-session** (M2/M3) definidos em `core/marcos/{marco_corrente}.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora") em vez de aguardar auto-invocação por description-matching ([issue #21968](https://github.com/google-gemini/gemini-cli/issues/21968)).
 
 ---
