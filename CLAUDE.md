@@ -99,7 +99,7 @@ Estas expressões são **proibidas** em qualquer prompt ou pergunta gerada para 
 - **Skills sempre com frontmatter `name` + `description`** — necessário para auto-detecção por match de descrição pelo Gemini CLI.
 - **Catálogos seed em `ferramenta-tcc/catalogos-seed/`** contêm conhecimento destilado das referências bibliográficas. A ferramenta **não** lê `referencias/` em runtime.
 - **Empacotamento (D11)**: `gemini-extension.json` e `.claude-plugin/plugin.json` criados na Semana 3 (início), não como etapa final.
-- **Engine canônico (D12)**: toda lógica em `ferramenta-tcc/core/`. Adapters `.gemini/` e `.claude/` são thin wrappers — sem lógica de negócio.
+- **Engine canônico (D12)**: toda lógica em `ferramenta-tcc/core/`. Adapter Gemini CLI em `.gemini/`. Adapters Claude Code em `agents/`, `skills/`, `hooks/` na raiz (`.claude/` removido na v0.5.3) — sem lógica de negócio nos adapters.
 - **Recuperação de falha em agentes**: `estado-projeto.yaml` (D13) é SoT; detection-based (D10) é fallback. Salvar `.draft` + registrar em `_pendencias.md`. Nunca encerrar sessão com erro.
 
 ---
@@ -121,13 +121,18 @@ Critério de "passou": checklist 100% `[x]`; CRITICAL do analyze = 0 antes do Ga
 
 ## Equivalências Gemini CLI ↔ Claude Code (para o porte)
 
-| Conceito | Gemini CLI | Claude Code |
+| Conceito | Gemini CLI | Claude Code (plugin install) |
 |---|---|---|
 | Contexto persistente | `GEMINI.md` | `CLAUDE.md` |
-| Sub-agentes | `.gemini/agents/<nome>.md` | `.claude/agents/<nome>.md` |
-| Skills | `.gemini/skills/<nome>/SKILL.md` | `~/.claude/skills/<nome>/SKILL.md` |
-| Slash commands | `.gemini/commands/<nome>.toml` | `.claude/commands/<nome>.md` |
+| Sub-agentes | `.gemini/agents/<nome>.md` | `agents/<nome>.md` (raiz do repo) |
+| Skills | `.gemini/skills/<nome>/SKILL.md` | `skills/<nome>/SKILL.md` (raiz do repo) |
+| Slash commands/skills | `.gemini/commands/<nome>.toml` | `skills/<nome>/SKILL.md` (plugin bug #49042: `commands/` não funciona) |
+| Hook de gate | N/A | `hooks/gate_guard.sh` (declarado em `.claude-plugin/plugin.json`) |
 | Pergunta interativa bloqueante | `ask_user` (tool) | `AskUserQuestion` (tool) |
+
+**Nota:** a partir de v0.5.3, `.claude/` foi removido. Adapters Claude Code vivem em `agents/`, `skills/`, `hooks/` na raiz do repo. Auto-discovery do sistema de plugin requer essa estrutura plana.
+
+**Resolução de `core/` em plugin context:** skills e agents referenciam `core/X` relativos à raiz do plugin. Em plugin install, o path absoluto é resolvido via `~/.claude/plugins/installed_plugins.json` → `installPath`. O skill `iniciar-projeto` faz essa resolução no boot e passa `PLUGIN_ROOT` adiante.
 
 Referência completa: `docs/planejamento/2 - Vocabulário Técnico: Agentes, Skills e Subagentes.md`
 
@@ -176,14 +181,20 @@ git branch -D ferramenta-only-vN
 **Histórico de branches temporárias usadas:**
 - `ferramenta-only-v6` → v0.2.0
 - `ferramenta-only-v7` → v0.3.0
-- Próxima: `ferramenta-only-v8` → v0.4.0 (incrementar N sempre)
+- `ferramenta-only-v8` → v0.4.0 (C1/C2/C4/C5 Gemini enforcement)
+- `ferramenta-only-v9` → v0.5.0
+- `ferramenta-only-v10` → v0.5.2 (marketplace.json source fix)
+- `ferramenta-only-v11` → v0.5.3 (plugin.json schema + raiz agents/skills/hooks)
+- `ferramenta-only-v12` → v0.5.4 (commands .md format)
+- `ferramenta-only-v13` → v0.5.5 (iniciar-projeto para skills/)
+- Próxima: `ferramenta-only-v14` → v0.5.6 (incrementar N sempre)
 
 ### O que vai para o repo público vs. fica no monorepo
 
 | Vai para GitHub | Fica só local |
 |---|---|
 | `ferramenta-tcc/core/` | `docs/planejamento/` |
-| `ferramenta-tcc/.claude/` | `docs/superpowers/` |
+| `ferramenta-tcc/agents/` | `docs/superpowers/` |
 | `ferramenta-tcc/.gemini/` | `referencias/` |
 | `ferramenta-tcc/catalogos-seed/` | `sandbox/` |
 | `ferramenta-tcc/tests/` | Qualquer arquivo fora de `ferramenta-tcc/` |

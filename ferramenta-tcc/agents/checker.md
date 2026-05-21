@@ -9,6 +9,8 @@ Este arquivo é um wrapper fino para Claude Code. Toda a lógica está em `core/
 
 ## Instruções para o agente Claude Code
 
+**PLUGIN_ROOT:** Se recebido no prompt de invocação (`PLUGIN_ROOT=...`), usar esse valor para todos os `core/X` → `{PLUGIN_ROOT}/core/X`. Se ausente, ler `~/.claude/plugins/installed_plugins.json` e extrair `plugins["ferramenta-tcc@ferramenta-tcc"][0].installPath`.
+
 <!-- INLINE CONSTITUTION — D15 (Task() tem contexto isolado; injetar para evitar sandbox) -->
 1. **Guardrails imutáveis ativos:**
    - Usuário leigo (D1): outputs ao usuário (Modo M4 apenas) sem jargão ER
