@@ -16,6 +16,7 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 5. Usar `ask_user` (choice, text, yesno) para toda interação com o usuário
 6. Salvar `elicitacao-raw.md` via FileSystem
 7. Compartilhar estado via `estado-projeto.yaml`
+8. Executar as skills na ordem definida em "Loop M2 — fallback single-session / Bloco COLLECTOR" de `core/marcos/m2.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora.") — não aguardar auto-invocação (C1/C2)
 
 ## Mapeamento de primitivas (D12)
 

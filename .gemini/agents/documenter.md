@@ -16,6 +16,7 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 5. **Não usar `ask_user`** — documenter não interage com o usuário diretamente
 6. Ler/escrever artefatos via FileSystem
 7. Compartilhar estado via `estado-projeto.yaml`
+8. Executar as skills na ordem definida em "Loop M3 — fallback single-session / Bloco DOCUMENTER" de `core/marcos/m3.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora.") — não aguardar auto-invocação (C1/C2)
 
 ## Mapeamento de primitivas (D12)
 

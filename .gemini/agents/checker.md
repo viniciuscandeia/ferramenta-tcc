@@ -17,6 +17,7 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 6. **Modo M4 (stub):** usar `ask_user` (yesno) para aprovação do tech lead
 7. Ler/escrever artefatos via FileSystem
 8. Compartilhar estado via `estado-projeto.yaml`
+9. Executar as skills na ordem definida em "Loop M3 — fallback single-session / Bloco CHECKER" (modo M3) ou "Sequência canônica" (modo M4) de `core/marcos/m3.md` ou `m4.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora.") — não aguardar auto-invocação (C1/C2)
 
 ## Mapeamento de primitivas (D12)
 

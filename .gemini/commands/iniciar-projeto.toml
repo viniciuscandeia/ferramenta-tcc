@@ -16,10 +16,19 @@ Nota para o Gemini CLI: Sub-agentes são implementados como persona adoption no 
 Ao alternar entre sub-agentes, adotar a persona descrita em `.gemini/agents/<nome>.md` e
 carregar o slice do marco (`core/marcos/{marco_corrente}.md`) + workflow correspondente.
 
-Filtragem de skills por marco (C2):
+Filtragem de skills por marco (C0):
 - Antes de invocar qualquer skill, verificar `estado-projeto.yaml.marco_corrente`
 - Invocar APENAS skills cujo campo `marco:` no frontmatter inclua o marco corrente
 - Exemplo: se marco_corrente=M1, NÃO invocar skills M2 (entrevista-estruturada, glossario, etc.)
   nem skills M3 (srs-ireb-template, gherkin-spec, etc.)
 - Skills transversais (traducao-leigo, traducao-gate) têm marco: [M1, M2, M3] — sempre disponíveis
+
+Sequência canônica (C1): Ao adotar a persona de um sub-agente, executar a "Sequência canônica"
+ou "Loop fallback single-session" definidos em `core/marcos/{marco_corrente}.md`, chamando
+cada skill explicitamente por nome ("Use skill `<nome>` agora.") em vez de aguardar
+auto-invocação por description-matching (compensação para google-gemini/gemini-cli#21968).
+
+Fallback single-session (C2): Para os loops M2 (collector⇄modeler) e M3 (documenter⇄checker),
+seguir os blocos alternados definidos em "Loop M{N} — fallback single-session" no marco corrente.
+Executar na mesma sessão adotando a persona de cada agente por bloco.
 """

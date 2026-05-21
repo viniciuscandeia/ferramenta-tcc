@@ -69,7 +69,7 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 4. Marcos futuros não existem até que o gate anterior seja aprovado
 
 **Claude Code:** invocar sub-agente via `Task()` em processo isolado, passando o workflow e o slice do marco como contexto.
-**Gemini CLI:** adotar persona do sub-agente no mesmo contexto; carregar workflow e slice do marco como instruções adicionais.
+**Gemini CLI:** adotar persona do sub-agente no mesmo contexto; carregar workflow e slice do marco como instruções adicionais. Executar a **Sequência canônica** (M1/M4) ou o **Loop fallback single-session** (M2/M3) definidos em `core/marcos/{marco_corrente}.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora") em vez de aguardar auto-invocação por description-matching ([issue #21968](https://github.com/google-gemini/gemini-cli/issues/21968)).
 
 ---
 
