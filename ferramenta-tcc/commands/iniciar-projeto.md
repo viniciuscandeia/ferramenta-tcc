@@ -1,5 +1,7 @@
-description = "Inicia ou retoma o processo de documentação de requisitos do projeto"
-prompt = """
+---
+description: Inicia ou retoma o processo de documentação de requisitos do projeto
+---
+
 Ler e executar `core/orchestrator.md`.
 
 O orquestrador irá:
@@ -17,4 +19,3 @@ Filtragem de skills por marco (C0):
 
 Sequência canônica (C1): Executar skills na ordem definida em `core/marcos/{marco_corrente}.md`
 chamando cada skill por nome explícito antes de aguardar auto-invocação.
-"""
