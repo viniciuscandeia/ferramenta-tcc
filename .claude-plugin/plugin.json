@@ -1,166 +1,22 @@
 {
   "name": "ferramenta-tcc",
-  "version": "0.5.0",
+  "version": "0.5.3",
   "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
-  "author": "Vinicius Candeia",
-  "agents": [
-    {
-      "name": "stakeholder-identifier",
-      "description": "Define visão, situação-problema, pessoas envolvidas e contexto do projeto (Marco 1)",
-      "file": ".claude/agents/stakeholder-identifier.md"
-    },
-    {
-      "name": "collector",
-      "description": "Realiza elicitação estruturada das necessidades do projeto (Marco 2 — elicitação)",
-      "file": ".claude/agents/collector.md"
-    },
-    {
-      "name": "modeler",
-      "description": "Classifica, prioriza e estrutura os requisitos levantados (Marco 2 — modelagem)",
-      "file": ".claude/agents/modeler.md"
-    },
-    {
-      "name": "checker",
-      "description": "Valida consistência e qualidade do SRS e artefatos de spec (Marco 3 + M4)",
-      "file": ".claude/agents/checker.md"
-    },
-    {
-      "name": "documenter",
-      "description": "Gera SRS completo, specs Gherkin, step defs RED e estratégia de testes (Marco 3)",
-      "file": ".claude/agents/documenter.md"
-    }
-  ],
-  "skills": [
-    {
-      "name": "vision-box",
-      "description": "Captura a essência do produto via Vision Box — primeira skill do Marco 1",
-      "file": ".claude/skills/vision-box/SKILL.md"
-    },
-    {
-      "name": "situacao-problema",
-      "description": "Documenta o problema central com tabela de 6 slots — segunda skill do Marco 1",
-      "file": ".claude/skills/situacao-problema/SKILL.md"
-    },
-    {
-      "name": "stakeholder-mapping",
-      "description": "Mapeia pessoas envolvidas no projeto — terceira skill do Marco 1",
-      "file": ".claude/skills/stakeholder-mapping/SKILL.md"
-    },
-    {
-      "name": "contexto-e-limite",
-      "description": "Define o que está dentro e fora do escopo — quarta skill do Marco 1",
-      "file": ".claude/skills/contexto-e-limite/SKILL.md"
-    },
-    {
-      "name": "clarificacao-pos-visao",
-      "description": "Resolve lacunas críticas de escopo após Marco 1 — skill condicional",
-      "file": ".claude/skills/clarificacao-pos-visao/SKILL.md"
-    },
-    {
-      "name": "entrevista-estruturada",
-      "description": "Coleta rotinas, frustrações e visão ideal via 4 perguntas-âncora — Ronda 1 do Marco 2",
-      "file": ".claude/skills/entrevista-estruturada/SKILL.md"
-    },
-    {
-      "name": "cenario-narrativa",
-      "description": "Coleta cenários narrativos e extrai RFs implícitos — Ronda 2 do Marco 2",
-      "file": ".claude/skills/cenario-narrativa/SKILL.md"
-    },
-    {
-      "name": "recomendacao-dominio",
-      "description": "Sugere funcionalidades típicas do domínio do projeto — Ronda 3 do Marco 2",
-      "file": ".claude/skills/recomendacao-dominio/SKILL.md"
-    },
-    {
-      "name": "recomendacao-implicitos",
-      "description": "Sugere requisitos implícitos não mencionados — Ronda 4 do Marco 2",
-      "file": ".claude/skills/recomendacao-implicitos/SKILL.md"
-    },
-    {
-      "name": "questionario-feixe",
-      "description": "Perguntas temáticas para cobrir áreas sem cobertura — Ronda 5 condicional do Marco 2",
-      "file": ".claude/skills/questionario-feixe/SKILL.md"
-    },
-    {
-      "name": "classificacao-rf-rnf",
-      "description": "Classifica itens em RF, RNF, restrições e premissas — Passo 1 da modelagem M2",
-      "file": ".claude/skills/classificacao-rf-rnf/SKILL.md"
-    },
-    {
-      "name": "priorizacao",
-      "description": "Atribui modal RFC 2119 e prioridade de negócio a cada requisito — Passo 2 M2",
-      "file": ".claude/skills/priorizacao/SKILL.md"
-    },
-    {
-      "name": "glossario",
-      "description": "Detecta termos do domínio sem definição e constrói glossário — Passo 3 M2",
-      "file": ".claude/skills/glossario/SKILL.md"
-    },
-    {
-      "name": "conflitos-detect",
-      "description": "Detecta conflitos entre requisitos ou stakeholders — Passo 4 M2",
-      "file": ".claude/skills/conflitos-detect/SKILL.md"
-    },
-    {
-      "name": "pautas-reelicitacao",
-      "description": "Identifica lacunas que impedem Gate 2 — Passo 5 M2",
-      "file": ".claude/skills/pautas-reelicitacao/SKILL.md"
-    },
-    {
-      "name": "requisito-ears",
-      "description": "Formata requisitos com sintaxe EARS e modais RFC 2119 — Passo 1 M3",
-      "file": ".claude/skills/requisito-ears/SKILL.md"
-    },
-    {
-      "name": "srs-ireb-template",
-      "description": "Monta o SRS completo com 6 seções IREB/ISO 29148 — Passo 2 M3",
-      "file": ".claude/skills/srs-ireb-template/SKILL.md"
-    },
-    {
-      "name": "gherkin-spec",
-      "description": "Gera arquivos .feature Gherkin para requisitos DEVE — Passo 3 M3",
-      "file": ".claude/skills/gherkin-spec/SKILL.md"
-    },
-    {
-      "name": "step-defs-red",
-      "description": "Gera step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, SpecFlow) — Passo 4 M3",
-      "file": ".claude/skills/step-defs-red/SKILL.md"
-    },
-    {
-      "name": "testing-strategy",
-      "description": "Gera TESTING-STRATEGY.md com estratégia por RNF — Passo 5 M3",
-      "file": ".claude/skills/testing-strategy/SKILL.md"
-    },
-    {
-      "name": "readme-tests",
-      "description": "Gera README-TESTS.md com setup e execução dos 3 frameworks — Passo 6 M3",
-      "file": ".claude/skills/readme-tests/SKILL.md"
-    },
-    {
-      "name": "validacao-checklist-ireb",
-      "description": "Aplica 12 critérios de qualidade IREB §3.8 no SRS — Passo 1 do checker M3",
-      "file": ".claude/skills/validacao-checklist-ireb/SKILL.md"
-    },
-    {
-      "name": "analyze-cross-artifact",
-      "description": "Detecta inconsistências entre artefatos de diferentes marcos — Passo 2 do checker M3",
-      "file": ".claude/skills/analyze-cross-artifact/SKILL.md"
-    },
-    {
-      "name": "rastreabilidade-matriz",
-      "description": "Gera matriz de rastreabilidade bidirecional — Passo 3 do checker M3",
-      "file": ".claude/skills/rastreabilidade-matriz/SKILL.md"
-    },
-    {
-      "name": "traducao-leigo",
-      "description": "Remove jargão técnico de ER antes de apresentar texto ao usuário leigo — skill transversal",
-      "file": ".claude/skills/traducao-leigo/SKILL.md"
-    },
-    {
-      "name": "traducao-gate",
-      "description": "Gera versões leigo e normativa de artefatos de gate — skill transversal",
-      "file": ".claude/skills/traducao-gate/SKILL.md"
-    }
-  ],
-  "repository": "https://github.com/viniciuscandeia/ferramenta-tcc"
+  "author": {
+    "name": "Vinicius Candeia"
+  },
+  "repository": "https://github.com/viniciuscandeia/ferramenta-tcc",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/gate_guard.sh"
+          }
+        ]
+      }
+    ]
+  }
 }
