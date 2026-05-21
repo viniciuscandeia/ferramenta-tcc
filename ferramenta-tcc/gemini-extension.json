@@ -1,6 +1,6 @@
 {
   "name": "ferramenta-tcc",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
   "author": "Vinicius Candeia",
   "commands": [

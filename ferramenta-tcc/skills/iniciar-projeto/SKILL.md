@@ -1,4 +1,5 @@
 ---
+name: iniciar-projeto
 description: Inicia ou retoma o processo de documentação de requisitos do projeto
 ---
 
