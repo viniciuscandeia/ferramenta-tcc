@@ -1,0 +1,38 @@
+projeto:
+  nome: "Ainda não pensei"
+  marco_atual: 4
+  iteracao_atual: 1
+  gates:
+    gate_1_status: "aprovado"
+    gate_2_status: "aprovado"
+    gate_3_status: "aprovado"
+    gate_4_status: "pendente"
+  versao_leigo_aprovada:
+    - marco: 1
+      data: "2026-05-19"
+      documento: "vision-box.md"
+    - marco: 2
+      data: "2026-05-19"
+      documento: "necessidades.md"
+    - marco: 3
+      data: "2026-05-19"
+      documento: "srs.md"
+fluxo:
+  m1:
+    status: "concluido"
+    iteracoes: 1
+    vision_box_preenchido: true
+  m2:
+    status: "concluido"
+    iteracoes: 2
+  m3:
+    status: "concluido"
+    iteracoes: 1
+  m4:
+    status: "em_progresso"
+    iteracoes: 0
+documentos:
+  vision_box: "vision-box.md"
+  necessidades: "necessidades.md"
+  fluxos: "fluxos.md"
+  srs: "srs.md"

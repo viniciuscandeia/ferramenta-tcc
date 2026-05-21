@@ -16,6 +16,7 @@ Este arquivo é um wrapper fino para Gemini CLI. Toda a lógica está em `core/a
 5. Usar `ask_user` (choice, text, yesno) para toda interação com o usuário
 6. Salvar artefatos na pasta do projeto corrente
 7. Compartilhar estado via `estado-projeto.yaml` em disco
+8. Executar as skills na ordem definida em "Sequência canônica" de `core/marcos/m1.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora.") — não aguardar auto-invocação (C1)
 
 ## Mapeamento de primitivas (D12)
 

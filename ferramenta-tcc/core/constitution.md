@@ -90,6 +90,7 @@ O orquestrador **não pode auto-aprovar gate**. Toda transição `gate_N_status:
 3. **`loop_mN_iteracoes ≥ 1`** — sub-agente do marco executou ao menos uma iteração completa
 4. **`AskUserQuestion` yesno com resposta SIM** do usuário — não pode ser simulado, assuminado nem pulado
 5. **Registro em `versao_leigo_aprovada[]`** após o SIM do usuário — não antes
+6. **C4.5:** Listagem completa do diretório do projeto validada contra a tabela canônica do marco — bloqueia gate se qualquer artefato obrigatório (não-condicional) estiver ausente
 
 **Violação é falha crítica do orquestrador, não comportamento aceitável.**
 
@@ -138,6 +139,19 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 **Engine canônico** em `core/` — adapters `.claude/` e `.gemini/` mapeiam primitivas sem redefinir comportamento (D12).
 
 Sub-agentes são **apátridas entre marcos**. Estado persiste apenas via `estado-projeto.yaml` e artefatos em disco.
+
+---
+
+## MODOS DE GARANTIA POR PLATAFORMA
+
+| Garantia | Gemini CLI | Claude Code (D11, futuro) |
+|---|---|---|
+| Skills invocadas deterministicamente | ⚠ best-effort via Sequência canônica (C1) | ✓ |
+| Loops M2/M3 iteram | ⚠ via fallback single-session (C2) | ✓ |
+| Validação fail-closed de artefatos | ✓ (C4.5) | ✓ + hooks externos |
+| `estado-projeto.yaml` consistente | ⚠ best-effort | ✓ (SessionStart hook) |
+
+Enquanto issue [google-gemini/gemini-cli#21968](https://github.com/google-gemini/gemini-cli/issues/21968) estiver aberto, execuções no Gemini CLI são tratadas como "best-effort" — o orquestrador chama cada skill por nome explícito (C1) e os loops M2/M3 executam em fallback single-session (C2). Validação fail-closed C4.5 em cada gate garante que nenhum gate fecha com artefato obrigatório ausente.
 
 ---
 
