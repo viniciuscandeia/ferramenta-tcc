@@ -14,19 +14,19 @@ description: >-
 3. **Cenário curto demais = dado insuficiente.** Narrativa < 3 sentenças não tem granularidade para extração. Sondar com "pode contar um pouco mais?" antes de registrar.
 
 <HARD-GATE>
-- NÃO executar antes de `entrevista-estruturada` concluída (verificar seção `## Rotina e Necessidades` em `elicitacao-raw.md`)
+- NÃO executar antes de `entrevista-estruturada` concluída (verificar seção `## Rotina e Necessidades` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
 - ⛔ STOP se cenário recebido tem < 3 sentenças — sondar expansão antes de avançar para extração
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Rotina e Necessidades` existe em `elicitacao-raw.md`
-3. Identificar perfis distintos de `visao-produto-normativo.md` → determinar 1 ou 2 cenários (máx 2)
+2. Verificar pré-condição: `## Rotina e Necessidades` existe em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
+3. Identificar perfis distintos de `documentos-tecnicos/01-visao/01-visao-produto.md` → determinar 1 ou 2 cenários (máx 2)
 
 ## Fase 1 — Coleta
 
-Adaptar perfis ao projeto (usar nomes/papéis de `visao-produto-normativo.md`).
+Adaptar perfis ao projeto (usar nomes/papéis de `documentos-tecnicos/01-visao/01-visao-produto.md`).
 
 **Cenário 1 — Usuário principal (text):**
 ```
@@ -55,14 +55,14 @@ Sem interação adicional com o usuário, extrair RFs candidatos usando heuríst
 | "[usuário] vê / consulta / verifica [X]" | O sistema DEVE exibir [X] |
 | "[usuário] recebe [notificação/e-mail/mensagem]" | O sistema DEVE enviar [notificação] ao [usuário] quando [condição] |
 | "[usuário] aprova / cancela / rejeita [X]" | O sistema DEVE permitir que [usuário] [ação] [X] |
-| "[usuário] não consegue / tenta e falha" | Lacuna → flag para `pautas-reelicitacao` |
+| "[usuário] não consegue / tenta e falha" | Lacuna → flag para `02.6-pautas-reelicitacao` |
 | "[usuário] não precisa / não quer" | Candidato a NAO_TERA |
 
 Se ação descrita sem resultado esperado: registrar como lacuna ("Usuário mencionou [ação X] mas não descreveu resultado — possível pauta").
 
 ## Fase 3 — Saída
 
-Acrescentar seção em `elicitacao-raw.md`:
+Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 
 ```markdown
 ## Cenários Narrativos (cenario-narrativa — Fase A)

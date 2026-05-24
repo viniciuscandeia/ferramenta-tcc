@@ -85,11 +85,18 @@ Passar a versão leigo gerada pela skill `traducao-leigo`:
 
 ## Fase 4 — Saída
 
-Salvar ambas as versões no diretório do projeto:
-- `<nome>-normativo.md` — pronto para equipe técnica
-- `<nome>-leigo.md` — pronto para apresentar ao usuário no gate
+Salvar ambas as versões no subdiretório do marco correspondente:
 
-Sinalizar ao orquestrador: traducao-gate concluída → apresentar `<nome>-leigo.md` ao usuário para aprovação.
+| Marco | Arquivo normativo | Arquivo leigo |
+|---|---|---|
+| M1 | `documentos-tecnicos/01-visao/01-visao-produto.md` | `documentos-para-leigo/01-visao/01-visao-produto.md` |
+| M2 | `documentos-tecnicos/02-requisitos/<nome>.md` | `documentos-para-leigo/02-requisitos/<nome>.md` |
+| M3 | `documentos-tecnicos/03-documento/03-srs-completo.md` | `documentos-para-leigo/03-documento/03-documento-do-projeto.md` |
+
+- Versão normativa — pronto para equipe técnica
+- Versão leigo — pronto para apresentar ao usuário no gate
+
+Sinalizar ao orquestrador: traducao-gate concluída → apresentar versão leigo ao usuário para aprovação.
 
 <!-- internal -->
 ## Anti-Padrão: Versão Leigo = Versão Normativa Parafraseada

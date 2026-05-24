@@ -11,34 +11,34 @@ description: >-
 
 1. **Crítico de estado RED.** Todo step deve lançar erro imediatamente — sem lógica real, sem mocks, sem `pass` silencioso. Step que não falha não é RED. RED é o contrato com o desenvolvedor.
 2. **3 frameworks, sem exceção.** 1 feature = 3 arquivos (Pytest-BDD + Cucumber-js + SpecFlow). Gerar em 1 ou 2 frameworks e silenciar o terceiro é omissão.
-3. **Espelhar nomenclatura de `spec/` exatamente.** RF-001 em spec → rf-001 em tests/. Qualquer divergência quebra a rastreabilidade do `srs-ireb-template` seção 6.
+3. **Espelhar nomenclatura de `documentos-tecnicos/03-documento/04-spec/` exatamente.** RF-001 em spec → rf-001 em tests/. Qualquer divergência quebra a rastreabilidade do `srs-ireb-template` seção 6.
 
 <HARD-GATE>
 - NÃO executar antes de `gherkin-spec` (Passo 3) concluído
-- NÃO executar sem arquivos em `spec/*.feature` (lista_deve vazia = nada para gerar)
+- NÃO executar sem arquivos em `documentos-tecnicos/03-documento/04-spec/*.feature` (lista_deve vazia = nada para gerar)
 - ⛔ STOP se contagem de arquivos gerados ≠ N_features × 3 — verificar qual framework falhou antes de sinalizar conclusão
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Listar todos os arquivos em `spec/*.feature` (excluir `_skipped.md`)
+2. Listar todos os arquivos em `documentos-tecnicos/03-documento/04-spec/*.feature` (excluir `_skipped.md`)
 3. Para cada `.feature`: extrair todos os textos de steps Given/When/Then
 
 ## Fase 1 — Geração Pytest-BDD (Python)
 
-**Localização:** `tests/unit/<rf-id>-<slug>_steps.py`
+**Localização:** `documentos-tecnicos/03-documento/05-tests/unit/<rf-id>-<slug>_steps.py`
 
 | Feature | Step def |
 |---|---|
-| `spec/rf-001-cadastro-produto.feature` | `tests/unit/rf-001-cadastro-produto_steps.py` |
+| `documentos-tecnicos/03-documento/04-spec/rf-001-cadastro-produto.feature` | `documentos-tecnicos/03-documento/05-tests/unit/rf-001-cadastro-produto_steps.py` |
 
 ```python
-# tests/unit/rf-001-cadastro-produto_steps.py
+# documentos-tecnicos/03-documento/05-tests/unit/rf-001-cadastro-produto_steps.py
 import pytest
 from pytest_bdd import scenario, given, when, then
 
-@scenario('../spec/rf-001-cadastro-produto.feature', '<título do cenário>')
+@scenario('../../04-spec/rf-001-cadastro-produto.feature', '<título do cenário>')  # relativo a 05-tests/unit/
 def test_<slug_sem_hifens>():
     pass
 
@@ -57,11 +57,11 @@ def entao_<slug_do_step>():
 
 **Exemplo concreto:**
 ```python
-# tests/unit/rf-001-cadastro-produto_steps.py
+# documentos-tecnicos/03-documento/05-tests/unit/rf-001-cadastro-produto_steps.py
 import pytest
 from pytest_bdd import scenario, given, when, then
 
-@scenario('../spec/rf-001-cadastro-produto.feature', 'Cadastro de produto com sucesso')
+@scenario('../../04-spec/rf-001-cadastro-produto.feature', 'Cadastro de produto com sucesso')
 def test_cadastro_produto():
     pass
 
@@ -80,14 +80,14 @@ def entao_produto_no_catalogo():
 
 ## Fase 2 — Geração Cucumber-js (JavaScript/TypeScript)
 
-**Localização:** `tests/acceptance/<rf-id>-<slug>.steps.js`
+**Localização:** `documentos-tecnicos/03-documento/05-tests/acceptance/<rf-id>-<slug>.steps.js`
 
 | Feature | Step def |
 |---|---|
-| `spec/rf-001-cadastro-produto.feature` | `tests/acceptance/rf-001-cadastro-produto.steps.js` |
+| `documentos-tecnicos/03-documento/04-spec/rf-001-cadastro-produto.feature` | `documentos-tecnicos/03-documento/05-tests/acceptance/rf-001-cadastro-produto.steps.js` |
 
 ```javascript
-// tests/acceptance/<rf-id>-<slug>.steps.js
+// documentos-tecnicos/03-documento/05-tests/acceptance/<rf-id>-<slug>.steps.js
 const { Given, When, Then } = require('@cucumber/cucumber');
 
 Given('<texto do step Given>', function () {
@@ -105,7 +105,7 @@ Then('<texto do step Then>', function () {
 
 **Exemplo concreto:**
 ```javascript
-// tests/acceptance/rf-001-cadastro-produto.steps.js
+// documentos-tecnicos/03-documento/05-tests/acceptance/rf-001-cadastro-produto.steps.js
 const { Given, When, Then } = require('@cucumber/cucumber');
 
 Given('o artesão está na tela de cadastro', function () {
@@ -123,14 +123,14 @@ Then('o produto aparece no catálogo', function () {
 
 ## Fase 3 — Geração SpecFlow (.NET C#)
 
-**Localização:** `tests/acceptance/<RfId><Slug>Steps.cs` — PascalCase sem hifens
+**Localização:** `documentos-tecnicos/03-documento/05-tests/acceptance/<RfId><Slug>Steps.cs` — PascalCase sem hifens
 
 | Feature | Step def |
 |---|---|
-| `spec/rf-001-cadastro-produto.feature` | `tests/acceptance/Rf001CadastroProdutoSteps.cs` |
+| `documentos-tecnicos/03-documento/04-spec/rf-001-cadastro-produto.feature` | `documentos-tecnicos/03-documento/05-tests/acceptance/Rf001CadastroProdutoSteps.cs` |
 
 ```csharp
-// tests/acceptance/<RfId><Slug>Steps.cs
+// documentos-tecnicos/03-documento/05-tests/acceptance/<RfId><Slug>Steps.cs
 using TechTalk.SpecFlow;
 
 [Binding]
@@ -158,7 +158,7 @@ public class <RfId><Slug>Steps
 
 **Exemplo concreto:**
 ```csharp
-// tests/acceptance/Rf001CadastroProdutoSteps.cs
+// documentos-tecnicos/03-documento/05-tests/acceptance/Rf001CadastroProdutoSteps.cs
 using TechTalk.SpecFlow;
 
 [Binding]
@@ -187,9 +187,9 @@ public class Rf001CadastroProdutoSteps
 ## Fase 4 — Saída
 
 N features × 3 arquivos gerados:
-- `tests/unit/<rf-id>-<slug>_steps.py` × N (Pytest-BDD)
-- `tests/acceptance/<rf-id>-<slug>.steps.js` × N (Cucumber-js)
-- `tests/acceptance/<RfId><Slug>Steps.cs` × N (SpecFlow)
+- `documentos-tecnicos/03-documento/05-tests/unit/<rf-id>-<slug>_steps.py` × N (Pytest-BDD)
+- `documentos-tecnicos/03-documento/05-tests/acceptance/<rf-id>-<slug>.steps.js` × N (Cucumber-js)
+- `documentos-tecnicos/03-documento/05-tests/acceptance/<RfId><Slug>Steps.cs` × N (SpecFlow)
 
 Verificar: contagem = N_features × 3. Se divergir: ⛔ STOP.
 

@@ -11,22 +11,22 @@ description: >-
 
 1. **Crítico de mensurabilidade** — "testar desempenho" não é estratégia. "Carga de 100 usuários simultâneos, p95 ≤ 2s via k6, PASS/FAIL binário" é estratégia. Critério sem número mensurável não é critério.
 2. **1 entrada por RNF, sem exceção.** RNF com modal PODE ainda precisa de entrada — a estratégia é documentada mesmo para itens opcionais.
-3. **Preservar a métrica original verbatim.** Não parafrasear a métrica de `03.2-qualidade.md`. O critério de aceite deriva da métrica, mas a métrica original fica intacta.
+3. **Preservar a métrica original verbatim.** Não parafrasear a métrica de `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`. O critério de aceite deriva da métrica, mas a métrica original fica intacta.
 
 <HARD-GATE>
-- NÃO executar sem Gate 2 aprovado (verificar `03.2-qualidade.md` com itens e campo Métrica preenchido)
-- ⛔ STOP se contagem de entradas em `TESTING-STRATEGY.md` ≠ contagem de RNFs em `03.2-qualidade.md`
+- NÃO executar sem Gate 2 aprovado (verificar `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com itens e campo Métrica preenchido)
+- ⛔ STOP se contagem de entradas em `documentos-tecnicos/03-documento/06-estrategia-testes.md` ≠ contagem de RNFs em `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `03.2-qualidade.md` existe com itens e campo Métrica preenchido
+2. Verificar `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existe com itens e campo Métrica preenchido
 3. Contar RNFs para verificação de completude na Fase 2
 
 ## Fase 1 — Mapeamento bucket → ferramenta
 
-Para cada RNF de `03.2-qualidade.md`, consultar tabela de mapeamento:
+Para cada RNF de `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, consultar tabela de mapeamento:
 
 | Bucket | Ferramenta(s) sugerida(s) |
 |---|---|
@@ -47,8 +47,8 @@ Para cada RNF: gerar entrada com template:
 ```markdown
 ## [RNF-ID] — [Bucket]
 
-**Descrição:** [descrição do RNF conforme 03.2-qualidade.md]
-**Métrica alvo:** [métrica original verbatim de 03.2-qualidade.md]
+**Descrição:** [descrição do RNF conforme documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md]
+**Métrica alvo:** [métrica original verbatim de documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md]
 **Critério de aceite:** [métrica convertida em critério binário PASS/FAIL]
 **Ferramenta sugerida:** [ferramenta da tabela de mapeamento]
 **Framework de teste:** [Pytest-BDD / Cucumber-js / SpecFlow — o mais adequado]
@@ -69,12 +69,12 @@ Para cada RNF: gerar entrada com template:
 
 ## Fase 3 — Saída
 
-Criar `TESTING-STRATEGY.md`:
+Criar `documentos-tecnicos/03-documento/06-estrategia-testes.md`:
 
 ```markdown
 # Estratégia de Testes
 
-[Entradas por RNF — 1 por RNF de 03.2-qualidade.md]
+[Entradas por RNF — 1 por RNF de documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md]
 ```
 
 Verificar: contagem entradas == contagem RNFs. Se divergir: ⛔ STOP.
@@ -84,9 +84,9 @@ Sinalizar ao `documenter`: testing-strategy concluído → prosseguir para `read
 <!-- internal -->
 ## Anti-Padrão: RNF com Modal PODE Omitido
 
-**Como acontece:** A skill filtra apenas RNFs com modal `DEVE` por analogia com `gherkin-spec`. RNFs com `PODE` não recebem entrada. `TESTING-STRATEGY.md` tem menos linhas que `03.2-qualidade.md`.
+**Como acontece:** A skill filtra apenas RNFs com modal `DEVE` por analogia com `gherkin-spec`. RNFs com `PODE` não recebem entrada. `documentos-tecnicos/03-documento/06-estrategia-testes.md` tem menos linhas que `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`.
 
 **Como detectar:** Contagem de entradas ≠ contagem de RNFs totais (incluindo DEVERIA e PODE).
 
-**O que fazer:** Todos os RNFs entram em `TESTING-STRATEGY.md`, independente do modal. O campo "Tipo de teste" pode ser "Manual (não prioritário)" para itens com modal PODE — mas a entrada existe e é rastreável.
+**O que fazer:** Todos os RNFs entram em `documentos-tecnicos/03-documento/06-estrategia-testes.md`, independente do modal. O campo "Tipo de teste" pode ser "Manual (não prioritário)" para itens com modal PODE — mas a entrada existe e é rastreável.
 <!-- /internal -->

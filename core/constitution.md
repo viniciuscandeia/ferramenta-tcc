@@ -76,7 +76,12 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 - **Máximo 4 perguntas por chamada** — restrição da primitiva
 - **Proibido:** invocar `ask_user` individualmente por gap detectado
 - **Tool call estruturado obrigatório:** perguntas devem ser invocadas via `ask_user`/`AskUserQuestion` como TOOL CALL com campos separados. NUNCA escrever perguntas como prosa no chat. NUNCA encadear múltiplas perguntas numa única frase como "X e também Y, e Z?".
-- **Tipos permitidos:** `choice`, `text`, `yesno`
+- **Tipos permitidos:** `choice`, `multi-choice`, `text`, `yesno`
+  - `choice` — seleção única, opções mutuamente exclusivas
+  - `multi-choice` → Claude Code: `AskUserQuestion` com `multiSelect: true` | Gemini CLI: emitir N campos `yesno` em uma única chamada `ask_user` em lote, um campo por opção (workaround — [bug #21968](https://github.com/google-gemini/gemini-cli/issues/21968)). O agente emite a pergunta multi-choice normalmente; a adaptação de plataforma é explicitada aqui.
+  - `text` — texto livre
+  - `yesno` — decisão binária; obrigatório para gates
+  - Usar `multi-choice` quando a resposta natural é uma combinação (benefícios, perfis, funcionalidades). Manter `choice` para opções mutuamente exclusivas. Manter `yesno` para gates e decisões binárias.
 - **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `ask_user`/`AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
 
 ---
@@ -102,10 +107,10 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 
 | Gate | Condição para abrir | Ação do orquestrador |
 |---|---|---|
-| Gate 1 | Usuário aprova versão leigo de `visao-produto.md` | Baseline git + avançar para M2 |
-| Gate 2 | Usuário aprova versão leigo dos artefatos M2 **E** `pautas-reelicitacao.md` sem pendências abertas | Baseline git + avançar para M3 |
-| Gate 3 | Usuário aprova versão leigo do SRS **E** `analyze-report.md` sem issues CRITICAL | Baseline git + avançar para M4 (opcional) ou encerrar |
-| Gate 4 (opcional) | Dev/tech lead aprova `aprovacao-tecnica.md` | Baseline git final |
+| Gate 1 | Usuário aprova versão leigo de `visao-produto.md` | Avançar para M2 |
+| Gate 2 | Usuário aprova versão leigo dos artefatos M2 **E** `pautas-reelicitacao.md` sem pendências abertas | Avançar para M3 |
+| Gate 3 | Usuário aprova versão leigo do SRS **E** `analyze-report.md` sem issues CRITICAL | Avançar para M4 (opcional) ou encerrar |
+| Gate 4 (opcional) | Dev/tech lead aprova `aprovacao-tecnica.md` | Encerrar |
 
 **Loop M2 collector ⇄ modeler:** máximo 3 iterações na Fase B. Se `pautas-reelicitacao.md` ainda tiver itens `[ ]` após a 3ª iteração, apresentar ao usuário (yesno): "Algumas perguntas sobre o projeto ainda ficaram abertas — quer responder agora ou prefere seguir mesmo assim?"
 

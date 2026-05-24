@@ -58,7 +58,7 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 ## Bloco F — Estado e integração
 
 - [ ] **F1.** `estado-projeto.yaml` reflete `marco_corrente: M2` durante execução e `gate_status.gate_2: aprovado` após Gate 2
-- [ ] **F2.** Baseline git criado com tag `gate-2-aprovado` após aprovação do Gate 2
+- [ ] **F2.** `estado-projeto.yaml` registra `gate_status.gate_2: aprovado` e `gate_2_aprovado_em` após aprovação do Gate 2
 - [ ] **F3.** Artefatos M2 compatíveis com entrada esperada de M3: `03.1-funcionais.md` tem RFs com `DEVE` para `gherkin-spec` (D20)
 
 ---

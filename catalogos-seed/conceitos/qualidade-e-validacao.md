@@ -7,7 +7,9 @@ Este guia define os critérios para garantir que os requisitos levantados sejam 
 ## 1. Critérios de Qualidade (IREB §3.8)
 Cada requisito deve ser avaliado individualmente:
 - **Adequado, Necessário, Sem Ambiguidade, Completo, Compreensível e Verificável.**
-- **Dica:** Use o acrônimo **SMART** para requisitos de negócio e **INVEST** para User Stories.
+- **Dica:** Use o acrônimo **SMART** para requisitos de negócio e **INVEST** (Bill Wake, 2003) para User Stories.
+
+Referência normativa: IREB CPRE Foundation Level Handbook v1.2 BR §3.8 — `normas/cpre_foundationlevel_handbook_BR_v1.2.md`
 
 ## 2. Verificação vs. Validação (V&V)
 - **Verificação:** "Estamos construindo o documento corretamente?" (Consistência interna, padrões de escrita, ausência de erros técnicos).

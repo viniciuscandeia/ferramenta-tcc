@@ -15,14 +15,14 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar antes de `priorizacao` e `glossario` concluídas
-- NÃO executar se `03.1-funcionais.md` não existe ou está vazio (nada para verificar)
+- NÃO executar se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` não existe ou está vazio (nada para verificar)
 - ⛔ STOP se qualquer arquivo de entrada estiver corrompido ou ilegível — registrar em `_pendencias.md` antes de prosseguir
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `03.1-funcionais.md`, `03.2-qualidade.md`, `03.3-restricoes.md`, `visao-produto-normativo.md`, `elicitacao-raw.md`, `glossario.md` acessíveis
+2. Verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, `documentos-tecnicos/02-requisitos/02.3-restricoes.md`, `documentos-tecnicos/01-visao/01-visao-produto.md`, `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`, `documentos-tecnicos/02-requisitos/02.5-glossario.md` acessíveis
 
 ## Fase 1 — 5 Verificações Sequenciais
 
@@ -41,16 +41,16 @@ description: >-
 Dois IDs descrevendo a mesma funcionalidade com texto diferente? Candidatos: itens de fontes diferentes (entrevista vs. recomendacao-implicitos vs. recomendacao-dominio).
 
 **Verificação 2 — Contradições escopo-limite:**
-Um RF diz que o sistema FAZ X mas `visao-produto-normativo.md` lista X como "fora do sistema"? Um RF implica integração com sistema externo não declarado em M1?
+Um RF diz que o sistema FAZ X mas `documentos-tecnicos/01-visao/01-visao-produto.md` lista X como "fora do sistema"? Um RF implica integração com sistema externo não declarado em M1?
 
 **Verificação 3 — Prioridades inconsistentes (conflito de Valor):**
 Mesmo item tem `DEVE` em um lugar e `PODERIA` em outro? Item marcado `NAO_TERA` mas aparece como RF com modal em outro artefato?
 
 **Verificação 4 — Conflito de interesse entre stakeholders:**
-RF favorece fortemente um perfil e prejudica outro? Cruzar stakeholders de `visao-produto-normativo.md` com RFs que os afetam.
+RF favorece fortemente um perfil e prejudica outro? Cruzar stakeholders de `documentos-tecnicos/01-visao/01-visao-produto.md` com RFs que os afetam.
 
 **Verificação 5 — Conflitos semânticos:**
-Cruzar `glossario.md` com `elicitacao-raw.md`: mesmo termo com definições diferentes em contextos distintos? Termos do glossário com `[DEFINIÇÃO INCERTA]` geram conflito potencial.
+Cruzar `documentos-tecnicos/02-requisitos/02.5-glossario.md` com `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`: mesmo termo com definições diferentes em contextos distintos? Termos do glossário com `[DEFINIÇÃO INCERTA]` geram conflito potencial.
 
 **Estratégias de resolução (IREB §4.4):**
 
@@ -63,9 +63,9 @@ Cruzar `glossario.md` com `elicitacao-raw.md`: mesmo termo com definições dife
 
 ## Fase 2 — Saída
 
-**0 conflitos:** não criar `conflitos-detectados.md`. Registrar na saída do modeler: "conflitos-detect: 0 conflitos em M2."
+**0 conflitos:** não criar `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md`. Registrar na saída do modeler: "conflitos-detect: 0 conflitos em M2."
 
-**≥ 1 conflito → criar `conflitos-detectados.md`:**
+**≥ 1 conflito → criar `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md`:**
 
 ```markdown
 # Conflitos Detectados — M2
@@ -84,7 +84,7 @@ Cruzar `glossario.md` com `elicitacao-raw.md`: mesmo termo com definições dife
 **Resolução:** —
 ```
 
-Conflito tipo Semântico com definição já em `glossario.md` → pode marcar `resolvido` automaticamente.
+Conflito tipo Semântico com definição já em `documentos-tecnicos/02-requisitos/02.5-glossario.md` → pode marcar `resolvido` automaticamente.
 
 Sinalizar ao `modeler`: conflitos-detect concluído → prosseguir para `pautas-reelicitacao` (Passo 5).
 
@@ -93,7 +93,7 @@ Sinalizar ao `modeler`: conflitos-detect concluído → prosseguir para `pautas-
 
 **Como acontece:** "pedido" e "compra" são usados como sinônimos pelo usuário, mas o sistema os registra como 2 termos distintos e cria CONF-001 (conflito semântico). O modeler perde tempo gerenciando conflito que não existe.
 
-**Como detectar:** Antes de criar conflito semântico, verificar campo "Sinônimos usados no projeto" no `glossario.md` para ambos os termos. Se um é sinônimo do outro: conflito não existe.
+**Como detectar:** Antes de criar conflito semântico, verificar campo "Sinônimos usados no projeto" no `02.5-glossario.md` para ambos os termos. Se um é sinônimo do outro: conflito não existe.
 
 **O que fazer:** Cruzar `glossario.md` antes de registrar conflito semântico. Dois sinônimos = 1 verbete com 2 formas, não conflito. Criar CONF apenas se os termos têm definições genuinamente distintas para o mesmo referente.
 <!-- /internal -->

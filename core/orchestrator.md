@@ -1,7 +1,7 @@
 # orchestrator.md — Dispatcher Central
 
 **Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-projeto`.
-**Responsabilidades:** Ler estado, rotear para o marco corrente (e APENAS este), gerenciar estado + gates, criar baselines git.
+**Responsabilidades:** Ler estado, rotear para o marco corrente (e APENAS este), gerenciar estado + gates.
 
 ---
 
@@ -31,23 +31,47 @@ Ao ser invocado via `/iniciar-projeto`:
 2. **Verificar** se é projeto novo ou retomada de sessão:
    - Novo: criar `estado-projeto.yaml` com `marco_corrente: M1`, `gate_status: pendente`
    - Retomada: restaurar estado do yaml e confirmar com usuário antes de continuar
+3. **Criar estrutura de pastas do projeto** (se projeto novo OU se pastas ainda não existem):
+   Usar Bash tool para criar todas as subpastas necessárias antes do primeiro Write:
+   ```bash
+   mkdir -p documentos-para-leigo/01-visao documentos-para-leigo/02-requisitos documentos-para-leigo/03-documento
+   mkdir -p documentos-tecnicos/01-visao documentos-tecnicos/02-requisitos
+   mkdir -p documentos-tecnicos/03-documento/04-spec
+   mkdir -p documentos-tecnicos/03-documento/05-tests/unit documentos-tecnicos/03-documento/05-tests/acceptance
+   mkdir -p documentos-tecnicos/04-revisao
+   ```
+   Executar a partir da pasta do projeto (onde `estado-projeto.yaml` reside).
+   Esta etapa garante que o `gate_guard.sh` não bloqueia o primeiro Write por ausência de pasta.
 
-### Mensagem de boas-vindas (versão leigo — sem jargão)
+### Boas-vindas (versão leigo — sem jargão)
 
-Ao iniciar projeto novo, apresentar ao usuário:
+Ao iniciar projeto novo:
 
-```
-Olá! Vou ajudar você a documentar seu projeto de software de forma organizada.
+1. Exibir como texto livre (única exceção ao D14 — é apresentação, não pergunta):
 
-Vamos passar por três fases principais:
-• Fase 1 — Entender a necessidade: o que você quer construir e para quem
-• Fase 2 — Detalhar o que o produto precisa fazer e como deve se comportar  
-• Fase 3 — Gerar o documento completo do projeto
+   > Olá! Vou ajudar você a documentar seu projeto de software de forma organizada.
+   >
+   > Vamos passar por três etapas:
+   > • Etapa 1 — Entender o que você quer construir e para quem
+   > • Etapa 2 — Detalhar o que o produto precisa fazer e como deve funcionar
+   > • Etapa 3 — Gerar o documento completo do projeto
+   >
+   > Cada etapa termina com uma confirmação sua antes de seguirmos em frente.
 
-Cada fase termina com uma confirmação sua antes de seguirmos em frente.
+2. **Imediatamente após**, invocar `AskUserQuestion`:
+   - `question`: "Como você gostaria de começar?"
+   - `header`: "Início"
+   - `multiSelect`: false
+   - Opção 1: label `"Vamos começar"`, description `"Iniciar a documentação do meu projeto agora"`
+   - Opção 2: label `"Tenho dúvidas antes"`, description `"Quero entender melhor como funciona antes de começar"`
+   - Opção 3: label `"Quanto tempo leva?"`, description `"Quero saber o tempo estimado antes de decidir"`
 
-Vamos começar?
-```
+3. Rotear a resposta:
+   - **"Vamos começar"** → prosseguir para ROTEAMENTO POR MARCO (iniciar M1)
+   - **"Tenho dúvidas antes"** → invocar skill `faq-inicial`; ao retornar, prosseguir para M1
+   - **"Quanto tempo leva?"** → exibir texto: "Normalmente leva entre 30 e 60 minutos de conversa. Você pode pausar e retomar a qualquer momento." → `AskUserQuestion` yesno: "Pronto para começar?" → SIM: M1 | NÃO: encerrar amigavelmente
+
+**PROIBIDO:** escrever "Vamos começar?" ou qualquer pergunta como prosa no chat (viola D14).
 
 ---
 
@@ -68,7 +92,7 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
 
-**Claude Code:** invocar sub-agente via `Agent` tool em processo isolado. Incluir no prompt de invocação: `"PLUGIN_ROOT={PLUGIN_ROOT}"` (o valor de PLUGIN_ROOT estabelecido na inicialização). Sub-agente usa PLUGIN_ROOT para resolver todos os `core/X` como `{PLUGIN_ROOT}/core/X`.
+**Claude Code:** orquestrador assume persona do sub-agente indicado e executa as skills do marco diretamente no main context (D25). Não usar Agent tool — `AskUserQuestion` não está disponível em sub-agentes Claude Code (bug [#12890](https://github.com/anthropics/claude-code/issues/12890), [#34592](https://github.com/anthropics/claude-code/issues/34592), marcado "not planned"). Ler `{PLUGIN_ROOT}/core/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline.
 **Gemini CLI:** adotar persona do sub-agente no mesmo contexto; carregar workflow e slice do marco como instruções adicionais. Executar a **Sequência canônica** (M1/M4) ou o **Loop fallback single-session** (M2/M3) definidos em `core/marcos/{marco_corrente}.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora") em vez de aguardar auto-invocação por description-matching ([issue #21968](https://github.com/google-gemini/gemini-cli/issues/21968)).
 
 ---
@@ -87,7 +111,7 @@ gate_status:
   gate_3: pendente
   gate_4: nao_solicitado    # nao_solicitado | pendente | aprovado
 artefatos:
-  - nome: visao-produto-leigo.md
+  - nome: documentos-para-leigo/01-visao/01-visao-produto.md
     marco: M1
     iteracao: 1
     modo: leigo             # leigo | normativo | tecnico
@@ -116,7 +140,7 @@ passes: []
 **Regra Pass log (Z20):** `analyze-report.md` e `pautas-reelicitacao.md` nunca são sobrescritos após iteração 1. Cada nova iteração de checker/modeler **acrescenta** seção `## Análise — Iteração N — <data>` com sumário quantitativo e diff vs iteração anterior. O orquestrador também acrescenta entrada em `passes[]` no yaml.
 
 **Invariantes de execução (Z18):**
-- NUNCA invocar mais de 2 sub-agentes simultaneamente (Claude Code: `Task()` paralelo limitado a 2)
+- Claude Code: executar skills em sequência dentro do mesmo contexto (sem paralelismo de Task(), D25)
 - Sub-agentes NUNCA editam artefatos diretamente — apenas o orquestrador escreve
 - NUNCA pular etapa de síntese após retorno de sub-agente
 - NUNCA retry de sub-agente falhado na mesma iteração — registrar em `_pendencias.md` e continuar
@@ -138,17 +162,6 @@ agenda_m2:
 
 ---
 
-## BASELINE GIT
-
-Após cada gate aprovado, o orquestrador executa:
-```
-git add -A
-git commit -m "baseline: gate-N-aprovado — [descrição breve]"
-git tag gate-N-aprovado
-```
-
----
-
 ## DETECTION-BASED RECOVERY (D10)
 
 Se `estado-projeto.yaml` ausente ou ilegível, inferir marco corrente lendo artefatos:
@@ -156,11 +169,16 @@ Se `estado-projeto.yaml` ausente ou ilegível, inferir marco corrente lendo arte
 | Artefatos presentes | Marco inferido |
 |---|---|
 | Nenhum | M1 (início) |
-| `visao-produto*.md` sem artefatos M2 | M1 concluído / M2 pendente |
-| `03.1-funcionais.md`, `03.2-qualidade.md` ou `03.3-restricoes.md` | M2 em andamento ou concluído |
-| `elicitacao-raw.md` presente mas `03.1-funcionais.md` ausente | M2 Fase A em andamento — criar `agenda_m2` com defaults |
-| `SRS-completo.md` ou `spec/*.feature` | M3 em andamento ou concluído |
-| `aprovacao-tecnica.md` | M4 concluído |
+| artefatos em `documentos-tecnicos/01-visao/` ou `documentos-para-leigo/01-visao/` sem artefatos M2 | M1 concluído / M2 pendente |
+| artefatos em `documentos-tecnicos/02-requisitos/` | M2 em andamento ou concluído |
+| `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` presente mas `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` ausente | M2 Fase A em andamento — criar `agenda_m2` com defaults |
+| artefatos em `documentos-tecnicos/03-documento/` | M3 em andamento ou concluído |
+| `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` | M4 concluído |
+
+**Migração de layout flat:** Se detectar artefatos no layout antigo (ex: `visao-produto-leigo.md` na raiz, sem subpastas `01-visao/`), apresentar ao usuário:
+```
+Encontrei arquivos de projeto, mas no formato antigo (sem pastas). Quer organizar em pastas (01-visao/, 02-requisitos/, 03-documento/) ou continuar no formato atual?
+```
 
 **Recovery de agenda_m2:** se `marco_corrente: M2` e `agenda_m2` ausente no yaml → criar campo com defaults: `topico_atual: "entrevista"`, `topicos_pendentes: [entrevista, cenarios, dominio, implicitos, feixe]`, `topicos_concluidos: []`, `rodada_corrente: 1`.
 
@@ -178,4 +196,3 @@ Ao concluir Gate 3 (ou Gate 4 se solicitado):
 1. Atualizar `estado-projeto.yaml` com `marco_corrente: concluido`
 2. Listar artefatos gerados para o usuário (versão leigo)
 3. Informar próximos passos recomendados (M4 técnico, se não executado)
-4. Criar baseline final

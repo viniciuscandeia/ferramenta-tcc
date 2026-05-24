@@ -15,7 +15,7 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar se `contexto-e-limite` reportou < 2 categorias com lacuna (D16)
-- NÃO executar se `contexto-e-limite` não foi executado (verificar `## Contexto e Limites do Projeto` existe em `visao-produto.md`)
+- NÃO executar se `contexto-e-limite` não foi executado (verificar `## Contexto e Limites do Projeto` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
 - ⛔ STOP e registrar erro se houver tentativa de segunda chamada `AskUserQuestion` nesta skill — uma chamada é o limite absoluto
 </HARD-GATE>
 
@@ -58,14 +58,14 @@ Quando você diz "[termo usado pelo usuário]", você quer dizer [interpretaçã
 
 Após a única chamada `AskUserQuestion`:
 
-1. **Escopo** → atualizar "O que está no projeto" em `visao-produto.md`
+1. **Escopo** → atualizar "O que está no projeto" em `documentos-tecnicos/01-visao/01-visao-produto.md`
 2. **Terminologia** → adicionar à seção "Glossário inicial" (criar se necessário)
 3. **Restrições** → atualizar tabela "Restrições"
 4. Aplicar `traducao-leigo` sobre qualquer texto novo adicionado (D1)
 
 ## Fase 3 — Saída
 
-1. `visao-produto.md` atualizado com lacunas resolvidas (esta skill não cria arquivo novo)
+1. `documentos-tecnicos/01-visao/01-visao-produto.md` atualizado com lacunas resolvidas (esta skill não cria arquivo novo)
 2. Sinalizar ao `stakeholder-identifier`: clarificação concluída → prosseguir para `traducao-gate`
 
 <!-- internal -->

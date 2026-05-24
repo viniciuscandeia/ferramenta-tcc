@@ -14,15 +14,15 @@ description: >-
 3. **Termo com definição incerta não é silenciado.** Flag `[DEFINIÇÃO INCERTA]` + pauta em `pautas-reelicitacao` — melhor uma lacuna visível do que uma definição errada.
 
 <HARD-GATE>
-- NÃO executar antes de `priorizacao` concluída (verificar que `03.1-funcionais.md` tem campo Modal preenchido)
-- NÃO executar com `elicitacao-raw.md` ausente
+- NÃO executar antes de `priorizacao` concluída (verificar que `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` tem campo Modal preenchido)
+- NÃO executar com `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` ausente
 - ⛔ STOP se resultado tem 0 termos candidatos — revisar critérios (frequência mínima pode ser muito alta para projeto pequeno) e reexecutar com critério relaxado
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `elicitacao-raw.md`, `03.1-funcionais.md`, `03.2-qualidade.md`, `visao-produto-normativo.md` acessíveis
+2. Verificar `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`, `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, `documentos-tecnicos/01-visao/01-visao-produto.md` acessíveis
 3. Concatenar textos de entrada (exceto metadados/cabeçalhos)
 
 ## Fase 1 — Detecção de Candidatos
@@ -77,7 +77,7 @@ Mínimo 5 termos para qualquer projeto. Se menos: relaxar critério de frequênc
 
 ## Fase 3 — Saída
 
-Criar `glossario.md`:
+Criar `documentos-tecnicos/02-requisitos/02.5-glossario.md`:
 
 ```markdown
 # Glossário do Projeto
@@ -89,7 +89,7 @@ Criar `glossario.md`:
 [entradas por ordem alfabética]
 ```
 
-Criar pauta em `pautas-reelicitacao.md` para cada termo marcado `[DEFINIÇÃO INCERTA]`.
+Criar pauta em `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` para cada termo marcado `[DEFINIÇÃO INCERTA]`.
 
 Sinalizar ao `modeler`: glossário concluído → prosseguir para `conflitos-detect` (Passo 4).
 

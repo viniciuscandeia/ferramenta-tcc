@@ -2,7 +2,7 @@
 name: rastreabilidade-matriz
 marco: [M3]
 description: Gera rastreabilidade.md com matriz bidirecional ligando Objetivo de negócio (M1) → RF/RNF (M2) → Seção SRS (M3) → Spec (.feature) → Step definitions → Stakeholder origem. Detecta lacunas (células vazias = candidatos a issues para analyze-cross-artifact). Referência: catalogos-seed/conceitos/qualidade-e-validacao.md §4 (rastreabilidade bidirecional forward+backward).
-when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: visao-produto-normativo.md + 03.1-funcionais.md + 03.2-qualidade.md + SRS-completo.md + spec/*.feature. Saída: rastreabilidade.md.
+when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: documentos-tecnicos/01-visao/01-visao-produto.md + documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md + documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md + documentos-tecnicos/03-documento/03-srs-completo.md + documentos-tecnicos/03-documento/04-spec/*.feature. Saída: documentos-tecnicos/03-documento/03.2-rastreabilidade.md.
 ---
 
 ## Filosofia desta skill (Regras Absolutas)
@@ -13,54 +13,54 @@ when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: visao-pro
 
 <HARD-GATE>
 - NÃO executar antes de `validacao-checklist-ireb` e `analyze-cross-artifact` concluídas
-- NÃO executar sem `visao-produto-normativo.md` (Fases 1 e 6 impossíveis sem ela)
-- ⛔ STOP se `spec/` não existe — Fases 4 e 5 dependem de spec/
+- NÃO executar sem `documentos-tecnicos/01-visao/01-visao-produto.md` (Fases 1 e 6 impossíveis sem ela)
+- ⛔ STOP se `documentos-tecnicos/03-documento/04-spec/` não existe — Fases 4 e 5 dependem de spec/
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar artefatos obrigatórios: `visao-produto-normativo.md`, `03.1-funcionais.md`, `03.2-qualidade.md`, `SRS-completo.md`, `spec/`
-3. Carregar `spec/_skipped.md` — lista de RFs DEVERIA/PODE sem spec (ausência intencional, não gap)
+2. Verificar artefatos obrigatórios: `documentos-tecnicos/01-visao/01-visao-produto.md`, `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, `documentos-tecnicos/03-documento/03-srs-completo.md`, `documentos-tecnicos/03-documento/04-spec/`
+3. Carregar `documentos-tecnicos/03-documento/04-spec/_skipped.md` — lista de RFs DEVERIA/PODE sem spec (ausência intencional, não gap)
 
 ## Fase 1 — Extrair Objetivos de M1
 
-- Ler `visao-produto-normativo.md`: funcionalidades-chave + problema-resolvido + perfis de stakeholder
+- Ler `documentos-tecnicos/01-visao/01-visao-produto.md`: funcionalidades-chave + problema-resolvido + perfis de stakeholder
 - Criar lista numerada de objetivos de negócio (texto curto, máx. 5 palavras por objetivo)
 
 ## Fase 2 — Mapear Objetivos → RF/RNF
 
-- Para cada objetivo M1: localizar RFs cobrindo em `03.1-funcionais.md` (≥ 1 por objetivo esperado)
-- Para RNFs de `03.2-qualidade.md`: associar ao objetivo de negócio mais próximo
-- Para restrições de `03.3-restricoes.md` (se disponível): associar ao objetivo ou stakeholder mais relacionado
+- Para cada objetivo M1: localizar RFs cobrindo em `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` (≥ 1 por objetivo esperado)
+- Para RNFs de `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`: associar ao objetivo de negócio mais próximo
+- Para restrições de `documentos-tecnicos/02-requisitos/02.3-restricoes.md` (se disponível): associar ao objetivo ou stakeholder mais relacionado
 
 ## Fase 3 — Mapear RF/RNF → SRS
 
-- Para cada RF/RNF: localizar seção em `SRS-completo.md`
+- Para cada RF/RNF: localizar seção em `documentos-tecnicos/03-documento/03-srs-completo.md`
 - Registrar seção exata (§3.X para RFs, §4.X para RNFs, §5.X para restrições)
 - RF/RNF não encontrado no SRS: registrar "❌ ausente" na coluna Seção SRS
 
 ## Fase 4 — Mapear RF → Spec e Spec → Step Defs
 
 **RF → Spec:**
-- RF DEVE: verificar `spec/rf-{id-lowercase}-*.feature` em `spec/`; ausente → "❌"
-- RF DEVERIA/PODE: verificar em `spec/_skipped.md`; se listado → "— (skipped)"; se não listado → "❌"
+- RF DEVE: verificar `documentos-tecnicos/03-documento/04-spec/rf-{id-lowercase}-*.feature` em `documentos-tecnicos/03-documento/04-spec/`; ausente → "❌"
+- RF DEVERIA/PODE: verificar em `documentos-tecnicos/03-documento/04-spec/_skipped.md`; se listado → "— (skipped)"; se não listado → "❌"
 - RNFs e Restrições: "—" por design (ausência intencional, não gap)
 
 **Spec → Step defs:**
-- Para cada `.feature` encontrado: verificar step defs em `tests/unit/` e `tests/acceptance/`
+- Para cada `.feature` encontrado: verificar step defs em `documentos-tecnicos/03-documento/05-tests/unit/` e `documentos-tecnicos/03-documento/05-tests/acceptance/`
 - Presentes (3 frameworks) → "✅"; `.feature` sem step defs → "❌"
-- Para RNFs com estratégia em `TESTING-STRATEGY.md`: registrar `strategy: [ferramenta]`
+- Para RNFs com estratégia em `documentos-tecnicos/03-documento/06-estrategia-testes.md`: registrar `strategy: [ferramenta]`
 
 ## Fase 5 — Preencher Stakeholder Origem
 
-- Para cada RF/RNF: identificar perfil de stakeholder de `visao-produto-normativo.md` que originou a necessidade
+- Para cada RF/RNF: identificar perfil de stakeholder de `documentos-tecnicos/01-visao/01-visao-produto.md` que originou a necessidade
 - Usar nomes exatamente como definidos no documento (não parafrasear)
 - Múltiplos stakeholders: listar separados por vírgula ou usar "Todos"
 
 ## Fase 6 — Saída
 
-Salvar como `rastreabilidade.md`:
+Salvar como `documentos-tecnicos/03-documento/03.2-rastreabilidade.md`:
 
 ```markdown
 # Matriz de Rastreabilidade
@@ -101,7 +101,7 @@ Sinalizar ao `checker`: rastreabilidade-matriz concluída → gaps não reportad
 
 **Como acontece:** RF-009 com modal DEVERIA não tem `.feature` → coluna Spec marcada "❌" → reportado como gap de Omissão → checker escala para CRITICAL desnecessariamente, bloqueando Gate 3 por issue esperado por design.
 
-**Como detectar:** "❌" em Spec para RF com modal DEVERIA ou PODE — verificar se consta em `spec/_skipped.md`.
+**Como detectar:** "❌" em Spec para RF com modal DEVERIA ou PODE — verificar se consta em `documentos-tecnicos/03-documento/04-spec/_skipped.md`.
 
-**O que fazer:** RF DEVERIA/PODE listado em `spec/_skipped.md` → registrar "— (skipped)", não "❌". RF DEVERIA/PODE **não** listado em `_skipped.md` → registrar "❌" e reportar como issue de processo (por que não foi para _skipped.md?).
+**O que fazer:** RF DEVERIA/PODE listado em `documentos-tecnicos/03-documento/04-spec/_skipped.md` → registrar "— (skipped)", não "❌". RF DEVERIA/PODE **não** listado em `documentos-tecnicos/03-documento/04-spec/_skipped.md` → registrar "❌" e reportar como issue de processo (por que não foi para _skipped.md?).
 <!-- /internal -->

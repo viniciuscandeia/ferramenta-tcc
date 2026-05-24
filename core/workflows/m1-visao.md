@@ -2,7 +2,7 @@
 
 **Sub-agente responsável:** `stakeholder-identifier`
 **Entrada:** Projeto novo (ou retomada de M1 incompleto)
-**Saída:** `visao-produto-normativo.md` + `visao-produto-leigo.md`
+**Saída:** `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md`
 **Gate de saída:** Gate 1 — usuário aprova versão leigo
 
 ---
@@ -43,12 +43,12 @@ ENTRADA
   │  → Remover pendência se confirmado; manter `[a definir]` se não confirmado
   ▼
 [6] traducao-gate
-  │  → Gera: visao-produto-normativo.md (IREB §3.3.3)
-  │  → Gera: visao-produto-leigo.md (linguagem de negócio)
+  │  → Gera: documentos-tecnicos/01-visao/01-visao-produto.md (IREB §3.3.3)
+  │  → Gera: documentos-para-leigo/01-visao/01-visao-produto.md (linguagem de negócio)
   │  → Aplica traducao-leigo sobre versão leigo
   ▼
 [GATE 1] — Orquestrador apresenta versão leigo ao usuário
-  │  SIM → Baseline git, avançar M2
+  │  SIM → Avançar M2
   └─ NÃO → Retornar ao passo [1] ou [N] com feedback específico
 ```
 
@@ -92,8 +92,8 @@ ENTRADA
 ### [6] traducao-gate
 - Invocar skill `core/skills/traducao-gate/SKILL.md`
 - Input: todos os artefatos M1 compilados
-- Output: `visao-produto-normativo.md` + `visao-produto-leigo.md`
-- Salvar ambos na pasta do projeto
+- Output: `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md`
+- Salvar ambos nas pastas correspondentes do projeto
 - Atualizar `estado-projeto.yaml`
 
 ---
@@ -102,8 +102,8 @@ ENTRADA
 
 | Arquivo | Versão | Tamanho esperado |
 |---|---|---|
-| `visao-produto-normativo.md` | IREB §3.3.3 | 300–600 palavras |
-| `visao-produto-leigo.md` | Linguagem de negócio | 200–400 palavras |
+| `documentos-tecnicos/01-visao/01-visao-produto.md` | IREB §3.3.3 | 300–600 palavras |
+| `documentos-para-leigo/01-visao/01-visao-produto.md` | Linguagem de negócio | 200–400 palavras |
 
 ---
 
@@ -121,6 +121,6 @@ ENTRADA
 | Momento | Estado em estado-projeto.yaml |
 |---|---|
 | Início do workflow | `marco_corrente: M1`, `gate_status.gate_1: pendente` |
-| Após passo [6] | `artefatos: [visao-produto-normativo.md, visao-produto-leigo.md]` |
-| Gate 1 aprovado | `gate_status.gate_1: aprovado`, `versao_leigo_aprovada: [visao-produto-leigo.md]` |
+| Após passo [6] | `artefatos: [documentos-tecnicos/01-visao/01-visao-produto.md, documentos-para-leigo/01-visao/01-visao-produto.md]` |
+| Gate 1 aprovado | `gate_status.gate_1: aprovado`, `versao_leigo_aprovada: [documentos-para-leigo/01-visao/01-visao-produto.md]` |
 | Gate 1 reprovado | `gate_status.gate_1: pendente` (permanece; usuário forneceu feedback) |

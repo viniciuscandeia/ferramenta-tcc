@@ -14,7 +14,7 @@ description: >-
 3. **Rastrear origem de cada item confirmado.** Cada RF/RNF confirmado deve ter referência ao catálogo + categoria + item — a rastreabilidade começa aqui.
 
 <HARD-GATE>
-- NÃO executar antes de `recomendacao-dominio` concluída (verificar seção `## Recomendações de Domínio` em `elicitacao-raw.md`)
+- NÃO executar antes de `recomendacao-dominio` concluída (verificar seção `## Recomendações de Domínio` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
 - NÃO executar se `catalogos-seed/rfs-tipicos.md` ou `rnfs-tipicos.md` não estiverem acessíveis — registrar em `_pendencias.md` e pular
 - ⛔ STOP se algoritmo de filtragem 3 camadas produz 0 candidatos após Camadas 1+2+3 — registrar "projeto atípico, sem implícitos do catálogo" e pular para `questionario-feixe`
 </HARD-GATE>
@@ -22,19 +22,19 @@ description: >-
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Recomendações de Domínio` existe em `elicitacao-raw.md`
+2. Verificar pré-condição: `## Recomendações de Domínio` existe em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
 3. Acessar `catalogos-seed/rfs-tipicos.md` + `catalogos-seed/rnfs-tipicos.md`
 
 ## Fase 1 — Algoritmo de Filtragem (3 Camadas)
 
-**Entrada:** `catalogos-seed/rfs-tipicos.md`, `rnfs-tipicos.md`, `elicitacao-raw.md` acumulado, `visao-produto-normativo.md`.
+**Entrada:** `catalogos-seed/rfs-tipicos.md`, `rnfs-tipicos.md`, `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` acumulado, `documentos-tecnicos/01-visao/01-visao-produto.md`.
 
 **Camada 1 — Eliminar categorias já cobertas:**
-Para cada categoria do catálogo: se ≥ 2 itens confirmados em `visao-produto-normativo.md` ou `elicitacao-raw.md` → pular categoria inteira.
+Para cada categoria do catálogo: se ≥ 2 itens confirmados em `documentos-tecnicos/01-visao/01-visao-produto.md` ou `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` → pular categoria inteira.
 Manter apenas categorias com cobertura zero ou parcial (≤ 1 item confirmado).
 
 **Camada 2 — Eliminar itens já elicitados:**
-Dentro das categorias restantes: para cada item, verificar se já aparece em `elicitacao-raw.md` (por texto similar ou equivalente). Se aparece → pular o item.
+Dentro das categorias restantes: para cada item, verificar se já aparece em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` (por texto similar ou equivalente). Se aparece → pular o item.
 
 **Camada 3 — Priorizar por relevância:**
 Dos itens restantes:
@@ -59,6 +59,8 @@ Destas funcionalidades que ainda não mencionamos, quais fariam sentido para o s
 (C) Histórico de atividades do usuário
 (D) Nenhuma dessas por enquanto
 ```
+`multiSelect: true` — usuário pode confirmar múltiplos implícitos de uma vez.
+Gemini CLI (workaround — sem multiSelect nativo): emitir N campos yesno em lote, um por opção.
 
 ## Fase 3 — Coleta
 
@@ -66,7 +68,7 @@ Destas funcionalidades que ainda não mencionamos, quais fariam sentido para o s
 
 ## Fase 4 — Saída
 
-Acrescentar seção em `elicitacao-raw.md`:
+Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 
 ```markdown
 ## Implícitos Confirmados (recomendacao-implicitos — Fase A)

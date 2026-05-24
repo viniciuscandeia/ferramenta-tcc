@@ -20,7 +20,7 @@ Cada sub-lote = 1 tool call com seus campos separados.
 3. **Zero jargão de produto.** Nunca menciono "Vision Box", "técnica", "metodologia", "requisito" — essas palavras não existem para o usuário (D1).
 
 <HARD-GATE>
-- NÃO executar se `visao-produto.md` já contém seção `## Visão do Produto` (idempotência — evitar duplicação)
+- NÃO executar se `documentos-tecnicos/01-visao/01-visao-produto.md` já contém seção `## Visão do Produto` (idempotência — evitar duplicação)
 - ⛔ STOP e registrar em `_pendencias.md` se o usuário pular nome E benefício principal simultaneamente (campos mínimos para síntese)
 </HARD-GATE>
 
@@ -28,7 +28,7 @@ Cada sub-lote = 1 tool call com seus campos separados.
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `estado-projeto.yaml`; se ausente: inicializar com `marco_corrente: M1`
-3. Checar idempotência: se `## Visão do Produto` já existe em `visao-produto.md`, pular para Fase 3 (sinalização)
+3. Checar idempotência: se `## Visão do Produto` já existe em `documentos-tecnicos/01-visao/01-visao-produto.md`, pular para Fase 3 (sinalização)
 
 ## Fase 1 — Coleta
 
@@ -112,11 +112,11 @@ SE `_pendencias.md` contém `vision-box: benefício pendente` OU `vision-box: di
 
 ## Fase 3 — Saída
 
-1. Append seção `## Visão do Produto` em `visao-produto.md` (criar arquivo se inexistente)
+1. Append seção `## Visão do Produto` em `documentos-tecnicos/01-visao/01-visao-produto.md` (criar arquivo se inexistente)
 2. Registrar em `estado-projeto.yaml`:
    ```yaml
    artefatos:
-     - nome: visao-produto.md
+     - nome: documentos-tecnicos/01-visao/01-visao-produto.md
        marco: M1
        iteracao: 1
    ```

@@ -18,7 +18,7 @@ Para uma elicitação completa, a IA deve identificar requisitos em três nívei
 
 ## 3. Requisito Não-Funcional (RNF) / Requisito de Qualidade
 **Definição:** Descreve qualidades, características ou níveis de serviço que o sistema deve possuir. Baseado na **ISO/IEC 25010**.
-- **Categorias Principais (FURPS+):** Funcionalidade, Usabilidade, Confiabilidade (Reliability), Desempenho (Performance), Suportabilidade.
+- **Categorias Principais (FURPS+ — Grady, 1992):** Funcionalidade, Usabilidade, Confiabilidade (Reliability), Desempenho (Performance), Suportabilidade.
 - **Dica de Elicitação:** RNFs são frequentemente "requisitos de prateleira" (catálogos) que o usuário esquece de mencionar.
 - **Linguagem p/ Usuário (D1):** "Como você espera que o produto funcione (rapidez, segurança, facilidade)."
 

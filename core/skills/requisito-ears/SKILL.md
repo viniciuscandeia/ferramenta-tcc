@@ -14,15 +14,15 @@ description: >-
 3. **Ubíquo é padrão residual.** Usar apenas quando nenhum dos outros 4 padrões EARS se aplica. Classificação prematura como Ubíquo mascara condições que deveriam ser Evento ou Estado.
 
 <HARD-GATE>
-- NÃO executar antes de Gate 2 aprovado (verificar `03.1-funcionais.md` e `03.2-qualidade.md` com campo modal preenchido)
-- NÃO executar se `03.1-funcionais.md` não tem nenhum item com modal `DEVE` (sem items DEVE = nenhuma spec Gherkin possível em Passo 3)
+- NÃO executar antes de Gate 2 aprovado (verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campo modal preenchido)
+- NÃO executar se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` não tem nenhum item com modal `DEVE` (sem items DEVE = nenhuma spec Gherkin possível em Passo 3)
 - ⛔ STOP se contagem de itens na saída ≠ contagem de entrada — omissão silenciosa proibida
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `03.1-funcionais.md` e `03.2-qualidade.md` existem com campo modal preenchido
+2. Verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existem com campo modal preenchido
 3. Contar itens de entrada para verificação de completude na Fase 2
 
 ## Fase 1 — Formatação EARS

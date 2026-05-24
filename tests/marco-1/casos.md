@@ -114,7 +114,7 @@ e um no caixa.
 3. Clarificação focada: ≤ 3 perguntas para confirmar detalhes das lacunas (ex: "O WhatsApp será o único canal ou haverá também site?").
 4. `traducao-gate` regenera as duas versões com as correções.
 5. Orquestrador apresenta versão leigo revisada (segunda rodada do Gate 1).
-6. **Usuário responde "Sim"** → baseline git + avançar para M2.
+6. **Usuário responde "Sim"** → `gate_1: aprovado` em `estado-projeto.yaml` + avançar para M2.
 
 ### Artefatos esperados ao final
 
@@ -128,5 +128,5 @@ e um no caixa.
 - Gate 1 com input "Não" **não avança** para M2 (gate não abre)
 - Feedback do usuário é incorporado nas versões finais (canal WhatsApp + estoque ingredientes)
 - Segunda apresentação do Gate 1 com versão revisada
-- Usuário aprova na segunda tentativa → baseline git criado
+- Usuário aprova na segunda tentativa → `gate_1: aprovado` registrado em `estado-projeto.yaml`
 - `estado-projeto.yaml` reflete `gate_1: aprovado` apenas após "Sim"

@@ -10,26 +10,26 @@ description: >-
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Facilitador empático** — o usuário não sabe nomear o que quer, mas sabe descrever o que o incomoda. Começar pelo problema, não pela solução.
-2. **Adaptar ao projeto concreto** — nunca usar os templates genéricos literais. Substituir `[produto]`, `[tarefa]`, `[perfil]` pelo contexto real de `visao-produto-normativo.md` antes de perguntar.
-3. **"Não sei" não é vazio — é premissa.** Resposta de incerteza vai para `03.4-premissas.md`, não é ignorada.
+2. **Adaptar ao projeto concreto** — nunca usar os templates genéricos literais. Substituir `[produto]`, `[tarefa]`, `[perfil]` pelo contexto real de `documentos-tecnicos/01-visao/01-visao-produto.md` antes de perguntar.
+3. **"Não sei" não é vazio — é premissa.** Resposta de incerteza vai para `documentos-tecnicos/02-requisitos/02.4-premissas.md`, não é ignorada.
 
 <HARD-GATE>
-- NÃO executar se Gate 1 não foi aprovado (verificar `visao-produto-leigo.md` + `visao-produto-normativo.md` existem)
+- NÃO executar se Gate 1 não foi aprovado (verificar `documentos-para-leigo/01-visao/01-visao-produto.md` + `documentos-tecnicos/01-visao/01-visao-produto.md` existem)
 - ⛔ STOP após Fase A se P1 (rotina) e P2 (frustrações) retornarem ≤ 2 palavras cada (sem dados suficientes para derivar RFs) — re-sondar com exemplo concreto antes de registrar
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar Gate 1 aprovado: `visao-produto-normativo.md` existe
-3. Detectar modo: **Fase A** (Ronda 1 — entrevista completa) ou **Fase B** (pauta específica de `pautas-reelicitacao.md`)
-4. Extrair de `visao-produto-normativo.md`: nome do produto, perfil principal, tarefa principal → personalizar perguntas
+2. Verificar Gate 1 aprovado: `documentos-tecnicos/01-visao/01-visao-produto.md` existe
+3. Detectar modo: **Fase A** (Ronda 1 — entrevista completa) ou **Fase B** (pauta específica de `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`)
+4. Extrair de `documentos-tecnicos/01-visao/01-visao-produto.md`: nome do produto, perfil principal, tarefa principal → personalizar perguntas
 
 ## Fase 1 — Coleta (adapta conforme modo)
 
 ### Modo Fase A — Ronda 1 (4 perguntas-âncora)
 
-Adaptar ao contexto do projeto (substituir placeholders por dados reais de `visao-produto-normativo.md`):
+Adaptar ao contexto do projeto (substituir placeholders por dados reais de `documentos-tecnicos/01-visao/01-visao-produto.md`):
 
 **Pergunta 1 — Rotina atual (text):**
 ```
@@ -59,7 +59,7 @@ Invocar `AskUserQuestion` com as 4 perguntas adaptadas (1 chamada única — D14
 
 ### Modo Fase B — Foco em pauta
 
-Quando invocada pelo collector para resolver pauta específica de `pautas-reelicitacao.md`:
+Quando invocada pelo collector para resolver pauta específica de `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`:
 formular 1–3 perguntas diretas sobre a lacuna. Consolidar múltiplas pautas compatíveis em 1 chamada (D14, máx 4 perguntas).
 
 Exemplos por tipo de pauta:
@@ -86,7 +86,7 @@ Você mencionou [lei/regra X]. Isso significa que os usuários precisam dar perm
 Nós assumimos que [premissa]. Isso está correto para o seu caso?
 ```
 
-## Fase 2 — Registro em `elicitacao-raw.md`
+## Fase 2 — Registro em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
 
 **Fase A:**
 ```markdown
@@ -105,11 +105,11 @@ Nós assumimos que [premissa]. Isso está correto para o seu caso?
 **Pauta [ID]:** [resposta que resolve a lacuna]
 ```
 
-Se usuário responde "não sei" em qualquer pergunta: registrar em `03.4-premissas.md` como `[premissa — a confirmar]`.
+Se usuário responde "não sei" em qualquer pergunta: registrar em `documentos-tecnicos/02-requisitos/02.4-premissas.md` como `[premissa — a confirmar]`.
 
 ## Fase 3 — Saída
 
-Seção adicionada a `elicitacao-raw.md`. Sinalizar ao `collector`: entrevista-estruturada concluída → prosseguir para `cenario-narrativa` (Fase A) ou retornar resultado da pauta (Fase B).
+Seção adicionada a `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`. Sinalizar ao `collector`: entrevista-estruturada concluída → prosseguir para `cenario-narrativa` (Fase A) ou retornar resultado da pauta (Fase B).
 
 <!-- internal -->
 ## Anti-Padrão: Resposta Monossilábica Aceita

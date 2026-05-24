@@ -15,19 +15,19 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar antes de `step-defs-red` (Passo 4) concluído
-- NÃO executar se `tests/unit/` e `tests/acceptance/` estão vazios (nada para documentar)
-- ⛔ STOP se slugs reais não puderem ser derivados de `spec/*.feature` — não entregar README com marcadores não-substituídos
+- NÃO executar se `documentos-tecnicos/03-documento/05-tests/unit/` e `documentos-tecnicos/03-documento/05-tests/acceptance/` estão vazios (nada para documentar)
+- ⛔ STOP se slugs reais não puderem ser derivados de `documentos-tecnicos/03-documento/04-spec/*.feature` — não entregar README com marcadores não-substituídos
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `tests/unit/`, `tests/acceptance/` existem e têm arquivos
-3. Coletar slugs reais de `spec/*.feature` para substituição nos exemplos
+2. Verificar `documentos-tecnicos/03-documento/05-tests/unit/`, `documentos-tecnicos/03-documento/05-tests/acceptance/` existem e têm arquivos
+3. Coletar slugs reais de `documentos-tecnicos/03-documento/04-spec/*.feature` para substituição nos exemplos
 
 ## Fase 1 — Montagem do README
 
-Gerar `README-TESTS.md` substituindo todos os marcadores `<slug>` e `<rf-id>` por slugs reais do projeto:
+Gerar `documentos-tecnicos/03-documento/07-como-rodar-testes.md` substituindo todos os marcadores `<slug>` e `<rf-id>` por slugs reais do projeto:
 
 ```markdown
 # README: Como Rodar os Testes
@@ -37,16 +37,18 @@ Gerar `README-TESTS.md` substituindo todos os marcadores `<slug>` e `<rf-id>` po
 
 ## Visão Geral
 
-Este projeto gerou step definitions em 3 frameworks a partir dos cenários Gherkin em `spec/`.
+Este projeto gerou step definitions em 3 frameworks a partir dos cenários Gherkin em `documentos-tecnicos/03-documento/04-spec/`.
 Os arquivos de teste existem e compilam, mas cada step lança um erro imediatamente —
 eles devem ser implementados pelo time de desenvolvimento antes de qualquer execução real.
 
 ```
 projeto/
-├── spec/              # Cenários Gherkin (.feature) — lidos por todos os 3 frameworks
-├── tests/
-│   ├── unit/          # Step definitions Pytest-BDD (Python)
-│   └── acceptance/    # Step definitions Cucumber-js (JS) + SpecFlow (.NET)
+├── documentos-tecnicos/
+│   └── 03-documento/
+│       ├── 04-spec/       # Cenários Gherkin (.feature) — lidos por todos os 3 frameworks
+│       └── 05-tests/
+│           ├── unit/      # Step definitions Pytest-BDD (Python)
+│           └── acceptance/# Step definitions Cucumber-js (JS) + SpecFlow (.NET)
 ```
 
 ---
@@ -64,17 +66,17 @@ Ou: `pip install -r requirements.txt`
 
 ### Rodar todos os testes
 ```bash
-pytest tests/unit/
+pytest documentos-tecnicos/03-documento/05-tests/unit/
 ```
 
 ### Rodar um teste específico
 ```bash
-pytest tests/unit/[rf-id-real]-[slug-real]_steps.py -v
+pytest documentos-tecnicos/03-documento/05-tests/unit/[rf-id-real]-[slug-real]_steps.py -v
 ```
 
 ### Estrutura esperada
 ```
-tests/unit/
+documentos-tecnicos/03-documento/05-tests/unit/
 ├── [rf-id-1]-[slug-1]_steps.py
 ├── [rf-id-2]-[slug-2]_steps.py
 └── ...
@@ -99,12 +101,12 @@ npx cucumber-js
 
 ### Rodar um teste específico
 ```bash
-npx cucumber-js spec/[rf-id-real]-[slug-real].feature
+npx cucumber-js documentos-tecnicos/03-documento/04-spec/[rf-id-real]-[slug-real].feature
 ```
 
 ### Estrutura esperada
 ```
-tests/acceptance/
+documentos-tecnicos/03-documento/05-tests/acceptance/
 ├── [rf-id-1]-[slug-1].steps.js
 ├── [rf-id-2]-[slug-2].steps.js
 └── ...
@@ -134,7 +136,7 @@ dotnet test --filter "FullyQualifiedName~[RfIdPascalCase]"
 
 ### Estrutura esperada
 ```
-tests/acceptance/
+documentos-tecnicos/03-documento/05-tests/acceptance/
 ├── [RfId1Slug1]Steps.cs
 ├── [RfId2Slug2]Steps.cs
 └── ...
@@ -159,7 +161,7 @@ Substituir `[rf-id-real]`, `[slug-real]`, `[RfIdPascalCase]` pelos slugs reais c
 
 ## Fase 3 — Saída
 
-Salvar como `README-TESTS.md` na raiz do projeto.
+Salvar como `documentos-tecnicos/03-documento/07-como-rodar-testes.md`.
 
 Sinalizar ao `documenter`: readme-tests concluído → Passos 1-6 do documenter completos → prosseguir para `traducao-gate` (Passo 7, SRS).
 
@@ -170,5 +172,5 @@ Sinalizar ao `documenter`: readme-tests concluído → Passos 1-6 do documenter 
 
 **Como detectar:** Verificar presença de `<` e `>` no texto final gerado — qualquer marcador não-substituído é erro.
 
-**O que fazer:** Fase 2 é obrigatória: varrer o texto gerado por regex `<[^>]+>` antes de salvar. Se encontrar marcadores: buscar os slugs reais em `spec/*.feature` e substituir. Nunca salvar com marcadores.
+**O que fazer:** Fase 2 é obrigatória: varrer o texto gerado por regex `<[^>]+>` antes de salvar. Se encontrar marcadores: buscar os slugs reais em `documentos-tecnicos/03-documento/04-spec/*.feature` e substituir. Nunca salvar com marcadores.
 <!-- /internal -->

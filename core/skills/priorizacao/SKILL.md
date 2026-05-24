@@ -14,15 +14,15 @@ description: >-
 3. **Nunca perguntar ao usuário sobre prioridade diretamente.** O usuário não conhece MoSCoW, Kano nem IEEE. A prioridade é inferida do contexto de negócio e das restrições declaradas.
 
 <HARD-GATE>
-- NÃO executar antes de `classificacao-rf-rnf` concluída (verificar que `03.1-funcionais.md` e `03.2-qualidade.md` existem com itens)
-- ⛔ STOP se `03.1-funcionais.md` contém 0 itens — retornar ao modeler com erro de pré-condição
+- NÃO executar antes de `classificacao-rf-rnf` concluída (verificar que `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existem com itens)
+- ⛔ STOP se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` contém 0 itens — retornar ao modeler com erro de pré-condição
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `03.1-funcionais.md` e `03.2-qualidade.md` existem e têm itens
-3. Acessar `03.3-restricoes.md` e `visao-produto-normativo.md` para âncoras de prioridade
+2. Verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existem e têm itens
+3. Acessar `documentos-tecnicos/02-requisitos/02.3-restricoes.md` e `documentos-tecnicos/01-visao/01-visao-produto.md` para âncoras de prioridade
 
 ## Fase 1 — MoSCoW (sempre executar)
 
@@ -42,8 +42,8 @@ description: >-
 - **NAO_TERA:** explicitamente fora do escopo desta versão
 
 **Âncoras de consistência:**
-- Restrição legal em `03.3-restricoes.md` → RFs que implementam = `DEVE_TER`
-- Funcionalidades-chave de `visao-produto-normativo.md` → geralmente `DEVE_TER`
+- Restrição legal em `documentos-tecnicos/02-requisitos/02.3-restricoes.md` → RFs que implementam = `DEVE_TER`
+- Funcionalidades-chave de `documentos-tecnicos/01-visao/01-visao-produto.md` → geralmente `DEVE_TER`
 - Itens vindos apenas de catálogo (`recomendacao-implicitos`) → geralmente `PODERIA_TER`
 
 ## Fase 2 — Sub-Rotina Kano (condicional — D9)
@@ -60,7 +60,7 @@ Para cada item `DEVERIA_TER`/`PODERIA_TER`:
 
 ## Fase 3 — Sub-Rotina IEEE (condicional — D9)
 
-**Gatilho:** ativar automaticamente se total RF + RNF ≥ 25 E `03.3-restricoes.md` tem restrição de prazo fixo.
+**Gatilho:** ativar automaticamente se total RF + RNF ≥ 25 E `documentos-tecnicos/02-requisitos/02.3-restricoes.md` tem restrição de prazo fixo.
 
 Ordenar `DEVE_TER` em sequência de implementação:
 
@@ -72,7 +72,7 @@ Ordenar `DEVE_TER` em sequência de implementação:
 
 ## Fase 4 — Saída
 
-Atualizar `03.1-funcionais.md` e `03.2-qualidade.md` com campos preenchidos:
+Atualizar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campos preenchidos:
 
 ```markdown
 | ID | Descrição | Modal | MoSCoW | Kano | ordem_impl | Fonte |
@@ -82,9 +82,9 @@ Atualizar `03.1-funcionais.md` e `03.2-qualidade.md` com campos preenchidos:
 | RF-003 | O sistema PODE exibir sugestões de produtos relacionados | PODE | PODERIA_TER | Encantador | — | recomendacao-dominio |
 ```
 
-Itens `NAO_TERA` → seção "Fora do escopo desta versão" ao final de `03.1-funcionais.md`.
+Itens `NAO_TERA` → seção "Fora do escopo desta versão" ao final de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`.
 
-Criar pauta para `pautas-reelicitacao` (Passo 5) se: RNF `DEVE_TER` sem métrica OU RF `DEVE` sem critério de aceitação claro.
+Criar pauta para `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` (Passo 5) se: RNF `DEVE_TER` sem métrica OU RF `DEVE` sem critério de aceitação claro.
 
 Sinalizar ao `modeler`: priorizacao concluída → prosseguir para `glossario` (Passo 3).
 

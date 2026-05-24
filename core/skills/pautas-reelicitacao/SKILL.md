@@ -15,14 +15,14 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar antes de `conflitos-detect` concluída (Passo 4)
-- NÃO executar se `03.1-funcionais.md` ou `03.2-qualidade.md` estão ausentes (sem artefatos para auditar)
-- ⛔ STOP se `glossario.md` está ausente — sem glossário, verificação de termos incertos é impossível; registrar em `_pendencias.md`
+- NÃO executar se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` ou `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` estão ausentes (sem artefatos para auditar)
+- ⛔ STOP se `documentos-tecnicos/02-requisitos/02.5-glossario.md` está ausente — sem glossário, verificação de termos incertos é impossível; registrar em `_pendencias.md`
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar todos os artefatos de entrada: `03.1-funcionais.md`, `03.2-qualidade.md`, `03.3-restricoes.md`, `03.4-premissas.md` (se existir), `glossario.md`, `conflitos-detectados.md` (se existir)
+2. Verificar todos os artefatos de entrada: `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, `documentos-tecnicos/02-requisitos/02.3-restricoes.md`, `documentos-tecnicos/02-requisitos/02.4-premissas.md` (se existir), `documentos-tecnicos/02-requisitos/02.5-glossario.md`, `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` (se existir)
 
 ## Fase 1 — Varredura por Tipo de Lacuna
 
@@ -30,12 +30,12 @@ Para cada tipo de lacuna, varrer os artefatos e registrar entradas:
 
 | Tipo | Sinal | Skill-alvo |
 |---|---|---|
-| RF sem critério de aceitação | RF em `03.1-funcionais.md` sem condição verificável | `entrevista-estruturada` |
-| RNF sem métrica | `03.2-qualidade.md` com campo Métrica = `LACUNA` | `entrevista-estruturada` |
-| Restrição sem detalhe | `03.3-restricoes.md` com restrição legal sem referência normativa | `entrevista-estruturada` |
-| Conflito não resolvido | `conflitos-detectados.md` com `status: aberto` afetando escopo ou modal | `entrevista-estruturada` ou `cenario-narrativa` |
-| Termo com `[DEFINIÇÃO INCERTA]` | `glossario.md` com flag | `entrevista-estruturada` |
-| Premissa crítica sem validação | `03.4-premissas.md` com impacto alto não confirmado | `entrevista-estruturada` |
+| RF sem critério de aceitação | RF em `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` sem condição verificável | `entrevista-estruturada` |
+| RNF sem métrica | `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campo Métrica = `LACUNA` | `entrevista-estruturada` |
+| Restrição sem detalhe | `documentos-tecnicos/02-requisitos/02.3-restricoes.md` com restrição legal sem referência normativa | `entrevista-estruturada` |
+| Conflito não resolvido | `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` com `status: aberto` afetando escopo ou modal | `entrevista-estruturada` ou `cenario-narrativa` |
+| Termo com `[DEFINIÇÃO INCERTA]` | `documentos-tecnicos/02-requisitos/02.5-glossario.md` com flag | `entrevista-estruturada` |
+| Premissa crítica sem validação | `documentos-tecnicos/02-requisitos/02.4-premissas.md` com impacto alto não confirmado | `entrevista-estruturada` |
 
 **Filtragem por criticidade:**
 - Lacuna que afeta RF `DEVE`, RNF `DEVE`, ou restrição legal → **sempre gera pauta**
@@ -43,6 +43,8 @@ Para cada tipo de lacuna, varrer os artefatos e registrar entradas:
 - Lacuna que afeta RF `PODE` / `PODERIA_TER` → não gera pauta (cosmético; resolver em M3 se necessário)
 
 ## Fase 2 — Saída
+
+Salvar como `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`.
 
 **Com pautas:**
 ```markdown

@@ -24,7 +24,7 @@
 **Arquivo:** `core/orchestrator.md`
 
 **Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-projeto`.  
-**Responsabilidades:** Ler `core/constitution.md` + `estado-projeto.yaml`, rotear para o sub-agente do marco corrente, gerenciar 4 gates, criar baselines git após cada gate aprovado, acionar detection-based recovery (D10) se `estado-projeto.yaml` ausente.
+**Responsabilidades:** Ler `core/constitution.md` + `estado-projeto.yaml`, rotear para o sub-agente do marco corrente, gerenciar 4 gates, acionar detection-based recovery (D10) se `estado-projeto.yaml` ausente.
 
 ---
 

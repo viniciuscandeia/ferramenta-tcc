@@ -14,16 +14,16 @@ description: >-
 3. **Choice e yesno apenas — nunca text nesta ronda.** Respostas abertas aqui produzem dados não-estruturados que o modeler não consegue classificar diretamente.
 
 <HARD-GATE>
-- NÃO executar antes de `recomendacao-implicitos` concluída (verificar seção `## Implícitos Confirmados` em `elicitacao-raw.md`)
-- NÃO executar se `elicitacao-raw.md` tem < 3 áreas com cobertura insuficiente (contar áreas conforme tabela na Fase 1)
+- NÃO executar antes de `recomendacao-implicitos` concluída (verificar seção `## Implícitos Confirmados` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
+- NÃO executar se `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` tem < 3 áreas com cobertura insuficiente (contar áreas conforme tabela na Fase 1)
 - ⛔ STOP se houver tentativa de 3ª chamada `AskUserQuestion` — 2 feixes é o máximo absoluto; excesso vai para `pautas-reelicitacao`
 </HARD-GATE>
 
 ## Fase 0 — Inicialização e Verificação da Condição
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Implícitos Confirmados` existe em `elicitacao-raw.md`
-3. Avaliar cobertura de `elicitacao-raw.md` por área:
+2. Verificar pré-condição: `## Implícitos Confirmados` existe em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
+3. Avaliar cobertura de `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` por área:
 
 | Área | Sinal de cobertura insuficiente |
 |---|---|
@@ -35,6 +35,7 @@ description: >-
 | Relatórios/consultas | Nada sobre como usuários consultam histórico ou geram relatórios |
 
 4. Contar áreas com cobertura insuficiente. Se < 3: retornar ao `collector` com `skill_skipped: true, motivo: "< 3 áreas sem cobertura"`.
+
 
 ## Fase 1 — Seleção dos Feixes
 
@@ -80,7 +81,7 @@ Sobre consultas e histórico no produto:
 
 ## Fase 3 — Saída
 
-Acrescentar seção em `elicitacao-raw.md`:
+Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 
 ```markdown
 ## Detalhamentos Adicionais (questionario-feixe — Fase A)
@@ -92,7 +93,7 @@ Acrescentar seção em `elicitacao-raw.md`:
 ...
 ```
 
-Sinalizar ao `collector`: questionario-feixe concluído → Fase A encerrada → passar `elicitacao-raw.md` para `modeler`.
+Sinalizar ao `collector`: questionario-feixe concluído → Fase A encerrada → passar `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` para `modeler`.
 
 <!-- internal -->
 ## Anti-Padrão: Ativação com < 3 Áreas

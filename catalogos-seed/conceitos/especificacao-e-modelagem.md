@@ -8,7 +8,7 @@ Este guia define os padrões de escrita e organização dos artefatos gerados pe
 Para evitar ambiguidades, a ferramenta deve utilizar padrões estruturados de escrita:
 
 ### Sintaxe EARS (Easy Approach to Requirements Syntax)
-Ideal para requisitos de sistema. Estruturas recomendadas:
+Mavin et al., 2009. Ideal para requisitos de sistema. Estruturas recomendadas:
 - **Ubíquo (Sempre):** *"O sistema deve [ação]..."*
 - **Evento:** *"Quando [evento ocorrer], o sistema deve [ação]..."*
 - **Estado:** *"Enquanto [estado], o sistema deve [ação]..."*

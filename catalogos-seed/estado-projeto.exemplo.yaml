@@ -52,14 +52,14 @@ agenda_m2:
 
 artefatos:
   # Formato por artefato: nome | marco | iteracao | modo | gate | aprovado_em
-  - nome: visao-produto-leigo.md
+  - nome: 01-visao/visao-produto-leigo.md
     marco: M1
     iteracao: 1
     modo: leigo              # leigo | normativo | tecnico
     gate: gate_1
     aprovado_em: null        # "2026-06-01T10:30:00" quando aprovado
 
-  - nome: visao-produto-normativo.md
+  - nome: 01-visao/visao-produto-normativo.md
     marco: M1
     iteracao: 1
     modo: normativo
@@ -67,23 +67,23 @@ artefatos:
     aprovado_em: null
 
   # Marco 2 — acrescentar quando gerados:
-  # - nome: 03.1-funcionais.md
-  # - nome: 03.1-funcionais-leigo.md
-  # - nome: 03.2-qualidade.md
-  # - nome: 03.2-qualidade-leigo.md
-  # - nome: 03.3-restricoes.md
-  # - nome: 03.3-restricoes-leigo.md
-  # - nome: glossario.md
-  # - nome: pautas-reelicitacao.md  (condicional)
-  # - nome: conflitos-detectados.md (condicional — apenas se ≥ 1 conflito)
-  # - nome: 03.4-premissas.md       (condicional — apenas se premissas detectadas)
+  # - nome: 02-requisitos/03.1-funcionais.md
+  # - nome: 02-requisitos/03.1-funcionais-leigo.md
+  # - nome: 02-requisitos/03.2-qualidade.md
+  # - nome: 02-requisitos/03.2-qualidade-leigo.md
+  # - nome: 02-requisitos/03.3-restricoes.md
+  # - nome: 02-requisitos/03.3-restricoes-leigo.md
+  # - nome: 02-requisitos/glossario.md
+  # - nome: 02-requisitos/pautas-reelicitacao.md  (condicional)
+  # - nome: 02-requisitos/conflitos-detectados.md (condicional — apenas se ≥ 1 conflito)
+  # - nome: 02-requisitos/03.4-premissas.md       (condicional — apenas se premissas detectadas)
 
   # Marco 3 — acrescentar quando gerados:
-  # - nome: SRS-completo.md
-  # - nome: SRS-completo-leigo.md
-  # - nome: analyze-report.md
-  # - nome: rastreabilidade.md      (condicional)
-  # spec/*.feature e tests/ são técnicos — não gerar versão leigo (D18, D19)
+  # - nome: 03-documento/SRS-completo.md
+  # - nome: 03-documento/SRS-completo-leigo.md
+  # - nome: 03-documento/analyze-report.md
+  # - nome: 03-documento/rastreabilidade.md      (condicional)
+  # 03-documento/spec/*.feature e 03-documento/tests/ são técnicos — não gerar versão leigo (D18, D19)
 
 pautas_abertas: []           # lista de IDs de pautas abertas em pautas-reelicitacao.md
 
@@ -130,19 +130,19 @@ passes: []
 #   topicos_concluidos: [entrevista]
 #   rodada_corrente: 1
 # artefatos:
-#   - nome: visao-produto-leigo.md
+#   - nome: 01-visao/visao-produto-leigo.md
 #     marco: M1
 #     iteracao: 1
 #     modo: leigo
 #     gate: gate_1
 #     aprovado_em: "2026-06-01T10:30:00"
-#   - nome: visao-produto-normativo.md
+#   - nome: 01-visao/visao-produto-normativo.md
 #     marco: M1
 #     iteracao: 1
 #     modo: normativo
 #     gate: gate_1
 #     aprovado_em: "2026-06-01T10:30:00"
 # pautas_abertas: []
-# versao_leigo_aprovada: [visao-produto-leigo.md]
+# versao_leigo_aprovada: [01-visao/visao-produto-leigo.md]
 # ultima_atualizacao: "2026-06-01T10:30:00"
 # passes: []

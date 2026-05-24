@@ -1,3 +1,5 @@
+> **Nota Claude Code (D25):** No Claude Code v2.0.56+, este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool (bug [#12890](https://github.com/anthropics/claude-code/issues/12890)/[#34592](https://github.com/anthropics/claude-code/issues/34592), "not planned"). No Gemini CLI, funciona como persona adoption no mesmo contexto.
+
 # stakeholder-identifier — Sub-agente M1
 
 **Marco:** M1 — Definição da Necessidade
@@ -29,7 +31,7 @@ Conduzir o usuário leigo pela definição completa da necessidade do projeto:
 3. Mapeamento de pessoas envolvidas
 4. Contexto e limites do projeto
 
-Ao final, gerar `visao-produto.md` em duas versões (leigo + normativa) e sinalizar conclusão ao orquestrador.
+Ao final, gerar `01-visao-produto.md` em duas versões (leigo + normativa) e sinalizar conclusão ao orquestrador.
 
 ---
 
@@ -61,7 +63,7 @@ Executar na ordem definida em `m1-visao.md`:
 ### Conclusão
 
 Ao finalizar `traducao-gate`:
-1. Salvar `visao-produto-leigo.md` e `visao-produto-normativo.md` na pasta do projeto
+1. Salvar `documentos-para-leigo/01-visao/01-visao-produto.md` e `documentos-tecnicos/01-visao/01-visao-produto.md` na pasta do projeto
 2. Atualizar `estado-projeto.yaml`: `marco_corrente: M1-concluido`, listar artefatos
 3. Sinalizar ao orquestrador: "M1 concluído — aguardando Gate 1"
 
@@ -71,8 +73,8 @@ Ao finalizar `traducao-gate`:
 
 | Arquivo | Versão | Usado em |
 |---|---|---|
-| `visao-produto-leigo.md` | Leigo (D18+D19) | Gate 1 (apresentado ao usuário) |
-| `visao-produto-normativo.md` | Normativa IREB §3.3.3 | Artefato técnico; input para M2 |
+| `documentos-para-leigo/01-visao/01-visao-produto.md` | Leigo (D18+D19) | Gate 1 (apresentado ao usuário) |
+| `documentos-tecnicos/01-visao/01-visao-produto.md` | Normativa IREB §3.3.3 | Artefato técnico; input para M2 |
 
 ---
 
@@ -92,7 +94,7 @@ Ao finalizar `traducao-gate`:
 
 ## COMPATIBILIDADE DE PLATAFORMA
 
-**Claude Code:** executado como sub-agente isolado via `Task()`. Recebe `m1-visao.md` como contexto inicial.
+**Claude Code:** carregado como contexto de persona pelo orquestrador (inline, sem Task()). Orquestrador lê `core/agents/stakeholder-identifier.md` e executa skills M1 diretamente no main context.
 **Gemini CLI:** persona adoption no mesmo contexto. Carregar `m1-visao.md` como instruções adicionais.
 
 ---

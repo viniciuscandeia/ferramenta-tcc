@@ -14,7 +14,7 @@ description: >-
 3. **Zero termos técnicos visíveis.** Nunca mencionar "catálogo", "domínio", "seed", "classificação". Usar "o seu tipo de produto" em vez de "domínio".
 
 <HARD-GATE>
-- NÃO executar antes de `cenario-narrativa` concluída (verificar seção `## Cenários Narrativos` em `elicitacao-raw.md`)
+- NÃO executar antes de `cenario-narrativa` concluída (verificar seção `## Cenários Narrativos` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
 - NÃO executar se nenhum catálogo em `catalogos-seed/dominios/` tem ≥ 2 keyword matches E catálogo genérico não está disponível — registrar em `_pendencias.md` e pular esta ronda
 - ⛔ STOP se usuário nega o domínio detectado E seleciona "outro" — usar catálogos genéricos sem nova pergunta de confirmação
 </HARD-GATE>
@@ -22,12 +22,12 @@ description: >-
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Cenários Narrativos` existe em `elicitacao-raw.md`
+2. Verificar pré-condição: `## Cenários Narrativos` existe em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
 3. Acessar catálogos disponíveis em `catalogos-seed/dominios/`
 
 ## Fase 1 — Detecção Automática do Domínio
 
-Ler `visao-produto-normativo.md` (seções: nome, público-alvo, funcionalidades-chave, contexto). Contar matches de keywords:
+Ler `documentos-tecnicos/01-visao/01-visao-produto.md` (seções: nome, público-alvo, funcionalidades-chave, contexto). Contar matches de keywords:
 
 | Domínio | Arquivo | Keywords |
 |---|---|---|
@@ -66,7 +66,7 @@ Se confirmado: usar catálogo do domínio. Se negado: usar catálogo genérico (
 | Seção do catálogo | Pergunta |
 |---|---|
 | Stakeholders típicos | "Além de [usuários já identificados], existem outros perfis? (Ex: [exemplos do catálogo])" |
-| Funcionalidades típicas | "Qual dessas funcionalidades comuns faz sentido para o seu produto? [choice 3-4 opções]" |
+| Funcionalidades típicas | "Quais dessas funcionalidades comuns fazem sentido para o seu produto? [choice 3-4 opções, `multiSelect: true`]" — Gemini CLI (workaround — sem multiSelect nativo): emitir N campos yesno em lote, um por opção. |
 | RNFs típicos | "Há requisitos de [desempenho/segurança/privacidade] que precisa cumprir? (Ex: [exemplos])" |
 | Restrições típicas | "Há lei, regulação ou padrão que o produto precisa seguir? (Ex: [exemplos do domínio])" |
 
@@ -74,7 +74,7 @@ Se confirmado: usar catálogo do domínio. Se negado: usar catálogo genérico (
 
 ## Fase 4 — Saída
 
-Acrescentar seção em `elicitacao-raw.md`:
+Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 
 ```markdown
 ## Recomendações de Domínio (recomendacao-dominio — Fase A)

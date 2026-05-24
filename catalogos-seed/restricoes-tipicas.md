@@ -4,7 +4,7 @@ Usado pelo sub-agente **Implícitos** para identificar restrições que o usuár
 Restrições limitam o espaço de solução além do que seria necessário para atender funcionais e qualidade (definição IREB §1.1).
 Diferente de RNF: restrição impõe uma escolha; RNF é uma qualidade mensurável.
 
-Fonte: IREB CPRE §1.1, Livro SON cap. 5.
+Fonte: IREB CPRE Foundation Level Handbook v1.2 BR §1.1 (`normas/cpre_foundationlevel_handbook_BR_v1.2.md`), Livro SON cap. 5.
 
 ---
 

@@ -72,7 +72,7 @@ Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-
 - [ ] **H2.** Input "Não" no Gate 1 **não avança** para M2; registra `gate_status.gate_1: pendente`
 - [ ] **H3.** Feedback do usuário após "Não" é incorporado nas versões revisadas
 - [ ] **H4.** Segunda apresentação do Gate 1 com versão revisada (ciclo de revisão funciona)
-- [ ] **H5.** Input "Sim" no Gate 1 → baseline git criado + `gate_status.gate_1: aprovado` em `estado-projeto.yaml`
+- [ ] **H5.** Input "Sim" no Gate 1 → `gate_status.gate_1: aprovado` e `gate_1_aprovado_em` registrados em `estado-projeto.yaml`
 - [ ] **H6.** `estado-projeto.yaml` reflete `marco_corrente: M1-concluido` e lista `visao-produto-normativo.md` + `visao-produto-leigo.md` em `artefatos`
 
 ---

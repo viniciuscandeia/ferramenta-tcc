@@ -14,16 +14,16 @@ description: >-
 3. **Sem interação com usuário.** Esta skill opera 100% sobre texto coletado. Nenhuma pergunta é feita. Lacunas vão para `pautas-reelicitacao` (Passo 5).
 
 <HARD-GATE>
-- NÃO executar se `elicitacao-raw.md` está ausente ou vazio — Fase A do collector não concluiu
-- NÃO executar antes do `modeler` iniciar Fase B (verificar que `elicitacao-raw.md` foi passado como input)
-- ⛔ STOP se `elicitacao-raw.md` contém 0 itens classificáveis — registrar em `_pendencias.md` e notificar `modeler`
+- NÃO executar se `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` está ausente ou vazio — Fase A do collector não concluiu
+- NÃO executar antes do `modeler` iniciar Fase B (verificar que `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` foi passado como input)
+- ⛔ STOP se `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` contém 0 itens classificáveis — registrar em `_pendencias.md` e notificar `modeler`
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `elicitacao-raw.md` existe e não está vazio
-3. Verificar `visao-produto-normativo.md` acessível (contexto de domínio)
+2. Verificar `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` existe e não está vazio
+3. Verificar `documentos-tecnicos/01-visao/01-visao-produto.md` acessível (contexto de domínio)
 
 ## Fase 1 — Classificação
 
@@ -65,7 +65,7 @@ Sem duplicatas: dois itens que descrevem a mesma coisa → consolidar em 1 com a
 
 ## Fase 2 — Saída
 
-**03.1-funcionais.md (rascunho):**
+**documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md (rascunho):**
 ```markdown
 | ID | Descrição | Modal | MoSCoW | Fonte |
 |---|---|---|---|---|
@@ -73,21 +73,21 @@ Sem duplicatas: dois itens que descrevem a mesma coisa → consolidar em 1 com a
 ```
 *Modal e MoSCoW preenchidos na skill `priorizacao` (Passo 2).*
 
-**03.2-qualidade.md (rascunho):**
+**documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md (rascunho):**
 ```markdown
 | ID | Bucket | Descrição | Métrica | Modal | Fonte |
 |---|---|---|---|---|---|
 | RNF-001 | Desempenho | [descrição] | [métrica ou LACUNA] | DEVE | ... |
 ```
 
-**03.3-restricoes.md (rascunho):**
+**documentos-tecnicos/02-requisitos/02.3-restricoes.md (rascunho):**
 ```markdown
 | ID | Subtipo | Descrição | Origem | Fonte |
 |---|---|---|---|---|
 | REST-001 | legal | LGPD — dados pessoais com consentimento | Lei 13.709/2018 | ... |
 ```
 
-**03.4-premissas.md (rascunho — só se detectadas):**
+**documentos-tecnicos/02-requisitos/02.4-premissas.md (rascunho — só se detectadas):**
 ```markdown
 | ID | Descrição | Impacto se falsa |
 |---|---|---|

@@ -14,14 +14,14 @@ description: >-
 3. **Contradição dentro/fora é pior que ausência.** Se o usuário listou algo em "o que faz" que contraria "o que não faz", sinalizar imediatamente antes de registrar.
 
 <HARD-GATE>
-- NÃO executar antes de `stakeholder-mapping` concluído (verificar que `## Pessoas Envolvidas` existe em `visao-produto.md`)
+- NÃO executar antes de `stakeholder-mapping` concluído (verificar que `## Pessoas Envolvidas` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
 - ⛔ STOP se respostas 1 e 2 forem semanticamente idênticas (usuário não entendeu a distinção dentro/fora) — re-explicar com exemplo concreto antes de continuar
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Pessoas Envolvidas` existe em `visao-produto.md`
+2. Verificar pré-condição: `## Pessoas Envolvidas` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`
 3. Extrair de skills anteriores: funcionalidades já mencionadas em Situação-Problema → usadas para validar consistência em Fase 2
 
 ## Fase 1 — Coleta
@@ -98,7 +98,7 @@ Retornar: lista de categorias com lacuna + contagem total. O `stakeholder-identi
 
 ## Fase 4 — Saída
 
-1. Append seção `## Contexto e Limites do Projeto` em `visao-produto.md`
+1. Append seção `## Contexto e Limites do Projeto` em `documentos-tecnicos/01-visao/01-visao-produto.md`
 2. Retornar relatório de lacunas ao `stakeholder-identifier`
 3. Sinalizar conclusão → `stakeholder-identifier` avalia lacunas → prosseguir para `clarificacao-pos-visao` (se ≥ 2) ou `traducao-gate` (se < 2)
 

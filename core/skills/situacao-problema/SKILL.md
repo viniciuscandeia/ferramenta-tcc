@@ -14,14 +14,14 @@ description: >-
 3. **Resposta vaga no slot de impacto não passa.** "É ruim" ou "causa problemas" não é impacto — sondar sempre com "Quais são as consequências concretas? O que acontece de errado?" antes de registrar.
 
 <HARD-GATE>
-- NÃO executar antes de `vision-box` concluído (verificar que `## Visão do Produto` existe em `visao-produto.md`)
+- NÃO executar antes de `vision-box` concluído (verificar que `## Visão do Produto` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
 - ⛔ STOP após Lote 1 se ≥ 2 respostas retornarem vazias ou monossilábicas — registrar em `_pendencias.md` e solicitar retomada
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Visão do Produto` deve existir em `visao-produto.md`
+2. Verificar pré-condição: `## Visão do Produto` deve existir em `documentos-tecnicos/01-visao/01-visao-produto.md`
 3. Extrair do Vision Box: público-alvo e nome do produto (usados para personalizar perguntas de Lote 2)
 
 ## Fase 1 — Lote 1 (O Problema)
@@ -90,7 +90,7 @@ Gerar tabela de situação-problema:
 
 ## Fase 4 — Saída
 
-1. Append seção `## Situação-Problema` em `visao-produto.md`
+1. Append seção `## Situação-Problema` em `documentos-tecnicos/01-visao/01-visao-produto.md`
 2. Atualizar `estado-projeto.yaml` (incrementar `iteracao` se já existia entrada)
 3. Sinalizar ao `stakeholder-identifier`: situação-problema concluída → prosseguir para `stakeholder-mapping`
 

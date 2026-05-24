@@ -14,14 +14,14 @@ description: >-
 3. **Afetado indireto é frequentemente omitido** — sondar proativamente: clientes dos clientes, equipes de suporte, parceiros externos. O usuário raramente os menciona sem estímulo.
 
 <HARD-GATE>
-- NÃO executar antes de `situacao-problema` concluído (verificar que `## Situação-Problema` existe em `visao-produto.md`)
+- NÃO executar antes de `situacao-problema` concluído (verificar que `## Situação-Problema` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
 - ⛔ STOP se pré-processamento extrai 0 pessoas das skills anteriores (indica que M1 está corrompido ou vazio) — registrar em `_pendencias.md`
 </HARD-GATE>
 
 ## Fase 0 — Inicialização e Pré-Processamento
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Situação-Problema` deve existir em `visao-produto.md`
+2. Verificar pré-condição: `## Situação-Problema` deve existir em `documentos-tecnicos/01-visao/01-visao-produto.md`
 3. **Pré-processamento:** extrair pessoas já mencionadas em Vision Box (público-alvo) e Situação-Problema (usuários, afetados). Usá-las como ponto de partida — não repetir nas perguntas.
 
 ## Fase 1 — Coleta
@@ -77,7 +77,7 @@ Montar tabela de pessoas envolvidas, fazendo merge dos extraídos no pré-proces
 
 ## Fase 3 — Saída
 
-1. Append seção `## Pessoas Envolvidas` em `visao-produto.md`
+1. Append seção `## Pessoas Envolvidas` em `documentos-tecnicos/01-visao/01-visao-produto.md`
 2. Atualizar `estado-projeto.yaml` — se houver "a identificar": adicionar à lista `pautas_abertas`
 3. Sinalizar ao `stakeholder-identifier`: mapeamento concluído → prosseguir para `contexto-e-limite`
 

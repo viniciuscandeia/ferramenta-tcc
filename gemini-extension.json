@@ -1,6 +1,6 @@
 {
   "name": "ferramenta-tcc",
-  "version": "0.5.6",
+  "version": "0.6.0",
   "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
   "author": "Vinicius Candeia",
   "commands": [
@@ -63,7 +63,8 @@
     { "name": "analyze-cross-artifact", "file": ".gemini/skills/analyze-cross-artifact/SKILL.md" },
     { "name": "rastreabilidade-matriz", "file": ".gemini/skills/rastreabilidade-matriz/SKILL.md" },
     { "name": "traducao-leigo", "file": ".gemini/skills/traducao-leigo/SKILL.md" },
-    { "name": "traducao-gate", "file": ".gemini/skills/traducao-gate/SKILL.md" }
+    { "name": "traducao-gate", "file": ".gemini/skills/traducao-gate/SKILL.md" },
+    { "name": "faq-inicial", "file": ".gemini/skills/faq-inicial/SKILL.md" }
   ],
   "repository": "https://github.com/viniciuscandeia/ferramenta-tcc",
   "note": "Gemini CLI não suporta sub-agentes reais (sem Task()). Sub-agentes implementados via persona adoption no mesmo contexto. Estado compartilhado via arquivos em disco. Skills registradas para forward-compat — verificar suporte a skill discovery na versão atual do Gemini CLI."

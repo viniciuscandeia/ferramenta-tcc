@@ -72,7 +72,7 @@ Preencher após execução de cada caso em `tests/marco-3/execucoes/execucao-NN-
 ## Bloco H — Estado e integração
 
 - [ ] **H1.** `estado-projeto.yaml` reflete `marco_corrente: M3` durante execução e `gate_status.gate_3: aprovado` após Gate 3
-- [ ] **H2.** Baseline git criado com tag `gate-3-aprovado` após aprovação do Gate 3
+- [ ] **H2.** `estado-projeto.yaml` registra `gate_status.gate_3: aprovado` e `gate_3_aprovado_em` após aprovação do Gate 3
 - [ ] **H3.** Artefatos M3 prontos para M4 (opcional): `spec/`, `tests/`, `TESTING-STRATEGY.md`, `README-TESTS.md` existem para revisão técnica do `checker` modo M4
 
 ---
