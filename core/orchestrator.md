@@ -25,22 +25,26 @@ Ao ser invocado via `/iniciar-projeto`:
 
 > _(Constitution já injetada inline — D15. Não ler `core/constitution.md` em runtime.)_
 
+0. **Capturar diretório de trabalho** (passo obrigatório ANTES de qualquer leitura de arquivo):
+   Executar via Bash tool: `pwd`
+   Guardar o resultado como **PROJETO_DIR** (caminho absoluto).
+   **Todas** as operações de arquivo desta sessão usam `{PROJETO_DIR}/` como prefixo — nunca caminhos relativos.
+
 1. **Ler estado** do projeto:
-   - Tentar ler `estado-projeto.yaml` (SoT primário — D13)
-   - Se ausente ou ilegível: executar detection-based recovery (D10) — listar artefatos em disco para inferir marco corrente
+   - Tentar ler `{PROJETO_DIR}/estado-projeto.yaml` (SoT primário — D13)
+   - Se ausente ou ilegível: executar detection-based recovery (D10) — listar artefatos em `{PROJETO_DIR}/` para inferir marco corrente
 2. **Verificar** se é projeto novo ou retomada de sessão:
-   - Novo: criar `estado-projeto.yaml` com `marco_corrente: M1`, `gate_status: pendente`
-   - Retomada: restaurar estado do yaml e confirmar com usuário antes de continuar
+   - Novo: criar `{PROJETO_DIR}/estado-projeto.yaml` com `marco_corrente: M1`, `gate_status: pendente`, `projeto_dir: {PROJETO_DIR}`
+   - Retomada: ler `projeto_dir` do yaml (se presente) e usar como PROJETO_DIR; confirmar com usuário antes de continuar
 3. **Criar estrutura de pastas do projeto** (se projeto novo OU se pastas ainda não existem):
    Usar Bash tool para criar todas as subpastas necessárias antes do primeiro Write:
    ```bash
-   mkdir -p documentos-para-leigo/01-visao documentos-para-leigo/02-requisitos documentos-para-leigo/03-documento
-   mkdir -p documentos-tecnicos/01-visao documentos-tecnicos/02-requisitos
-   mkdir -p documentos-tecnicos/03-documento/04-spec
-   mkdir -p documentos-tecnicos/03-documento/05-tests/unit documentos-tecnicos/03-documento/05-tests/acceptance
-   mkdir -p documentos-tecnicos/04-revisao
+   mkdir -p {PROJETO_DIR}/documentos-para-leigo/01-visao {PROJETO_DIR}/documentos-para-leigo/02-requisitos {PROJETO_DIR}/documentos-para-leigo/03-documento
+   mkdir -p {PROJETO_DIR}/documentos-tecnicos/01-visao {PROJETO_DIR}/documentos-tecnicos/02-requisitos
+   mkdir -p {PROJETO_DIR}/documentos-tecnicos/03-documento/04-spec
+   mkdir -p {PROJETO_DIR}/documentos-tecnicos/03-documento/05-tests/unit {PROJETO_DIR}/documentos-tecnicos/03-documento/05-tests/acceptance
+   mkdir -p {PROJETO_DIR}/documentos-tecnicos/04-revisao
    ```
-   Executar a partir da pasta do projeto (onde `estado-projeto.yaml` reside).
    Esta etapa garante que o `gate_guard.sh` não bloqueia o primeiro Write por ausência de pasta.
 
 ### Boas-vindas (versão leigo — sem jargão)
@@ -93,6 +97,7 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 4. Marcos futuros não existem até que o gate anterior seja aprovado
 
 **Claude Code:** orquestrador assume persona do sub-agente indicado e executa as skills do marco diretamente no main context (D25). Não usar Agent tool — `AskUserQuestion` não está disponível em sub-agentes Claude Code (bug [#12890](https://github.com/anthropics/claude-code/issues/12890), [#34592](https://github.com/anthropics/claude-code/issues/34592), marcado "not planned"). Ler `{PLUGIN_ROOT}/core/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline.
+
 **Gemini CLI:** adotar persona do sub-agente no mesmo contexto; carregar workflow e slice do marco como instruções adicionais. Executar a **Sequência canônica** (M1/M4) ou o **Loop fallback single-session** (M2/M3) definidos em `core/marcos/{marco_corrente}.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora") em vez de aguardar auto-invocação por description-matching ([issue #21968](https://github.com/google-gemini/gemini-cli/issues/21968)).
 
 ---
@@ -103,6 +108,7 @@ O orquestrador mantém `estado-projeto.yaml` atualizado após cada ação signif
 
 **Schema completo (Z20, Z21 — ver template em `catalogos-seed/estado-projeto.exemplo.yaml`):**
 ```yaml
+projeto_dir: /caminho/absoluto/do/projeto   # capturado via pwd no boot (passo 0)
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
 modo: padrao                # padrao | express (Z15)
 gate_status:
@@ -118,8 +124,8 @@ artefatos:
     gate: gate_1
     aprovado_em: null       # timestamp quando aprovado
 pautas_abertas: []
-loop_m2_iteracoes: 0     # incrementado a cada volta ao collector (máx: 3)
-loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter (máx: 3)
+loop_m2_iteracoes: 0     # incrementado a cada volta ao collector; sem teto fixo (ver constitution.md)
+loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter; sem teto fixo (ver constitution.md)
 versao_leigo_aprovada: []
 ultima_atualizacao: "2026-05-18T00:00:00"
 violacoes_detectadas: []    # append-only (C4.4); cada entrada: {data, tipo, turno, acao_corretiva}
@@ -144,6 +150,7 @@ passes: []
 - Sub-agentes NUNCA editam artefatos diretamente — apenas o orquestrador escreve
 - NUNCA pular etapa de síntese após retorno de sub-agente
 - NUNCA retry de sub-agente falhado na mesma iteração — registrar em `_pendencias.md` e continuar
+- **TODOS os paths de arquivo são ABSOLUTOS usando `{PROJETO_DIR}/` como prefixo** — nunca usar caminhos relativos em Write, Edit, Read ou Bash. Quando agents/skills mencionam caminhos relativos (ex: `documentos-tecnicos/...`), expandir para `{PROJETO_DIR}/documentos-tecnicos/...` antes de executar.
 
 ---
 

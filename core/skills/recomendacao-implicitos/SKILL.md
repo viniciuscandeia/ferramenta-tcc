@@ -3,7 +3,7 @@ name: recomendacao-implicitos
 marco: [M2]
 description: >-
   Sugere funcionalidades que sistemas similares costumam ter mas que o usuário não mencionou — o "óbvio não-dito".
-  Use na Ronda 4 do Marco 2, após confirmar o tipo de produto com o usuário.
+  Use na Rodada 4 do Marco 2, após confirmar o tipo de produto com o usuário.
   Implicit requirement recommendation for layperson stakeholder; uses 3-layer filtering to present only 5-10 relevant candidates.
 ---
 

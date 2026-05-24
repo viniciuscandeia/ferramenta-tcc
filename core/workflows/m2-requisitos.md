@@ -42,7 +42,7 @@ ENTRADA (artefatos M1 aprovados)
     collector          → versões leigo
     focado)            → Gate 2 mock
    iteração N+1              │
-   (teto: 3)          [GATE 2]
+   (dinâmico)         [GATE 2]
                     SIM → M3
                     NÃO → volta ao collector com feedback
 ```
@@ -141,7 +141,7 @@ ENTRADA (artefatos M1 aprovados)
 
 ## REGRAS DO LOOP B
 
-1. **Teto de 3 iterações:** após 3 voltas ao collector em modo focado, se `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` ainda tiver itens `[ ]`, escalar ao usuário (yesno: "Algumas perguntas ainda estão abertas — quer responder agora ou prefere seguir assim?")
+1. **Loop dinâmico:** encerra automaticamente quando `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). A partir da 3ª rodada, se ainda houver itens `[ ]`, escalar ao usuário (yesno: "Ainda há pontos em aberto sobre o projeto — quer continuar detalhando ou prefere seguir assim?"). Se SIM → nova rodada. Se NÃO → avançar para gate.
 2. **Collector modo focado:** recebe `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` e executa apenas a skill indicada por cada pauta (não refaz Fase A completa)
 3. **Formato da pauta esperado:**
    ```markdown
@@ -173,7 +173,7 @@ ENTRADA (artefatos M1 aprovados)
 ## REGRAS TRANSVERSAIS (válidas em todos os passos)
 
 - Invocar `traducao-leigo` antes de qualquer texto apresentado ao usuário (D19)
-- Batching ≤ 4 perguntas por `AskUserQuestion` (D14); rondas temáticas na Fase A
+- Batching ≤ 4 perguntas por `AskUserQuestion` (D14); rodadas temáticas na Fase A
 - Nunca mencionar "requisito", "elicitação", "stakeholder", "escopo", "prioridade", "MoSCoW", "Kano" ao usuário
 - Se usuário abortar: salvar `.draft` dos artefatos em andamento + registrar em `_pendencias.md`
 

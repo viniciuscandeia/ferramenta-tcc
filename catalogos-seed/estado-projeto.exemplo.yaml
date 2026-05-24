@@ -11,6 +11,7 @@
 # ESTADO CORRENTE
 # ──────────────────────────────────────────────
 
+projeto_dir: /caminho/absoluto/do/projeto   # capturado via `pwd` no boot (passo 0); usado como prefixo em todas as operações de arquivo
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
 modo: padrao                # padrao | express  (Z15 — express reduz loops e rigor de checker)
 

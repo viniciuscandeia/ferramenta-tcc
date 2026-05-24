@@ -42,7 +42,7 @@ ENTRADA (artefatos M1+M2 aprovados)
     documenter        analyze-report.md
     modo correção)    → sem CRITICAL
    iteração N+1              │
-   (teto: 3)          [GATE 3]
+   (dinâmico)         [GATE 3]
                     SIM → M4 (opcional) ou encerrar
                     NÃO → volta ao documenter com feedback do usuário
 ```
@@ -168,14 +168,14 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 ## REGRAS DO LOOP M3
 
-1. **Teto de 3 iterações:** após 3 execuções do Fase B, se ainda houver CRITICAL, o orquestrador escala ao usuário (yesno: "Ainda há problemas não resolvidos no documento — quer tentar corrigir mais uma vez ou prefere seguir assim?")
+1. **Loop dinâmico:** encerra automaticamente quando `analyze-report.md` não tiver issues CRITICAL (convergência). A partir da 3ª rodada, se CRITICAL persistir, escalar ao usuário (yesno: "Ainda há pontos que precisam revisão — quer continuar ajustando ou prefere seguir assim?"). Se SIM → nova rodada. Se NÃO → avançar para gate.
 2. **Documenter modo correção:** recebe `documentos-tecnicos/03-documento/03.1-analyze-report.md` com lista de CRITICAL; executa **apenas** as skills afetadas (não refaz toda a Fase A)
    - Issues IREB §3.8 → refazer [A1] e/ou [A2] para os RFs/RNFs afetados
    - Issues de spec ausente → refazer [A3] para os RFs afetados (em `04-spec/`)
    - Issues de step defs → refazer [A4] para os `.feature` afetados (em `05-tests/`)
 3. **Checker reexecuta [B1]–[B3]** após cada rodada de correção do documenter
 4. **Contador de iterações:** registrar em `estado-projeto.yaml` campo `loop_m3_iteracoes: N`; incrementar a cada retorno ao documenter
-5. **Se 3ª iteração ainda tem CRITICAL:** orquestrador escala ao usuário via `AskUserQuestion` (yesno) antes de decidir
+5. **A partir da 3ª rodada com CRITICAL:** orquestrador escala ao usuário via `AskUserQuestion` (yesno) antes de continuar ou encerrar
 
 ---
 

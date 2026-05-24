@@ -112,11 +112,11 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 | Gate 3 | Usuário aprova versão leigo do SRS **E** `analyze-report.md` sem issues CRITICAL | Avançar para M4 (opcional) ou encerrar |
 | Gate 4 (opcional) | Dev/tech lead aprova `aprovacao-tecnica.md` | Encerrar |
 
-**Loop M2 collector ⇄ modeler:** máximo 3 iterações na Fase B. Se `pautas-reelicitacao.md` ainda tiver itens `[ ]` após a 3ª iteração, apresentar ao usuário (yesno): "Algumas perguntas sobre o projeto ainda ficaram abertas — quer responder agora ou prefere seguir mesmo assim?"
+**Loop M2 collector ⇄ modeler:** sem teto fixo. O loop para automaticamente quando `pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). A partir da 3ª rodada, se ainda houver itens `[ ]`, apresentar ao usuário (yesno): "Ainda há pontos em aberto sobre o projeto — quer continuar detalhando ou prefere seguir assim?" Se SIM → nova rodada. Se NÃO → fechar loop e avançar para gate. Exceção: modo express mantém teto de 1 rodada.
 
-**Loop M3 documenter ⇄ checker:** máximo 3 iterações. Se `analyze-report.md` ainda tiver issues CRITICAL após a 3ª iteração, apresentar ao usuário (yesno): "Encontrei pontos que precisam revisão técnica — quer revisar ou prefere seguir mesmo assim?" Campo `loop_m3_iteracoes: N` em `estado-projeto.yaml`.
+**Loop M3 documenter ⇄ checker:** sem teto fixo. O loop para automaticamente quando `analyze-report.md` não tiver issues CRITICAL (convergência). A partir da 3ª rodada, se CRITICAL persistir, apresentar ao usuário (yesno): "Ainda há pontos que precisam revisão — quer continuar ajustando ou prefere seguir assim?" Se SIM → nova rodada. Se NÃO → fechar loop e avançar para gate. Campo `loop_m3_iteracoes: N` em `estado-projeto.yaml`.
 
-**Loops dentro de marco:** permitidos sem restrição (respeitando teto de 3 iterações no M2).
+**Loops dentro de marco:** permitidos sem restrição.
 **Loops entre marcos:** proibidos sem gate aprovado.
 
 ---

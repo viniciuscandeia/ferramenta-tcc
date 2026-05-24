@@ -22,12 +22,12 @@ description: >-
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar Gate 1 aprovado: `documentos-tecnicos/01-visao/01-visao-produto.md` existe
-3. Detectar modo: **Fase A** (Ronda 1 — entrevista completa) ou **Fase B** (pauta específica de `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`)
+3. Detectar modo: **Fase A** (Rodada 1 — entrevista completa) ou **Fase B** (pauta específica de `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`)
 4. Extrair de `documentos-tecnicos/01-visao/01-visao-produto.md`: nome do produto, perfil principal, tarefa principal → personalizar perguntas
 
 ## Fase 1 — Coleta (adapta conforme modo)
 
-### Modo Fase A — Ronda 1 (4 perguntas-âncora)
+### Modo Fase A — Rodada 1 (4 perguntas-âncora)
 
 Adaptar ao contexto do projeto (substituir placeholders por dados reais de `documentos-tecnicos/01-visao/01-visao-produto.md`):
 

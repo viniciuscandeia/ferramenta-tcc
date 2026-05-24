@@ -3,19 +3,19 @@ name: recomendacao-dominio
 marco: [M2]
 description: >-
   Identifica o tipo de produto (loja virtual, app de saúde, painel de relatórios etc.) e sugere funcionalidades típicas daquele setor para confirmar com o usuário.
-  Use na Ronda 3 do Marco 2, após os cenários narrativos.
+  Use na Rodada 3 do Marco 2, após os cenários narrativos.
   Domain-based requirement recommendation for layperson stakeholder; matches project to domain catalog and confirms via structured questions.
 ---
 
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Confirmação de domínio é obrigatória — nunca assumir.** Detecção automática pode errar. O usuário confirma; o catálogo executa. Pular a confirmação = dados de domínio errado invadem `elicitacao-raw.md`.
-2. **Perguntas do catálogo são choice ou yesno — nunca text.** Respostas estruturadas aqui facilitam a classificação do modeler mais tarde. Questão aberta nesta ronda = dado não-classificável.
+2. **Perguntas do catálogo são choice ou yesno — nunca text.** Respostas estruturadas aqui facilitam a classificação do modeler mais tarde. Questão aberta nesta rodada = dado não-classificável.
 3. **Zero termos técnicos visíveis.** Nunca mencionar "catálogo", "domínio", "seed", "classificação". Usar "o seu tipo de produto" em vez de "domínio".
 
 <HARD-GATE>
 - NÃO executar antes de `cenario-narrativa` concluída (verificar seção `## Cenários Narrativos` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
-- NÃO executar se nenhum catálogo em `catalogos-seed/dominios/` tem ≥ 2 keyword matches E catálogo genérico não está disponível — registrar em `_pendencias.md` e pular esta ronda
+- NÃO executar se nenhum catálogo em `catalogos-seed/dominios/` tem ≥ 2 keyword matches E catálogo genérico não está disponível — registrar em `_pendencias.md` e pular esta rodada
 - ⛔ STOP se usuário nega o domínio detectado E seleciona "outro" — usar catálogos genéricos sem nova pergunta de confirmação
 </HARD-GATE>
 

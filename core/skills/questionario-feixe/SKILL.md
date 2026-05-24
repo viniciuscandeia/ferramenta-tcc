@@ -3,15 +3,15 @@ name: questionario-feixe
 marco: [M2]
 description: >-
   Faz perguntas temáticas em grupos para cobrir áreas do produto que ainda ficaram sem informação suficiente — ativa apenas quando há lacunas em 3 ou mais áreas.
-  Use na Ronda 5 do Marco 2, somente se as rondas anteriores deixaram ≥ 3 áreas sem detalhamento.
+  Use na Rodada 5 do Marco 2, somente se as rodadas anteriores deixaram ≥ 3 áreas sem detalhamento.
   Conditional thematic questionnaire for layperson stakeholder; covers uncovered system areas with structured question bundles.
 ---
 
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Condicional rigorosa — padrão é não executar.** < 3 áreas sem cobertura = o modeler pode inferir ou criar pautas. Executar por precaução desperdiça turnos do usuário.
-2. **Máximo 2 feixes, 2 chamadas.** Um feixe = 1 tema = 1 chamada `AskUserQuestion`. Dois feixes é o limite. Mais que isso = nova iteração de elicitação, não Ronda 5.
-3. **Choice e yesno apenas — nunca text nesta ronda.** Respostas abertas aqui produzem dados não-estruturados que o modeler não consegue classificar diretamente.
+2. **Máximo 2 feixes, 2 chamadas.** Um feixe = 1 tema = 1 chamada `AskUserQuestion`. Dois feixes é o limite. Mais que isso = nova iteração de elicitação, não Rodada 5.
+3. **Choice e yesno apenas — nunca text nesta rodada.** Respostas abertas aqui produzem dados não-estruturados que o modeler não consegue classificar diretamente.
 
 <HARD-GATE>
 - NÃO executar antes de `recomendacao-implicitos` concluída (verificar seção `## Implícitos Confirmados` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
@@ -98,7 +98,7 @@ Sinalizar ao `collector`: questionario-feixe concluído → Fase A encerrada →
 <!-- internal -->
 ## Anti-Padrão: Ativação com < 3 Áreas
 
-**Como acontece:** O collector ativa questionario-feixe após Ronda 4 por precaução ("pode ser que falte algo"). Apenas 2 áreas têm lacuna real. A skill executa 2 feixes extras — 8 perguntas adicionais que o modeler teria coberto com 2 pautas simples de reelicitação.
+**Como acontece:** O collector ativa questionario-feixe após Rodada 4 por precaução ("pode ser que falte algo"). Apenas 2 áreas têm lacuna real. A skill executa 2 feixes extras — 8 perguntas adicionais que o modeler teria coberto com 2 pautas simples de reelicitação.
 
 **Como detectar:** Verificar contagem de áreas com cobertura insuficiente antes de qualquer execução. Se < 3: rejeitar ativação imediatamente.
 

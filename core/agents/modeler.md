@@ -47,7 +47,7 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
    - Definir novo `topico_atual` = primeiro de `topicos_pendentes` restantes
 4. Se NÃO (material insuficiente):
    - Manter `topico_atual`
-   - Registrar em `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`: ronda `<topico_atual>` precisa repetir
+   - Registrar em `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`: rodada `<topico_atual>` precisa repetir
 5. Decidir próxima ação:
    - Se `topicos_pendentes` não-vazio → sinalizar orquestrador: "Invocar collector com topico_atual=`<próximo>`"
    - Se `topicos_pendentes` vazio → prosseguir para Passo 1 (classificação)
@@ -86,7 +86,7 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
 - Saída: `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`
 
 **Decisão pós-pautas (C3 — agenda-driven):**
-- `agenda_m2.topicos_pendentes` **não-vazio** → ainda há rondas da Fase A a executar; sinalizar orquestrador para retornar ao `collector` com novo `topico_atual`
+- `agenda_m2.topicos_pendentes` **não-vazio** → ainda há rodadas da Fase A a executar; sinalizar orquestrador para retornar ao `collector` com novo `topico_atual`
 - `agenda_m2.topicos_pendentes` **vazio** E `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` **vazio** → executar Passo 6 (traducao-gate)
 - `agenda_m2.topicos_pendentes` **vazio** E `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` **não-vazio** → incrementar `loop_m2_iteracoes` no yaml; sinalizar orquestrador para retornar ao `collector` em modo Fase B focado
 
