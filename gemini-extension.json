@@ -1,6 +1,6 @@
 {
   "name": "ferramenta-tcc",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
   "author": "Vinicius Candeia",
   "commands": [
@@ -38,8 +38,7 @@
     }
   ],
   "skills": [
-    { "name": "vision-box", "file": ".gemini/skills/vision-box/SKILL.md" },
-    { "name": "situacao-problema", "file": ".gemini/skills/situacao-problema/SKILL.md" },
+    { "name": "necessidade-visao", "file": ".gemini/skills/necessidade-visao/SKILL.md" },
     { "name": "stakeholder-mapping", "file": ".gemini/skills/stakeholder-mapping/SKILL.md" },
     { "name": "contexto-e-limite", "file": ".gemini/skills/contexto-e-limite/SKILL.md" },
     { "name": "clarificacao-pos-visao", "file": ".gemini/skills/clarificacao-pos-visao/SKILL.md" },

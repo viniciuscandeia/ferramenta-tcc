@@ -156,10 +156,13 @@ passes: []
 
 ## TRANSIÇÃO M1 → M2 (após Gate 1 aprovado)
 
-Ao registrar `gate_1_status: aprovado`, escrever em `estado-projeto.yaml` antes de invocar o collector:
+Ao registrar `gate_status.gate_1: aprovado`, escrever em `estado-projeto.yaml` antes de invocar o collector:
 
 ```yaml
 marco_corrente: M2
+gate_status:
+  gate_1: aprovado
+gate_1_aprovado_em: "<timestamp ISO>"
 agenda_m2:
   topico_atual: "entrevista"
   topicos_pendentes: [entrevista, cenarios, dominio, implicitos, feixe]
@@ -182,7 +185,7 @@ Se `estado-projeto.yaml` ausente ou ilegível, inferir marco corrente lendo arte
 | artefatos em `documentos-tecnicos/03-documento/` | M3 em andamento ou concluído |
 | `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` | M4 concluído |
 
-**Migração de layout flat:** Se detectar artefatos no layout antigo (ex: `visao-produto-leigo.md` na raiz, sem subpastas `01-visao/`), apresentar ao usuário:
+**Migração de layout antigo:** Se detectar artefatos em layout antigo (ex: `visao-produto-leigo.md` / `visao-produto-normativo.md` na raiz ou em `01-visao/` sem as subpastas `documentos-para-leigo/`/`documentos-tecnicos/`), apresentar ao usuário:
 ```
 Encontrei arquivos de projeto, mas no formato antigo (sem pastas). Quer organizar em pastas (01-visao/, 02-requisitos/, 03-documento/) ou continuar no formato atual?
 ```

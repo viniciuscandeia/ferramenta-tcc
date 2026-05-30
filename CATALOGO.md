@@ -10,7 +10,7 @@
 
 | Marco | Sub-agente(s) | Skills ativas | Gate |
 |---|---|---|---|
-| M1 — Definição da Necessidade | `stakeholder-identifier` | vision-box, situacao-problema, stakeholder-mapping, contexto-e-limite, clarificacao-pos-visao¹, traducao-gate, traducao-leigo | Gate 1: usuário aprova versão leigo de `visao-produto.md` |
+| M1 — Definição da Necessidade | `stakeholder-identifier` | necessidade-visao, stakeholder-mapping, contexto-e-limite, clarificacao-pos-visao¹, traducao-gate, traducao-leigo | Gate 1: usuário aprova `documentos-para-leigo/01-visao/01-visao-produto.md` |
 | M2 — Consenso de Escopo | `collector` ⇄ `modeler` (loop) | entrevista-estruturada, cenario-narrativa, recomendacao-dominio, recomendacao-implicitos, questionario-feixe¹, classificacao-rf-rnf, priorizacao, glossario, conflitos-detect, pautas-reelicitacao, traducao-gate, traducao-leigo | Gate 2: aprova versões leigo dos artefatos + `pautas-reelicitacao.md` sem pendências |
 | M3 — Detalhamento | `documenter` ⇄ `checker` (loop) | requisito-ears, srs-ireb-template, gherkin-spec, step-defs-red, testing-strategy, readme-tests, validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate, traducao-leigo | Gate 3: aprova SRS leigo + `analyze-report.md` sem CRITICAL |
 | M4 — Revisão Técnica (opcional) | `checker` modo técnico | (internamente: validacao-checklist-ireb) | Gate 4: dev/tech lead aprova `aprovacao-tecnica.md` |
@@ -34,9 +34,9 @@
 
 **Arquivo:** `core/agents/stakeholder-identifier.md`  
 **Marco:** M1 — Definição da Necessidade  
-**Papel:** Conduz o usuário leigo pela definição completa da necessidade — Vision Box, situação-problema, stakeholders e contexto/limite. Único agente ativo em M1 (sem loop).  
+**Papel:** Conduz o usuário leigo pela definição completa da necessidade — problema/necessidade (5-Whys/JTBD), visão (Moore), metas, stakeholders (Onion) e contexto/limite. Único agente ativo em M1 (sem loop).  
 **Workflow:** `core/workflows/m1-visao.md`  
-**Skills que invoca:** `vision-box` → `situacao-problema` → `stakeholder-mapping` → `contexto-e-limite` → `clarificacao-pos-visao` (condicional) → `traducao-gate` + `traducao-leigo` (transversal)
+**Skills que invoca:** `necessidade-visao` → `stakeholder-mapping` → `contexto-e-limite` → `clarificacao-pos-visao` (condicional) → `traducao-gate` + `traducao-leigo` (transversal)
 
 ---
 
@@ -88,7 +88,7 @@
 **Arquivo:** `core/workflows/m1-visao.md`  
 **Sub-agente responsável:** `stakeholder-identifier`  
 **Entrada:** Projeto novo ou retomada de M1 incompleto  
-**Saída:** `visao-produto-normativo.md` + `visao-produto-leigo.md`  
+**Saída:** `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md`  
 **Gate de saída:** Gate 1 — usuário aprova versão leigo
 
 ---
@@ -97,7 +97,7 @@
 
 **Arquivo:** `core/workflows/m2-requisitos.md`  
 **Sub-agentes responsáveis:** `collector` (Fase A) → `modeler` (Fase B, loop)  
-**Entrada:** `visao-produto-normativo.md` + `visao-produto-leigo.md` (aprovados pelo Gate 1)  
+**Entrada:** `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md` (aprovados pelo Gate 1)  
 **Saída:** `03.1-funcionais.md` + `03.2-qualidade.md` + `03.3-restricoes.md` + `glossario.md` + `pautas-reelicitacao.md` + versões leigo dos 3 primeiros + condicionais (`03.4-premissas.md`, `conflitos-detectados.md`)  
 **Gate de saída:** Gate 2 — usuário aprova versões leigo; `pautas-reelicitacao.md` sem pendências abertas
 
@@ -143,33 +143,31 @@
 
 ---
 
-#### vision-box
+#### necessidade-visao *(v0.7.0 — substitui vision-box + situacao-problema)*
 
-**Arquivo:** `core/skills/vision-box/SKILL.md`
+**Arquivo:** `core/skills/necessidade-visao/SKILL.md`
 
-**Descrição:** Captura a essência do produto em linguagem de negócio usando a técnica Vision Box — o usuário descreve o produto como se fosse a caixa de um produto de prateleira. Produz o primeiro componente de visao-produto.md.
+**Descrição:** Captura a necessidade central e a visão do produto em abordagem problema-primeiro (5-Whys/JTBD). Descobre a dor raiz antes de qualquer solução, depois sintetiza frase Moore e metas de sucesso. Produz Seções 1, 2 e 3 do Documento de Visão ISO 29148.
 
-**Quando usar:** Primeira skill do Marco 1, após saudação. Sempre executada antes de situacao-problema.
-
----
-
-#### situacao-problema
-
-**Arquivo:** `core/skills/situacao-problema/SKILL.md`
-
-**Descrição:** Documenta a situação-problema usando tabela estruturada com 6 slots — problema, impactados, impacto, solução esperada, usuários principais e funcionalidades-chave. Produz segundo componente de visao-produto.md.
-
-**Quando usar:** Segunda skill do Marco 1, após vision-box. Sempre executada antes de stakeholder-mapping.
+**Quando usar:** Primeira skill do Marco 1, sempre. Uma pergunta adaptativa por turno na fase de descoberta; síntese confirmada em choice (nunca perguntada a frio).
 
 ---
 
-#### stakeholder-mapping
+#### ~~vision-box~~ *(removida v0.7.0 — ver `necessidade-visao`)*
+
+---
+
+#### ~~situacao-problema~~ *(removida v0.7.0 — ver `necessidade-visao`)*
+
+---
+
+#### stakeholder-mapping *(reformada v0.7.0 — Stakeholder Onion)*
 
 **Arquivo:** `core/skills/stakeholder-mapping/SKILL.md`
 
-**Descrição:** Identifica e mapeia as pessoas envolvidas no projeto — quem usa, quem decide, quem é afetado. Produz tabela de personas/papéis para o terceiro componente de visao-produto.md.
+**Descrição:** Identifica e mapeia as pessoas envolvidas usando o modelo Stakeholder Onion (6 camadas: usa/decide-paga/mantém-suporta/afetado/regula/adversário). Inclui colunas de Interesse, Influência e Decisor. Sondagem regulatória proativa para domínios sensíveis. Produz Seção 4 do Documento de Visão.
 
-**Quando usar:** Terceira skill do Marco 1, após situacao-problema. Executada antes de contexto-e-limite.
+**Quando usar:** Segunda skill do Marco 1, após `necessidade-visao`. Pré-extrai pessoas já mencionadas — não re-pergunta quem já foi nomeado.
 
 ---
 
@@ -177,9 +175,9 @@
 
 **Arquivo:** `core/skills/contexto-e-limite/SKILL.md`
 
-**Descrição:** Define o contexto do sistema (o que está no escopo) e os limites (o que está fora). Evita expectativas não-alinhadas e reduz re-elicitação por escopo mal definido. Produz quarto componente de visao-produto.md.
+**Descrição:** Define o que está fora do produto e as restrições conhecidas. O que está dentro é INFERIDO das skills anteriores e confirmado em choice — não re-perguntado. Persiste `lacunas_m1` em `estado-projeto.yaml` para controle determinístico do D16. Produz Seção 5 do Documento de Visão.
 
-**Quando usar:** Quarta skill do Marco 1, após stakeholder-mapping. Última skill antes de clarificacao-pos-visao (condicional).
+**Quando usar:** Terceira skill do Marco 1, após `stakeholder-mapping`. Última skill antes de `clarificacao-pos-visao` (condicional).
 
 ---
 
@@ -187,9 +185,9 @@
 
 **Arquivo:** `core/skills/clarificacao-pos-visao/SKILL.md`
 
-**Descrição:** Micro-fase condicional após o Marco 1 — resolve lacunas críticas de escopo, terminologia ou restrições detectadas por contexto-e-limite antes de avançar para elicitação. Ativada apenas se ≥ 2 categorias com lacunas críticas. Máximo 3 perguntas em uma única chamada.
+**Descrição:** Micro-fase condicional após o Marco 1 — resolve lacunas críticas detectadas por `contexto-e-limite` (lidas de `estado-projeto.yaml → lacunas_m1`). Ativada apenas se `lacunas_m1.contagem ≥ 2`. Máx 3 perguntas fechadas (choice/yesno) em 1 chamada. Usa dados reais do projeto — sem placeholders genéricos.
 
-**Quando usar:** Apenas se contexto-e-limite reportar lacunas críticas em ≥ 2 de 3 categorias (escopo funcional, terminologia do domínio, restrições de negócio). NÃO executar se condição não atendida.
+**Quando usar:** Apenas se `estado-projeto.yaml → lacunas_m1.contagem ≥ 2` (D16). Pode ser re-ativada no loop Gate-1 "Não" sem guarda de idempotência.
 
 ---
 
@@ -221,7 +219,7 @@
 
 **Arquivo:** `core/skills/recomendacao-dominio/SKILL.md`
 
-**Descrição:** Detecta o domínio do projeto a partir de visao-produto-normativo.md (matching contra 5 catálogos de domínio), confirma com o usuário e faz 4 perguntas sobre seções do catálogo. Saída: RFs/RNFs/restrições confirmados em elicitacao-raw.md.
+**Descrição:** Detecta o domínio do projeto a partir de `documentos-tecnicos/01-visao/01-visao-produto.md` (matching contra 5 catálogos de domínio), confirma com o usuário e faz 4 perguntas sobre seções do catálogo. Saída: RFs/RNFs/restrições confirmados em elicitacao-raw.md.
 
 **Quando usar:** Invocada pelo collector na Ronda 3 da Fase A. Sempre executar após cenario-narrativa. Duas chamadas AskUserQuestion: 1 yesno/choice para confirmar domínio + 1 lote de 4 perguntas.
 
@@ -395,7 +393,7 @@
 
 **Descrição:** Gera rastreabilidade.md com matriz bidirecional ligando Objetivo de negócio (M1) → RF/RNF (M2) → Seção SRS (M3) → Spec (.feature) → Step definitions → Stakeholder origem. Detecta lacunas (células vazias = candidatos a issues para analyze-cross-artifact). Referência: catalogos-seed/conceitos/qualidade-e-validacao.md §4 (rastreabilidade bidirecional forward+backward).
 
-**Quando usar:** Invocada pelo checker no Passo 3 do Processo M3. Entrada: visao-produto-normativo.md + 03.1-funcionais.md + 03.2-qualidade.md + SRS-completo.md + spec/*.feature. Saída: rastreabilidade.md.
+**Quando usar:** Invocada pelo checker no Passo 3 do Processo M3. Entrada: `documentos-tecnicos/01-visao/01-visao-produto.md` + 03.1-funcionais.md + 03.2-qualidade.md + SRS-completo.md + spec/*.feature. Saída: rastreabilidade.md.
 
 ---
 

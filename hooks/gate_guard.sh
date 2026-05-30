@@ -144,4 +144,78 @@ if [[ "$IS_SYSTEM" == "0" ]]; then
   fi
 fi
 
+# ──────────────────────────────────────────────
+# Regra 4: Gate 1 — validação determinística antes de aprovar
+# Intercepta Write/Edit em estado-projeto.yaml que contenha
+# gate_status.gate_1: aprovado sem os pré-requisitos satisfeitos.
+# ──────────────────────────────────────────────
+if [[ "$BASENAME" == "estado-projeto.yaml" ]]; then
+  CONTENT=$(echo "$TOOL_INPUT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('content',''))" 2>/dev/null || true)
+
+  if echo "$CONTENT" | grep -q "gate_1.*aprovado"; then
+    CURRENT_STATE="${STATE_YAML:-}"
+
+    PROJETO_DIR=""
+    if [[ -n "$CURRENT_STATE" ]]; then
+      PROJETO_DIR=$(python3 -c "
+import sys
+try:
+    import yaml
+    with open('$CURRENT_STATE') as f:
+        d = yaml.safe_load(f)
+    print(d.get('projeto_dir',''))
+except Exception:
+    print('')
+" 2>/dev/null || true)
+    fi
+
+    # Fallback: usar diretório onde está o estado-projeto.yaml
+    if [[ -z "$PROJETO_DIR" ]] && [[ -n "$CURRENT_STATE" ]]; then
+      PROJETO_DIR=$(dirname "$CURRENT_STATE")
+    fi
+
+    if [[ -n "$PROJETO_DIR" ]]; then
+      GATE1_ERRORS=()
+
+      # Verificar artefato normativo
+      NORM_FILE="$PROJETO_DIR/documentos-tecnicos/01-visao/01-visao-produto.md"
+      if [[ ! -f "$NORM_FILE" ]] || [[ ! -s "$NORM_FILE" ]]; then
+        GATE1_ERRORS+=("MISSING: documentos-tecnicos/01-visao/01-visao-produto.md")
+      fi
+
+      # Verificar artefato leigo
+      LEIGO_FILE="$PROJETO_DIR/documentos-para-leigo/01-visao/01-visao-produto.md"
+      if [[ ! -f "$LEIGO_FILE" ]] || [[ ! -s "$LEIGO_FILE" ]]; then
+        GATE1_ERRORS+=("MISSING: documentos-para-leigo/01-visao/01-visao-produto.md")
+      fi
+
+      # Verificar seções obrigatórias no artefato normativo
+      if [[ -f "$NORM_FILE" ]]; then
+        for SECTION in "## 1. Visão" "## 2. Problema" "## 4. Pessoas Envolvidas" "## 5. Contexto e Limites"; do
+          if ! grep -q "$SECTION" "$NORM_FILE" 2>/dev/null; then
+            GATE1_ERRORS+=("MISSING_SECTION: '${SECTION}' ausente em 01-visao-produto.md (normativo)")
+          fi
+        done
+      fi
+
+      # Verificar blacklist D1 no artefato leigo
+      if [[ -f "$LEIGO_FILE" ]]; then
+        BLACKLIST_HITS=$(grep -iE "requisito funcional|stakeholder|elicitação|\bescopo\b|\bgate [0-9]\b|EARS\b|Gherkin|MoSCoW|\bsprint\b|\bbacklog\b" "$LEIGO_FILE" 2>/dev/null | head -3 || true)
+        if [[ -n "$BLACKLIST_HITS" ]]; then
+          GATE1_ERRORS+=("BLACKLIST_D1: versão leigo contém jargão proibido — aplicar traducao-leigo antes de aprovar")
+        fi
+      fi
+
+      if [[ ${#GATE1_ERRORS[@]} -gt 0 ]]; then
+        echo "🔴 GATE 1 BLOQUEADO: pré-condições não satisfeitas." >&2
+        for ERR in "${GATE1_ERRORS[@]}"; do
+          echo "   ❌ $ERR" >&2
+        done
+        echo "   Corrija os itens acima antes de marcar gate_status.gate_1: aprovado." >&2
+        exit 2
+      fi
+    fi
+  fi
+fi
+
 exit 0

@@ -2,91 +2,111 @@
 name: stakeholder-mapping
 marco: [M1]
 description: >-
-  Identifica e mapeia todas as pessoas envolvidas no projeto — quem usa, quem decide, quem é afetado.
+  Identifica e mapeia todas as pessoas envolvidas no projeto usando o modelo Stakeholder Onion (camadas: usa/decide-paga/mantém/afetado/regula/adversário).
   Use após documentar o problema, quando é preciso saber quem tem interesse no produto.
-  Map stakeholders for a layperson project; produces a roles table with type of involvement.
+  Map stakeholders for a layperson project; produces Onion-model table with interest, influence, and decisor flag.
 ---
 
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Extrair antes de perguntar** — sempre ler skills anteriores e pré-popular a tabela com pessoas já mencionadas. Nunca repetir pergunta sobre quem já foi nomeado.
-2. **Decisor explícito é obrigatório** — sem decisor identificado, o Gate 1 não pode ser aprovado. Se o usuário não souber, registrar como "a identificar" e marcar como pendência aberta.
-3. **Afetado indireto é frequentemente omitido** — sondar proativamente: clientes dos clientes, equipes de suporte, parceiros externos. O usuário raramente os menciona sem estímulo.
+2. **Decisor explícito é obrigatório** — sem decisor identificado (Camada 2, Decide-paga), o Gate 1 não pode ser aprovado. Se o usuário não souber, registrar como `[a identificar]` e marcar como pendência aberta.
+3. **Usar checklist de camadas, não perguntas abertas** — o modelo Onion define 6 camadas. O agente verifica cada camada sistematicamente, começando pelas preenchidas na Fase de extração. Menos turnos, mais cobertura.
+4. **Sondagem regulatória proativa** — se o domínio sugerir regulação (saúde, finanças, educação, alimentos, transporte), o agente sonda explicitamente a Camada 5 (Regula) antes de prosseguir.
 
 <HARD-GATE>
-- NÃO executar antes de `situacao-problema` concluído (verificar que `## Situação-Problema` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
-- ⛔ STOP se pré-processamento extrai 0 pessoas das skills anteriores (indica que M1 está corrompido ou vazio) — registrar em `_pendencias.md`
+- NÃO executar antes de `necessidade-visao` concluído (verificar que `## 1. Visão` e `## 2. Problema & Necessidade` existem em `documentos-tecnicos/01-visao/01-visao-produto.md`)
+- ⛔ STOP se pré-extração retornar 0 pessoas (indica que M1 está corrompido ou vazio) — registrar em `_pendencias.md`
+- ⛔ BLOQUEAR Gate 1 se `Decisor: Sim` ausente em toda a tabela e não há `[a identificar]` justificado em `pautas_abertas`
 </HARD-GATE>
 
-## Fase 0 — Inicialização e Pré-Processamento
+## Fase 0 — Inicialização e Pré-Extração
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Situação-Problema` deve existir em `documentos-tecnicos/01-visao/01-visao-produto.md`
-3. **Pré-processamento:** extrair pessoas já mencionadas em Vision Box (público-alvo) e Situação-Problema (usuários, afetados). Usá-las como ponto de partida — não repetir nas perguntas.
+2. Verificar pré-condição: `## 1. Visão` e `## 2. Problema & Necessidade` devem existir
+3. **Pré-extração:** ler `documentos-tecnicos/01-visao/01-visao-produto.md` e extrair TODAS as pessoas/grupos/entidades já mencionados.
+   - Tokenizar nomes próprios e substantivos de papel (médico, recepcionista, fornecedor, gestor, cliente, plano, órgão, etc.)
+   - Mapear cada um para a camada Onion mais provável
+   - Pré-preencher a tabela com `Necessidade principal: [inferida]` + flag `[a confirmar]`
+4. **Detecção de domínio regulado:** inferir domínio do texto (saúde → CFM/LGPD; financeiro → BACEN/LGPD; educação → MEC/LGPD; alimentos → ANVISA; transporte → ANTT/ANAC). Se domínio regulado detectado, preparar sondagem da Camada 5.
 
-## Fase 1 — Coleta
+## Fase 1 — Checklist de Camadas (1 `AskUserQuestion`, máx 4 perguntas)
 
-**Lote único (≤ 4 perguntas), personalizando com pessoas já extraídas:**
+**Lote único** — personalizado com quem já foi extraído. Cobrir as camadas ainda não preenchidas pela pré-extração:
 
-1. **Usuários diretos** (text):
-   ```
-   Além de [pessoas mencionadas antes], quem mais vai usar o produto no dia a dia?
-   ```
-   *(Se ninguém foi mencionado antes: "Quem vai usar o produto no dia a dia?")*
+**Camada 2 — Decide-paga (sempre perguntar se não identificado):**
+```
+Quem precisa aprovar ou pagar pelo produto? Pode ser uma pessoa, um cargo ou um departamento.
+```
 
-2. **Decisores** (text):
-   ```
-   Quem precisa aprovar ou pagar pelo produto? Pode ser uma pessoa, um cargo ou um departamento.
-   ```
+**Camada 3 — Mantém-suporta (se produto tiver operação contínua — inferir):**
+```
+Quem vai cuidar do produto depois que estiver pronto? (ex: equipe de TI, suporte, o próprio dono)
+```
+*(Incluir só se contexto sugere operação contínua — omitir para projetos pessoais simples.)*
 
-3. **Afetados indiretamente** (text):
-   ```
-   Tem alguém que vai ser afetado pelo produto, mesmo sem usá-lo diretamente? (ex: equipe de suporte, clientes dos seus clientes)
-   ```
+**Camada 4 — Afetado (se não identificado na pré-extração):**
+```
+Tem alguém que vai ser afetado pelo produto sem usá-lo diretamente? (ex: clientes dos seus clientes, parceiros, equipes que dependem dos dados)
+```
 
-4. **Quem não deve ter acesso** (text):
-   ```
-   Tem algum grupo de pessoas que NÃO deve ter acesso ou não deve ser impactado pelo produto?
-   ```
+**Camada 5 — Regula (se domínio regulado detectado na Fase 0 — SEMPRE incluir):**
+```
+O produto precisa seguir alguma regra legal, norma do setor ou exigência de órgão regulador? (ex: proteção de dados, regras de saúde, normas financeiras)
+```
+*(Se não regulado: omitir esta pergunta.)*
+
+**Camada 6 — Adversário (opcional — incluir se produto lida com dados sensíveis/acesso controlado):**
+```
+Tem algum grupo que NÃO deve ter acesso ao produto ou que poderia tentar usá-lo de forma indevida?
+```
+
+**Regra:** incluir apenas as perguntas para camadas que a pré-extração NÃO cobriu. Se todas as camadas relevantes já estiverem preenchidas, pular o lote e ir direto para a Fase 2.
 
 ## Fase 2 — Síntese
 
-Montar tabela de pessoas envolvidas, fazendo merge dos extraídos no pré-processamento com as respostas do Lote 1:
+Montar tabela Stakeholder Onion, fazendo merge da pré-extração com as respostas do lote:
 
 ```markdown
-## Pessoas Envolvidas
+## 4. Pessoas Envolvidas
 
-| Papel | Descrição | Tipo de envolvimento | Necessidade principal |
-|---|---|---|---|
-| [Nome do papel] | [Quem é] | Usuário direto / Decisor / Afetado / Restrito | [O que precisa do projeto] |
+| Papel | Camada | Interesse principal | Influência | Decisor |
+|---|---|---|---|---|
+| [Nome do papel] | Usa diretamente / Decide-paga / Mantém-suporta / Afetado / Regula / Adversário | [O que precisa ou espera] | Alta / Média / Baixa | Sim / Não |
 ```
 
-**Tipos de envolvimento:**
-- **Usuário direto** — usa o produto ativamente
-- **Decisor** — aprova, financia ou define prioridades
-- **Afetado** — impactado pelos resultados, mas não usa diretamente
-- **Restrito** — não deve ter acesso
-
 **Regras de síntese:**
-
-- Cada grupo mencionado (pré-processamento + Lote 1) vira uma linha na tabela
-- Inferir "necessidade principal" com base no contexto — marcar como `[inferido]` se incerto
-- Se usuário não souber responder: registrar papel como "a identificar" na tabela e adicionar à `pautas_abertas` em `estado-projeto.yaml`
-- Verificar consistência com Vision Box (público-alvo) e Situação-Problema (usuários principais)
+- Cada grupo mencionado (pré-extração + lote) → uma linha na tabela
+- Influência: inferir da camada (Decide-paga = Alta; Usa diretamente = Média/Alta; Afetado = Baixa/Média; Regula = Alta; Adversário = [não se aplica])
+- Inferências marcadas como `[inferido]` na versão normativa
+- Se usuário não souber: registrar como `[a identificar]` + adicionar à `pautas_abertas` em `estado-projeto.yaml`
+- Verificar: ao menos 1 papel com `Decisor: Sim` — se ausente, registrar pendência crítica
 - Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
 
 ## Fase 3 — Saída
 
-1. Append seção `## Pessoas Envolvidas` em `documentos-tecnicos/01-visao/01-visao-produto.md`
-2. Atualizar `estado-projeto.yaml` — se houver "a identificar": adicionar à lista `pautas_abertas`
+1. Append seção `## 4. Pessoas Envolvidas` em `documentos-tecnicos/01-visao/01-visao-produto.md`
+2. Atualizar `estado-projeto.yaml`:
+   - Se houver `[a identificar]`: adicionar à lista `pautas_abertas`
+   - Se decisor ausente: registrar `pendencia_gate_1: "Decisor não identificado — bloqueará Gate 1"`
 3. Sinalizar ao `stakeholder-identifier`: mapeamento concluído → prosseguir para `contexto-e-limite`
 
 <!-- internal -->
-## Anti-Padrão: Pré-Processamento Perde Pessoa de Texto Longo
+## Anti-Padrão: Pré-Extração Perde Entidade de Texto Longo
 
-**Como acontece:** Em inputs ricos como o Caso 2 M1 (texto longo da médica), o pré-processamento lê só o Vision Box e perde pessoas mencionadas na narrativa longa de Situação-Problema (ex: "plano de saúde" mencionado como exigência regulatória no corpo do texto).
+**Como acontece:** Em inputs ricos (ex: texto longo da médica no Caso 2), o pré-processamento lê só a seção de Visão e perde entidades mencionadas no corpo do texto de Problema (ex: "plano de saúde" mencionado como exigência regulatória).
 
-**Como detectar:** Checar se cada pessoa/entidade nomeada em `## Situação-Problema` aparece como linha na tabela final. Varredura simples: tokenizar nomes próprios e substantivos de papel (médico, recepcionista, plano, fornecedor) e cruzar com a tabela.
+**Como detectar:** Varrer TODAS as seções já escritas em `01-visao-produto.md` — não só a `## 1. Visão`. Tokenizar substantivos de papel em todas as seções.
 
-**O que fazer:** Fail-safe — adicionar qualquer pessoa/entidade não capturada como linha extra com papel `[a confirmar]`. Melhor uma linha a mais para revisar do que uma omissão silenciosa.
+**O que fazer:** Fail-safe — adicionar qualquer entidade não capturada como linha extra com camada `[a confirmar]`. Melhor uma linha a mais para revisar do que uma omissão silenciosa.
+
+---
+
+## Anti-Padrão: Camada Regula Ignorada em Domínio Sensível
+
+**Como acontece:** Projeto de saúde ou financeiro não ativa a sondagem de regulação porque o usuário não mencionou espontaneamente. LGPD, CFM, BACEN, ANVISA ficam fora do mapa de pessoas/restrições.
+
+**Como detectar:** Verificar domínio inferido na Fase 0. Se domínio ∈ {saúde, financeiro, educação, alimentos, transporte, jurídico}, a Camada 5 deve estar presente na tabela ou ter uma linha `[a identificar]`.
+
+**O que fazer:** Forçar a pergunta de Camada 5 quando o domínio for regulado — nunca omitir por "provavelmente o usuário sabe".
 <!-- /internal -->

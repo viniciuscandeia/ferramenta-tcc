@@ -2,7 +2,9 @@
 name: stakeholder-mapping
 marco: [M1]
 description: >-
-  Quando precisa identificar quem usa, quem decide e quem é afetado pelo produto. Use para mapear quem vai usar, quem aprova, quem é impactado. Use when mapping people involved in or affected by the project.
+  Identifica e mapeia todas as pessoas envolvidas no projeto usando o modelo Stakeholder Onion (camadas: usa/decide-paga/mantém/afetado/regula/adversário).
+  Use após documentar o problema, quando é preciso saber quem tem interesse no produto.
+  Map stakeholders for a layperson project; produces Onion-model table with interest, influence, and decisor flag.
 ---
 
 # Adapter Gemini CLI — stakeholder-mapping

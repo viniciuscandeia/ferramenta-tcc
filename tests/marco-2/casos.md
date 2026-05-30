@@ -1,7 +1,7 @@
 # Casos de Teste — Marco 2: Consenso de Escopo
 
 Três casos canônicos para verificação do workflow M2 (`collector` ⇄ `modeler`).
-Cada caso pressupõe artefato M1 já aprovado (`visao-produto-normativo.md` simulado).
+Cada caso pressupõe artefato M1 já aprovado (`documentos-tecnicos/01-visao/01-visao-produto.md` simulado).
 
 ---
 

@@ -53,14 +53,14 @@ agenda_m2:
 
 artefatos:
   # Formato por artefato: nome | marco | iteracao | modo | gate | aprovado_em
-  - nome: 01-visao/visao-produto-leigo.md
+  - nome: documentos-para-leigo/01-visao/01-visao-produto.md
     marco: M1
     iteracao: 1
     modo: leigo              # leigo | normativo | tecnico
     gate: gate_1
     aprovado_em: null        # "2026-06-01T10:30:00" quando aprovado
 
-  - nome: 01-visao/visao-produto-normativo.md
+  - nome: documentos-tecnicos/01-visao/01-visao-produto.md
     marco: M1
     iteracao: 1
     modo: normativo
@@ -131,19 +131,19 @@ passes: []
 #   topicos_concluidos: [entrevista]
 #   rodada_corrente: 1
 # artefatos:
-#   - nome: 01-visao/visao-produto-leigo.md
+#   - nome: documentos-para-leigo/01-visao/01-visao-produto.md
 #     marco: M1
 #     iteracao: 1
 #     modo: leigo
 #     gate: gate_1
 #     aprovado_em: "2026-06-01T10:30:00"
-#   - nome: 01-visao/visao-produto-normativo.md
+#   - nome: documentos-tecnicos/01-visao/01-visao-produto.md
 #     marco: M1
 #     iteracao: 1
 #     modo: normativo
 #     gate: gate_1
 #     aprovado_em: "2026-06-01T10:30:00"
 # pautas_abertas: []
-# versao_leigo_aprovada: [01-visao/visao-produto-leigo.md]
+# versao_leigo_aprovada: [documentos-para-leigo/01-visao/01-visao-produto.md]
 # ultima_atualizacao: "2026-06-01T10:30:00"
 # passes: []

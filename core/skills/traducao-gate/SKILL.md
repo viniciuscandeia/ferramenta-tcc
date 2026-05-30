@@ -1,7 +1,7 @@
 ---
 name: traducao-gate
 marco: [M1, M2, M3]
-description: Gera duas versões de um artefato de gate — versão normativa (IREB §3.3.3 + EARS + RFC 2119) e versão leigo (linguagem de negócio). O usuário aprova apenas a versão leigo; a equipe técnica recebe a versão normativa.
+description: Gera duas versões de um artefato de gate — versão normativa (Documento de Visão no M1; IREB §3.3.3 + EARS + RFC 2119 no M2/M3) e versão leigo (linguagem de negócio). O usuário aprova apenas a versão leigo; a equipe técnica recebe a versão normativa.
 when_to_use: Ao final de cada marco (M1, M2, M3) antes de apresentar artefatos ao usuário para aprovação no gate.
 ---
 
@@ -25,12 +25,26 @@ when_to_use: Ao final de cada marco (M1, M2, M3) antes de apresentar artefatos a
 
 ## Fase 1 — Gerar Versão Normativa Final
 
-Aplicar formatação IREB §3.3.3 + EARS + RFC 2119 se ainda não aplicados:
+**Marco-aware:** o formato normativo varia por marco.
+
+**M1 — Documento de Visão (ISO 29148):**
+Estruturar o artefato normativo seguindo o template `core/templates/01-documento-visao.md` com 6 seções:
+1. Visão — frase-síntese estilo Geoffrey Moore
+2. Problema & Necessidade — dor real, quem sofre, impacto (sem lista de solução/features)
+3. Objetivos e Metas de Sucesso — como saberemos que deu certo (KPIs/métricas)
+4. Pessoas Envolvidas — tabela Stakeholder Onion (Papel | Camada | Interesse | Influência | Decisor s/n)
+5. Contexto e Limites — dentro / fora / integrações / restrições tipadas
+6. Premissas e Itens em Aberto
+
+**Não aplicar** EARS / RFC 2119 no M1 — esses formalismos são para documentos de requisitos (M2/M3), não para visão.
+
+**M2/M3 — Requisitos (IREB §3.3.3 + EARS + RFC 2119):**
+Aplicar formatação EARS se ainda não aplicada:
 - Requisitos funcionais: `[Sujeito] DEVE [verbo] [objeto] [condição opcional]`
 - Requisitos não-funcionais: `[Sistema] DEVE [critério mensurável] quando [condição]`
 - Seções seguindo estrutura IREB §3.3.3
 
-Salvar como `<nome>-normativo.md`.
+Salvar com o nome canônico do marco (ver Fase 4).
 
 ## Fase 2 — Gerar Versão Leigo
 
@@ -38,7 +52,7 @@ Transformar conteúdo normativo em linguagem de negócio. A versão leigo tem es
 
 | Marco | Versão normativa contém | Versão leigo apresenta |
 |---|---|---|
-| M1 | Vision Box + Situação-Problema + Stakeholders + Contexto/Limite em formato IREB | Resumo em prosa: "Seu projeto é X, resolve Y, as pessoas envolvidas são Z..." |
+| M1 | Documento de Visão: frase-síntese + problema/necessidade + metas/KPIs + stakeholders (Onion) + contexto/limites + premissas | Resumo em prosa: "Seu projeto é X, resolve o problema Y, as pessoas envolvidas são Z, o objetivo é A..." |
 | M2 | Listas RF/RNF com EARS + MoSCoW + glossário técnico | Listas em linguagem de negócio: "O produto vai fazer... / O produto precisa funcionar..." |
 | M3 | SRS completo IREB §3.3.3 com 6 seções | Resumo executivo com destaques por seção, sem siglas ou sintaxe |
 

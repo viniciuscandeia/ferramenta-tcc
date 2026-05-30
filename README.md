@@ -50,7 +50,7 @@ O orquestrador conduz o processo de 4 marcos (Definição → Consenso → Detal
 Responda as perguntas como faria com um analista de requisitos humano.
 
 **Artefatos gerados ao final:**
-- `visao-produto-normativo.md` + `-leigo.md` (Marco 1)
+- `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md` (Marco 1)
 - `03.1-funcionais.md`, `03.2-qualidade.md`, `glossario.md` (Marco 2)
 - `SRS-completo.md`, `spec/*.feature`, `tests/`, `TESTING-STRATEGY.md`, `README-TESTS.md` (Marco 3)
 

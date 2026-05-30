@@ -2,112 +2,145 @@
 name: contexto-e-limite
 marco: [M1]
 description: >-
-  Define o que o produto vai fazer e o que está fora do projeto — evita expectativas erradas antes da próxima fase.
-  Use após mapear as pessoas envolvidas, para fechar o escopo do Marco 1.
-  Define system context and boundaries for a layperson stakeholder; identifies integrations and restrictions.
+  Define o que está fora do produto e as restrições conhecidas — a fronteira do sistema.
+  O que está dentro é INFERIDO das skills anteriores e confirmado, não re-perguntado.
+  Use após mapear pessoas, para fechar o contexto do Marco 1.
+  Define system context and boundaries for a layperson stakeholder; emphasizes out-of-scope and restrictions.
 ---
 
 ## Filosofia desta skill (Regras Absolutas)
 
-1. **Facilitador de limites** — "O que está fora" é tão importante quanto "o que está dentro". Nunca pular ou minimizar as exclusões.
-2. **Restrição sem tipo = não é restrição.** Se o usuário diz "tem algumas restrições", sondar: prazo, orçamento, tecnologia ou legal. Genérico não vai para o artefato.
-3. **Contradição dentro/fora é pior que ausência.** Se o usuário listou algo em "o que faz" que contraria "o que não faz", sinalizar imediatamente antes de registrar.
+1. **Dentro = inferido + confirmado; Fora = perguntado.** O que o produto faz já foi descrito em `necessidade-visao` e `stakeholder-mapping`. Esta skill NÃO re-pergunta isso. Ela confirma rapidamente o que está dentro (inferido) e sonda o que está FORA — que é onde o valor real está para evitar scope creep.
+2. **"Fora do projeto" é tão importante quanto "dentro".** Pelo menos 1 exclusão explícita é obrigatória. Se o usuário não sugerir nenhuma, o agente oferece candidatos baseados no domínio.
+3. **Restrição sem tipo = não é restrição.** Se o usuário diz "tem algumas limitações", sondar: prazo, orçamento, tecnologia ou legal. Genérico não vai para o artefato.
+4. **Lacunas persistidas em estado, não perdidas no contexto.** O relatório de lacunas (D16) é salvo em `estado-projeto.yaml` para sobreviver a sessões desconectadas.
 
 <HARD-GATE>
-- NÃO executar antes de `stakeholder-mapping` concluído (verificar que `## Pessoas Envolvidas` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
-- ⛔ STOP se respostas 1 e 2 forem semanticamente idênticas (usuário não entendeu a distinção dentro/fora) — re-explicar com exemplo concreto antes de continuar
+- NÃO executar antes de `stakeholder-mapping` concluído (verificar que `## 4. Pessoas Envolvidas` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
+- ⛔ STOP se "dentro" e "fora" forem semanticamente idênticos (usuário não entendeu a distinção) — re-explicar com exemplo concreto antes de continuar
 </HARD-GATE>
 
-## Fase 0 — Inicialização
+## Fase 0 — Inicialização e Pré-Inferência
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## Pessoas Envolvidas` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`
-3. Extrair de skills anteriores: funcionalidades já mencionadas em Situação-Problema → usadas para validar consistência em Fase 2
+2. Verificar pré-condição: `## 4. Pessoas Envolvidas` existe
+3. **Pré-inferência do dentro:** ler seções `## 2. Problema & Necessidade` e `## 1. Visão` → extrair atividades e capacidades mencionadas pelo usuário → montar lista provisória de "O que o produto faz"
+4. Extrair integrações já mencionadas (sistemas, dispositivos, serviços citados) → lista provisória
 
-## Fase 1 — Coleta
+## Fase 1 — Coleta (1 `AskUserQuestion`, 3 perguntas)
 
-**Lote único (≤ 4 perguntas):**
+**Lote único (≤ 3 perguntas — enxuto porque "dentro" já é inferido):**
 
-1. **O que o produto vai fazer** (text):
+1. **O que o produto NÃO vai fazer** (text — obrigatória):
    ```
-   O que o produto vai fazer? Liste as principais atividades que ele vai realizar para as pessoas que vão usá-lo.
+   O que o produto definitivamente NÃO vai fazer? Mesmo que as pessoas esperem — o que está fora?
    ```
+   *(Se o usuário travar: oferecer candidatos baseados no domínio via choice — ex: para estoque → "financeiro/caixa", "contabilidade", "RH". Esses candidatos vêm do catálogo de domínio ou são inferidos.)*
 
-2. **O que o produto NÃO vai fazer** (text):
+2. **Integrações externas** (text — só se lista provisória da Fase 0 estiver vazia):
    ```
-   O que o produto definitivamente NÃO vai fazer? Há algo que as pessoas podem esperar mas que está fora do projeto?
+   O produto precisa se conectar com outros sistemas ou serviços que você já usa? (ex: pagamento, e-mail, WhatsApp, sistema financeiro)
    ```
+   *(Se integrações já foram mencionadas antes: omitir esta pergunta e usar a lista provisória.)*
 
-3. **Integrações com outros sistemas** (text):
+3. **Restrições conhecidas** (text):
    ```
-   O produto precisa se conectar com outros sistemas ou serviços que você já usa? (ex: sistema de pagamento, e-mail, WhatsApp, sistema financeiro)
-   ```
-
-4. **Restrições conhecidas** (text):
-   ```
-   Existe alguma restrição importante? (ex: prazo, orçamento, tecnologia específica que deve ser usada, regras legais que o produto precisa respeitar)
+   Existe alguma restrição importante? (ex: prazo, orçamento, tecnologia específica que deve ser usada, regras que o produto precisa respeitar)
    ```
 
-## Fase 2 — Síntese
+## Fase 2 — Síntese e Confirmação do "Dentro"
+
+Apresentar lista provisória de "O que está no projeto" (inferida) para confirmação rápida — **1 `AskUserQuestion`, choice**:
+
+```
+Pelo que conversamos, o produto vai:
+[bullet list inferida]
+
+Está certo? Tem algo que ficou de fora ou que deveria ser diferente?
+```
+
+Opções: `"Está correto"` / `"Tem algo para ajustar"` / `"Quero adicionar uma coisa"`
+
+- Se "Está correto" → Fase 3 (síntese final)
+- Se ajuste: coletar texto, atualizar a lista, sem nova rodada
+
+## Fase 3 — Síntese Final
 
 Gerar seção de contexto e limites:
 
 ```markdown
-## Contexto e Limites do Projeto
+## 5. Contexto e Limites
 
-### O que está no projeto
+### O que o produto faz
 
-[Bullet list — resposta 1 + inferências das skills anteriores, verificando consistência com Situação-Problema]
+[Bullet list confirmada — da pré-inferência + ajustes da Fase 2]
 
-### O que está fora do projeto
+### O que o produto NÃO faz
 
-[Bullet list — exclusões explícitas da resposta 2]
+[Bullet list — exclusões explícitas da resposta 1]
 
 ### Integrações previstas
 
-[Bullet list de sistemas externos — resposta 3]
+[Bullet list de sistemas externos]
 [Se nenhuma: "Nenhuma integração identificada nesta fase."]
 
 ### Restrições
 
 | Tipo | Descrição |
 |---|---|
-| [Prazo / Orçamento / Técnica / Legal / Outro] | [Detalhe da restrição] |
+| [Prazo / Orçamento / Técnica / Legal / Organizacional] | [Detalhe] |
 
 [Se nenhuma: "Nenhuma restrição identificada nesta fase."]
 ```
 
 **Regras de síntese:**
-
-- "O que está no projeto" deve ser consistente com funcionalidades listadas em Situação-Problema — divergência = flag de lacuna
-- Integrações mencionadas: registrar como "a detalhar em fase seguinte" — não aprofundar agora
-- Restrições classificadas por tipo; restrição vaga → marcar como `[a detalhar]`
+- "O que está no projeto" deve ser consistente com a Seção 2 (Problema) — divergência = flag de lacuna
+- Integrações mencionadas: registrar como "a detalhar em fase seguinte"
+- Restrições vagas → marcar como `[a detalhar]`
+- Verificar consistência com restrições regulatórias da Seção 4 (Pessoas Envolvidas, Camada Regula) — se Regula presente → deve haver ao menos 1 restrição do tipo Legal
 - Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
 
-## Fase 3 — Detecção de Lacunas (para `clarificacao-pos-visao` — D16)
+## Fase 4 — Detecção e Persistência de Lacunas (para `clarificacao-pos-visao` — D16)
 
-Verificar 3 categorias críticas e retornar relatório ao `stakeholder-identifier`:
+Verificar 3 categorias críticas:
 
-| Categoria | Lacuna crítica se |
-|---|---|
-| Escopo funcional | "O que está no projeto" tem < 3 itens OU contradiz Situação-Problema |
-| Terminologia do domínio | Termos do domínio sem definição clara no material coletado |
-| Restrições de negócio | Restrições legais ou de prazo mencionadas mas não detalhadas |
+| Categoria | Lacuna crítica se | Severidade |
+|---|---|---|
+| Escopo funcional | "O que está no projeto" tem < 3 itens OU contradiz Seção 2 (Problema) | Alta |
+| Restrições de negócio | Domínio regulado (Fase 0 de `stakeholder-mapping`) E nenhuma restrição Legal identificada | Alta |
+| Itens em aberto críticos | Decisor `[a identificar]` OU metas de sucesso `[a definir]` em Seção 3 | Média |
 
-Retornar: lista de categorias com lacuna + contagem total. O `stakeholder-identifier` decide se ativa `clarificacao-pos-visao` (D16: só se ≥ 2 categorias).
+**Persistir em `estado-projeto.yaml`:**
+```yaml
+lacunas_m1:
+  categorias: [escopo_funcional, restricoes_negocio, itens_aberto]  # só as que têm lacuna
+  contagem: N
+```
 
-## Fase 4 — Saída
+`stakeholder-identifier` lê `estado-projeto.yaml` para decidir se ativa `clarificacao-pos-visao` (D16: só se `contagem ≥ 2`). Isso garante que a decisão sobrevive a sessões desconectadas.
 
-1. Append seção `## Contexto e Limites do Projeto` em `documentos-tecnicos/01-visao/01-visao-produto.md`
-2. Retornar relatório de lacunas ao `stakeholder-identifier`
-3. Sinalizar conclusão → `stakeholder-identifier` avalia lacunas → prosseguir para `clarificacao-pos-visao` (se ≥ 2) ou `traducao-gate` (se < 2)
+## Fase 5 — Saída
+
+1. Append seção `## 5. Contexto e Limites` em `documentos-tecnicos/01-visao/01-visao-produto.md`
+2. Persistir `lacunas_m1` em `estado-projeto.yaml` (ver Fase 4)
+3. Sinalizar conclusão → `stakeholder-identifier` avalia `lacunas_m1.contagem` → prosseguir para `clarificacao-pos-visao` (se ≥ 2) ou `traducao-gate` (se < 2)
 
 <!-- internal -->
-## Anti-Padrão: Dentro/Fora Copia Funcionalidades Sem Distinguir
+## Anti-Padrão: Re-Perguntar "O Que O Produto Faz"
 
-**Como acontece:** Resposta 1 ("vai fazer") e resposta 2 ("não vai fazer") têm overlap — o usuário lista o mesmo item em ambas com redação diferente (ex: "controlar estoque" em Dentro e "não vai controlar entradas de estoque" em Fora).
+**Como acontece:** A skill pergunta "O que o produto vai fazer?" mesmo que `necessidade-visao` já tenha capturado a solução e as funcionalidades centrais. Resulta em 3ª pergunta sobre o mesmo território — dentro/fora repetido 3 vezes entre as skills.
 
-**Como detectar:** Tokenizar bullet lists de ambas as seções; checar overlap de substantivos-chave. Overlap > 30% = flag.
+**Como detectar:** Se `## 1. Visão` e `## 2. Problema & Necessidade` estão preenchidos e mencionam atividades do produto → a lista de "dentro" JÁ EXISTE. Pré-inferir e confirmar em choice, nunca re-perguntar aberto.
 
-**O que fazer:** ⛔ STOP — re-apresentar as duas listas lado a lado e perguntar qual das interpretações é a correta antes de prosseguir. Nunca registrar ambiguidade silenciosamente.
+**O que fazer:** Fase 0 é obrigatória. Se a pré-inferência retornar < 2 itens, aí sim perguntar abertamente. Mas isso é exceção (para inputs muito vagos já cobertos por `clarificacao-pos-visao`).
+
+---
+
+## Anti-Padrão: Lacunas Perdidas ao Desconectar
+
+**Como acontece:** `contexto-e-limite` detecta 2 lacunas críticas mas as retorna apenas em contexto efêmero (em memória). Se a sessão é interrompida antes de `clarificacao-pos-visao`, a contagem é perdida e o gate pode abrir sem clarificação.
+
+**Como detectar:** `estado-projeto.yaml` sem campo `lacunas_m1` após `contexto-e-limite` executar.
+
+**O que fazer:** Fase 4 persiste `lacunas_m1` em disco — obrigatório. `stakeholder-identifier` e `clarificacao-pos-visao` leem do estado, nunca dependem de contexto efêmero.
 <!-- /internal -->
