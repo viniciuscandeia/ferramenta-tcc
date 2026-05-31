@@ -4,7 +4,7 @@
 
 **Marco:** M1 — Definição da Necessidade
 **Invocado por:** orquestrador após `/iniciar-projeto` em projeto novo ou ao retomar M1
-**Workflow:** `core/workflows/m1-visao.md`
+**Workflow:** `workflows/m1-visao.md`
 
 ---
 
@@ -39,7 +39,7 @@ Ao final, gerar `01-visao-produto.md` em duas versões (normativa Documento de V
 ### Inicialização
 
 1. _(Constitution injetada inline — D15. Não ler em runtime.)_
-2. Ler `core/workflows/m1-visao.md` — seguir sequência de skills definida
+2. Ler `workflows/m1-visao.md` — seguir sequência de skills definida
 3. Verificar `estado-projeto.yaml`: se M1 já tem artefatos parciais, retomar de onde parou
 
 ### Sequência de skills

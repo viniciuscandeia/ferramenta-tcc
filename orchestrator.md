@@ -23,20 +23,21 @@ A **primeira** interação é sempre a mensagem de boas-vindas em PT-BR (abaixo)
 
 Ao ser invocado via `/iniciar-projeto`:
 
-> _(Constitution já injetada inline — D15. Não ler `constitution.md` em runtime.)_
+0. **Ler `{PLUGIN_ROOT}/constitution.md`** via Read tool e internalizar as regras D1/D3/D14/D15 como invioláveis.
+   `{PLUGIN_ROOT}` = `installPath` de `~/.claude/plugins/installed_plugins.json["ferramenta-tcc@ferramenta-tcc"][0]`.
 
-0. **Capturar diretório de trabalho** (passo obrigatório ANTES de qualquer leitura de arquivo):
+1. **Capturar diretório de trabalho** (passo obrigatório ANTES de qualquer leitura de arquivo):
    Executar via Bash tool: `pwd`
    Guardar o resultado como **PROJETO_DIR** (caminho absoluto).
    **Todas** as operações de arquivo desta sessão usam `{PROJETO_DIR}/` como prefixo — nunca caminhos relativos.
 
-1. **Ler estado** do projeto:
+2. **Ler estado** do projeto:
    - Tentar ler `{PROJETO_DIR}/estado-projeto.yaml` (SoT primário — D13)
    - Se ausente ou ilegível: executar detection-based recovery (D10) — listar artefatos em `{PROJETO_DIR}/` para inferir marco corrente
-2. **Verificar** se é projeto novo ou retomada de sessão:
+3. **Verificar** se é projeto novo ou retomada de sessão:
    - Novo: criar `{PROJETO_DIR}/estado-projeto.yaml` com `marco_corrente: M1`, `gate_status: pendente`, `projeto_dir: {PROJETO_DIR}`
    - Retomada: ler `projeto_dir` do yaml (se presente) e usar como PROJETO_DIR; confirmar com usuário antes de continuar
-3. **Criar estrutura de pastas do projeto** (se projeto novo OU se pastas ainda não existem):
+4. **Criar estrutura de pastas do projeto** (se projeto novo OU se pastas ainda não existem):
    Usar Bash tool para criar todas as subpastas necessárias antes do primeiro Write:
    ```bash
    mkdir -p {PROJETO_DIR}/documentos-para-leigo/01-visao {PROJETO_DIR}/documentos-para-leigo/02-requisitos {PROJETO_DIR}/documentos-para-leigo/03-documento
@@ -85,13 +86,13 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 
 | Marco corrente | Slice a carregar | Agents invocados |
 |---|---|---|
-| M1 | `core/marcos/m1.md` | `stakeholder-identifier` |
-| M2 | `core/marcos/m2.md` | `collector` ⇄ `modeler` |
-| M3 | `core/marcos/m3.md` | `documenter` ⇄ `checker` |
-| M4 | `core/marcos/m4.md` | `checker` (modo técnico) |
+| M1 | `marcos/m1.md` | `stakeholder-identifier` |
+| M2 | `marcos/m2.md` | `collector` ⇄ `modeler` |
+| M3 | `marcos/m3.md` | `documenter` ⇄ `checker` |
+| M4 | `marcos/m4.md` | `checker` (modo técnico) |
 
 **REGRAS DE CARREGAMENTO:**
-1. Carregar `core/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
+1. Carregar `marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
 2. **NUNCA** mencionar artefatos, skills ou gates de marcos futuros ao usuário
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
@@ -104,7 +105,7 @@ Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a seq
 
 O orquestrador mantém `estado-projeto.yaml` atualizado após cada ação significativa.
 
-**Schema completo (Z20, Z21 — ver template em `core/catalogos-seed/estado-projeto.exemplo.yaml`):**
+**Schema completo (Z20, Z21 — ver template em `catalogos-seed/estado-projeto.exemplo.yaml`):**
 ```yaml
 projeto_dir: /caminho/absoluto/do/projeto   # capturado via pwd no boot (passo 0)
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido

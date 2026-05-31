@@ -1,5 +1,7 @@
 # Plugin Directory Restructure Implementation Plan
 
+> **✅ CONCLUÍDO em v0.12.0 (2026-05-31)** — hooks/ → scripts/, core/ criado para engine files. Posteriormente v0.13.0 colapsou core/ na raiz (D26). Este plano criou a estrutura intermediária que D26 então eliminou.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Align ferramenta-tcc plugin directory with official Claude Code plugin conventions and implement D12 (core/ engine separation).

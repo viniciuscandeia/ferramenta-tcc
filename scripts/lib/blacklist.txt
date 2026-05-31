@@ -1,6 +1,6 @@
 # blacklist.txt — Blacklist D1: famílias de jargão ER proibido em documentos-para-leigo/
 #
-# Fonte de verdade: core/skills/traducao-leigo/SKILL.md (tabela linhas 31-52)
+# Fonte de verdade: skills/traducao-leigo/SKILL.md (tabela linhas 31-52)
 # Formato: um fragmento ERE por linha; linhas com # são comentários ignorados.
 # Consumido por: grep -v '^[[:space:]]*#' blacklist.txt | grep -ioEf - arquivo.md
 #

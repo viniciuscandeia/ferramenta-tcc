@@ -13,7 +13,7 @@ description: >-
 1. **Problema antes de solução.** A skill começa pelo problema/dor real — não pelo produto. Soluções, features e funcionalidades são PROIBIDOS aqui. A visão emerge do problema entendido.
 2. **Uma pergunta adaptativa por vez na fase de descoberta.** Na Fase 1 (5-Whys), cada pergunta depende da resposta anterior. Não há lote rígido — o agente sonda até chegar na dor raiz (máximo 3 turnos de sondagem).
 3. **Síntese confirmada, não pergunta a frio.** Visão (frase Moore), benefício e diferencial são SINTETIZADOS pelo agente com base no que o usuário disse — então CONFIRMADOS em choice/yesno. Nunca perguntar "qual o benefício?" diretamente.
-4. **Ancoragem estrita.** Toda pergunta preenche um campo do template `core/templates/01-documento-visao.md`. Se não preenche um campo, a pergunta não é feita.
+4. **Ancoragem estrita.** Toda pergunta preenche um campo do template `templates/01-documento-visao.md`. Se não preenche um campo, a pergunta não é feita.
 5. **Zero jargão.** Nunca mencionar "requisito", "visão", "produto mínimo viável", "escopo", "stakeholder" ou qualquer jargão de produto/ER (blacklist D1).
 
 <HARD-GATE>
@@ -129,7 +129,7 @@ Opções: `"Está correto"` / `"Quero ajustar"` / `"Quero explicar melhor"`
 
 ## Fase 5 — Saída
 
-Preencher as seções do template `core/templates/01-documento-visao.md`:
+Preencher as seções do template `templates/01-documento-visao.md`:
 
 **Seção `## 1. Visão`:** frase-síntese confirmada pelo usuário
 

@@ -5,7 +5,7 @@ Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 
 specs Gherkin + step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, SpecFlow).
 
 **Projeto:** TCC — Vinicius Candeia (deadline 2026-07-01)
-**Plataforma:** Claude Code (v0.8.0+)
+**Plataforma:** Claude Code (v0.13.0+)
 
 ---
 
@@ -51,25 +51,23 @@ ferramenta-tcc/
 ├── .claude-plugin/
 │   └── plugin.json        # Manifesto Claude Code
 ├── settings.json          # Entry-point Claude Code (ativa orquestrador como thread principal)
-├── agents/                # Adapters CC — thin wrappers com frontmatter
+├── agents/                # Definições de agente (orchestrator + 5 sub-agentes)
 │   └── orchestrator.md    # Agente principal (thread principal quando plugin habilitado)
-├── skills/                # CC adapters — thin wrappers sem lógica de negócio
+├── skills/                # 27 skills de elicitação e documentação
 ├── scripts/               # Hook scripts (gate_guard.sh, blacklist_guard.sh, inject_state.sh, load_state.sh)
 │   └── lib/blacklist.txt  # Blacklist D1 (jargão proibido)
-├── core/                  # Engine canônico (D12) — lógica de negócio
-│   ├── orchestrator.md    # Dispatcher central
-│   ├── constitution.md    # Guardrails imutáveis D15
-│   ├── marcos/            # Slices por marco (m1–m4)
-│   ├── workflows/         # Workflows detalhados por marco
-│   ├── catalogos-seed/    # Conhecimento destilado de domínios e requisitos típicos
-│   └── templates/         # Templates de artefatos
+├── orchestrator.md        # Dispatcher central
+├── constitution.md        # Guardrails imutáveis (D15)
+├── marcos/                # Slices por marco (m1–m4)
+├── workflows/             # Workflows detalhados por marco
+├── catalogos-seed/        # Conhecimento destilado de domínios e requisitos típicos
+├── templates/             # Templates de artefatos
 ├── references/            # Material de referência externo
 │   └── normas/            # Normas IREB, ISO/IEC/IEEE 29148
 ├── tests/                 # Casos canônicos E2E + checklists por marco
 └── CATALOGO.md            # Índice completo de agentes e skills
 ```
 
-Engine canônico em `core/` (D12). Adapters em `skills/` e `agents/` são thin wrappers sem lógica de negócio.
 `settings.json` força o orquestrador como thread principal desde o primeiro turno.
 Veja `CATALOGO.md` para o índice completo de agentes e skills.
 

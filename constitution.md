@@ -130,9 +130,9 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 
 ---
 
-## ARQUITETURA DE EXECUÇÃO (D6 revisada, D12)
+## ARQUITETURA DE EXECUÇÃO (D6 revisada)
 
-**Topologia:** 1 orquestrador + 5 sub-agentes funcionais MARE-style + ~22 skills
+**Topologia:** 1 orquestrador + 5 sub-agentes funcionais MARE-style + 27 skills
 
 | Marco | Sub-agente ativo |
 |---|---|
@@ -141,7 +141,7 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 | M3 — Detalhamento | `documenter` ⇄ `checker` (loop) |
 | M4 — Revisão Técnica (opcional) | `checker` (modo técnico) |
 
-**Engine canônico** na raiz do plugin — `skills/`, `agents/`, `hooks/` contêm lógica canônica diretamente (D12 revisada: CC-only).
+**Plataforma:** Claude Code exclusivamente (v0.13.0+). Lógica em `skills/`, `agents/`, `scripts/` na raiz do plugin — sem diretório `core/`.
 
 Sub-agentes são **apátridas entre marcos**. Estado persiste apenas via `estado-projeto.yaml` e artefatos em disco.
 
@@ -180,7 +180,7 @@ Requisitos funcionais e não-funcionais gerados pela ferramenta devem seguir:
 
 | Documento | Localização |
 |---|---|
-| 24 decisões completas (D1–D24) | `docs/planejamento/1 - Decisões Tomadas.md` |
+| 26 decisões (D1–D26) | `docs/planejamento/1 - Decisões Tomadas.md` |
 | Arquitetura completa | `docs/planejamento/3 - Arquitetura da Ferramenta.md` |
 | Cronograma | `docs/planejamento/ROADMAP.md` |
-| Catálogos seed | `core/catalogos-seed/` |
+| Catálogos seed | `catalogos-seed/` |
