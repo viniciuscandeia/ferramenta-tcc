@@ -7,6 +7,7 @@
 #
 # Protocolo Claude Code hooks: escreve para stdout (contexto adicional);
 # exit 0 = sucesso; exit 1 = aviso não-fatal; exit 2 = erro fatal (não usar aqui).
+# v0.9.0: eliminada dependência PyYAML (não distribuível); extração via grep/sed.
 
 set -euo pipefail
 
@@ -30,40 +31,46 @@ if [[ -z "$STATE_YAML" ]]; then
   exit 0
 fi
 
-# Extrair campos relevantes
-SUMMARY=$(python3 -c "
-import sys
-try:
-    import yaml
-    with open('$STATE_YAML') as f:
-        d = yaml.safe_load(f)
-    if not d:
-        sys.exit(0)
+# Extrair campos via grep/sed (sem PyYAML — não distribuível; D13)
+MARCO=$(grep -m1 -E '^[[:space:]]*marco_corrente:' "$STATE_YAML" 2>/dev/null \
+  | sed -E 's/^[[:space:]]*marco_corrente:[[:space:]]*//; s/[[:space:]]*#.*//' || true)
 
-    marco = d.get('marco_corrente', 'desconhecido')
-    gates = d.get('gate_status', {})
-    pautas = d.get('pautas_abertas', [])
-    lacunas = d.get('lacunas_m1', {})
-    artefatos = [a.get('nome','?') for a in d.get('artefatos', [])]
-    ultima = d.get('ultima_atualizacao', '?')
-
-    print(f'[RETOMADA DE PROJETO]')
-    print(f'Marco corrente: {marco}')
-    print(f'Gates: {gates}')
-    if artefatos:
-        print(f'Artefatos gerados: {artefatos}')
-    if pautas:
-        print(f'Pautas em aberto: {pautas}')
-    if lacunas:
-        print(f'Lacunas M1 pendentes: {lacunas}')
-    print(f'Última atualização: {ultima}')
-    print(f'Estado em: $STATE_YAML')
-except Exception as e:
-    sys.exit(0)
-" 2>/dev/null || true)
-
-if [[ -n "$SUMMARY" ]]; then
-  echo "$SUMMARY"
+# yaml existe mas campos ausentes / arquivo corrompido → silêncio
+if [[ -z "$MARCO" ]]; then
+  exit 0
 fi
+
+ULTIMA=$(grep -m1 -E '^[[:space:]]*ultima_atualizacao:' "$STATE_YAML" 2>/dev/null \
+  | sed -E 's/^[[:space:]]*ultima_atualizacao:[[:space:]]*//; s/[[:space:]]*#.*//; s/"//g' || true)
+
+# gates: todas as linhas "gate_N: <status>" dentro do bloco gate_status
+# tr + sed para separador consistente (BSD paste trata -d'; ' como 2 separadores alternados)
+GATES=$(grep -E '^[[:space:]]*gate_[0-9]:' "$STATE_YAML" 2>/dev/null \
+  | sed -E 's/^[[:space:]]*//' | tr '\n' '|' | sed 's/|/ | /g; s/ | $//' || true)
+
+# artefatos gerados: paths das entradas "- nome:" (até 8 para não poluir)
+ARTEFATOS=$(grep -E '^[[:space:]]*-[[:space:]]*nome:' "$STATE_YAML" 2>/dev/null \
+  | sed -E 's/^[[:space:]]*-[[:space:]]*nome:[[:space:]]*//' | head -8 \
+  | paste -sd', ' - || true)
+
+# pautas abertas: valor inline da linha pautas_abertas
+PAUTAS=$(grep -m1 -E '^[[:space:]]*pautas_abertas:' "$STATE_YAML" 2>/dev/null \
+  | sed -E 's/^[[:space:]]*pautas_abertas:[[:space:]]*//; s/[[:space:]]*#.*//' || true)
+
+# lacunas_m1.contagem (campo aninhado — extrair o primeiro "contagem:" após "lacunas_m1:")
+LACUNAS_COUNT=$(grep -A5 -m1 -E '^lacunas_m1:' "$STATE_YAML" 2>/dev/null \
+  | grep -m1 -E '[[:space:]]*contagem:' \
+  | sed -E 's/.*contagem:[[:space:]]*//' || true)
+
+{
+  echo "[RETOMADA DE PROJETO]"
+  echo "Marco corrente: $MARCO"
+  [[ -n "$GATES" ]] && echo "Gates: $GATES"
+  [[ -n "$ARTEFATOS" ]] && echo "Artefatos gerados: $ARTEFATOS"
+  [[ -n "$PAUTAS" && "$PAUTAS" != "[]" ]] && echo "Pautas em aberto: $PAUTAS"
+  [[ -n "$LACUNAS_COUNT" && "$LACUNAS_COUNT" != "0" ]] && echo "Lacunas M1 pendentes (contagem): $LACUNAS_COUNT"
+  [[ -n "$ULTIMA" ]] && echo "Última atualização: $ULTIMA"
+  echo "Estado em: $STATE_YAML"
+}
 
 exit 0

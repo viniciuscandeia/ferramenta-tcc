@@ -1,0 +1,108 @@
+# blacklist.txt — Blacklist D1: famílias de jargão ER proibido em documentos-para-leigo/
+#
+# Fonte de verdade: core/skills/traducao-leigo/SKILL.md (tabela linhas 31-52)
+# Formato: um fragmento ERE por linha; linhas com # são comentários ignorados.
+# Consumido por: grep -v '^[[:space:]]*#' blacklist.txt | grep -ioEf - arquivo.md
+#
+# Convenções de word boundary:
+#   - Termos curtos colidentes recebem \b...\b explícito
+#   - fase≠gate (gateway/fase não casam), agenda≠agente, escopo≠telescópio
+#   - Frases multi-palavra são suficientemente únicas — sem \b extra
+#   - Variantes com e sem acento incluídas (elicitação/elicitacao, etc.)
+# Risco residual: \bagentes?\b, \bskills?\b, \bartefatos?\b podem casar em
+#   prosa de domínio legítima (ex.: "agente" de seguros). O hook reporta o termo
+#   exato para julgamento humano/Claude. Mitigação futura: blacklist-allow.txt.
+
+# ── Grupo 1 — requisito funcional / RF ───────────────────────────────────────
+requisitos? funcionais?
+\bRFs?\b
+
+# ── Grupo 2 — requisito não-funcional / RNF / requisito de qualidade ─────────
+requisitos? não-funcionais?
+requisitos? nao-funcionais?
+\bRNFs?\b
+requisitos? de qualidade
+
+# ── Grupo 3 — elicitação / elicitar / levantar requisitos ────────────────────
+elicita(r|ção|cao|ndo|do)
+levantar requisitos
+
+# ── Grupo 4 — rastreabilidade ─────────────────────────────────────────────────
+rastreabilidade
+rastreável
+rastreavei
+rastrear
+
+# ── Grupo 5 — stakeholder / partes interessadas ───────────────────────────────
+\bstakeholders?\b
+partes interessadas
+
+# ── Grupo 6 — escopo ─────────────────────────────────────────────────────────
+\bescopo\b
+
+# ── Grupo 7 — iteração / sprint ───────────────────────────────────────────────
+iteraç(ão|ões)
+iteracao(es)?
+\bsprints?\b
+
+# ── Grupo 8 — backlog ─────────────────────────────────────────────────────────
+\bbacklog\b
+
+# ── Grupo 9 — caso de uso ─────────────────────────────────────────────────────
+casos? de uso
+
+# ── Grupo 10 — SRS / ERS / documento de requisitos ───────────────────────────
+\bSRS\b
+\bERS\b
+documento de requisitos
+
+# ── Grupo 11 — marco (sentido ER / fase) ─────────────────────────────────────
+\bmarcos?\b
+
+# ── Grupo 12 — agente / sub-agente (ferramenta interna) ──────────────────────
+\bsub-?agentes?\b
+\bagentes?\b
+
+# ── Grupo 13 — skill ─────────────────────────────────────────────────────────
+\bskills?\b
+
+# ── Grupo 14 — persona ───────────────────────────────────────────────────────
+\bpersonas?\b
+
+# ── Grupo 15 — jornada do usuário ────────────────────────────────────────────
+jornada do usuário
+jornada do usuario
+
+# ── Grupo 16 — priorização / MoSCoW / Kano / IEEE ────────────────────────────
+prioriza(ção|cao|r|ndo)
+\bMoSCoW\b
+\bKano\b
+\bIEEE\b
+
+# ── Grupo 17 — baseline ───────────────────────────────────────────────────────
+\bbaselines?\b
+
+# ── Grupo 18 — gate / aprovação de gate ──────────────────────────────────────
+\bgates?\b
+aprovação de gate
+aprovacao de gate
+
+# ── Grupo 19 — EARS / RFC 2119 / MUST / SHALL / SHOULD ───────────────────────
+\bEARS\b
+RFC ?2119
+\bMUST\b
+\bSHALL\b
+\bSHOULD\b
+
+# ── Grupo 20 — Gherkin / BDD / feature file / step definition ────────────────
+\bGherkin\b
+\bBDD\b
+feature file
+step definition
+
+# ── Grupo 21 — artefato ───────────────────────────────────────────────────────
+\bartefatos?\b
+
+# ── Grupo 22 — fluxo de trabalho / workflow ───────────────────────────────────
+fluxo de trabalho
+\bworkflows?\b

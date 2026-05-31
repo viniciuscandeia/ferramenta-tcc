@@ -6,6 +6,8 @@
 #
 # Para desabilitar em sessões de debug:
 #   export CLAUDE_HOOKS_DISABLED=1
+#
+# v0.9.0: eliminada dependência PyYAML (não distribuível); extração via grep/sed.
 
 set -euo pipefail
 
@@ -58,17 +60,9 @@ if [[ -z "$STATE_YAML" ]]; then
   exit 0
 fi
 
-# Ler marco_corrente
-MARCO=$(python3 -c "
-import sys
-try:
-    import yaml
-    with open('$STATE_YAML') as f:
-        d = yaml.safe_load(f)
-    print(d.get('marco_corrente',''))
-except Exception:
-    print('')
-" 2>/dev/null || true)
+# Ler marco_corrente via grep/sed (sem PyYAML — não distribuível)
+MARCO=$(grep -m1 -E '^[[:space:]]*marco_corrente:' "$STATE_YAML" 2>/dev/null \
+  | sed -E 's/^[[:space:]]*marco_corrente:[[:space:]]*//; s/[[:space:]]*#.*//' || true)
 
 if [[ -z "$MARCO" ]]; then
   exit 0
@@ -80,11 +74,12 @@ fi
 #     documentos-tecnicos/04-spec/, documentos-tecnicos/05-tests/, documentos-tecnicos/04-revisao/
 # ──────────────────────────────────────────────
 if [[ "$MARCO" == "M1" || "$MARCO" == "M2" ]]; then
+  # Paths canônicos confirmados por orchestrator.md:44-45 e core/marcos/m3.md.
+  # 03-documento casa por substring com 03-documento/04-spec e 03-documento/05-tests.
+  # 04-revisao (M4) vive diretamente em documentos-tecnicos/04-revisao (não aninhado).
   M3_PATHS=(
     "documentos-tecnicos/03-documento"
     "documentos-para-leigo/03-documento"
-    "documentos-tecnicos/04-spec"
-    "documentos-tecnicos/05-tests"
     "documentos-tecnicos/04-revisao"
   )
   for M3_PATH in "${M3_PATHS[@]}"; do
@@ -157,16 +152,9 @@ if [[ "$BASENAME" == "estado-projeto.yaml" ]]; then
 
     PROJETO_DIR=""
     if [[ -n "$CURRENT_STATE" ]]; then
-      PROJETO_DIR=$(python3 -c "
-import sys
-try:
-    import yaml
-    with open('$CURRENT_STATE') as f:
-        d = yaml.safe_load(f)
-    print(d.get('projeto_dir',''))
-except Exception:
-    print('')
-" 2>/dev/null || true)
+      # Extrair projeto_dir via grep/sed (sem PyYAML — não distribuível)
+      PROJETO_DIR=$(grep -m1 -E '^[[:space:]]*projeto_dir:' "$CURRENT_STATE" 2>/dev/null \
+        | sed -E 's/^[[:space:]]*projeto_dir:[[:space:]]*//; s/[[:space:]]*#.*//' || true)
     fi
 
     # Fallback: usar diretório onde está o estado-projeto.yaml
@@ -198,11 +186,20 @@ except Exception:
         done
       fi
 
-      # Verificar blacklist D1 no artefato leigo
+      # Verificar blacklist D1 completa no artefato leigo (22 famílias via shared lib)
       if [[ -f "$LEIGO_FILE" ]]; then
-        BLACKLIST_HITS=$(grep -iE "requisito funcional|stakeholder|elicitação|\bescopo\b|\bgate [0-9]\b|EARS\b|Gherkin|MoSCoW|\bsprint\b|\bbacklog\b" "$LEIGO_FILE" 2>/dev/null | head -3 || true)
+        BLACKLIST="${CLAUDE_PLUGIN_ROOT:-}/hooks/lib/blacklist.txt"
+        if [[ -f "$BLACKLIST" ]]; then
+          # Process substitution evita consumir stdin (já lido por `cat` no topo do script)
+          # grep -Ev filtra comentários E linhas em branco (BSD grep falha com pattern vazio)
+          BLACKLIST_HITS=$(grep -ioEf <(grep -Ev '^[[:space:]]*(#|$)' "$BLACKLIST") \
+            "$LEIGO_FILE" 2>/dev/null | sort -u | head -3 || true)
+        else
+          # Lib ausente: fallback para regex parcial legada (9 famílias)
+          BLACKLIST_HITS=$(grep -iE "requisito funcional|stakeholder|elicitação|\bescopo\b|\bgate [0-9]\b|EARS\b|Gherkin|MoSCoW|\bsprint\b|\bbacklog\b" "$LEIGO_FILE" 2>/dev/null | head -3 || true)
+        fi
         if [[ -n "$BLACKLIST_HITS" ]]; then
-          GATE1_ERRORS+=("BLACKLIST_D1: versão leigo contém jargão proibido — aplicar traducao-leigo antes de aprovar")
+          GATE1_ERRORS+=("BLACKLIST_D1: versão leigo contém jargão proibido (${BLACKLIST_HITS//$'\n'/, }) — aplicar traducao-leigo antes de aprovar")
         fi
       fi
 
