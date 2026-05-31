@@ -199,7 +199,7 @@
 
 **Arquivo:** `skills/entrevista-estruturada/SKILL.md`
 
-**Descrição:** Conduz entrevista estruturada com o usuário leigo usando 4 perguntas-âncora adaptadas do material Dani (ERS n10) e IREB §4.2. Coleta rotina, frustrações, visão ideal e restrições percebidas. Saída: seção de elicitacao-raw.md.
+**Descrição:** Conduz entrevista estruturada com o usuário leigo usando 4 perguntas-âncora baseadas em IREB §4.2 (entrevistas) e Pohl, K. "Requirements Engineering" (2010) §22. Coleta rotina, frustrações, visão ideal e restrições percebidas. Saída: seção de elicitacao-raw.md.
 
 **Quando usar:** Invocada pelo collector na Ronda 1 da Fase A (sempre) ou na Fase B quando skill-alvo de uma pauta. Única chamada AskUserQuestion com exatamente 4 perguntas (ou menos se foco em pauta específica).
 
@@ -209,7 +209,7 @@
 
 **Arquivo:** `skills/cenario-narrativa/SKILL.md`
 
-**Descrição:** Solicita ao usuário 1–2 cenários narrativos "um dia normal de [perfil]" e extrai RFs candidatos implícitos do texto. Baseado no material Dani n08 (cenários como técnica de elicitação). Saída: cenários + RFs candidatos em elicitacao-raw.md.
+**Descrição:** Solicita ao usuário 1–2 cenários narrativos "um dia normal de [perfil]" e extrai RFs candidatos implícitos do texto. Baseado em IREB §4.3 (cenários como técnica de elicitação) e Robertson & Robertson "Mastering the Requirements Process" 3rd ed. (2012) cap. 9. Saída: cenários + RFs candidatos em elicitacao-raw.md.
 
 **Quando usar:** Invocada pelo collector na Ronda 2 da Fase A. Sempre executar após entrevista-estruturada. Única chamada AskUserQuestion com 1–2 perguntas de texto livre.
 

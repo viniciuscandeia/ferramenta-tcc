@@ -1,7 +1,7 @@
 # Catálogo: Requisitos Não-Funcionais Típicos
 
 Usado pelo sub-agente **Implícitos** para identificar RNFs que o usuário não mencionou.
-Baseado em FURPS+ (Grady, 1992) e ISO/IEC 25010 (Livro SON cap. 5) + categorias do Material Dani (`seminario requisitos nao funcionais.md` e `requisitos_de_usabilidade-1.md`).
+Baseado em FURPS+ (Grady, 1992), ISO/IEC 25010:2023 e Nielsen, J. "Usability Engineering" (1993) Morgan Kaufmann (Livro SON cap. 5 como referência complementar).
 
 Critérios de qualidade do IREB §3.8 para verificar RNFs: Adequado, Necessário, Sem ambiguidade, Completo, Compreensível, Verificável.
 Referência normativa IREB: `normas/cpre_foundationlevel_handbook_BR_v1.2.md` §3.8.
@@ -57,7 +57,7 @@ Todo RNF deve ser **verificável** — "deve ser rápido" não é RNF válido; "
 ## Usabilidade (Usability)
 
 Baseado nas 5 dimensões de Nielsen: aprendizado, eficiência, memorização, erros, satisfação.
-Fonte: Material Dani `requisitos_de_usabilidade-1.md`.
+Fonte: Nielsen, J. "Usability Engineering" (1993), Morgan Kaufmann/AP Professional. Cap. 2 (5 usability attributes).
 
 **Quando está presente:** sistemas usados por leigos ou com alta frequência de uso.
 

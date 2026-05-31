@@ -3,7 +3,7 @@
 Usado pelo sub-agente **Implícitos** para identificar RFs que o usuário não mencionou.
 Organizado por categoria funcional. Quase todos os sistemas digitais precisam das categorias marcadas com ⭐.
 
-Fonte: Livro SON cap. 7 (técnicas de elicitação), Livro 1 cap. 1-3, Material Dani (`ers-n10`, exemplos SRS).
+Fonte: Livro SON cap. 7 (técnicas de elicitação), Livro 1 cap. 1-3, Wiegers, K. & Beatty, J. "Software Requirements" 3rd ed. (2013) Microsoft Press, Robertson, J. & Robertson, S. "Mastering the Requirements Process" 3rd ed. (2012) Addison-Wesley (Volere template §8–9).
 
 ---
 

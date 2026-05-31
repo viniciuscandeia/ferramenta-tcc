@@ -3,7 +3,7 @@
 Usado pelo sub-agente **Recomendação** para sugerir requisitos específicos do domínio educacional.
 Inclui: plataformas de ensino (EAD, LMS), sistemas de gestão escolar/universitária, apps de tutoria, plataformas de cursos.
 
-Fonte: Material Dani (exemplos SRS: app de cursos UFPB, apps estudantis), Livro 1 (cenários de uso).
+Fonte: IMS Global Learning Consortium "Learning Management Systems Interoperability" (2020) imsglobal.org; ISO/IEC 19796-1:2005 "IT — Learning, education and training — Quality management"; sistematizado por análise de domínio de plataformas LMS (Moodle, Canvas, Blackboard). Livro 1 (cenários de uso).
 
 ---
 

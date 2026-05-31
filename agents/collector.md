@@ -127,7 +127,7 @@ Para cada pauta `[ ]` em `documentos-tecnicos/02-requisitos/02.6-pautas-reelicit
 | Skill | Tópico | Quando | Referência |
 |---|---|---|---|
 | `entrevista-estruturada` | entrevista | Sempre | IREB §4.2 + 4 perguntas-âncora |
-| `cenario-narrativa` | cenarios | Sempre | Material Dani n08 |
+| `cenario-narrativa` | cenarios | Sempre | IREB §4.3 + Robertson & Robertson (2012) cap. 9 |
 | `recomendacao-dominio` | dominio | Sempre | `content/catalogos-seed/dominios/` |
 | `recomendacao-implicitos` | implicitos | Sempre | `content/catalogos-seed/rfs-tipicos.md` + `rnfs-tipicos.md` |
 | `questionario-feixe` | feixe | Condicional: ≥ 3 áreas vagas (modeler decide) | — |
