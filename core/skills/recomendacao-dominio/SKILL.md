@@ -66,7 +66,7 @@ Se confirmado: usar catálogo do domínio. Se negado: usar catálogo genérico (
 | Seção do catálogo | Pergunta |
 |---|---|
 | Stakeholders típicos | "Além de [usuários já identificados], existem outros perfis? (Ex: [exemplos do catálogo])" |
-| Funcionalidades típicas | "Quais dessas funcionalidades comuns fazem sentido para o seu produto? [choice 3-4 opções, `multiSelect: true`]" — Gemini CLI (workaround — sem multiSelect nativo): emitir N campos yesno em lote, um por opção. |
+| Funcionalidades típicas | "Quais dessas funcionalidades comuns fazem sentido para o seu produto? [choice 3-4 opções, `multiSelect: true`]" |
 | RNFs típicos | "Há requisitos de [desempenho/segurança/privacidade] que precisa cumprir? (Ex: [exemplos])" |
 | Restrições típicas | "Há lei, regulação ou padrão que o produto precisa seguir? (Ex: [exemplos do domínio])" |
 

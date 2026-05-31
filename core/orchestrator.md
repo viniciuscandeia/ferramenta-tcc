@@ -96,9 +96,7 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
 
-**Claude Code:** orquestrador assume persona do sub-agente indicado e executa as skills do marco diretamente no main context (D25). Não usar Agent tool — `AskUserQuestion` não está disponível em sub-agentes Claude Code (bug [#12890](https://github.com/anthropics/claude-code/issues/12890), [#34592](https://github.com/anthropics/claude-code/issues/34592), marcado "not planned"). Ler `{PLUGIN_ROOT}/core/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline.
-
-**Gemini CLI:** adotar persona do sub-agente no mesmo contexto; carregar workflow e slice do marco como instruções adicionais. Executar a **Sequência canônica** (M1/M4) ou o **Loop fallback single-session** (M2/M3) definidos em `core/marcos/{marco_corrente}.md`, chamando cada skill por nome explícito ("Use skill `<nome>` agora") em vez de aguardar auto-invocação por description-matching ([issue #21968](https://github.com/google-gemini/gemini-cli/issues/21968)).
+Ler `{PLUGIN_ROOT}/core/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline no main context (D25 — sem Agent/Task() tool).
 
 ---
 

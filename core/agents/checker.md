@@ -1,4 +1,4 @@
-> **Nota Claude Code (D25):** No Claude Code v2.0.56+, este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool. No Gemini CLI, funciona como persona adoption.
+> **Nota D25:** Este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool.
 
 # checker — Sub-agente M3 + M4
 
@@ -128,11 +128,6 @@ Executar na ordem:
 | `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` | M4 (stub) | Registro formal de aprovação do tech lead | Gate 4 aprovado |
 
 ---
-
-## COMPATIBILIDADE DE PLATAFORMA
-
-**Claude Code:** carregado como contexto de persona pelo orquestrador (inline, sem Task()). Orquestrador lê `core/agents/checker.md` e executa validação M3 (Fase B) ou revisão M4 diretamente no main context.
-**Gemini CLI:** persona adoption no mesmo contexto. Carregar `m3-srs-specs-tests.md` seção Fase B como instruções adicionais.
 
 O checker **não interage com o usuário no Modo M3** — toda interação humana passa pelo orquestrador.
 No Modo M4, o checker interage diretamente com o tech lead via 1 pergunta `AskUserQuestion` (yesno).

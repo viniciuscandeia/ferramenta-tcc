@@ -60,7 +60,6 @@ Destas funcionalidades que ainda não mencionamos, quais fariam sentido para o s
 (D) Nenhuma dessas por enquanto
 ```
 `multiSelect: true` — usuário pode confirmar múltiplos implícitos de uma vez.
-Gemini CLI (workaround — sem multiSelect nativo): emitir N campos yesno em lote, um por opção.
 
 ## Fase 3 — Coleta
 

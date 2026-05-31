@@ -72,17 +72,17 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 
 ## REGRAS DE INTERAÇÃO (D14)
 
-- **Batching obrigatório:** coletar TODAS as perguntas de uma sub-fase antes de invocar `ask_user` / `AskUserQuestion`
+- **Batching obrigatório:** coletar TODAS as perguntas de uma sub-fase antes de invocar `AskUserQuestion`
 - **Máximo 4 perguntas por chamada** — restrição da primitiva
-- **Proibido:** invocar `ask_user` individualmente por gap detectado
-- **Tool call estruturado obrigatório:** perguntas devem ser invocadas via `ask_user`/`AskUserQuestion` como TOOL CALL com campos separados. NUNCA escrever perguntas como prosa no chat. NUNCA encadear múltiplas perguntas numa única frase como "X e também Y, e Z?".
+- **Proibido:** invocar `AskUserQuestion` individualmente por gap detectado
+- **Tool call estruturado obrigatório:** perguntas devem ser invocadas via `AskUserQuestion` como TOOL CALL com campos separados. NUNCA escrever perguntas como prosa no chat. NUNCA encadear múltiplas perguntas numa única frase como "X e também Y, e Z?".
 - **Tipos permitidos:** `choice`, `multi-choice`, `text`, `yesno`
   - `choice` — seleção única, opções mutuamente exclusivas
-  - `multi-choice` → Claude Code: `AskUserQuestion` com `multiSelect: true` | Gemini CLI: emitir N campos `yesno` em uma única chamada `ask_user` em lote, um campo por opção (workaround — [bug #21968](https://github.com/google-gemini/gemini-cli/issues/21968)). O agente emite a pergunta multi-choice normalmente; a adaptação de plataforma é explicitada aqui.
+  - `multi-choice` → `AskUserQuestion` com `multiSelect: true`
   - `text` — texto livre
   - `yesno` — decisão binária; obrigatório para gates
   - Usar `multi-choice` quando a resposta natural é uma combinação (benefícios, perfis, funcionalidades). Manter `choice` para opções mutuamente exclusivas. Manter `yesno` para gates e decisões binárias.
-- **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `ask_user`/`AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
+- **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
 
 ---
 
@@ -141,22 +141,9 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 | M3 — Detalhamento | `documenter` ⇄ `checker` (loop) |
 | M4 — Revisão Técnica (opcional) | `checker` (modo técnico) |
 
-**Engine canônico** em `core/` — adapters `.claude/` e `.gemini/` mapeiam primitivas sem redefinir comportamento (D12).
+**Engine canônico** em `core/` — adapters em `skills/`, `agents/`, `hooks/` mapeiam primitivas sem redefinir comportamento (D12).
 
 Sub-agentes são **apátridas entre marcos**. Estado persiste apenas via `estado-projeto.yaml` e artefatos em disco.
-
----
-
-## MODOS DE GARANTIA POR PLATAFORMA
-
-| Garantia | Gemini CLI | Claude Code (D11, futuro) |
-|---|---|---|
-| Skills invocadas deterministicamente | ⚠ best-effort via Sequência canônica (C1) | ✓ |
-| Loops M2/M3 iteram | ⚠ via fallback single-session (C2) | ✓ |
-| Validação fail-closed de artefatos | ✓ (C4.5) | ✓ + hooks externos |
-| `estado-projeto.yaml` consistente | ⚠ best-effort | ✓ (SessionStart hook) |
-
-Enquanto issue [google-gemini/gemini-cli#21968](https://github.com/google-gemini/gemini-cli/issues/21968) estiver aberto, execuções no Gemini CLI são tratadas como "best-effort" — o orquestrador chama cada skill por nome explícito (C1) e os loops M2/M3 executam em fallback single-session (C2). Validação fail-closed C4.5 em cada gate garante que nenhum gate fecha com artefato obrigatório ausente.
 
 ---
 

@@ -23,8 +23,6 @@ Invocar `AskUserQuestion` com multi-choice:
 - Opção 3: label `"Posso editar as respostas depois?"`, description `"Não preciso acertar tudo agora?"`
 - Opção 4: label `"Quem vai ver o que eu responder?"`, description `"Questões sobre privacidade das informações"`
 
-Gemini CLI (workaround — sem multiSelect nativo): emitir as 4 perguntas como campos yesno agrupados em uma única chamada `ask_user` em lote, uma por opção.
-
 ## Fase 2 — Responder dúvidas selecionadas
 
 Para cada opção marcada, exibir a resposta correspondente **em uma única mensagem**, sem repetir as perguntas:

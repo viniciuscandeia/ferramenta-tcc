@@ -68,7 +68,7 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 | Campo | Valor |
 |---|---|
 | Caso executado | `caso-N-<descritor>` |
-| Plataforma | Gemini CLI / Claude Code |
+| Plataforma | Claude Code |
 | Data | AAAA-MM-DD |
 | Executado por | |
 | Resultado | PASSOU / FALHOU |

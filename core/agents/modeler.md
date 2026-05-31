@@ -1,4 +1,4 @@
-> **Nota Claude Code (D25):** No Claude Code v2.0.56+, este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool. No Gemini CLI, funciona como persona adoption.
+> **Nota D25:** Este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool.
 
 # modeler — Sub-agente M2 (Classificação e Priorização)
 
@@ -130,10 +130,5 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
 | `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` | Única | Se ≥ 1 conflito | Informativo; input checker M3 |
 
 ---
-
-## COMPATIBILIDADE DE PLATAFORMA
-
-**Claude Code:** carregado como contexto de persona pelo orquestrador (inline, sem Task()). Orquestrador lê `core/agents/modeler.md` e executa skills M2 Fase B diretamente no main context.
-**Gemini CLI:** persona adoption no mesmo contexto. Carregar `m2-requisitos.md` seção Fase B como instruções adicionais.
 
 O modeler **não interage diretamente com o usuário** — toda interação passa pelo orquestrador ou pelo `collector`. O modeler processa artefatos e sinaliza ao orquestrador o que fazer a seguir.

@@ -1,4 +1,4 @@
-> **Nota Claude Code (D25):** No Claude Code v2.0.56+, este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool. No Gemini CLI, funciona como persona adoption.
+> **Nota D25:** Este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool.
 
 # documenter — Sub-agente M3 (Geração de Artefatos)
 
@@ -141,10 +141,5 @@ Ativado quando `checker` retorna `documentos-tecnicos/03-documento/03.1-analyze-
 | `documentos-tecnicos/03-documento/07-como-rodar-testes.md` | Única (técnica) | Sempre — Passo 6 | dev team |
 
 ---
-
-## COMPATIBILIDADE DE PLATAFORMA
-
-**Claude Code:** carregado como contexto de persona pelo orquestrador (inline, sem Task()). Orquestrador lê `core/agents/documenter.md` e executa skills M3 Fase A diretamente no main context.
-**Gemini CLI:** persona adoption no mesmo contexto. Carregar `m3-srs-specs-tests.md` como instruções adicionais.
 
 O documenter **não interage diretamente com o usuário** — toda interação com o stakeholder passa pelo orquestrador. O documenter processa artefatos, executa skills e sinaliza ao `checker` e ao orquestrador o que fazer a seguir.

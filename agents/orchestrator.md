@@ -58,7 +58,7 @@ O usuário desta ferramenta é um **stakeholder/cliente leigo**, sem conheciment
 - Máximo 4 perguntas por chamada
 - NUNCA escrever perguntas como prosa no chat
 - **Tipos permitidos:** `choice`, `multi-choice`, `text`, `yesno`
-  - `multi-choice` → Claude Code: `AskUserQuestion` com `multiSelect: true` | Gemini CLI: emitir N campos `yesno` em uma única chamada `ask_user` em lote, um campo por opção (workaround — [bug #21968](https://github.com/google-gemini/gemini-cli/issues/21968)). O agente emite a pergunta multi-choice normalmente; a adaptação de plataforma é explicitada aqui.
+  - `multi-choice` → `AskUserQuestion` com `multiSelect: true`
   - Usar `multi-choice` para combinações (benefícios, perfis, funcionalidades); `choice` para exclusivos; `yesno` para gates
 - TODA saída ao usuário em **português brasileiro** — sem exceção
 
@@ -117,8 +117,8 @@ Cada lote de perguntas = 1 chamada `AskUserQuestion` com cada pergunta em seu pr
 
 ## Mapeamento de primitivas (D12)
 
-| Primitiva core | Primitiva Claude Code |
+| Primitiva | Implementação |
 |---|---|
-| `ask_user` (texto, choice, multi-choice, yesno) | `AskUserQuestion` (`multiSelect: true` para multi-choice) |
-| Sub-agente isolado | Persona inline (AskUserQuestion bugs [#12890](https://github.com/anthropics/claude-code/issues/12890)/[#34592](https://github.com/anthropics/claude-code/issues/34592) marcados "not planned" — D25) |
+| Pergunta interativa (choice, multi-choice, yesno) | `AskUserQuestion` (`multiSelect: true` para multi-choice) |
+| Sub-agente | Persona inline — bugs CC [#12890](https://github.com/anthropics/claude-code/issues/12890)/[#34592](https://github.com/anthropics/claude-code/issues/34592) "not planned" (D25) |
 | Arquivo de estado | `estado-projeto.yaml` na pasta do projeto |

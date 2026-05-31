@@ -406,6 +406,6 @@
 | Ver uma técnica específica de ER | Seção "Skills" acima ou `core/skills/<nome>/SKILL.md` |
 | Canon teórico (decisões D1–D24, arquitetura) | `docs/planejamento/3 - Arquitetura da Ferramenta.md` |
 | Guardrails e blacklist de jargão | `core/constitution.md` |
-| Adapters para Gemini CLI / Claude Code | `ferramenta-tcc/.gemini/` e `ferramenta-tcc/.claude/` |
+| Adapters Claude Code (CC) | `ferramenta-tcc/skills/`, `ferramenta-tcc/agents/`, `ferramenta-tcc/hooks/` |
 | Catálogos seed (stakeholders, RFs, domínios) | `ferramenta-tcc/catalogos-seed/` |
 | Testes E2E (casos + checklist por marco) | `ferramenta-tcc/tests/marco-{1,2,3}/` |
