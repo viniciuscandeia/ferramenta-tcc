@@ -10,15 +10,16 @@
 
 ## RESPONSABILIDADE
 
-Processar os artefatos de M1 e M2 e gerar os 5 conjuntos de outputs finais da ferramenta:
+Processar os artefatos de M1 e M2 e gerar os outputs finais da ferramenta:
 
 1. `documentos-tecnicos/03-documento/03-srs-completo.md` — documento de requisitos no padrão IREB §3.3.3 (ISO/IEC/IEEE 29148)
 2. `documentos-para-leigo/03-documento/03-documento-do-projeto.md` — versão em linguagem acessível para aprovação no Gate 3
 3. `documentos-tecnicos/03-documento/04-spec/*.feature` — cenários Gherkin para cada RF com modal `DEVE` (D20, D22)
 4. `documentos-tecnicos/03-documento/04-spec/_skipped.md` — registro de RFs não-cobertos por Gherkin (modal `DEVERIA`/`PODE`)
-5. `documentos-tecnicos/03-documento/05-tests/unit/` + `documentos-tecnicos/03-documento/05-tests/acceptance/` — step definitions em estado RED para 3 frameworks (D20)
-6. `documentos-tecnicos/03-documento/06-estrategia-testes.md` — estratégia de teste por RNF (D21)
-7. `documentos-tecnicos/03-documento/07-como-rodar-testes.md` — instruções de execução para os 3 frameworks (D23)
+5. `documentos-tecnicos/03-documento/03.3-diagramas.md` — diagramas Mermaid cobrindo as 3 perspectivas IREB + contexto + caso de uso
+6. `documentos-tecnicos/03-documento/05-tests/unit/` + `documentos-tecnicos/03-documento/05-tests/acceptance/` — step definitions em estado RED para 3 frameworks (D20)
+7. `documentos-tecnicos/03-documento/06-estrategia-testes.md` — estratégia de teste por RNF (D21)
+8. `documentos-tecnicos/03-documento/07-como-rodar-testes.md` — instruções de execução para os 3 frameworks (D23)
 
 Após geração completa, sinalizar `checker` para validação. Em caso de issues CRITICAL, corrigir os artefatos afetados e repetir o loop sem interação com o usuário.
 
@@ -61,6 +62,20 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Para cada RF `DEVE`: criar `documentos-tecnicos/03-documento/04-spec/<id-rf>-<slug>.feature` com Feature + Scenarios (cobertura adequada; usar `Background`, `Scenario Outline + Examples`, `Rule:`, `@tags` quando aplicável — sem teto de Scenarios)
 - Gerar `documentos-tecnicos/03-documento/04-spec/_skipped.md` com todos os RFs de modal `DEVERIA`/`PODE`
 
+**Passo 3.5 — modelagem-visual**
+- Invocar 'modelagem-visual'
+- Input: `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.5-glossario.md` + `documentos-tecnicos/03-documento/04-spec/*.feature`
+- Gerar `documentos-tecnicos/03-documento/03.3-diagramas.md` com 5 tipos de diagrama Mermaid:
+  - §1 Contexto de sistema (obrigatório)
+  - §2 Caso de uso — mapa de funcionalidades (obrigatório)
+  - §3 Fluxo/atividade do caminho principal (obrigatório)
+  - §4 ER — estrutura de dados (técnico; omitir se glossário < 3 entidades)
+  - §5 Estados — ciclo de vida (técnico; condicional — só se ciclo de vida identificado)
+- O arquivo contém também o subconjunto leigo-safe (§§1–3 com rótulos em linguagem
+  de negócio) delimitado por `<!-- LEIGO-SAFE-START -->` / `<!-- LEIGO-SAFE-END -->`,
+  consumido pelo Passo 7 (`traducao-gate`)
+- Se falhar: registrar em `_pendencias.md` e prosseguir sem bloquear gate
+
 **Passo 4 — step-defs-red**
 - Invocar 'step-defs-red'
 - Input: `documentos-tecnicos/03-documento/04-spec/*.feature` gerados no Passo 3
@@ -85,6 +100,9 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 **Passo 7 — traducao-gate** (último passo antes de sinalizar checker)
 - Invocar 'traducao-gate'
 - Input: `documentos-tecnicos/03-documento/03-srs-completo.md` (normativo, gerado no Passo 2)
+- Se `documentos-tecnicos/03-documento/03.3-diagramas.md` existir: ler o bloco
+  `<!-- LEIGO-SAFE-START -->` / `<!-- LEIGO-SAFE-END -->` e embutir como seção
+  "Como o sistema funciona visualmente" no doc leigo (ver `skills/traducao-gate/SKILL.md`)
 - Gerar `documentos-para-leigo/03-documento/03-documento-do-projeto.md`: mesma estrutura, linguagem acessível ao stakeholder leigo
 - Aplicar lista-negra de jargão de ER (conforme `content/constitution.md`)
 - Atualizar `estado-projeto.yaml` com os artefatos gerados
@@ -120,10 +138,11 @@ Ativado quando `checker` retorna `documentos-tecnicos/03-documento/03.1-analyze-
 | `requisito-ears` | Sempre — Passo 1 | D8; EARS 5 padrões; RFC 2119 |
 | `srs-ireb-template` | Sempre — Passo 2 (depende do Passo 1) | IREB §3.3.3; ISO/IEC/IEEE 29148 |
 | `gherkin-spec` | Sempre — Passo 3 (depende do Passo 2) | D20, D22; RFC 2119 filtro DEVE |
+| `modelagem-visual` | Sempre — Passo 3.5 (depende do Passo 3) | IREB 3 perspectivas + ISO 29148 contexto/casos de uso; Mermaid |
 | `step-defs-red` | Sempre — Passo 4 (depende do Passo 3) | D20; 3 frameworks: Pytest-BDD / Cucumber-js / SpecFlow |
 | `testing-strategy` | Sempre — Passo 5 | D21; Wiegers Ch7 (9 buckets RNF) |
 | `readme-tests` | Sempre — Passo 6 (depende do Passo 5) | D23 |
-| `traducao-gate` | Sempre — Passo 7 (último antes do checker) | D18; lista-negra jargão ER |
+| `traducao-gate` | Sempre — Passo 7 (último antes do checker) | D18; lista-negra jargão ER; embutir leigo-safe de 03.3-diagramas.md |
 | `traducao-leigo` | Transversal — antes de qualquer texto ao usuário | D19 |
 
 ---
@@ -136,6 +155,7 @@ Ativado quando `checker` retorna `documentos-tecnicos/03-documento/03.1-analyze-
 | `documentos-para-leigo/03-documento/03-documento-do-projeto.md` | Leigo | Sempre — Passo 7 | Gate 3 (aprovação leigo) |
 | `documentos-tecnicos/03-documento/04-spec/*.feature` | Única (técnica) | Por RF com modal DEVE — Passo 3 | `checker` M4, repositório |
 | `documentos-tecnicos/03-documento/04-spec/_skipped.md` | Única (técnica) | Sempre — Passo 3 | Transparência — RFs não-DEVE |
+| `documentos-tecnicos/03-documento/03.3-diagramas.md` | Técnica + leigo-safe | Sempre — Passo 3.5 | Equipe técnica; `traducao-gate` (seção leigo) |
 | `documentos-tecnicos/03-documento/05-tests/unit/` + `documentos-tecnicos/03-documento/05-tests/acceptance/` | Única (RED) | Sempre — Passo 4 | `checker` M4, dev team |
 | `documentos-tecnicos/03-documento/06-estrategia-testes.md` | Única (técnica) | Sempre — Passo 5 | `checker` M4 |
 | `documentos-tecnicos/03-documento/07-como-rodar-testes.md` | Única (técnica) | Sempre — Passo 6 | dev team |

@@ -54,7 +54,7 @@ Transformar conteúdo normativo em linguagem de negócio. A versão leigo tem es
 |---|---|---|
 | M1 | Documento de Visão: frase-síntese + problema/necessidade + metas/KPIs + stakeholders (Onion) + contexto/limites + premissas | Resumo em prosa: "Seu projeto é X, resolve o problema Y, as pessoas envolvidas são Z, o objetivo é A..." |
 | M2 | Listas RF/RNF com EARS + MoSCoW + glossário técnico | Listas em linguagem de negócio: "O produto vai fazer... / O produto precisa funcionar..." |
-| M3 | SRS completo IREB §3.3.3 com 6 seções | Resumo executivo com destaques por seção, sem siglas ou sintaxe |
+| M3 | SRS completo IREB §3.3.3 com 6 seções + diagramas técnicos (`03.3-diagramas.md`) | Resumo executivo com destaques por seção, sem siglas ou sintaxe + 3 diagramas Mermaid leigo-safe |
 
 **Regras de transformação:**
 - Remover toda sintaxe EARS/RFC 2119 (DEVE/DEVERIA/PODE → linguagem natural)
@@ -106,6 +106,23 @@ Salvar ambas as versões no subdiretório do marco correspondente:
 | M1 | `documentos-tecnicos/01-visao/01-visao-produto.md` | `documentos-para-leigo/01-visao/01-visao-produto.md` |
 | M2 | `documentos-tecnicos/02-requisitos/<nome>.md` | `documentos-para-leigo/02-requisitos/<nome>.md` |
 | M3 | `documentos-tecnicos/03-documento/03-srs-completo.md` | `documentos-para-leigo/03-documento/03-documento-do-projeto.md` |
+
+**M3 — Inclusão de diagramas leigo-safe (Fase 2.5):**
+Após gerar o resumo executivo do SRS (M3), antes de aplicar `traducao-leigo`:
+1. Verificar se `documentos-tecnicos/03-documento/03.3-diagramas.md` existe
+2. Se sim: extrair o bloco entre `<!-- LEIGO-SAFE-START -->` e `<!-- LEIGO-SAFE-END -->`
+3. Inserir o bloco extraído no doc leigo como nova seção, após o resumo executivo:
+   ```markdown
+   ## Como o sistema funciona visualmente
+
+   > Os diagramas abaixo mostram como o sistema se encaixa no seu dia a dia.
+   > Eles foram gerados automaticamente a partir das informações que você forneceu.
+
+   [conteúdo leigo-safe aqui]
+   ```
+4. Aplicar `traducao-leigo` sobre os **rótulos de nós** dos blocos Mermaid extraídos
+   (não só sobre o texto narrativo) — a blacklist D1 vale dentro dos diagramas também
+5. Se o arquivo `03.3-diagramas.md` não existir → omitir a seção sem erro
 
 - Versão normativa — pronto para equipe técnica
 - Versão leigo — pronto para apresentar ao usuário no gate
