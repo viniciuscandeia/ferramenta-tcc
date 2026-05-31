@@ -2,7 +2,7 @@
 
 **Engine:** 1 orquestrador + 5 sub-agentes + 26 skills + 3 workflows  
 **Canon arquitetural:** `docs/planejamento/3 - Arquitetura da Ferramenta.md`  
-**Constituição (guardrails runtime):** `core/constitution.md`
+**Constituição (guardrails runtime):** `constitution.md`
 
 ---
 
@@ -21,10 +21,10 @@
 
 ## Orquestrador
 
-**Arquivo:** `core/orchestrator.md`
+**Arquivo:** `orchestrator.md`
 
 **Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-projeto`.  
-**Responsabilidades:** Ler `core/constitution.md` + `estado-projeto.yaml`, rotear para o sub-agente do marco corrente, gerenciar 4 gates, acionar detection-based recovery (D10) se `estado-projeto.yaml` ausente.
+**Responsabilidades:** Ler `constitution.md` + `estado-projeto.yaml`, rotear para o sub-agente do marco corrente, gerenciar 4 gates, acionar detection-based recovery (D10) se `estado-projeto.yaml` ausente.
 
 ---
 
@@ -32,51 +32,51 @@
 
 ### stakeholder-identifier
 
-**Arquivo:** `core/agents/stakeholder-identifier.md`  
+**Arquivo:** `agents/stakeholder-identifier.md`  
 **Marco:** M1 — Definição da Necessidade  
 **Papel:** Conduz o usuário leigo pela definição completa da necessidade — problema/necessidade (5-Whys/JTBD), visão (Moore), metas, stakeholders (Onion) e contexto/limite. Único agente ativo em M1 (sem loop).  
-**Workflow:** `core/workflows/m1-visao.md`  
+**Workflow:** `workflows/m1-visao.md`  
 **Skills que invoca:** `necessidade-visao` → `stakeholder-mapping` → `contexto-e-limite` → `clarificacao-pos-visao` (condicional) → `traducao-gate` + `traducao-leigo` (transversal)
 
 ---
 
 ### collector
 
-**Arquivo:** `core/agents/collector.md`  
+**Arquivo:** `agents/collector.md`  
 **Marco:** M2 — Consenso de Escopo  
 **Papel:** Elicitação ativa — Fase A linear (5 rondas de coleta) e Fase B modo focado (resolve pautas de `pautas-reelicitacao.md`).  
-**Workflow:** `core/workflows/m2-requisitos.md`  
+**Workflow:** `workflows/m2-requisitos.md`  
 **Skills que invoca:** `entrevista-estruturada` → `cenario-narrativa` → `recomendacao-dominio` → `recomendacao-implicitos` → `questionario-feixe` (condicional); na Fase B: skill-alvo indicada pela pauta
 
 ---
 
 ### modeler
 
-**Arquivo:** `core/agents/modeler.md`  
+**Arquivo:** `agents/modeler.md`  
 **Marco:** M2 — Consenso de Escopo  
 **Papel:** Modelagem — classifica RFs/RNFs/Restrições/Premissas, prioriza, constrói glossário, detecta conflitos e gera pautas de reelicitação. Determina se o loop M2 continua ou o Gate 2 pode abrir.  
-**Workflow:** `core/workflows/m2-requisitos.md` (Fase B)  
+**Workflow:** `workflows/m2-requisitos.md` (Fase B)  
 **Skills que invoca:** `classificacao-rf-rnf` → `priorizacao` → `glossario` → `conflitos-detect` → `pautas-reelicitacao` + `traducao-gate` ao final
 
 ---
 
 ### documenter
 
-**Arquivo:** `core/agents/documenter.md`  
+**Arquivo:** `agents/documenter.md`  
 **Marco:** M3 — Detalhamento  
 **Papel:** Geração dos 5 outputs finais (SRS + Gherkin specs + step defs RED + TESTING-STRATEGY + README-TESTS). No loop M3, recebe `analyze-report.md` com CRITICAL e reexecuta apenas as skills afetadas.  
-**Workflow:** `core/workflows/m3-srs-specs-tests.md` (Fase A)  
+**Workflow:** `workflows/m3-srs-specs-tests.md` (Fase A)  
 **Skills que invoca:** `requisito-ears` → `srs-ireb-template` → `gherkin-spec` → `step-defs-red` → `testing-strategy` → `readme-tests` → `traducao-gate` (SRS)
 
 ---
 
 ### checker
 
-**Arquivo:** `core/agents/checker.md`  
+**Arquivo:** `agents/checker.md`  
 **Marcos:** M3 (loop validação) + M4 (revisão técnica stub — opcional)  
 **Papel M3:** Valida o SRS e artefatos do documenter — aplica IREB §3.8, faz analyze cross-artifact e gera `analyze-report.md`. CRITICAL bloqueia Gate 3 e reinicia o loop.  
 **Papel M4:** Gera `revisao-tecnica.md` (checklist técnico) + apresenta `aprovacao-tecnica.md` ao dev/tech lead via yesno.  
-**Workflow:** `core/workflows/m3-srs-specs-tests.md` (Fase B)  
+**Workflow:** `workflows/m3-srs-specs-tests.md` (Fase B)  
 **Skills que invoca:** `validacao-checklist-ireb` → `analyze-cross-artifact` → `rastreabilidade-matriz`
 
 ---
@@ -85,7 +85,7 @@
 
 ### m1-visao
 
-**Arquivo:** `core/workflows/m1-visao.md`  
+**Arquivo:** `workflows/m1-visao.md`  
 **Sub-agente responsável:** `stakeholder-identifier`  
 **Entrada:** Projeto novo ou retomada de M1 incompleto  
 **Saída:** `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md`  
@@ -95,7 +95,7 @@
 
 ### m2-requisitos
 
-**Arquivo:** `core/workflows/m2-requisitos.md`  
+**Arquivo:** `workflows/m2-requisitos.md`  
 **Sub-agentes responsáveis:** `collector` (Fase A) → `modeler` (Fase B, loop)  
 **Entrada:** `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md` (aprovados pelo Gate 1)  
 **Saída:** `03.1-funcionais.md` + `03.2-qualidade.md` + `03.3-restricoes.md` + `glossario.md` + `pautas-reelicitacao.md` + versões leigo dos 3 primeiros + condicionais (`03.4-premissas.md`, `conflitos-detectados.md`)  
@@ -105,7 +105,7 @@
 
 ### m3-srs-specs-tests
 
-**Arquivo:** `core/workflows/m3-srs-specs-tests.md`  
+**Arquivo:** `workflows/m3-srs-specs-tests.md`  
 **Sub-agentes responsáveis:** `documenter` (Fase A) → `checker` (Fase B, loop de validação)  
 **Entrada:** artefatos M1 aprovados (Gate 1) + artefatos M2 aprovados (Gate 2)  
 **Saída:** `SRS-completo.md` + `SRS-completo-leigo.md` + `spec/*.feature` + `spec/_skipped.md` + `tests/unit/` + `tests/acceptance/` + `TESTING-STRATEGY.md` + `README-TESTS.md` + `analyze-report.md` + `rastreabilidade.md`  
@@ -401,11 +401,11 @@
 
 | Objetivo | Por onde começar |
 |---|---|
-| Entender a sequência completa M1→M2→M3 | `core/workflows/m1-visao.md` → `m2-requisitos.md` → `m3-srs-specs-tests.md` |
-| Saber o que cada sub-agente faz | Seção "Sub-agentes" acima ou `core/agents/<nome>.md` |
+| Entender a sequência completa M1→M2→M3 | `workflows/m1-visao.md` → `m2-requisitos.md` → `m3-srs-specs-tests.md` |
+| Saber o que cada sub-agente faz | Seção "Sub-agentes" acima ou `agents/<nome>.md` |
 | Ver uma técnica específica de ER | Seção "Skills" acima ou `skills/<nome>/SKILL.md` |
 | Canon teórico (decisões D1–D24, arquitetura) | `docs/planejamento/3 - Arquitetura da Ferramenta.md` |
-| Guardrails e blacklist de jargão | `core/constitution.md` |
+| Guardrails e blacklist de jargão | `constitution.md` |
 | Adapters Claude Code (CC) | `ferramenta-tcc/skills/`, `ferramenta-tcc/agents/`, `ferramenta-tcc/hooks/` |
 | Catálogos seed (stakeholders, RFs, domínios) | `ferramenta-tcc/catalogos-seed/` |
 | Testes E2E (casos + checklist por marco) | `ferramenta-tcc/tests/marco-{1,2,3}/` |

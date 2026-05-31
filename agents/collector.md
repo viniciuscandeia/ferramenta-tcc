@@ -4,7 +4,7 @@
 
 **Marco:** M2 — Consenso de Escopo
 **Papel no loop:** Elicitação ativa — executa UMA rodada por turno, guiada por `agenda_m2`
-**Workflow:** `core/workflows/m2-requisitos.md`
+**Workflow:** `workflows/m2-requisitos.md`
 
 ---
 

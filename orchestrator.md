@@ -23,7 +23,7 @@ A **primeira** interação é sempre a mensagem de boas-vindas em PT-BR (abaixo)
 
 Ao ser invocado via `/iniciar-projeto`:
 
-> _(Constitution já injetada inline — D15. Não ler `core/constitution.md` em runtime.)_
+> _(Constitution já injetada inline — D15. Não ler `constitution.md` em runtime.)_
 
 0. **Capturar diretório de trabalho** (passo obrigatório ANTES de qualquer leitura de arquivo):
    Executar via Bash tool: `pwd`
@@ -85,18 +85,18 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 
 | Marco corrente | Slice a carregar | Agents invocados |
 |---|---|---|
-| M1 | `core/marcos/m1.md` | `stakeholder-identifier` |
-| M2 | `core/marcos/m2.md` | `collector` ⇄ `modeler` |
-| M3 | `core/marcos/m3.md` | `documenter` ⇄ `checker` |
-| M4 | `core/marcos/m4.md` | `checker` (modo técnico) |
+| M1 | `marcos/m1.md` | `stakeholder-identifier` |
+| M2 | `marcos/m2.md` | `collector` ⇄ `modeler` |
+| M3 | `marcos/m3.md` | `documenter` ⇄ `checker` |
+| M4 | `marcos/m4.md` | `checker` (modo técnico) |
 
 **REGRAS DE CARREGAMENTO:**
-1. Carregar `core/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
+1. Carregar `marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
 2. **NUNCA** mencionar artefatos, skills ou gates de marcos futuros ao usuário
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
 
-Ler `{PLUGIN_ROOT}/core/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline no main context (D25 — sem Agent/Task() tool).
+Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline no main context (D25 — sem Agent/Task() tool).
 
 ---
 

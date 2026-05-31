@@ -90,7 +90,7 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 
 O orquestrador **não pode auto-aprovar gate**. Toda transição `gate_N_status: pendente → aprovado` exige **todas** as condições abaixo, sem exceção:
 
-1. **Todos os artefatos obrigatórios do marco** existem em disco e não estão vazios (conforme tabela canônica em `core/orchestrator.md`)
+1. **Todos os artefatos obrigatórios do marco** existem em disco e não estão vazios (conforme tabela canônica em `orchestrator.md`)
 2. **Versão leigo** de cada artefato-gate gerada via `traducao-gate` (D18) — verificada por `traducao-leigo` (D19)
 3. **`loop_mN_iteracoes ≥ 1`** — sub-agente do marco executou ao menos uma iteração completa
 4. **`AskUserQuestion` yesno com resposta SIM** do usuário — não pode ser simulado, assuminado nem pulado
@@ -141,7 +141,7 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 | M3 — Detalhamento | `documenter` ⇄ `checker` (loop) |
 | M4 — Revisão Técnica (opcional) | `checker` (modo técnico) |
 
-**Engine canônico** em `core/` — adapters em `skills/`, `agents/`, `hooks/` mapeiam primitivas sem redefinir comportamento (D12).
+**Engine canônico** na raiz do plugin — `skills/`, `agents/`, `hooks/` contêm lógica canônica diretamente (D12 revisada: CC-only).
 
 Sub-agentes são **apátridas entre marcos**. Estado persiste apenas via `estado-projeto.yaml` e artefatos em disco.
 

@@ -36,7 +36,7 @@ case "$BASENAME" in
   srs.md|fluxos.md|necessidades.md|requisitos.md|vision-box.md)
     echo "🔴 BLOQUEADO: '$BASENAME' não está na tabela canônica de artefatos." >&2
     echo "   Artefatos válidos: documentos-para-leigo/01-visao/01-visao-produto.md, documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md, documentos-tecnicos/03-documento/03-srs-completo.md, etc." >&2
-    echo "   Consulte core/marcos/m{N}.md para a lista completa do marco corrente." >&2
+    echo "   Consulte marcos/m{N}.md para a lista completa do marco corrente." >&2
     exit 2
     ;;
 esac
@@ -74,7 +74,7 @@ fi
 #     documentos-tecnicos/04-spec/, documentos-tecnicos/05-tests/, documentos-tecnicos/04-revisao/
 # ──────────────────────────────────────────────
 if [[ "$MARCO" == "M1" || "$MARCO" == "M2" ]]; then
-  # Paths canônicos confirmados por orchestrator.md:44-45 e core/marcos/m3.md.
+  # Paths canônicos confirmados por orchestrator.md:44-45 e marcos/m3.md.
   # 03-documento casa por substring com 03-documento/04-spec e 03-documento/05-tests.
   # 04-revisao (M4) vive diretamente em documentos-tecnicos/04-revisao (não aninhado).
   M3_PATHS=(

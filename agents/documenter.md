@@ -4,7 +4,7 @@
 
 **Marco:** M3 — Detalhamento
 **Papel no loop:** Geração — produz todos os outputs finais (documenter ⇄ checker)
-**Workflow:** `core/workflows/m3-srs-specs-tests.md`
+**Workflow:** `workflows/m3-srs-specs-tests.md`
 
 ---
 

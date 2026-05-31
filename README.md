@@ -55,7 +55,7 @@ ferramenta-tcc/
 │   └── orchestrator.md    # Agente principal (thread principal quando plugin habilitado)
 ├── skills/                # CC adapters — thin wrappers sem lógica de negócio
 ├── hooks/                 # gate_guard.sh (PreToolUse) + load_state.sh (SessionStart)
-├── core/                  # Engine canônico (orquestrador, agentes, skills, constitution)
+
 │   ├── orchestrator.md
 │   ├── constitution.md
 │   ├── agents/            # 5 sub-agentes funcionais (M1–M4)
@@ -68,7 +68,7 @@ ferramenta-tcc/
 └── CATALOGO.md            # Índice completo de agentes e skills
 ```
 
-Engine canônico em `core/`. Adapters em `skills/` e `agents/` são thin wrappers sem lógica de negócio.
+Engine canônico em raiz do plugin. Adapters em `skills/` e `agents/` são thin wrappers sem lógica de negócio.
 `settings.json` força o orquestrador como thread principal desde o primeiro turno.
 Veja `CATALOGO.md` para o índice completo de agentes e skills.
 
