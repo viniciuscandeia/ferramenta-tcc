@@ -39,14 +39,14 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 ### Processo — Geração inicial (7 passos em ordem)
 
 **Passo 1 — requisito-ears**
-- Invocar `core/skills/requisito-ears/SKILL.md`
+- Invocar 'requisito-ears'
 - Input: `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
 - Formatar todos os RFs com sintaxe EARS (5 padrões) e modais RFC 2119 (`DEVE`/`DEVERIA`/`PODE`)
 - Formatar todos os RNFs com bucket Wiegers + métrica verificável + modal RFC 2119
 - Saída: tabela estruturada de requisitos formatados (input obrigatório para os passos seguintes)
 
 **Passo 2 — srs-ireb-template**
-- Invocar `core/skills/srs-ireb-template/SKILL.md`
+- Invocar 'srs-ireb-template'
 - Input: artefatos M1 + M2 + saída do Passo 1
 - Montar `documentos-tecnicos/03-documento/03-srs-completo.md` com as 6 seções IREB §3.3.3 completas
 - Seção 3: RFs em EARS + RFC 2119 (da saída do Passo 1)
@@ -55,14 +55,14 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Seção 6: matriz de rastreabilidade (colunas spec e test podem ser N/A nesta fase)
 
 **Passo 3 — gherkin-spec**
-- Invocar `core/skills/gherkin-spec/SKILL.md`
+- Invocar 'gherkin-spec'
 - Input: `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` com campo modal preenchido (da skill `priorizacao` M2)
 - Filtro rígido (D22): gerar `.feature` apenas para RFs com modal `DEVE`
 - Para cada RF `DEVE`: criar `documentos-tecnicos/03-documento/04-spec/<id-rf>-<slug>.feature` com Feature + Scenarios (cobertura adequada; usar `Background`, `Scenario Outline + Examples`, `Rule:`, `@tags` quando aplicável — sem teto de Scenarios)
 - Gerar `documentos-tecnicos/03-documento/04-spec/_skipped.md` com todos os RFs de modal `DEVERIA`/`PODE`
 
 **Passo 4 — step-defs-red**
-- Invocar `core/skills/step-defs-red/SKILL.md`
+- Invocar 'step-defs-red'
 - Input: `documentos-tecnicos/03-documento/04-spec/*.feature` gerados no Passo 3
 - Gerar step definitions em estado RED (falham ao executar — sem implementação) para:
   - **Pytest-BDD** → `documentos-tecnicos/03-documento/05-tests/acceptance/test_<slug>.py`
@@ -71,19 +71,19 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Não implementar lógica de negócio — apenas esqueletos que falham (RED)
 
 **Passo 5 — testing-strategy**
-- Invocar `core/skills/testing-strategy/SKILL.md`
+- Invocar 'testing-strategy'
 - Input: `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` (todos os RNFs finalizados)
 - Para cada RNF: definir tipo de teste (carga, segurança, usabilidade, etc.), ferramenta recomendada, critério de aceite e frequência de execução
 - Saída: `documentos-tecnicos/03-documento/06-estrategia-testes.md`
 
 **Passo 6 — readme-tests**
-- Invocar `core/skills/readme-tests/SKILL.md`
+- Invocar 'readme-tests'
 - Input: `documentos-tecnicos/03-documento/06-estrategia-testes.md` + estrutura `documentos-tecnicos/03-documento/05-tests/`
 - Gerar `documentos-tecnicos/03-documento/07-como-rodar-testes.md` com 3 seções (uma por framework: Pytest-BDD, Cucumber-js, SpecFlow)
 - Incluir: pré-requisitos de instalação, comandos de execução, estrutura de pastas, interpretação de resultados
 
 **Passo 7 — traducao-gate** (último passo antes de sinalizar checker)
-- Invocar `core/skills/traducao-gate/SKILL.md`
+- Invocar 'traducao-gate'
 - Input: `documentos-tecnicos/03-documento/03-srs-completo.md` (normativo, gerado no Passo 2)
 - Gerar `documentos-para-leigo/03-documento/03-documento-do-projeto.md`: mesma estrutura, linguagem acessível ao stakeholder leigo
 - Aplicar lista-negra de jargão de ER (conforme `constitution.md`)

@@ -55,14 +55,14 @@ Revisar artefatos técnicos para aprovação de dev/tech lead:
 Executar na ordem:
 
 **Passo 1 — validacao-checklist-ireb**
-- Invocar `core/skills/validacao-checklist-ireb/SKILL.md`
+- Invocar 'validacao-checklist-ireb'
 - Input: `documentos-tecnicos/03-documento/03-srs-completo.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
 - Aplicar 6 critérios por requisito individual + 6 critérios por SRS como documento
 - Output: seção "Validação IREB §3.8" adicionada ao rascunho de `documentos-tecnicos/03-documento/03.1-analyze-report.md`
 - Sem interação com usuário
 
 **Passo 2 — analyze-cross-artifact**
-- Invocar `core/skills/analyze-cross-artifact/SKILL.md`
+- Invocar 'analyze-cross-artifact'
 - Input: todos os artefatos M1 + M2 + M3
 - Executar 3 cruzamentos obrigatórios: Visão↔Elicitação, Elicitação↔SRS, SRS↔Spec
 - Detectar 4 tipos de defeito: Omissão, Contradição, Superespecificação, Inexequibilidade
@@ -70,7 +70,7 @@ Executar na ordem:
 - Depende do Passo 1 ter executado (pode reusar contexto já carregado)
 
 **Passo 3 — rastreabilidade-matriz**
-- Invocar `core/skills/rastreabilidade-matriz/SKILL.md`
+- Invocar 'rastreabilidade-matriz'
 - Input: `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` + `documentos-tecnicos/03-documento/03-srs-completo.md` + `documentos-tecnicos/03-documento/04-spec/*.feature`
 - Output: `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` com matriz bidirecional Objetivo → RF/RNF → Seção SRS → Spec → Test → Stakeholder
 - Lacunas na matriz (células "—" onde não deveria) alimentam `analyze-cross-artifact` como evidência adicional

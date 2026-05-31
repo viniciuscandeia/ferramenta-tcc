@@ -53,13 +53,13 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
    - Se `topicos_pendentes` vazio → prosseguir para Passo 1 (classificação)
 
 **Passo 1 — classificacao-rf-rnf**
-- Invocar `core/skills/classificacao-rf-rnf/SKILL.md`
+- Invocar 'classificacao-rf-rnf'
 - Classificar cada item de `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` em: RF / RNF / Restrição / Premissa
 - Saída: rascunho de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, `documentos-tecnicos/02-requisitos/02.3-restricoes.md`
 - Se premissas detectadas: criar `documentos-tecnicos/02-requisitos/02.4-premissas.md`
 
 **Passo 2 — priorizacao**
-- Invocar `core/skills/priorizacao/SKILL.md`
+- Invocar 'priorizacao'
 - Input: rascunhos do Passo 1
 - Atribuir modal RFC 2119 (`DEVE`/`DEVERIA`/`PODE`) e campo MoSCoW a cada RF/RNF
 - Gatilhos automáticos (D-S4.2):
@@ -68,19 +68,19 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
 - Atualizar rascunhos com campos de prioridade
 
 **Passo 3 — glossario**
-- Invocar `core/skills/glossario/SKILL.md`
+- Invocar 'glossario'
 - Input: `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` + rascunhos M2
 - Detectar termos do domínio com freq ≥ 2 sem definição clara
 - Saída: `documentos-tecnicos/02-requisitos/02.5-glossario.md` (versão única — D18 não se aplica ao glossário)
 
 **Passo 4 — conflitos-detect**
-- Invocar `core/skills/conflitos-detect/SKILL.md`
+- Invocar 'conflitos-detect'
 - Input: rascunhos M2 + stakeholders de `documentos-tecnicos/01-visao/01-visao-produto.md`
 - Se ≥ 1 conflito detectado: criar `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` (tipo IREB §4.4 + estratégia)
 - Se 0 conflitos: não criar arquivo
 
 **Passo 5 — pautas-reelicitacao**
-- Invocar `core/skills/pautas-reelicitacao/SKILL.md`
+- Invocar 'pautas-reelicitacao'
 - Input: todos os rascunhos M2
 - Lacunas que geram pauta: RFs sem critério de aceitação; RNFs sem métrica; restrições sem detalhe; conflitos não resolvidos
 - Saída: `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`
@@ -91,7 +91,7 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
 - `agenda_m2.topicos_pendentes` **vazio** E `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` **não-vazio** → incrementar `loop_m2_iteracoes` no yaml; sinalizar orquestrador para retornar ao `collector` em modo Fase B focado
 
 **Passo 6 — traducao-gate** (só quando pautas zeradas)
-- Invocar `core/skills/traducao-gate/SKILL.md`
+- Invocar 'traducao-gate'
 - Input: artefatos finalizados M2
 - Gerar: `documentos-para-leigo/02-requisitos/02.1-requisitos-funcionais.md`, `documentos-para-leigo/02-requisitos/02.2-requisitos-qualidade.md`, `documentos-para-leigo/02-requisitos/02.3-restricoes.md`
 - Salvar todos na pasta do projeto
