@@ -64,8 +64,8 @@ Preencher após execução de cada caso em `tests/marco-3/execucoes/execucao-NN-
 
 - [ ] **G1.** Se `analyze-report.md` tinha CRITICAL: Gate 3 foi **bloqueado** e loop voltou ao documenter
 - [ ] **G2.** Após correção pelo documenter: CRITICAL resolvido antes de Gate 3 abrir
-- [ ] **G3.** Loop M3 encerrou em ≤ 3 iterações (teto do constitution.md)
-- [ ] **G4.** Se loop atingiu 3 iterações com CRITICAL persistente: usuário foi consultado (yesno conforme constitution.md)
+- [ ] **G3.** Loop M3 encerrou em ≤ 3 iterações (teto do core/constitution.md)
+- [ ] **G4.** Se loop atingiu 3 iterações com CRITICAL persistente: usuário foi consultado (yesno conforme core/constitution.md)
 
 ---
 
@@ -82,7 +82,7 @@ Preencher após execução de cada caso em `tests/marco-3/execucoes/execucao-NN-
 | Campo | Valor |
 |---|---|
 | Caso executado | `caso-N-<descritor>` |
-| Plataforma | Gemini CLI / Claude Code |
+| Plataforma | Claude Code |
 | Data | AAAA-MM-DD |
 | Executado por | |
 | Resultado | PASSOU / FALHOU |

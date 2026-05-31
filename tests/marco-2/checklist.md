@@ -33,8 +33,8 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 
 - [ ] **C1.** Se `pautas-reelicitacao.md` estava não-vazio após Fase B: Gate 2 foi **bloqueado** e loop voltou ao collector
 - [ ] **C2.** Após resolução das pautas: `pautas-reelicitacao.md` final sem itens `[ ]` em aberto
-- [ ] **C3.** Loop M2 encerrou em ≤ 3 iterações (teto do constitution.md)
-- [ ] **C4.** Se loop atingiu 3 iterações com pauta ainda aberta: usuário foi consultado (yesno conforme constitution.md)
+- [ ] **C3.** Loop M2 encerrou em ≤ 3 iterações (teto do core/constitution.md)
+- [ ] **C4.** Se loop atingiu 3 iterações com pauta ainda aberta: usuário foi consultado (yesno conforme core/constitution.md)
 
 ---
 
@@ -68,7 +68,7 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 | Campo | Valor |
 |---|---|
 | Caso executado | `caso-N-<descritor>` |
-| Plataforma | Gemini CLI / Claude Code |
+| Plataforma | Claude Code |
 | Data | AAAA-MM-DD |
 | Executado por | |
 | Resultado | PASSOU / FALHOU |

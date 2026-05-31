@@ -1,79 +1,86 @@
-# Checklist de Verificação — Marco 1: Definição da Necessidade
+# Checklist de Verificação — Marco 1: Definição da Necessidade (v0.7.0)
 
 **Critério de "passou":** todos os itens `[x]` abaixo.
 Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-<descritor>/`.
 
 ---
 
-## Bloco A — Vision Box
+## Bloco A — Documento de Visão (ISO 29148)
 
-- [ ] **A1.** `visao-produto-normativo.md` existe com campo "Produto/Nome" preenchido
-- [ ] **A2.** Campo "Público-alvo" preenchido (≥ 1 grupo de usuário identificado)
-- [ ] **A3.** Campo "Benefício principal" preenchido (valor que o produto entrega)
-- [ ] **A4.** Campo "Diferencial" preenchido (por que não usar solução já existente)
-
----
-
-## Bloco B — Situação-Problema
-
-- [ ] **B1.** Seção "Problema" descrita em linguagem de negócio (o que está errado hoje)
-- [ ] **B2.** "Afetados pelo problema" listados (≥ 1 grupo com impacto descrito)
-- [ ] **B3.** "Solução esperada" descrita (o que o produto vai mudar)
-- [ ] **B4.** "Usuários principais" identificados (quem vai usar o produto no dia a dia)
-- [ ] **B5.** "Funcionalidades-chave" listadas (≥ 2 — o que o produto precisa fazer no mínimo)
+- [ ] **A1.** `documentos-tecnicos/01-visao/01-visao-produto.md` existe e não está vazio
+- [ ] **A2.** Seção `## 1. Visão` presente com frase-síntese estilo Moore (Para [quem]... o [produto] é... que... Diferente de... ele...)
+- [ ] **A3.** Seção `## 2. Problema & Necessidade` presente com: dor real, quem sofre, impacto concreto (sem lista de solução/features)
+- [ ] **A4.** Seção `## 3. Objetivos e Metas de Sucesso` presente (pode ter campos `[a definir]` se usuário não soube responder)
+- [ ] **A5.** Seção `## 4. Pessoas Envolvidas` presente com tabela Stakeholder Onion (colunas: Papel | Camada | Interesse | Influência | Decisor)
+- [ ] **A6.** Seção `## 5. Contexto e Limites` presente com: dentro / fora (≥1 exclusão) / integrações / restrições
+- [ ] **A7.** Seção `## 6. Premissas e Itens em Aberto` presente
 
 ---
 
-## Bloco C — Stakeholders Mapeados
+## Bloco B — Qualidade do Conteúdo
 
-- [ ] **C1.** ≥ 1 stakeholder com papel definido (usuário direto / decisor / afetado indireto)
-- [ ] **C2.** Decisor/aprovador identificado (quem diz "sim" para o produto ser construído)
-- [ ] **C3.** Stakeholders mencionados pelo usuário no texto inicial foram preservados (sem omissão silenciosa)
+- [ ] **B1.** Seção 2 NÃO contém lista de funcionalidades ou proposta de solução (disciplina problema-space)
+- [ ] **B2.** Seção 2 descreve a DOR RAIZ, não apenas o sintoma (indica que 5-Whys foi aplicado)
+- [ ] **B3.** Decisor identificado na tabela (Camada "Decide-paga", coluna "Decisor: Sim") — ou justificativa em Seção 6
+- [ ] **B4.** Pelo menos 1 exclusão explícita em "O que o produto NÃO faz" (Seção 5)
+- [ ] **B5.** Restrições da Seção 5 têm tipo especificado (Legal / Técnica / Prazo / Orçamento / Organizacional)
+- [ ] **B6.** Se domínio regulado detectado (saúde / finanças / educação / alimentos): Camada "Regula" presente na tabela (Seção 4) E ao menos 1 restrição Legal na Seção 5
 
 ---
 
-## Bloco D — Contexto e Limites
+## Bloco C — Disciplina de Elicitação
 
-- [ ] **D1.** Seção "Está dentro do escopo" com ≥ 2 funcionalidades confirmadas
-- [ ] **D2.** Seção "Está fora do escopo" com ≥ 1 item explicitamente excluído
-- [ ] **D3.** Restrições externas identificadas (legal, técnica ou organizacional) — se mencionadas pelo usuário
-- [ ] **D4.** Integrações externas (outros sistemas, hardware, APIs) listadas — se aplicável
+- [ ] **C1.** Total de perguntas feitas ao usuário ≤ 13 (base ~7-10; +≤3 com clarificação condicional)
+- [ ] **C2.** Fase de descoberta usou 1 pergunta por turno (não lotes de 4 na fase de 5-Whys)
+- [ ] **C3.** Nenhuma pergunta de solução/feature durante a Fase de descoberta do problema (apenas após síntese)
+- [ ] **C4.** `stakeholder-mapping` pré-preencheu a tabela com pessoas mencionadas antes de perguntar (sem re-perguntar quem já foi nomeado)
+- [ ] **C5.** `contexto-e-limite` não re-perguntou "o que o produto faz" — inferiu e confirmou via choice
+
+---
+
+## Bloco D — Comportamento de `clarificacao-pos-visao` (D16)
+
+- [ ] **D1.** Se `estado-projeto.yaml → lacunas_m1.contagem ≥ 2`: `clarificacao-pos-visao` foi **ativada** (≤3 perguntas)
+- [ ] **D2.** Se `lacunas_m1.contagem < 2`: `clarificacao-pos-visao` **não ativada** (sem perguntas extras)
+- [ ] **D3.** `clarificacao-pos-visao`, quando ativada, usou ≤1 chamada com ≤3 perguntas (choice/yesno, sem `text` para escopo/restrições)
+- [ ] **D4.** Perguntas de clarificação usaram dados REAIS do projeto (sem placeholders `[X]` literais)
 
 ---
 
 ## Bloco E — Guardrail Leigo (D1 + D19)
 
-- [ ] **E1.** `visao-produto-leigo.md` sem termos da blacklist (grep: "requisito funcional|RF|RNF|elicitação|stakeholder|escopo|iteração|sprint|backlog|caso de uso|SRS|ERS|marco|sub-agente|skill|MoSCoW|Kano|baseline|gate|EARS|RFC|Gherkin|BDD")
-- [ ] **E2.** Perguntas feitas ao usuário durante M1 não contêm termos da blacklist
-- [ ] **E3.** Termos de ER em `visao-produto-normativo.md` **não** aparecem na versão leigo (as duas versões são distintas)
+- [ ] **E1.** `documentos-para-leigo/01-visao/01-visao-produto.md` existe e não está vazio
+- [ ] **E2.** Versão leigo sem termos da blacklist: `grep -iE "requisito funcional|RF|RNF|elicitação|stakeholder|\bescopo\b|\bgate [0-9]\b|iteração|sprint|backlog|caso de uso|SRS|ERS|\bmarco [0-9]\b|sub-agente|skill|MoSCoW|Kano|baseline|EARS|RFC|Gherkin|BDD"` retorna 0 resultados
+- [ ] **E3.** Perguntas feitas ao usuário durante M1 não contêm termos da blacklist
+- [ ] **E4.** Versão leigo é PROSA NARRATIVA (não cópia parafraseada das seções técnicas da versão normativa — estrutura diferente)
+- [ ] **E5.** As duas versões são arquivos distintos com estrutura diferente
 
 ---
 
-## Bloco F — Versão Normativa (IREB §3.3.3)
+## Bloco F — Estado (`estado-projeto.yaml`)
 
-- [ ] **F1.** `visao-produto-normativo.md` tem estrutura de seções compatível com IREB §3.3.3 Parte I (visão + contexto)
-- [ ] **F2.** Stakeholders listados com papéis no formato técnico (nome, papel, interesse, decisor: sim/não)
-- [ ] **F3.** Contexto e limites distinguem claramente requisitos dentro vs. fora do escopo
-- [ ] **F4.** Restrições (se presentes) classificadas por tipo (legal / técnica / organizacional)
-
----
-
-## Bloco G — Comportamento de `clarificacao-pos-visao` (D16)
-
-- [ ] **G1.** Se input inicial tinha ≥ 2 lacunas críticas: `clarificacao-pos-visao` foi **ativada** (≤ 3 perguntas adicionais)
-- [ ] **G2.** Se input inicial era rico (≤ 1 lacuna crítica): `clarificacao-pos-visao` **não ativada** (sem perguntas extras)
-- [ ] **G3.** `clarificacao-pos-visao`, quando ativada, usou ≤ 1 chamada `AskUserQuestion` com ≤ 3 perguntas (D14+D16)
+- [ ] **F1.** Após `contexto-e-limite` executar: `lacunas_m1` presente no yaml (com `categorias` e `contagem`)
+- [ ] **F2.** `pautas_abertas` corretamente preenchida (papéis `[a identificar]` registrados)
+- [ ] **F3.** Gate 1 SIM → `gate_status.gate_1: aprovado`, `gate_1_aprovado_em` e `marco_corrente: M2` no yaml
+- [ ] **F4.** Gate 1 NÃO → `gate_status.gate_1: pendente` (marco NÃO avança para M2)
+- [ ] **F5.** Após Gate 1 aprovado: `versao_leigo_aprovada` contém `documentos-para-leigo/01-visao/01-visao-produto.md`
 
 ---
 
-## Bloco H — Gate 1 e Estado
+## Bloco G — Enforcement (`gate_guard.sh`)
 
-- [ ] **H1.** Gate 1 apresenta `visao-produto-leigo.md` ao usuário (nunca a normativa)
-- [ ] **H2.** Input "Não" no Gate 1 **não avança** para M2; registra `gate_status.gate_1: pendente`
+- [ ] **G1.** Tentativa de escrever `gate_status.gate_1: aprovado` sem artefatos existentes → bloqueado pelo hook (`exit 2`)
+- [ ] **G2.** Tentativa de escrever artefato M2 enquanto `marco_corrente: M1` → bloqueado pelo hook
+- [ ] **G3.** Nome de arquivo inválido (ex: `srs.md`, `necessidades.md`) → bloqueado pelo hook
+
+---
+
+## Bloco H — Gate 1 e Ciclo de Revisão
+
+- [ ] **H1.** Gate 1 apresenta `documentos-para-leigo/01-visao/01-visao-produto.md` ao usuário (nunca a normativa)
+- [ ] **H2.** Input "Não" no Gate 1 **não avança** para M2
 - [ ] **H3.** Feedback do usuário após "Não" é incorporado nas versões revisadas
-- [ ] **H4.** Segunda apresentação do Gate 1 com versão revisada (ciclo de revisão funciona)
-- [ ] **H5.** Input "Sim" no Gate 1 → `gate_status.gate_1: aprovado` e `gate_1_aprovado_em` registrados em `estado-projeto.yaml`
-- [ ] **H6.** `estado-projeto.yaml` reflete `marco_corrente: M1-concluido` e lista `visao-produto-normativo.md` + `visao-produto-leigo.md` em `artefatos`
+- [ ] **H4.** Segunda apresentação do Gate 1 com versão revisada funciona (ciclo completo)
 
 ---
 
@@ -82,9 +89,10 @@ Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-
 | Campo | Valor |
 |---|---|
 | Caso executado | `caso-N-<descritor>` |
-| Plataforma | Gemini CLI / Claude Code |
+| Plataforma | Claude Code |
 | Data | AAAA-MM-DD |
 | Executado por | |
 | Resultado | PASSOU / FALHOU |
 | Itens reprovados | (lista) |
+| Perguntas totais feitas | (contar) |
 | Observações | |

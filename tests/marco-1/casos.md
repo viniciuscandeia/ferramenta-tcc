@@ -1,7 +1,9 @@
-# Casos de Teste — Marco 1: Definição da Necessidade
+# Casos de Teste — Marco 1: Definição da Necessidade (v0.7.0)
 
 Três casos canônicos para verificação do workflow M1 (`stakeholder-identifier`).
 Cada caso parte do zero — simula a primeira interação do usuário com `/iniciar-projeto`.
+
+**Sequência esperada em todos os casos:** `necessidade-visao` → `stakeholder-mapping` → `contexto-e-limite` → [`clarificacao-pos-visao`] → `traducao-gate` → Gate 1
 
 ---
 
@@ -9,7 +11,7 @@ Cada caso parte do zero — simula a primeira interação do usuário com `/inic
 
 **Descritor:** `caso-1-frase-curta`
 **Domínio:** controle interno / varejo
-**Complexidade:** baixa — input vago activa `clarificacao-pos-visao` (D16)
+**Complexidade:** baixa — input vago, `clarificacao-pos-visao` deve ser ativada
 
 ### Entrada inicial do usuário
 
@@ -19,24 +21,41 @@ Quero um sistema para controlar o estoque da minha lojinha.
 
 ### Comportamento esperado — sequência de skills
 
-1. **`vision-box`**: com input vago, faz 1 lote de 4 perguntas (nome do produto, quem vai usar, benefício principal, o que o diferencia de uma planilha/caderno). Preenche 4 campos da Visão do Produto.
-2. **`situacao-problema`**: 2 lotes (4 + 2 perguntas). Extrai: problema principal (descontrole de estoque), afetados (dono da loja, possível funcionário), impacto, solução esperada, usuários e funcionalidades-chave.
-3. **`stakeholder-mapping`**: 1 lote de 4. Identifica: dono da loja (usuário direto + decisor), funcionário (usuário operacional), fornecedor (afetado indireto).
-4. **`contexto-e-limite`**: 1 lote de 4. Define: o sistema controla produtos e movimentações; **não** controla financeiro/caixa; integração com leitor de código de barras questionada.
-5. **`clarificacao-pos-visao`**: **ativada** (input vago → lacunas críticas em ≥ 2 categorias: público-alvo e funcionalidades). ≤ 3 perguntas (choice/yesno). Esclarece: quem acessa além do dono? sistema web ou só celular? alertas de estoque mínimo necessários?
-6. **`traducao-gate`**: gera `visao-produto-normativo.md` + `visao-produto-leigo.md`.
+1. **`necessidade-visao`**:
+   - Fase 1 (5-Whys): 2–3 perguntas adaptativas sobre o problema atual (ex: "O que está difícil com o controle de estoque hoje?", "O que acontece quando você não sabe o que tem no estoque?")
+   - Fase 2: confirma nome (sugerido "sistema de estoque" ou similar) e público (dono da loja + funcionário se houver)
+   - Fase 3: meta de sucesso ("Como você vai saber que funcionou?")
+   - Fase 4: sintetiza frase Moore (ex: "Para donos de lojas pequenas que perdem o controle das mercadorias, o [nome] é um sistema que...") — confirma em choice
+   - **NÃO** pergunta funcionalidades nem solução durante Fase 1
+
+2. **`stakeholder-mapping`**:
+   - Pré-extração: "dono da lojinha" capturado
+   - Checklist de camadas: adiciona Decide-paga (o próprio dono), Mantém (dono ou funcionário), pergunta se tem funcionário operando
+   - Domínio: varejo → sem regulação obrigatória
+
+3. **`contexto-e-limite`**:
+   - Pré-inferência: "controlar estoque" inferido como "dentro"
+   - Confirmação do dentro via choice
+   - Pergunta: o que NÃO vai fazer? (ex: financeiro/caixa, nota fiscal, folha de pagamento)
+   - Resultado: `lacunas_m1.contagem` deve ser ≥ 2 (frase muito curta → escopo funcional e metas provavelmente insuficientes)
+
+4. **`clarificacao-pos-visao`**: **ativada** — `lacunas_m1.contagem ≥ 2`
+   - ≤3 perguntas fechadas sobre escopo (ex: "O sistema vai registrar entradas e saídas, ou só consultar?") e/ou restrições/metas
+
+5. **`traducao-gate`**: gera ambas as versões com as 6 seções do Documento de Visão
 
 ### Artefatos esperados ao final
 
-| Arquivo | Obrigatório? | Esperado? |
-|---|---|---|
-| `visao-produto-normativo.md` | Sim | Sim |
-| `visao-produto-leigo.md` | Sim | Sim |
+| Arquivo | Obrigatório? |
+|---|---|
+| `documentos-tecnicos/01-visao/01-visao-produto.md` | Sim |
+| `documentos-para-leigo/01-visao/01-visao-produto.md` | Sim |
 
 ### Critério de aceitação
 
-- Vision Box com os 4 campos preenchidos (produto, público, benefício, diferencial)
+- Seção 2 (Problema) descreve dor de controle manual — sem lista de funcionalidades
 - `clarificacao-pos-visao` ativada (input inicial vago)
+- Total de perguntas ≤ 13
 - Versão leigo sem termos da blacklist
 
 ---
@@ -45,7 +64,7 @@ Quero um sistema para controlar o estoque da minha lojinha.
 
 **Descritor:** `caso-2-texto-longo`
 **Domínio:** saúde
-**Complexidade:** média — múltiplos stakeholders, restrições regulatórias (LGPD + CFM), `clarificacao-pos-visao` pode não ser ativada se input já suficiente
+**Complexidade:** média — múltiplos stakeholders, restrições regulatórias (LGPD + CFM), clarificação provavelmente não ativada
 
 ### Entrada inicial do usuário
 
@@ -63,26 +82,44 @@ o histórico de atendimentos porque o plano de saúde exige.
 
 ### Comportamento esperado — sequência de skills
 
-1. **`vision-box`**: extrai do texto: produto (sistema de triagem), público (recepcionista + médicos + pacientes), benefício (eliminar caos na fila de espera), diferencial (visibilidade para todos — médico no celular, paciente na TV). Pode fazer 1–2 perguntas de confirmação, não o lote completo se o texto já preenche os campos.
-2. **`situacao-problema`**: extrai: problema (anotação em caderno + comunicação vocal + espera sem previsão), afetados (pacientes, recepcionista, médicos), impacto (demora, frustração, retrabalho), solução (fila digital com painel), usuários (3 tipos), funcionalidades-chave (fila por médico, chamada por botão, painel TV, histórico).
-3. **`stakeholder-mapping`**: identifica ≥ 3 stakeholders com papéis distintos: recepcionista (usuária operacional), médico × 3 (usuários técnicos + decisores), paciente (afetado direto), plano de saúde (afetado regulatório). Reconhece que "plano de saúde exige histórico" = restrição regulatória.
-4. **`contexto-e-limite`**: define escopo: dentro (fila, chamada, painel, histórico); fora (prontuário eletrônico completo, cobrança, agendamento de consultas futuras). Detecta integração com TV (painel display).
-5. **`clarificacao-pos-visao`**: **provavelmente não ativada** — texto rico cobre a maioria das categorias. Se ativada, ≤ 3 perguntas sobre detalhes técnicos do painel de TV ou acesso remoto dos médicos.
-6. **`traducao-gate`**: gera ambas as versões.
+1. **`necessidade-visao`**:
+   - Fase 0 pré-extração: identifica "fila manual em caderno", "médicos e recepcionista", "plano de saúde", meta candidata "paciente sabe quanto tempo falta"
+   - Fase 1: 1–2 perguntas de sondagem máximo (texto já fornece muito — pode pular Turno 2 se impacto claro)
+   - Fase 2: confirma nome candidato (pode sugerir "sistema de triagem" ou usar o que o usuário disse) + público já claro (recepcionista + médicos + pacientes)
+   - Fase 4: síntese Moore confirma em choice (sem nova pergunta aberta)
+   - **Máximo 5 turnos** (texto rico já cobre a maior parte)
+
+2. **`stakeholder-mapping`**:
+   - Pré-extração: recepcionista, médicos (×3), pacientes, plano de saúde → todos já na tabela inicial
+   - Checklist de camadas: Decide-paga perguntado (quem aprova?), Mantém perguntado (TI/dono?), Regula → **obrigatório** por domínio saúde → pergunta sobre CFM/LGPD
+   - Resultado: ≥4 papéis com camadas distintas
+
+3. **`contexto-e-limite`**:
+   - Pré-inferência: fila, chamada, painel TV, histórico → dentro
+   - Confirmação do dentro via choice (texto já fornece)
+   - Pergunta: o que NÃO vai fazer? (prontuário completo, cobrança, agendamento futuro)
+   - Restrições: LGPD + CFM (já mencionados indiretamente pelo "plano de saúde exige")
+   - `lacunas_m1.contagem` provavelmente < 2 → clarificação não ativada
+
+4. **`clarificacao-pos-visao`**: **provavelmente não ativada** — texto rico cobre as categorias
+
+5. **`traducao-gate`**: gera ambas as versões
 
 ### Artefatos esperados ao final
 
-| Arquivo | Obrigatório? | Esperado? |
-|---|---|---|
-| `visao-produto-normativo.md` | Sim | Sim |
-| `visao-produto-leigo.md` | Sim | Sim |
+| Arquivo | Obrigatório? |
+|---|---|
+| `documentos-tecnicos/01-visao/01-visao-produto.md` | Sim |
+| `documentos-para-leigo/01-visao/01-visao-produto.md` | Sim |
 
 ### Critério de aceitação
 
-- ≥ 3 stakeholders mapeados com papéis distintos
-- Restrição regulatória (histórico para plano de saúde) registrada no contexto/limite
-- `clarificacao-pos-visao` não-ativada (ou ativada com ≤ 3 perguntas mínimas)
-- Versão leigo usa "ficha de espera" / "ordem de atendimento" (nunca "escopo", "stakeholder", "RF")
+- ≥4 papéis mapeados com camadas Onion distintas
+- Camada "Regula" presente (plano de saúde / CFM / LGPD)
+- Restrição Legal registrada na Seção 5
+- `clarificacao-pos-visao` não ativada (ou ativada com ≤3 perguntas se alguma lacuna existir)
+- Versão leigo usa linguagem informal ("ficha de espera", "ordem de chamada") — nunca "stakeholder", "escopo", "RF"
+- Total de perguntas ≤ 10 (texto rico = menos turnos necessários)
 
 ---
 
@@ -93,7 +130,7 @@ o histórico de atendimentos porque o plano de saúde exige.
 
 ### Cenário
 
-Input M1 simulado: aplicativo de delivery para restaurante familiar.
+Input M1: aplicativo de delivery para restaurante familiar.
 
 ```
 Quero um app de delivery para o meu restaurante. Os clientes fazem o pedido pelo celular
@@ -103,30 +140,32 @@ e um no caixa.
 
 ### Sequência até o Gate 1
 
-1. Skills M1 executam normalmente (vision-box → situacao-problema → stakeholder-mapping → contexto-e-limite → traducao-gate).
-2. Orquestrador apresenta `visao-produto-leigo.md` ao usuário com AskUserQuestion (yesno): "Esse texto descreve bem o que você imagina para o projeto? ..."
+1. Skills M1 executam normalmente (necessidade-visao → stakeholder-mapping → contexto-e-limite → traducao-gate)
+2. Orquestrador apresenta versão leigo ao usuário com `AskUserQuestion` (yesno)
 3. **Usuário responde "Não"** com feedback: "Faltou mencionar que os pedidos vêm só pelo WhatsApp, não por app próprio. E eu quero acompanhar o estoque de ingredientes também."
 
 ### Comportamento esperado após "Não"
 
-1. Orquestrador registra `gate_status.gate_1: pendente` (não avança para M2).
-2. `stakeholder-identifier` retoma a partir do feedback — detecta 2 lacunas: (a) canal de pedido errado (WhatsApp, não app próprio); (b) funcionalidade nova (controle de estoque de ingredientes).
-3. Clarificação focada: ≤ 3 perguntas para confirmar detalhes das lacunas (ex: "O WhatsApp será o único canal ou haverá também site?").
-4. `traducao-gate` regenera as duas versões com as correções.
-5. Orquestrador apresenta versão leigo revisada (segunda rodada do Gate 1).
-6. **Usuário responde "Sim"** → `gate_1: aprovado` em `estado-projeto.yaml` + avançar para M2.
+1. Orquestrador registra `gate_status.gate_1: pendente` (não avança para M2)
+2. `stakeholder-identifier` retoma com o feedback — detecta 2 pontos: (a) canal errado (WhatsApp, não app), (b) funcionalidade nova (controle de ingredientes)
+3. `clarificacao-pos-visao` invocada para resolver os pontos específicos (sem re-executar fluxo completo):
+   - Confirma WhatsApp como único canal (choice)
+   - Confirma controle de ingredientes no escopo (yesno)
+4. `traducao-gate` regenera ambas as versões com as correções (canal + escopo de ingredientes)
+5. Orquestrador apresenta versão leigo revisada (segunda rodada do Gate 1)
+6. **Usuário responde "Sim"** → `gate_status.gate_1: aprovado`, `gate_1_aprovado_em`, `marco_corrente: M2` escritos em `estado-projeto.yaml`
 
 ### Artefatos esperados ao final
 
-| Arquivo | Versão | Conteúdo esperado |
-|---|---|---|
-| `visao-produto-normativo.md` | Normativa (final) | Canal = WhatsApp; escopo inclui controle de ingredientes |
-| `visao-produto-leigo.md` | Leigo (final) | Idem, em linguagem de negócio |
+| Arquivo | Conteúdo esperado |
+|---|---|
+| `documentos-tecnicos/01-visao/01-visao-produto.md` | Canal = WhatsApp na Seção 1 (Visão) e Seção 5 (Contexto); controle de ingredientes em "O que o produto faz" |
+| `documentos-para-leigo/01-visao/01-visao-produto.md` | Idem, em linguagem de negócio |
 
 ### Critério de aceitação
 
-- Gate 1 com input "Não" **não avança** para M2 (gate não abre)
-- Feedback do usuário é incorporado nas versões finais (canal WhatsApp + estoque ingredientes)
+- Gate 1 com input "Não" **não avança** para M2 (confirmed by `gate_status.gate_1: pendente`)
+- Feedback incorporado nas versões finais (canal WhatsApp + ingredientes)
 - Segunda apresentação do Gate 1 com versão revisada
-- Usuário aprova na segunda tentativa → `gate_1: aprovado` registrado em `estado-projeto.yaml`
-- `estado-projeto.yaml` reflete `gate_1: aprovado` apenas após "Sim"
+- `gate_status.gate_1: aprovado` apenas após "Sim" na segunda rodada
+- `gate_guard.sh` bloquearia tentativa de escrever `aprovado` antes dos artefatos finalizados
