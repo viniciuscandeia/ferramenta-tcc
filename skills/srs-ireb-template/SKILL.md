@@ -26,7 +26,33 @@ description: >-
 3. Carregar artefatos opcionais se existirem: `documentos-tecnicos/02-requisitos/02.4-premissas.md`, `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md`
 4. Contar RFs e RNFs de entrada para verificação de completude
 
-## Fase 1 — Montagem das 6 Seções
+## Fase 1 — Cabeçalho de Controle de Versão
+
+Antes de qualquer seção, inserir o cabeçalho de controle de versão do documento.
+Exigido pela ISO/IEC/IEEE 29148 §5.2 como metadado obrigatório do SRS:
+
+```markdown
+# [Nome do Produto] — Especificação de Requisitos de Software
+
+**Padrão:** ISO/IEC/IEEE 29148:2018 / IREB §3.3.3  
+**Ferramenta:** ferramenta-tcc  
+
+---
+
+## Controle de Versão
+
+| Versão | Data | Responsável | Descrição da Revisão |
+|---|---|---|---|
+| 1.0 | [DATA-GERAÇÃO] | ferramenta-tcc | Versão inicial — gerada automaticamente via elicitação estruturada |
+
+> Versões subsequentes registradas aqui após cada ciclo de revisão.
+
+---
+```
+
+Preencher `[DATA-GERAÇÃO]` com a data atual no formato `YYYY-MM-DD`.
+
+## Fase 2 — Montagem das 6 Seções
 
 **Mapeamento de fontes:**
 
@@ -34,7 +60,7 @@ description: >-
 |---|---|---|
 | 1 | Introdução | `documentos-tecnicos/01-visao/01-visao-produto.md` (M1) |
 | 2 | Descrição Geral | `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.3-restricoes.md` + `documentos-tecnicos/02-requisitos/02.4-premissas.md` |
-| 3 | Requisitos Funcionais | Saída de `requisito-ears` — tabela EARS + RFC 2119 |
+| 3 | Requisitos Funcionais | Saída de `requisito-ears` — tabela EARS + RFC 2119, agrupada por módulo |
 | 4 | Requisitos de Qualidade | Saída de `requisito-ears` — tabela RNFs com métricas |
 | 5 | Interfaces Externas e Glossário | `documentos-tecnicos/02-requisitos/02.3-restricoes.md` + `documentos-tecnicos/02-requisitos/02.5-glossario.md` |
 | 6 | Matriz de Rastreabilidade | Cruzamento: objetivos M1 → RF/RNF → spec → test |
@@ -52,7 +78,36 @@ description: >-
 - Se `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` existir: nota em 2.3 indicando conflitos detectados + status
 
 **Seção 3 — Requisitos Funcionais:**
-Inserir tabela EARS de `requisito-ears`. Organizar por módulo/processo se `documentos-tecnicos/01-visao/01-visao-produto.md` indicar agrupamentos naturais; caso contrário, manter ordem de IDs.
+
+Organizar **sempre por módulo** (padrão). Lista plana só como fallback explícito (ver regra abaixo).
+
+**Algoritmo de agrupamento (executar antes de inserir os RFs):**
+
+1. **Extrair candidatos a módulo** de duas fontes em paralelo:
+   - `documentos-tecnicos/01-visao/01-visao-produto.md` → funcionalidades-chave mencionadas, domínios de negócio citados
+   - Lista de RFs → agrupar por verbo/objeto comum ("cadastrar/listar/editar produto" → Módulo Produtos; "autenticar/recuperar senha" → Módulo Acesso)
+
+2. **Nomear módulos** em linguagem de negócio (não técnica):
+   - ✅ "Módulo de Agendamento", "Módulo de Usuários", "Módulo de Relatórios"
+   - ❌ "Auth Module", "CRUD de Pedidos", "Backend de Pagamentos"
+
+3. **Atribuir cada RF ao módulo mais próximo.** RF que não encaixa em nenhum → módulo "Geral".
+
+4. **Gerar seção 3 com subseções por módulo:**
+   ```markdown
+   ## 3. Requisitos Funcionais
+
+   ### 3.1 Módulo de [Nome]
+   | ID | Condição | Sujeito | Modal | Verbo | Objeto | Critério | Prioridade |
+   |---|---|---|---|---|---|---|---|
+   | RF-001 | ... | ... | DEVE | ... | ... | ... | DEVE_TER |
+
+   ### 3.2 Módulo de [Nome]
+   | ID | ...
+   ```
+
+5. **Fallback — lista plana:** usar SOMENTE se N_RF < 5 **E** não houver nenhum agrupamento natural identificável. Nesse caso: inserir tabela única com todos os RFs e registrar nota:
+   > _Nota: menos de 5 requisitos funcionais identificados — agrupamento por módulo omitido._
 
 **Seção 4 — Requisitos de Qualidade:**
 Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Bucket | Modal | Comportamento | Métrica | Critério de aceite.
@@ -67,7 +122,7 @@ Tabela: Objetivo de negócio (M1) | RF/RNF | Spec (.feature) | Test
 - Coluna spec: `documentos-tecnicos/03-documento/04-spec/<id>.feature` para RFs DEVE; N/A para DEVERIA/PODE
 - Coluna test: N/A nesta fase (preenchida após Passo 4)
 
-## Fase 2 — Verificação de Completude
+## Fase 3 — Verificação de Completude
 
 Antes de salvar, verificar checklist:
 - [ ] Todas as 6 seções presentes
@@ -77,7 +132,7 @@ Antes de salvar, verificar checklist:
 
 Se qualquer item `[ ]`: ⛔ STOP — corrigir antes de salvar.
 
-## Fase 3 — Saída
+## Fase 4 — Saída
 
 Salvar como `documentos-tecnicos/03-documento/03-srs-completo.md` (tamanho esperado: 300–600 linhas conforme projeto).
 
