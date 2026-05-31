@@ -108,7 +108,7 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
 | `priorizacao` | Sempre — Passo 2; Kano/IEEE condicionais | D9; MoSCoW + sub-rotinas |
 | `glossario` | Sempre — Passo 3 | Wiegers Ch11 (anti-ambiguidade) |
 | `conflitos-detect` | Sempre — Passo 4; arquivo só se ≥ 1 conflito | IREB §4.4 (6 tipos + 4 estratégias) |
-| `pautas-reelicitacao` | Sempre — Passo 5 | Livro SON cap. 8 Fig. 8.3 |
+| `pautas-reelicitacao` | Sempre — Passo 5 | Vazquez & Simões (2016) cap. 8 Fig. 8.3 |
 | `traducao-gate` | Passo 6 — só quando pautas zeradas | D18 |
 | `traducao-leigo` | Transversal — antes de qualquer texto ao usuário | D19 |
 

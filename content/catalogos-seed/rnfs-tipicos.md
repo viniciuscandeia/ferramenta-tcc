@@ -1,7 +1,7 @@
 # Catálogo: Requisitos Não-Funcionais Típicos
 
 Usado pelo sub-agente **Implícitos** para identificar RNFs que o usuário não mencionou.
-Baseado em FURPS+ (Grady, 1992), ISO/IEC 25010:2023 e Nielsen, J. "Usability Engineering" (1993) Morgan Kaufmann (Livro SON cap. 5 como referência complementar).
+Baseado em FURPS+ (Grady, 1992), ISO/IEC 25010:2023 e Nielsen, J. "Usability Engineering" (1993) Morgan Kaufmann (Vazquez & Simões (2016) cap. 5 como referência complementar).
 
 Critérios de qualidade do IREB §3.8 para verificar RNFs: Adequado, Necessário, Sem ambiguidade, Completo, Compreensível, Verificável.
 Referência normativa IREB: `normas/cpre_foundationlevel_handbook_BR_v1.2.md` §3.8.

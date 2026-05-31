@@ -229,7 +229,7 @@
 
 **Arquivo:** `skills/recomendacao-implicitos/SKILL.md`
 
-**Descrição:** Sugere RFs/RNFs implícitos (o "óbvio não-dito") usando os catálogos rfs-tipicos.md e rnfs-tipicos.md com algoritmo de filtragem em 3 camadas (D-S4.3) para produzir 5–10 candidatos em vez de 38. Confirma com o usuário em 1 lote de 4 perguntas. Referência: Livro SON §4.4.
+**Descrição:** Sugere RFs/RNFs implícitos (o "óbvio não-dito") usando os catálogos rfs-tipicos.md e rnfs-tipicos.md com algoritmo de filtragem em 3 camadas (D-S4.3) para produzir 5–10 candidatos em vez de 38. Confirma com o usuário em 1 lote de 4 perguntas. Referência: Vazquez & Simões (2016) §4.4.
 
 **Quando usar:** Invocada pelo collector na Ronda 4 da Fase A. Sempre executar após recomendacao-dominio. 1 chamada AskUserQuestion com até 4 perguntas de confirmação.
 
@@ -293,7 +293,7 @@
 
 **Arquivo:** `skills/pautas-reelicitacao/SKILL.md`
 
-**Descrição:** Identifica lacunas nos artefatos M2 que impedem avanço para Gate 2 e gera pautas-reelicitacao.md com checkboxes e skill-alvo para resolução. Arquivo vazio = Gate 2 pode abrir. Referência: Livro SON cap. 8 Fig. 8.3.
+**Descrição:** Identifica lacunas nos artefatos M2 que impedem avanço para Gate 2 e gera pautas-reelicitacao.md com checkboxes e skill-alvo para resolução. Arquivo vazio = Gate 2 pode abrir. Referência: Vazquez & Simões (2016) cap. 8 Fig. 8.3.
 
 **Quando usar:** Invocada pelo modeler no Passo 5 da Fase B. Determina se o loop collector⇄modeler deve continuar. Sem interação com usuário.
 
