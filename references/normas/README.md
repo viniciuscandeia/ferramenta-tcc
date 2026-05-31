@@ -34,7 +34,8 @@ Referências proprietárias (não distribuíveis) têm apenas metadado e link de
 | Gorski & Stadzisz (2016) | Arquitetura Problem-Based-SRS: D10 detection-based recovery, slots estruturados, algoritmo Zigzag |
 | MARE (Jin et al., 2024) | Topologia MARE-style para os 5 sub-agentes da ferramenta (D6 revisada) |
 | Vazquez & Simões (2016) | Técnicas ER: elicitação (cap. 7), classificação RF/RNF (cap. 5), stakeholders (cap. 6), pautas (cap. 8) |
-| Reinehr (2020) | Base complementar: stakeholders (cap. 1), entrevistas, priorização, conflitos (cap. 4) |
+| Andrade, F. — Alura 1777 | RFs típicos por categoria (mods. 1-3), cenários de uso no domínio educação |
+| Soares, D. — Alura | Stakeholders/análise de cenário (mod. 1), priorização (mod. 3), validação/OAN (mod. 4) |
 | Nielsen (1993) | 5 dimensões de usabilidade em `content/catalogos-seed/rnfs-tipicos.md` seção Usabilidade |
 | Wiegers & Beatty (2013) | Catálogo de RFs típicos em `content/catalogos-seed/rfs-tipicos.md` |
 | Robertson & Robertson (2012) | Catálogo de RFs (Volere §8-9), cenários como técnica de elicitação (cap. 9) em `cenario-narrativa` |
@@ -142,24 +143,27 @@ Referências proprietárias (não distribuíveis) têm apenas metadado e link de
 | Localização | `TCC/referencias/Engenharia de Requisitos - Software Orientado ao Negócio/` |
 | Capítulos usados | 5 (tipos de requisito), 6 (stakeholders), 7 (elicitação), 8 (análise/pautas) |
 
-### Reinehr, S. (2020) — "Livro 2"
+### Andrade, F. (Alura) — "Livro 1"
 | Campo | Valor |
 |---|---|
-| Autora | Sheila Reinehr |
-| Título | Engenharia de Requisitos |
-| Editora | Grupo A / Sagah |
-| Ano | 2020 |
-| ISBN | 978-65-5690-067-4 |
-| Localização | `TCC/referencias/Engenharia de Requisitos - como levantar, documentar e validar/` |
-| Uso | Stakeholders (cap. 1), entrevistas, priorização, conflitos (cap. 4) |
+| Instrutora | Fernanda Andrade |
+| Título | Engenharia de Requisitos: da demanda ao gerenciamento |
+| Plataforma | Alura (curso ID 1777) |
+| Tipo | Curso online (vídeo-aulas) |
+| URL | https://www.alura.com.br/curso-online-engenharia-requisitos-demanda-gerenciamento |
+| Localização | `TCC/referencias/Engenharia de Requisitos - Da demanda ao gerenciamento/` (pasta vazia — acesso via conta Alura) |
+| Uso | RFs típicos (mods. 1-3), cenários de uso para domínio educação |
 
-### "Livro 1" — identificação pendente
+### Soares, D. (Alura) — "Livro 2"
 | Campo | Valor |
 |---|---|
-| Título presumido | Engenharia de Requisitos: Da demanda ao gerenciamento |
-| Localização | `TCC/referencias/Engenharia de Requisitos - Da demanda ao gerenciamento/` |
-| Status | **TODO:** confirmar autor/editora/ISBN. Pode ser notas de aula, não livro publicado. |
-| Uso citado | RFs típicos (cap. 1-3), cenários de uso para domínio educação |
+| Instrutora | Daniela Soares |
+| Título | Engenharia de Requisitos: como levantar, documentar e validar |
+| Plataforma | Alura |
+| Tipo | Curso online (vídeo-aulas) |
+| URL | https://cursos.alura.com.br/course/engenharia-requisitos |
+| Localização | `TCC/referencias/Engenharia de Requisitos - como levantar, documentar e validar/` (apenas materiais de apoio) |
+| Uso | Stakeholders/análise de cenário (mod. 1), priorização (mod. 3), validação/OAN (mod. 4) |
 
 ### IMS Global Learning Consortium
 | Campo | Valor |

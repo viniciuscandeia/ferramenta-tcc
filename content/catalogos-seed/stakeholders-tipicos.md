@@ -3,7 +3,7 @@
 Usado pelo sub-agente **Implícitos** para identificar stakeholders que o usuário não mencionou.
 Para cada stakeholder: quando aparece, necessidades típicas e pergunta-gatilho para confirmar com o usuário.
 
-Fonte principal: Reinehr (2020) cap. 1 (planilha de stakeholders), Vazquez & Simões (2016) cap. 6, Alexander, I. & Robertson, S. "Understanding Project Sociology by Modeling Stakeholders" (2004) IEEE Software 21(1) pp. 23-27 [Onion Model], IREB CPRE Foundation Level §3.1.
+Fonte principal: Soares, D. "Engenharia de Requisitos: como levantar, documentar e validar" (Alura) mod. 1, Vazquez & Simões (2016) cap. 6, Alexander, I. & Robertson, S. "Understanding Project Sociology by Modeling Stakeholders" (2004) IEEE Software 21(1) pp. 23-27 [Onion Model], IREB CPRE Foundation Level §3.1.
 
 ---
 

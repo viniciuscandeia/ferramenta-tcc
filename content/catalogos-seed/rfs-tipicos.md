@@ -3,7 +3,7 @@
 Usado pelo sub-agente **Implícitos** para identificar RFs que o usuário não mencionou.
 Organizado por categoria funcional. Quase todos os sistemas digitais precisam das categorias marcadas com ⭐.
 
-Fonte: Vazquez & Simões (2016) cap. 7 (técnicas de elicitação), Livro 1 cap. 1-3 (identificação pendente — ver references/normas/README.md), Wiegers, K. & Beatty, J. "Software Requirements" 3rd ed. (2013) Microsoft Press, Robertson, J. & Robertson, S. "Mastering the Requirements Process" 3rd ed. (2012) Addison-Wesley (Volere template §8–9).
+Fonte: Vazquez & Simões (2016) cap. 7 (técnicas de elicitação), Andrade, F. "Engenharia de Requisitos: da demanda ao gerenciamento" (Alura, curso 1777) mods. 1-3, Wiegers, K. & Beatty, J. "Software Requirements" 3rd ed. (2013) Microsoft Press, Robertson, J. & Robertson, S. "Mastering the Requirements Process" 3rd ed. (2012) Addison-Wesley (Volere template §8–9).
 
 ---
 
