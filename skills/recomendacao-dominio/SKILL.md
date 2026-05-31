@@ -15,7 +15,7 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar antes de `cenario-narrativa` concluída (verificar seção `## Cenários Narrativos` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
-- NÃO executar se nenhum catálogo em `catalogos-seed/dominios/` tem ≥ 2 keyword matches E catálogo genérico não está disponível — registrar em `_pendencias.md` e pular esta rodada
+- NÃO executar se nenhum catálogo em `content/catalogos-seed/dominios/` tem ≥ 2 keyword matches E catálogo genérico não está disponível — registrar em `_pendencias.md` e pular esta rodada
 - ⛔ STOP se usuário nega o domínio detectado E seleciona "outro" — usar catálogos genéricos sem nova pergunta de confirmação
 </HARD-GATE>
 
@@ -23,7 +23,7 @@ description: >-
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Cenários Narrativos` existe em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
-3. Acessar catálogos disponíveis em `catalogos-seed/dominios/`
+3. Acessar catálogos disponíveis em `content/catalogos-seed/dominios/`
 
 ## Fase 1 — Detecção Automática do Domínio
 
@@ -80,7 +80,7 @@ Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 ## Recomendações de Domínio (recomendacao-dominio — Fase A)
 
 **Domínio detectado:** [nome] (confirmado pelo usuário)
-**Catálogo usado:** `catalogos-seed/dominios/[arquivo].md`
+**Catálogo usado:** `content/catalogos-seed/dominios/[arquivo].md`
 
 **Stakeholders adicionais confirmados:** [lista ou "nenhum"]
 **Funcionalidades confirmadas:** [lista com origem no catálogo]

@@ -1,55 +1,9 @@
 {
   "name": "ferramenta-tcc",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED.",
   "author": {
     "name": "Vinicius Candeia"
   },
-  "repository": "https://github.com/viniciuscandeia/ferramenta-tcc",
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/load_state.sh"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/gate_guard.sh"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/blacklist_guard.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/scripts/inject_state.sh",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
+  "repository": "https://github.com/viniciuscandeia/ferramenta-tcc"
 }

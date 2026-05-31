@@ -23,7 +23,7 @@ A **primeira** interação é sempre a mensagem de boas-vindas em PT-BR (abaixo)
 
 Ao ser invocado via `/iniciar-projeto`:
 
-0. **Ler `{PLUGIN_ROOT}/constitution.md`** via Read tool e internalizar as regras D1/D3/D14/D15 como invioláveis.
+0. **Ler `{PLUGIN_ROOT}/content/constitution.md`** via Read tool e internalizar as regras D1/D3/D14/D15 como invioláveis.
    `{PLUGIN_ROOT}` = `installPath` de `~/.claude/plugins/installed_plugins.json["ferramenta-tcc@ferramenta-tcc"][0]`.
 
 1. **Capturar diretório de trabalho** (passo obrigatório ANTES de qualquer leitura de arquivo):
@@ -86,13 +86,13 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 
 | Marco corrente | Slice a carregar | Agents invocados |
 |---|---|---|
-| M1 | `marcos/m1.md` | `stakeholder-identifier` |
-| M2 | `marcos/m2.md` | `collector` ⇄ `modeler` |
-| M3 | `marcos/m3.md` | `documenter` ⇄ `checker` |
-| M4 | `marcos/m4.md` | `checker` (modo técnico) |
+| M1 | `content/marcos/m1.md` | `stakeholder-identifier` |
+| M2 | `content/marcos/m2.md` | `collector` ⇄ `modeler` |
+| M3 | `content/marcos/m3.md` | `documenter` ⇄ `checker` |
+| M4 | `content/marcos/m4.md` | `checker` (modo técnico) |
 
 **REGRAS DE CARREGAMENTO:**
-1. Carregar `marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
+1. Carregar `content/content/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
 2. **NUNCA** mencionar artefatos, skills ou gates de marcos futuros ao usuário
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
@@ -105,7 +105,7 @@ Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a seq
 
 O orquestrador mantém `estado-projeto.yaml` atualizado após cada ação significativa.
 
-**Schema completo (Z20, Z21 — ver template em `catalogos-seed/estado-projeto.exemplo.yaml`):**
+**Schema completo (Z20, Z21 — ver template em `content/catalogos-seed/estado-projeto.exemplo.yaml`):**
 ```yaml
 projeto_dir: /caminho/absoluto/do/projeto   # capturado via pwd no boot (passo 0)
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
@@ -123,8 +123,8 @@ artefatos:
     gate: gate_1
     aprovado_em: null       # timestamp quando aprovado
 pautas_abertas: []
-loop_m2_iteracoes: 0     # incrementado a cada volta ao collector; sem teto fixo (ver constitution.md)
-loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter; sem teto fixo (ver constitution.md)
+loop_m2_iteracoes: 0     # incrementado a cada volta ao collector; sem teto fixo (ver content/constitution.md)
+loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter; sem teto fixo (ver content/constitution.md)
 versao_leigo_aprovada: []
 ultima_atualizacao: "2026-05-18T00:00:00"
 violacoes_detectadas: []    # append-only (C4.4); cada entrada: {data, tipo, turno, acao_corretiva}

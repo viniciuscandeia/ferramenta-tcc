@@ -49,26 +49,29 @@ Responda as perguntas como faria com um analista de requisitos humano.
 ```
 ferramenta-tcc/
 ├── .claude-plugin/
-│   └── plugin.json        # Manifesto Claude Code
-├── settings.json          # Entry-point Claude Code (ativa orquestrador como thread principal)
+│   └── plugin.json        # Manifesto (metadados apenas — sem hooks inline)
+├── settings.json          # Apenas: {"agent": "orchestrator"}
+├── hooks/
+│   └── hooks.json         # Todos os 4 hooks (SessionStart, PreToolUse, PostToolUse, UserPromptSubmit)
 ├── agents/                # Definições de agente (orchestrator + 5 sub-agentes)
-│   └── orchestrator.md    # Agente principal (thread principal quando plugin habilitado)
+│   └── orchestrator.md    # Agente principal (system prompt quando plugin habilitado)
 ├── skills/                # 27 skills de elicitação e documentação
-├── scripts/               # Hook scripts (gate_guard.sh, blacklist_guard.sh, inject_state.sh, load_state.sh)
+├── scripts/               # Scripts invocados pelos hooks
 │   └── lib/blacklist.txt  # Blacklist D1 (jargão proibido)
-├── orchestrator.md        # Dispatcher central
-├── constitution.md        # Guardrails imutáveis (D15)
-├── marcos/                # Slices por marco (m1–m4)
-├── workflows/             # Workflows detalhados por marco
-├── catalogos-seed/        # Conhecimento destilado de domínios e requisitos típicos
-├── templates/             # Templates de artefatos
+├── content/               # Conteúdo do plugin (não auto-descoberto pelo CC)
+│   ├── orchestrator.md    # Dispatcher central
+│   ├── constitution.md    # Guardrails imutáveis (D15)
+│   ├── marcos/            # Slices por marco (m1–m4)
+│   ├── workflows/         # Workflows detalhados por marco
+│   ├── catalogos-seed/    # Conhecimento destilado de domínios e requisitos típicos
+│   └── templates/         # Templates de artefatos
 ├── references/            # Material de referência externo
 │   └── normas/            # Normas IREB, ISO/IEC/IEEE 29148
 ├── tests/                 # Casos canônicos E2E + checklists por marco
 └── CATALOGO.md            # Índice completo de agentes e skills
 ```
 
-`settings.json` força o orquestrador como thread principal desde o primeiro turno.
+`settings.json` ativa o orquestrador como thread principal desde o primeiro turno.
 Veja `CATALOGO.md` para o índice completo de agentes e skills.
 
 ---

@@ -28,7 +28,7 @@ when_to_use: Ao final de cada marco (M1, M2, M3) antes de apresentar artefatos a
 **Marco-aware:** o formato normativo varia por marco.
 
 **M1 — Documento de Visão (ISO 29148):**
-Estruturar o artefato normativo seguindo o template `templates/01-documento-visao.md` com 6 seções:
+Estruturar o artefato normativo seguindo o template `content/templates/01-documento-visao.md` com 6 seções:
 1. Visão — frase-síntese estilo Geoffrey Moore
 2. Problema & Necessidade — dor real, quem sofre, impacto (sem lista de solução/features)
 3. Objetivos e Metas de Sucesso — como saberemos que deu certo (KPIs/métricas)

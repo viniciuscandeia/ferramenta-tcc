@@ -5,7 +5,7 @@
 **Marcos:** M3 (validação no loop documenter ⇄ checker) + M4 (revisão técnica opcional, D24)
 **Papel no loop M3:** Validação — analisa artefatos do documenter e bloqueia ou libera Gate 3
 **Papel em M4:** Revisão técnica para dev/tech lead (stub opcional)
-**Workflow:** `workflows/m3-srs-specs-tests.md` (Fase B)
+**Workflow:** `content/workflows/m3-srs-specs-tests.md` (Fase B)
 
 ---
 
