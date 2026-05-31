@@ -55,35 +55,35 @@ ENTRADA (artefatos M1 aprovados)
 
 #### [A1] entrevista-estruturada
 
-- Invocar skill `core/skills/entrevista-estruturada/SKILL.md`
+- Invocar skill 'entrevista-estruturada'
 - Input: `documentos-tecnicos/01-visao/01-visao-produto.md` (contexto)
 - Output: seção "Rotina e Necessidades" no `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
 - **1 lote de 4 perguntas** sobre: atividades cotidianas / frustrações atuais / ideal esperado / restrições percebidas
 
 #### [A2] cenario-narrativa
 
-- Invocar skill `core/skills/cenario-narrativa/SKILL.md`
+- Invocar skill 'cenario-narrativa'
 - Input: respostas da entrevista + perfis de stakeholders (M1)
 - Output: 1–2 cenários "um dia normal de [perfil]" no `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
 - Skill extrai RFs candidatos implícitos do texto do usuário
 
 #### [A3] recomendacao-dominio
 
-- Invocar skill `core/skills/recomendacao-dominio/SKILL.md`
+- Invocar skill 'recomendacao-dominio'
 - Input: `documentos-tecnicos/01-visao/01-visao-produto.md` (para inferir domínio)
 - Output: 4–8 RFs/RNFs do catálogo de domínio confirmados pelo usuário
 - **1 yesno** para confirmar domínio detectado + **1 lote de 4 perguntas** sobre seções do catálogo
 
 #### [A4] recomendacao-implicitos
 
-- Invocar skill `core/skills/recomendacao-implicitos/SKILL.md`
+- Invocar skill 'recomendacao-implicitos'
 - Input: `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` acumulado até aqui + `catalogos-seed/rfs-tipicos.md` + `catalogos-seed/rnfs-tipicos.md`
 - Output: 5–10 RFs/RNFs implícitos confirmados pelo usuário (algoritmo 3 camadas D-S4.3)
 - **Pré-aviso ao usuário antes de iniciar:** "Vou sugerir algumas funcionalidades comuns que sistemas como o seu costumam ter — você me diz se fazem sentido para o seu projeto."
 
 #### [A5] questionario-feixe (CONDICIONAL)
 
-- Invocar skill `core/skills/questionario-feixe/SKILL.md`
+- Invocar skill 'questionario-feixe'
 - **Ativar apenas se:** ≥ 3 áreas do sistema sem detalhamento claro após [A1]–[A4]
 - Input: `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` + lista de áreas ainda vagas
 - Output: 1–2 lotes de 4 perguntas agrupadas por tema
@@ -94,14 +94,14 @@ ENTRADA (artefatos M1 aprovados)
 
 #### [B1] classificacao-rf-rnf
 
-- Invocar skill `core/skills/classificacao-rf-rnf/SKILL.md`
+- Invocar skill 'classificacao-rf-rnf'
 - Input: `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` (completo após Fase A)
 - Output: tabela classificada em `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` (rascunho) + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` (rascunho) + `documentos-tecnicos/02-requisitos/02.3-restricoes.md` (rascunho) + `documentos-tecnicos/02-requisitos/02.4-premissas.md` (se detectadas)
 - Sem interação com usuário
 
 #### [B2] priorizacao
 
-- Invocar skill `core/skills/priorizacao/SKILL.md`
+- Invocar skill 'priorizacao'
 - Input: rascunhos de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
 - Output: modal RFC 2119 + campo MoSCoW atribuído a cada item
 - Gatilhos automáticos (D-S4.2): Kano se RFs Should/Could ≥ 8 **e** stakeholders ≥ 2; IEEE se RFs+RNFs ≥ 25 **e** restrição de prazo fixo
@@ -109,21 +109,21 @@ ENTRADA (artefatos M1 aprovados)
 
 #### [B3] glossario
 
-- Invocar skill `core/skills/glossario/SKILL.md`
+- Invocar skill 'glossario'
 - Input: `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` + rascunhos M2
 - Output: `documentos-tecnicos/02-requisitos/02.5-glossario.md` com termos do domínio + definições
 - Sem interação com usuário
 
 #### [B4] conflitos-detect (CONDICIONAL)
 
-- Invocar skill `core/skills/conflitos-detect/SKILL.md`
+- Invocar skill 'conflitos-detect'
 - **Ativar sempre** — mas só gerar `conflitos-detectados.md` se ≥ 1 conflito encontrado
 - Input: artefatos rascunho M2 + stakeholders de M1
 - Output: `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` (condicional) com tipo IREB §4.4 + estratégia de resolução
 
 #### [B5] pautas-reelicitacao
 
-- Invocar skill `core/skills/pautas-reelicitacao/SKILL.md`
+- Invocar skill 'pautas-reelicitacao'
 - Input: todos os rascunhos M2
 - Output: `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` com checkboxes
 - **Se vazio:** avançar para [B6]
@@ -131,7 +131,7 @@ ENTRADA (artefatos M1 aprovados)
 
 #### [B6] traducao-gate
 
-- Invocar skill `core/skills/traducao-gate/SKILL.md`
+- Invocar skill 'traducao-gate'
 - Input: artefatos finalizados M2
 - Output: versões leigo de `02.1-requisitos-funcionais`, `02.2-requisitos-qualidade`, `02.3-restricoes`
 - Salvar todos os artefatos nas pastas correspondentes do projeto

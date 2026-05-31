@@ -55,14 +55,14 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [A1] requisito-ears
 
-- Invocar skill `core/skills/requisito-ears/SKILL.md`
+- Invocar skill 'requisito-ears'
 - Input: `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` (artefatos M2 aprovados)
 - Output: versões formatadas de cada RF e RNF no padrão EARS (Event-driven, Ubiquitous, State-driven, Optional, Unwanted behaviour) com modal RFC 2119 (`DEVE` / `DEVERIA` / `PODE`)
 - Sem interação com usuário — transformação de formato pura
 
 #### [A2] srs-ireb-template
 
-- Invocar skill `core/skills/srs-ireb-template/SKILL.md`
+- Invocar skill 'srs-ireb-template'
 - Input: RFs+RNFs formatados de [A1] + `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.5-glossario.md`
 - Output: `documentos-tecnicos/03-documento/03-srs-completo.md` com 6 seções IREB §3.3.3:
   1. Introdução (escopo, glossário)
@@ -75,7 +75,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [A3] gherkin-spec
 
-- Invocar skill `core/skills/gherkin-spec/SKILL.md`
+- Invocar skill 'gherkin-spec'
 - Input: `documentos-tecnicos/03-documento/03-srs-completo.md` (seção 3 — RFs DEVE)
 - Output:
   - `documentos-tecnicos/03-documento/04-spec/rf-{id}-{descricao}.feature` para cada RF com modal `DEVE` (1 arquivo por RF)
@@ -85,7 +85,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [A4] step-defs-red
 
-- Invocar skill `core/skills/step-defs-red/SKILL.md`
+- Invocar skill 'step-defs-red'
 - Input: `documentos-tecnicos/03-documento/04-spec/*.feature` (gerados em [A3])
 - Output: `documentos-tecnicos/03-documento/05-tests/` com step definitions em estado RED nos 3 frameworks declarados:
   - Playwright (E2E / UI)
@@ -96,7 +96,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [A5] testing-strategy
 
-- Invocar skill `core/skills/testing-strategy/SKILL.md`
+- Invocar skill 'testing-strategy'
 - Input: `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` (RNFs com métricas)
 - Output: `documentos-tecnicos/03-documento/06-estrategia-testes.md` com 1 entrada por RNF declarando:
   - Tipo de teste (performance, segurança, acessibilidade, etc.)
@@ -107,7 +107,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [A6] readme-tests
 
-- Invocar skill `core/skills/readme-tests/SKILL.md`
+- Invocar skill 'readme-tests'
 - Input: `documentos-tecnicos/03-documento/05-tests/` + `documentos-tecnicos/03-documento/06-estrategia-testes.md`
 - Output: `documentos-tecnicos/03-documento/07-como-rodar-testes.md` com:
   - Instruções de setup para cada um dos 3 frameworks
@@ -118,7 +118,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [A7] traducao-gate
 
-- Invocar skill `core/skills/traducao-gate/SKILL.md`
+- Invocar skill 'traducao-gate'
 - Input: `documentos-tecnicos/03-documento/03-srs-completo.md` (versão normativa gerada em [A2])
 - Output: `documentos-para-leigo/03-documento/03-documento-do-projeto.md` — versão em linguagem natural, sem jargão técnico ou de ER
 - **Exceção D18+D19:** `04-spec/`, `05-tests/`, `06-estrategia-testes.md` e `07-como-rodar-testes.md` são artefatos técnicos — não gerar versões leigo destes
@@ -130,7 +130,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [B1] validacao-checklist-ireb
 
-- Invocar skill `core/skills/validacao-checklist-ireb/SKILL.md`
+- Invocar skill 'validacao-checklist-ireb'
 - Input: `documentos-tecnicos/03-documento/03-srs-completo.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
 - Aplicar 12 critérios IREB §3.8: 6 por requisito individual + 6 por SRS como documento
 - Output: seção "Validação IREB §3.8" adicionada ao rascunho de `documentos-tecnicos/03-documento/03.1-analyze-report.md`
@@ -138,7 +138,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [B2] analyze-cross-artifact
 
-- Invocar skill `core/skills/analyze-cross-artifact/SKILL.md`
+- Invocar skill 'analyze-cross-artifact'
 - Input: todos os artefatos M1 + M2 + M3 (inclusive outputs de [B1] já em `documentos-tecnicos/03-documento/03.1-analyze-report.md`)
 - Executar 3 cruzamentos obrigatórios:
   1. Visão ↔ Elicitação: objetivo M1 → RF correspondente em M2
@@ -149,7 +149,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 #### [B3] rastreabilidade-matriz
 
-- Invocar skill `core/skills/rastreabilidade-matriz/SKILL.md`
+- Invocar skill 'rastreabilidade-matriz'
 - Input: `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` + `documentos-tecnicos/03-documento/03-srs-completo.md` + `documentos-tecnicos/03-documento/04-spec/*.feature`
 - Output: `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` com matriz completa Objetivo→RF/RNF→Seção SRS→Spec→Test→Stakeholder
 - Lacunas (células "❌") alimentam análise final antes da consolidação

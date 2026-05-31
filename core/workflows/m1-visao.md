@@ -52,7 +52,7 @@ ENTRADA
 ## DETALHES DE CADA PASSO
 
 ### [1] necessidade-visao
-- Invocar skill `core/skills/necessidade-visao/SKILL.md`
+- Invocar skill 'necessidade-visao'
 - Input: texto inicial do usuário (se fornecido via `/iniciar-projeto`); usar para pré-extração
 - Output: seções `## 1. Visão`, `## 2. Problema & Necessidade`, `## 3. Objetivos e Metas de Sucesso`
 - Modo: **problema-primeiro** (5-Whys → JTBD → síntese Moore confirmada)
@@ -60,25 +60,25 @@ ENTRADA
 - Lote compacto só nas Fases 2 e 3 (campos independentes)
 
 ### [2] stakeholder-mapping
-- Invocar skill `core/skills/stakeholder-mapping/SKILL.md`
+- Invocar skill 'stakeholder-mapping'
 - Input: seções `## 1. Visão` e `## 2. Problema & Necessidade` (pré-popular com pessoas mencionadas)
 - Output: seção `## 4. Pessoas Envolvidas` (tabela Onion)
 - Checklist de camadas, não perguntas abertas
 
 ### [3] contexto-e-limite
-- Invocar skill `core/skills/contexto-e-limite/SKILL.md`
+- Invocar skill 'contexto-e-limite'
 - Input: todas as seções anteriores
 - Output: seção `## 5. Contexto e Limites` + campo `lacunas_m1` em estado-projeto.yaml
 - **Não re-perguntar "o que faz"** — inferir da Seção 2 e confirmar em choice
 
 ### [4] clarificacao-pos-visao (condicional — D16)
 - Verificar: `estado-projeto.yaml → lacunas_m1.contagem`
-- SE ≥ 2: invocar skill `core/skills/clarificacao-pos-visao/SKILL.md`
+- SE ≥ 2: invocar skill 'clarificacao-pos-visao'
 - SE < 2: pular; ir direto para [5]
 - Perguntas: máximo 1 chamada com ≤ 3 perguntas choice/yesno
 
 ### [5] traducao-gate
-- Invocar skill `core/skills/traducao-gate/SKILL.md`
+- Invocar skill 'traducao-gate'
 - Input: `documentos-tecnicos/01-visao/01-visao-produto.md` completo (6 seções do template)
 - Output: versão normativa finalizada + `documentos-para-leigo/01-visao/01-visao-produto.md`
 - Salvar ambos nas pastas correspondentes do projeto
