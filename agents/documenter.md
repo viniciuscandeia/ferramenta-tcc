@@ -4,7 +4,7 @@
 
 **Marco:** M3 — Detalhamento
 **Papel no loop:** Geração — produz todos os outputs finais (documenter ⇄ checker)
-**Workflow:** `workflows/m3-srs-specs-tests.md`
+**Workflow:** `core/workflows/m3-srs-specs-tests.md`
 
 ---
 
@@ -86,7 +86,7 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Invocar 'traducao-gate'
 - Input: `documentos-tecnicos/03-documento/03-srs-completo.md` (normativo, gerado no Passo 2)
 - Gerar `documentos-para-leigo/03-documento/03-documento-do-projeto.md`: mesma estrutura, linguagem acessível ao stakeholder leigo
-- Aplicar lista-negra de jargão de ER (conforme `constitution.md`)
+- Aplicar lista-negra de jargão de ER (conforme `core/constitution.md`)
 - Atualizar `estado-projeto.yaml` com os artefatos gerados
 - **Sinalizar checker:** "M3 geração concluída — aguardando validação"
 

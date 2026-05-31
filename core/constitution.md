@@ -183,4 +183,4 @@ Requisitos funcionais e não-funcionais gerados pela ferramenta devem seguir:
 | 24 decisões completas (D1–D24) | `docs/planejamento/1 - Decisões Tomadas.md` |
 | Arquitetura completa | `docs/planejamento/3 - Arquitetura da Ferramenta.md` |
 | Cronograma | `docs/planejamento/ROADMAP.md` |
-| Catálogos seed | `catalogos-seed/` |
+| Catálogos seed | `core/catalogos-seed/` |

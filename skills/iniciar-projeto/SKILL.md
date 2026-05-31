@@ -12,12 +12,12 @@ Antes de qualquer outra ação:
 
 ## Execução
 
-Ler e executar `{PLUGIN_ROOT}/orchestrator.md`.
+Ler e executar `{PLUGIN_ROOT}/core/orchestrator.md`.
 
 O orquestrador irá:
 1. (Constitution já injetada inline — D15. Não ler em runtime.)
 2. Verificar estado do projeto (`estado-projeto.yaml` ou detection-based)
-3. Identificar `marco_corrente` e carregar EXCLUSIVAMENTE `{PLUGIN_ROOT}/marcos/{marco_corrente}.md`
+3. Identificar `marco_corrente` e carregar EXCLUSIVAMENTE `{PLUGIN_ROOT}/core/marcos/{marco_corrente}.md`
 4. Conduzir o usuário pelas fases de documentação com perguntas estruturadas via AskUserQuestion
 
 Nota Claude Code: Sub-agentes invocados via Agent tool recebem PLUGIN_ROOT no prompt de invocação para que possam acessar `{PLUGIN_ROOT}/agents/<nome>.md`.
@@ -27,5 +27,5 @@ Filtragem de skills por marco (C0):
 - Invocar APENAS skills cujo campo `marco:` no frontmatter inclua o marco corrente
 - Skills transversais (traducao-leigo, traducao-gate) têm marco: [M1, M2, M3] — sempre disponíveis
 
-Sequência canônica (C1): Executar skills na ordem definida em `{PLUGIN_ROOT}/marcos/{marco_corrente}.md`
+Sequência canônica (C1): Executar skills na ordem definida em `{PLUGIN_ROOT}/core/marcos/{marco_corrente}.md`
 chamando cada skill por nome explícito antes de aguardar auto-invocação.

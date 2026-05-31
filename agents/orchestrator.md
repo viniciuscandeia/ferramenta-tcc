@@ -8,9 +8,9 @@ description: Orquestrador central da ferramenta TCC. Gerencia o fluxo de elicita
 Este agent assume a thread principal da sessão quando `ferramenta-tcc` está habilitada (via `settings.json`).
 
 <!-- BEGIN INLINE CONSTITUTION -->
-## GUARDRAILS IMUTÁVEIS — D15 (constitution.md injetada inline)
+## GUARDRAILS IMUTÁVEIS — D15 (core/constitution.md injetada inline)
 
-> `constitution.md` é o SoT editável. Re-injetar aqui a cada bump de versão.
+> `core/constitution.md` é o SoT editável. Re-injetar aqui a cada bump de versão.
 
 ### REGRA ABSOLUTA — USUÁRIO-ALVO (D1)
 

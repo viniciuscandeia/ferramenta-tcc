@@ -51,24 +51,25 @@ ferramenta-tcc/
 ├── .claude-plugin/
 │   └── plugin.json        # Manifesto Claude Code
 ├── settings.json          # Entry-point Claude Code (ativa orquestrador como thread principal)
-├── agents/
+├── agents/                # Adapters CC — thin wrappers com frontmatter
 │   └── orchestrator.md    # Agente principal (thread principal quando plugin habilitado)
 ├── skills/                # CC adapters — thin wrappers sem lógica de negócio
-├── hooks/                 # gate_guard.sh (PreToolUse) + load_state.sh (SessionStart)
-
-│   ├── orchestrator.md
-│   ├── constitution.md
-│   ├── agents/            # 5 sub-agentes funcionais (M1–M4)
-│   ├── skills/            # 26 skills especializadas
+├── scripts/               # Hook scripts (gate_guard.sh, blacklist_guard.sh, inject_state.sh, load_state.sh)
+│   └── lib/blacklist.txt  # Blacklist D1 (jargão proibido)
+├── core/                  # Engine canônico (D12) — lógica de negócio
+│   ├── orchestrator.md    # Dispatcher central
+│   ├── constitution.md    # Guardrails imutáveis D15
 │   ├── marcos/            # Slices por marco (m1–m4)
 │   ├── workflows/         # Workflows detalhados por marco
+│   ├── catalogos-seed/    # Conhecimento destilado de domínios e requisitos típicos
 │   └── templates/         # Templates de artefatos
-├── catalogos-seed/        # Conhecimento destilado de domínios e requisitos típicos
+├── references/            # Material de referência externo
+│   └── normas/            # Normas IREB, ISO/IEC/IEEE 29148
 ├── tests/                 # Casos canônicos E2E + checklists por marco
 └── CATALOGO.md            # Índice completo de agentes e skills
 ```
 
-Engine canônico em raiz do plugin. Adapters em `skills/` e `agents/` são thin wrappers sem lógica de negócio.
+Engine canônico em `core/` (D12). Adapters em `skills/` e `agents/` são thin wrappers sem lógica de negócio.
 `settings.json` força o orquestrador como thread principal desde o primeiro turno.
 Veja `CATALOGO.md` para o índice completo de agentes e skills.
 

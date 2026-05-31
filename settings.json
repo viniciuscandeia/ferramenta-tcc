@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "hooks/gate_guard.sh"
+            "command": "scripts/gate_guard.sh"
           }
         ]
       }

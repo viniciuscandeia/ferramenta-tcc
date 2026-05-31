@@ -85,13 +85,13 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 
 | Marco corrente | Slice a carregar | Agents invocados |
 |---|---|---|
-| M1 | `marcos/m1.md` | `stakeholder-identifier` |
-| M2 | `marcos/m2.md` | `collector` ⇄ `modeler` |
-| M3 | `marcos/m3.md` | `documenter` ⇄ `checker` |
-| M4 | `marcos/m4.md` | `checker` (modo técnico) |
+| M1 | `core/marcos/m1.md` | `stakeholder-identifier` |
+| M2 | `core/marcos/m2.md` | `collector` ⇄ `modeler` |
+| M3 | `core/marcos/m3.md` | `documenter` ⇄ `checker` |
+| M4 | `core/marcos/m4.md` | `checker` (modo técnico) |
 
 **REGRAS DE CARREGAMENTO:**
-1. Carregar `marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
+1. Carregar `core/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
 2. **NUNCA** mencionar artefatos, skills ou gates de marcos futuros ao usuário
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
@@ -104,7 +104,7 @@ Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a seq
 
 O orquestrador mantém `estado-projeto.yaml` atualizado após cada ação significativa.
 
-**Schema completo (Z20, Z21 — ver template em `catalogos-seed/estado-projeto.exemplo.yaml`):**
+**Schema completo (Z20, Z21 — ver template em `core/catalogos-seed/estado-projeto.exemplo.yaml`):**
 ```yaml
 projeto_dir: /caminho/absoluto/do/projeto   # capturado via pwd no boot (passo 0)
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido

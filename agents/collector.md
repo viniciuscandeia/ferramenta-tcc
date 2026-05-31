@@ -4,7 +4,7 @@
 
 **Marco:** M2 — Consenso de Escopo
 **Papel no loop:** Elicitação ativa — executa UMA rodada por turno, guiada por `agenda_m2`
-**Workflow:** `workflows/m2-requisitos.md`
+**Workflow:** `core/workflows/m2-requisitos.md`
 
 ---
 
@@ -128,8 +128,8 @@ Para cada pauta `[ ]` em `documentos-tecnicos/02-requisitos/02.6-pautas-reelicit
 |---|---|---|---|
 | `entrevista-estruturada` | entrevista | Sempre | IREB §4.2 + 4 perguntas-âncora |
 | `cenario-narrativa` | cenarios | Sempre | Material Dani n08 |
-| `recomendacao-dominio` | dominio | Sempre | `catalogos-seed/dominios/` |
-| `recomendacao-implicitos` | implicitos | Sempre | `catalogos-seed/rfs-tipicos.md` + `rnfs-tipicos.md` |
+| `recomendacao-dominio` | dominio | Sempre | `core/catalogos-seed/dominios/` |
+| `recomendacao-implicitos` | implicitos | Sempre | `core/catalogos-seed/rfs-tipicos.md` + `rnfs-tipicos.md` |
 | `questionario-feixe` | feixe | Condicional: ≥ 3 áreas vagas (modeler decide) | — |
 | `traducao-leigo` | — | Transversal — antes de qualquer texto ao usuário | D19 |
 

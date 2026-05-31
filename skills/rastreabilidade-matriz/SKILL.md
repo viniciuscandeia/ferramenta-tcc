@@ -1,7 +1,7 @@
 ---
 name: rastreabilidade-matriz
 marco: [M3]
-description: Gera rastreabilidade.md com matriz bidirecional ligando Objetivo de negócio (M1) → RF/RNF (M2) → Seção SRS (M3) → Spec (.feature) → Step definitions → Stakeholder origem. Detecta lacunas (células vazias = candidatos a issues para analyze-cross-artifact). Referência: catalogos-seed/conceitos/qualidade-e-validacao.md §4 (rastreabilidade bidirecional forward+backward).
+description: Gera rastreabilidade.md com matriz bidirecional ligando Objetivo de negócio (M1) → RF/RNF (M2) → Seção SRS (M3) → Spec (.feature) → Step definitions → Stakeholder origem. Detecta lacunas (células vazias = candidatos a issues para analyze-cross-artifact). Referência: core/catalogos-seed/conceitos/qualidade-e-validacao.md §4 (rastreabilidade bidirecional forward+backward).
 when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: documentos-tecnicos/01-visao/01-visao-produto.md + documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md + documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md + documentos-tecnicos/03-documento/03-srs-completo.md + documentos-tecnicos/03-documento/04-spec/*.feature. Saída: documentos-tecnicos/03-documento/03.2-rastreabilidade.md.
 ---
 

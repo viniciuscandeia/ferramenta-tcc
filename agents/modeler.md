@@ -4,7 +4,7 @@
 
 **Marco:** M2 — Consenso de Escopo
 **Papel no loop:** Modelagem — classifica, prioriza, detecta conflitos e lacunas
-**Workflow:** `workflows/m2-requisitos.md` (Fase B)
+**Workflow:** `core/workflows/m2-requisitos.md` (Fase B)
 
 ---
 

@@ -36,7 +36,7 @@ ENTRADA
   │  → Atualiza seções existentes inline (não cria arquivo novo)
   ▼
 [5] traducao-gate
-  │  → Lê template templates/01-documento-visao.md para Fase 1 (M1 — sem EARS)
+  │  → Lê template core/templates/01-documento-visao.md para Fase 1 (M1 — sem EARS)
   │  → Gera: documentos-tecnicos/01-visao/01-visao-produto.md (Documento de Visão ISO 29148)
   │  → Gera: documentos-para-leigo/01-visao/01-visao-produto.md (prosa narrativa de negócio)
   │  → Aplica traducao-leigo sobre versão leigo
@@ -90,7 +90,7 @@ ENTRADA
 
 | Arquivo | Versão | Tamanho esperado |
 |---|---|---|
-| `documentos-tecnicos/01-visao/01-visao-produto.md` | Documento de Visão (ISO 29148) — template `templates/01-documento-visao.md` | 350–700 palavras |
+| `documentos-tecnicos/01-visao/01-visao-produto.md` | Documento de Visão (ISO 29148) — template `core/templates/01-documento-visao.md` | 350–700 palavras |
 | `documentos-para-leigo/01-visao/01-visao-produto.md` | Prosa narrativa de negócio | 200–400 palavras |
 
 ---

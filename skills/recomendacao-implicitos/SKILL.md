@@ -15,7 +15,7 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar antes de `recomendacao-dominio` concluída (verificar seção `## Recomendações de Domínio` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
-- NÃO executar se `catalogos-seed/rfs-tipicos.md` ou `rnfs-tipicos.md` não estiverem acessíveis — registrar em `_pendencias.md` e pular
+- NÃO executar se `core/catalogos-seed/rfs-tipicos.md` ou `rnfs-tipicos.md` não estiverem acessíveis — registrar em `_pendencias.md` e pular
 - ⛔ STOP se algoritmo de filtragem 3 camadas produz 0 candidatos após Camadas 1+2+3 — registrar "projeto atípico, sem implícitos do catálogo" e pular para `questionario-feixe`
 </HARD-GATE>
 
@@ -23,11 +23,11 @@ description: >-
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar pré-condição: `## Recomendações de Domínio` existe em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
-3. Acessar `catalogos-seed/rfs-tipicos.md` + `catalogos-seed/rnfs-tipicos.md`
+3. Acessar `core/catalogos-seed/rfs-tipicos.md` + `core/catalogos-seed/rnfs-tipicos.md`
 
 ## Fase 1 — Algoritmo de Filtragem (3 Camadas)
 
-**Entrada:** `catalogos-seed/rfs-tipicos.md`, `rnfs-tipicos.md`, `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` acumulado, `documentos-tecnicos/01-visao/01-visao-produto.md`.
+**Entrada:** `core/catalogos-seed/rfs-tipicos.md`, `rnfs-tipicos.md`, `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` acumulado, `documentos-tecnicos/01-visao/01-visao-produto.md`.
 
 **Camada 1 — Eliminar categorias já cobertas:**
 Para cada categoria do catálogo: se ≥ 2 itens confirmados em `documentos-tecnicos/01-visao/01-visao-produto.md` ou `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` → pular categoria inteira.
@@ -73,8 +73,8 @@ Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 ## Implícitos Confirmados (recomendacao-implicitos — Fase A)
 
 **Catálogos consultados:**
-- `catalogos-seed/rfs-tipicos.md` — categorias verificadas: [lista]
-- `catalogos-seed/rnfs-tipicos.md` — buckets verificados: [lista]
+- `core/catalogos-seed/rfs-tipicos.md` — categorias verificadas: [lista]
+- `core/catalogos-seed/rnfs-tipicos.md` — buckets verificados: [lista]
 
 **Itens filtrados (antes da confirmação):** [N candidatos de um total de X no catálogo]
 

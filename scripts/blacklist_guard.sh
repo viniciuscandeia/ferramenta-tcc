@@ -2,7 +2,7 @@
 # blacklist_guard.sh — PostToolUse hook para Write e Edit
 #
 # Após qualquer escrita em documentos-para-leigo/, verifica a blacklist D1
-# completa (hooks/lib/blacklist.txt — 22 famílias). Se encontrar jargão técnico
+# completa (scripts/lib/blacklist.txt — 22 famílias). Se encontrar jargão técnico
 # de ER → exit 2 (sinal de correção: Claude reescreve via traducao-leigo).
 #
 # Contexto: PostToolUse acontece APÓS o write — o arquivo já está em disco.
@@ -45,7 +45,7 @@ case "$FILE_PATH" in *.draft) exit 0 ;; esac
 # Shared lib de padrões
 # ${CLAUDE_PLUGIN_ROOT:-} evita erro "unbound variable" se CC não injetou a var
 # (o guard [[ -f ]] abaixo trata graciosamente o caso de path vazio/inválido)
-BLACKLIST="${CLAUDE_PLUGIN_ROOT:-}/hooks/lib/blacklist.txt"
+BLACKLIST="${CLAUDE_PLUGIN_ROOT:-}/scripts/lib/blacklist.txt"
 # Lib ausente (instalação parcial ou CLAUDE_PLUGIN_ROOT unset) → degradar silenciosamente
 [[ -f "$BLACKLIST" ]] || exit 0
 
