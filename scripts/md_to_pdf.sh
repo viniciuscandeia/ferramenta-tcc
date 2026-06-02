@@ -223,7 +223,7 @@ def replace_mermaid(m):
     try:
         result = subprocess.run(
             ['mmdc', '-i', mmd_file, '-o', png_file,
-             '-b', 'white', '--quiet', '--scale', '2'],
+             '-b', 'white', '--quiet', '-w', '600'],
             capture_output=True, timeout=60
         )
         if result.returncode == 0 and os.path.exists(png_file):
