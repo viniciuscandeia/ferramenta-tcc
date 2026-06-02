@@ -6,7 +6,7 @@ specs Gherkin + step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, S
 Ao concluir, exporta a documentação completa em PDF automaticamente.
 
 **Projeto:** TCC — Vinicius Candeia (deadline 2026-07-01)
-**Plataforma:** Claude Code (v0.17.0+)
+**Plataforma:** Claude Code (v0.17.1+)
 
 ---
 
