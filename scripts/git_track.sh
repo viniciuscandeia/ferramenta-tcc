@@ -57,9 +57,6 @@ _init() {
 
   # Criar .gitignore (via shell redirect — não usa tool Write, não dispara gate_guard)
   cat > "$PROJETO_DIR/.gitignore" <<'GITIGNORE'
-# PDFs são binários regeneráveis — exclui do versionamento
-pdf/
-
 # Rascunhos temporários
 *.draft
 
