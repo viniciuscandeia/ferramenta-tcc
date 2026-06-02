@@ -78,7 +78,7 @@ Sujeito é sempre "O sistema" (EARS canônico). Sem interação com usuário.
 
 Verificar: contagem saída == contagem entrada (RF + RNF). Se divergir: ⛔ STOP — localizar item omitido antes de prosseguir.
 
-Sinalizar ao `documenter`: requisito-ears concluído → prosseguir para `srs-ireb-template` (Passo 2).
+Sinalizar ao `documenter`: requisito-ears concluído → prosseguir para `srs-ireb-montagem` (Passo 2).
 
 <!-- internal -->
 ## Anti-Padrão: Ubíquo por Preguiça de Classificar

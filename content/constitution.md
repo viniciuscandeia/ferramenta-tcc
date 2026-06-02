@@ -88,7 +88,7 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 
 ## ENFORCEMENT DE GATES — REGRA INVIOLÁVEL
 
-O orquestrador **não pode auto-aprovar gate**. Toda transição `gate_N_status: pendente → aprovado` exige **todas** as condições abaixo, sem exceção:
+O orquestrador **não pode auto-aprovar gate**. Toda transição `gate_status.gate_N: pendente → aprovado` exige **todas** as condições abaixo, sem exceção:
 
 1. **Todos os artefatos obrigatórios do marco** existem em disco e não estão vazios (conforme tabela canônica em `content/orchestrator.md`)
 2. **Versão leigo** de cada artefato-gate gerada via `traducao-gate` (D18) — verificada por `traducao-leigo` (D19)
@@ -99,7 +99,9 @@ O orquestrador **não pode auto-aprovar gate**. Toda transição `gate_N_status:
 
 **Violação é falha crítica do orquestrador, não comportamento aceitável.**
 
-Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumprir todas as condições acima, deve PARAR, registrar `gate_N_bloqueado: "condição X não atendida"` em `estado-projeto.yaml`, e re-invocar o sub-agente da fase.
+Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumprir todas as condições acima, deve PARAR, registrar `gate_status.gate_N: bloqueado` e `gate_N_motivo_bloqueio: "condição X não atendida"` em `estado-projeto.yaml`, e re-invocar o sub-agente da fase.
+
+> **Nota de implementação:** Gate 1 tem verificação determinística adicional via `scripts/gate_guard.sh` (hook de script). Gates 2–4 dependem de prompt discipline — as condições acima aplicam-se com o mesmo rigor lógico, mas sem backstop de script.
 
 ---
 
@@ -132,7 +134,7 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 
 ## ARQUITETURA DE EXECUÇÃO (D6 revisada)
 
-**Topologia:** 1 orquestrador + 5 sub-agentes funcionais MARE-style + 27 skills
+**Topologia:** 1 orquestrador + 5 sub-agentes funcionais MARE-style + 29 skills
 
 | Marco | Sub-agente ativo |
 |---|---|

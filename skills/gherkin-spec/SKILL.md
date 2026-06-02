@@ -14,7 +14,7 @@ description: >-
 3. **RF vago = arquivo `.feature` com placeholder, não omissão.** `[VERIFICAR]` na feature é visível e rastreável. Omitir o arquivo esconde a lacuna.
 
 <HARD-GATE>
-- NÃO executar antes de `srs-ireb-template` (Passo 2) concluído
+- NÃO executar antes de `srs-ireb-montagem` (Passo 2) concluído
 - NÃO executar sem `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` com campo modal preenchido pela `priorizacao` de M2
 - ⛔ STOP se `lista_deve` (RFs com DEVE) resultar em 0 itens — verificar se `priorizacao` executou corretamente
 </HARD-GATE>

@@ -12,6 +12,7 @@
 # ──────────────────────────────────────────────
 
 projeto_dir: /caminho/absoluto/do/projeto   # capturado via `pwd` no boot (passo 0); usado como prefixo em todas as operações de arquivo
+nome_projeto: "Ainda não definido"          # atualizado em M1 quando usuário define o nome; lido pelo md_to_pdf.sh
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
 modo: padrao                # padrao | express  (Z15 — express reduz loops e rigor de checker)
 
@@ -25,8 +26,8 @@ gate_status:
 # CONTROLE DE LOOPS
 # ──────────────────────────────────────────────
 
-loop_m2_iteracoes: 0         # incrementado a cada retorno ao collector (máx: 3 — constitution §POLÍTICA DE GATES)
-loop_m3_iteracoes: 0         # incrementado a cada retorno ao documenter (máx: 3)
+loop_m2_iteracoes: 0         # incrementado a cada retorno ao collector (sem teto fixo — ver content/constitution.md §POLÍTICA DE GATES)
+loop_m3_iteracoes: 0         # incrementado a cada retorno ao documenter (sem teto fixo — loop para por convergência ou escolha do usuário)
 
 # ──────────────────────────────────────────────
 # AGENDA M2 — pacing state-driven (C3)
@@ -68,23 +69,24 @@ artefatos:
     aprovado_em: null
 
   # Marco 2 — acrescentar quando gerados:
-  # - nome: 02-requisitos/03.1-funcionais.md
-  # - nome: 02-requisitos/03.1-funcionais-leigo.md
-  # - nome: 02-requisitos/03.2-qualidade.md
-  # - nome: 02-requisitos/03.2-qualidade-leigo.md
-  # - nome: 02-requisitos/03.3-restricoes.md
-  # - nome: 02-requisitos/03.3-restricoes-leigo.md
-  # - nome: 02-requisitos/glossario.md
-  # - nome: 02-requisitos/pautas-reelicitacao.md  (condicional)
-  # - nome: 02-requisitos/conflitos-detectados.md (condicional — apenas se ≥ 1 conflito)
-  # - nome: 02-requisitos/03.4-premissas.md       (condicional — apenas se premissas detectadas)
+  # - nome: documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md
+  # - nome: documentos-para-leigo/02-requisitos/02.1-requisitos-funcionais.md
+  # - nome: documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md
+  # - nome: documentos-para-leigo/02-requisitos/02.2-requisitos-qualidade.md
+  # - nome: documentos-tecnicos/02-requisitos/02.3-restricoes.md
+  # - nome: documentos-para-leigo/02-requisitos/02.3-restricoes.md
+  # - nome: documentos-tecnicos/02-requisitos/02.5-glossario.md
+  # - nome: documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md
+  # - nome: documentos-tecnicos/02-requisitos/02.4-premissas.md        (condicional — apenas se premissas detectadas)
+  # - nome: documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md (condicional — apenas se ≥ 1 conflito)
 
   # Marco 3 — acrescentar quando gerados:
-  # - nome: 03-documento/SRS-completo.md
-  # - nome: 03-documento/SRS-completo-leigo.md
-  # - nome: 03-documento/analyze-report.md
-  # - nome: 03-documento/rastreabilidade.md      (condicional)
-  # 03-documento/spec/*.feature e 03-documento/tests/ são técnicos — não gerar versão leigo (D18, D19)
+  # - nome: documentos-tecnicos/03-documento/03-srs-completo.md
+  # - nome: documentos-para-leigo/03-documento/03-documento-do-projeto.md
+  # - nome: documentos-tecnicos/03-documento/03.1-analyze-report.md
+  # - nome: documentos-tecnicos/03-documento/03.2-rastreabilidade.md  (condicional)
+  # - nome: documentos-tecnicos/03-documento/03.3-diagramas.md        (condicional)
+  # 04-spec/*.feature, 05-tests/, 06-estrategia-testes.md, 07-como-rodar-testes.md são técnicos — não gerar versão leigo (D18, D19)
 
 pautas_abertas: []           # lista de IDs de pautas abertas em pautas-reelicitacao.md
 

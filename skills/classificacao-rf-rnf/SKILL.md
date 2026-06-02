@@ -24,6 +24,7 @@ description: >-
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` existe e não está vazio
 3. Verificar `documentos-tecnicos/01-visao/01-visao-produto.md` acessível (contexto de domínio)
+4. **Consultar taxonomia de tipos:** ler `{PLUGIN_ROOT}/content/catalogos-seed/conceitos/tipos-de-requisitos.md` como referência para os 4 tipos canônicos (RF, RNF, Restrição, Premissa) — especialmente a distinção RNF vs Restrição (seção 4 do catálogo).
 
 ## Fase 1 — Classificação
 

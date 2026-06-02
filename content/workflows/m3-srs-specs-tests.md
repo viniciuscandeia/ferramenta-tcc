@@ -17,7 +17,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 ║  FASE A — Geração de Artefatos   ║  sub-agente: documenter
 ╠══════════════════════════════════╣
 ║ [A1] requisito-ears              ║  → formata RFs+RNFs com EARS + RFC 2119
-║ [A2] srs-ireb-template           ║  → SRS com 6 seções IREB §3.3.3
+║ [A2] srs-ireb-montagem           ║  → SRS com 6 seções IREB §3.3.3
 ║ [A3] gherkin-spec                ║  → spec/*.feature (RFs DEVE) + _skipped.md
 ║ [A4] step-defs-red               ║  → tests/ RED em 3 frameworks
 ║ [A5] testing-strategy            ║  → TESTING-STRATEGY.md por RNF
@@ -60,9 +60,9 @@ ENTRADA (artefatos M1+M2 aprovados)
 - Output: versões formatadas de cada RF e RNF no padrão EARS (Event-driven, Ubiquitous, State-driven, Optional, Unwanted behaviour) com modal RFC 2119 (`DEVE` / `DEVERIA` / `PODE`)
 - Sem interação com usuário — transformação de formato pura
 
-#### [A2] srs-ireb-template
+#### [A2] srs-ireb-montagem
 
-- Invocar skill 'srs-ireb-template'
+- Invocar skill 'srs-ireb-montagem'
 - Input: RFs+RNFs formatados de [A1] + `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.5-glossario.md`
 - Output: `documentos-tecnicos/03-documento/03-srs-completo.md` com 6 seções IREB §3.3.3:
   1. Introdução (escopo, glossário)
@@ -211,7 +211,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 | Momento | Campo atualizado |
 |---|---|
 | Início do workflow | `marco_corrente: M3`, `gate_status.gate_3: pendente`, `loop_m3_iteracoes: 0` |
-| Após [A2] srs-ireb-template | `artefatos: [..., documentos-tecnicos/03-documento/03-srs-completo.md]` |
+| Após [A2] srs-ireb-montagem | `artefatos: [..., documentos-tecnicos/03-documento/03-srs-completo.md]` |
 | Após [A3] gherkin-spec | `artefatos: [..., documentos-tecnicos/03-documento/04-spec/]` |
 | Após [A4] step-defs-red | `artefatos: [..., documentos-tecnicos/03-documento/05-tests/]` |
 | Após [A5] testing-strategy | `artefatos: [..., documentos-tecnicos/03-documento/06-estrategia-testes.md]` |

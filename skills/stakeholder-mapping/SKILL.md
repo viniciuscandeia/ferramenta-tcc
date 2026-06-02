@@ -29,6 +29,7 @@ description: >-
    - Mapear cada um para a camada Onion mais provável
    - Pré-preencher a tabela com `Necessidade principal: [inferida]` + flag `[a confirmar]`
 4. **Detecção de domínio regulado:** inferir domínio do texto (saúde → CFM/LGPD; financeiro → BACEN/LGPD; educação → MEC/LGPD; alimentos → ANVISA; transporte → ANTT/ANAC). Se domínio regulado detectado, preparar sondagem da Camada 5.
+5. **Consultar catálogo de papéis típicos:** ler `{PLUGIN_ROOT}/content/catalogos-seed/stakeholders-tipicos.md` e verificar quais papéis típicos do domínio detectado (ex.: Administrador, DPO/Encarregado de Dados, Auditor, Equipe de TI) não foram mencionados pelo usuário. Adicionar como linhas `[a confirmar]` na pré-extração — usuário confirma ou descarta na Fase 1.
 
 ## Fase 1 — Checklist de Camadas (1 `AskUserQuestion`, máx 4 perguntas)
 

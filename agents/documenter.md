@@ -46,8 +46,8 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Formatar todos os RNFs com bucket Wiegers + métrica verificável + modal RFC 2119
 - Saída: tabela estruturada de requisitos formatados (input obrigatório para os passos seguintes)
 
-**Passo 2 — srs-ireb-template**
-- Invocar 'srs-ireb-template'
+**Passo 2 — srs-ireb-montagem**
+- Invocar 'srs-ireb-montagem'
 - Input: artefatos M1 + M2 + saída do Passo 1
 - Montar `documentos-tecnicos/03-documento/03-srs-completo.md` com as 6 seções IREB §3.3.3 completas
 - Seção 3: RFs em EARS + RFC 2119 (da saída do Passo 1)
@@ -117,7 +117,7 @@ Ativado quando `checker` retorna `documentos-tecnicos/03-documento/03.1-analyze-
 1. Ler `documentos-tecnicos/03-documento/03.1-analyze-report.md` — identificar quais artefatos e quais IDs de requisito estão afetados
 2. Incrementar `loop_m3_iteracoes` em `estado-projeto.yaml`
 3. Executar **somente as skills correspondentes** aos artefatos afetados:
-   - CRITICAL em RFs/RNFs formatados → re-executar Passo 1 (requisito-ears) e Passo 2 (srs-ireb-template)
+   - CRITICAL em RFs/RNFs formatados → re-executar Passo 1 (requisito-ears) e Passo 2 (srs-ireb-montagem)
    - CRITICAL em `.feature` → re-executar Passo 3 (gherkin-spec)
    - CRITICAL em step defs → re-executar Passo 4 (step-defs-red) apenas nos arquivos afetados
    - CRITICAL em `documentos-tecnicos/03-documento/06-estrategia-testes.md` → re-executar Passo 5 (testing-strategy)
@@ -136,7 +136,7 @@ Ativado quando `checker` retorna `documentos-tecnicos/03-documento/03.1-analyze-
 | Skill | Quando | Referência |
 |---|---|---|
 | `requisito-ears` | Sempre — Passo 1 | D8; EARS 5 padrões; RFC 2119 |
-| `srs-ireb-template` | Sempre — Passo 2 (depende do Passo 1) | IREB §3.3.3; ISO/IEC/IEEE 29148 |
+| `srs-ireb-montagem` | Sempre — Passo 2 (depende do Passo 1) | IREB §3.3.3; ISO/IEC/IEEE 29148 |
 | `gherkin-spec` | Sempre — Passo 3 (depende do Passo 2) | D20, D22; RFC 2119 filtro DEVE |
 | `modelagem-visual` | Sempre — Passo 3.5 (depende do Passo 3) | IREB 3 perspectivas + ISO 29148 contexto/casos de uso; Mermaid |
 | `step-defs-red` | Sempre — Passo 4 (depende do Passo 3) | D20; 3 frameworks: Pytest-BDD / Cucumber-js / SpecFlow |

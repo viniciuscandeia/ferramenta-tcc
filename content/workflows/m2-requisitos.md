@@ -77,7 +77,7 @@ ENTRADA (artefatos M1 aprovados)
 #### [A4] recomendacao-implicitos
 
 - Invocar skill 'recomendacao-implicitos'
-- Input: `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` acumulado até aqui + `core/catalogos-seed/rfs-tipicos.md` + `core/catalogos-seed/rnfs-tipicos.md`
+- Input: `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` acumulado até aqui + `content/catalogos-seed/rfs-tipicos.md` + `content/catalogos-seed/rnfs-tipicos.md`
 - Output: 5–10 RFs/RNFs implícitos confirmados pelo usuário (algoritmo 3 camadas D-S4.3)
 - **Pré-aviso ao usuário antes de iniciar:** "Vou sugerir algumas funcionalidades comuns que sistemas como o seu costumam ter — você me diz se fazem sentido para o seu projeto."
 

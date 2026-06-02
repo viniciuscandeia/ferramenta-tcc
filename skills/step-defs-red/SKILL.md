@@ -11,7 +11,7 @@ description: >-
 
 1. **Crítico de estado RED.** Todo step deve lançar erro imediatamente — sem lógica real, sem mocks, sem `pass` silencioso. Step que não falha não é RED. RED é o contrato com o desenvolvedor.
 2. **3 frameworks, sem exceção.** 1 feature = 3 arquivos (Pytest-BDD + Cucumber-js + SpecFlow). Gerar em 1 ou 2 frameworks e silenciar o terceiro é omissão.
-3. **Espelhar nomenclatura de `documentos-tecnicos/03-documento/04-spec/` exatamente.** RF-001 em spec → rf-001 em tests/. Qualquer divergência quebra a rastreabilidade do `srs-ireb-template` seção 6.
+3. **Espelhar nomenclatura de `documentos-tecnicos/03-documento/04-spec/` exatamente.** RF-001 em spec → rf-001 em tests/. Qualquer divergência quebra a rastreabilidade do `srs-ireb-montagem` seção 6.
 
 <HARD-GATE>
 - NÃO executar antes de `gherkin-spec` (Passo 3) concluído

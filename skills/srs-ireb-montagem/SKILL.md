@@ -1,5 +1,5 @@
 ---
-name: srs-ireb-template
+name: srs-ireb-montagem
 marco: [M3]
 description: >-
   Monta o documento completo de especificação do projeto com 6 seções padronizadas — consumindo todos os artefatos produzidos até aqui.

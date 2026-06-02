@@ -44,6 +44,7 @@ description: >-
    *(Se integrações já foram mencionadas antes: omitir esta pergunta e usar a lista provisória.)*
 
 3. **Restrições conhecidas** (text):
+   *(Consultar `{PLUGIN_ROOT}/content/catalogos-seed/restricoes-tipicas.md` para identificar restrições típicas do domínio e incluir exemplos relevantes na pergunta abaixo.)*
    ```
    Existe alguma restrição importante? (ex: prazo, orçamento, tecnologia específica que deve ser usada, regras que o produto precisa respeitar)
    ```

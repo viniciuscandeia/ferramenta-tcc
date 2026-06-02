@@ -35,7 +35,7 @@ Ao ser invocado via `/iniciar-projeto`:
    - Tentar ler `{PROJETO_DIR}/estado-projeto.yaml` (SoT primário — D13)
    - Se ausente ou ilegível: executar detection-based recovery (D10) — listar artefatos em `{PROJETO_DIR}/` para inferir marco corrente
 3. **Verificar** se é projeto novo ou retomada de sessão:
-   - Novo: criar `{PROJETO_DIR}/estado-projeto.yaml` com `marco_corrente: M1`, `gate_status: pendente`, `projeto_dir: {PROJETO_DIR}`
+   - Novo: criar `{PROJETO_DIR}/estado-projeto.yaml` com `marco_corrente: M1`, `nome_projeto: "Ainda não definido"`, `gate_status: {gate_1: pendente, gate_2: pendente, gate_3: pendente, gate_4: nao_solicitado}`, `projeto_dir: {PROJETO_DIR}`
    - Retomada: ler `projeto_dir` do yaml (se presente) e usar como PROJETO_DIR; confirmar com usuário antes de continuar
 4. **Criar estrutura de pastas do projeto** (se projeto novo OU se pastas ainda não existem):
    Usar Bash tool para criar todas as subpastas necessárias antes do primeiro Write:
@@ -100,7 +100,7 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 | M4 | `content/marcos/m4.md` | `checker` (modo técnico) |
 
 **REGRAS DE CARREGAMENTO:**
-1. Carregar `content/content/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
+1. Carregar `content/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
 2. **NUNCA** mencionar artefatos, skills ou gates de marcos futuros ao usuário
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
@@ -116,6 +116,7 @@ O orquestrador mantém `estado-projeto.yaml` atualizado após cada ação signif
 **Schema completo (Z20, Z21 — ver template em `content/catalogos-seed/estado-projeto.exemplo.yaml`):**
 ```yaml
 projeto_dir: /caminho/absoluto/do/projeto   # capturado via pwd no boot (passo 0)
+nome_projeto: "Ainda não definido"          # atualizado em M1 quando usuário define o nome
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
 modo: padrao                # padrao | express (Z15)
 gate_status:
