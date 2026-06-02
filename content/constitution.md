@@ -70,6 +70,22 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 
 ---
 
+## PROGRESSO VIA TodoWrite (D27)
+
+`TodoWrite` é a superfície de progresso **permitida** nesta ferramenta. Não é prosa de chat (não viola output rule #5) nem frame visual (não viola output rule #6) — é um widget nativo do Claude Code que exibe uma lista de tarefas ao vivo na UI.
+
+### Regras absolutas do TodoWrite
+
+1. **Todo texto é leigo (D1 aplica):** proibido nome de skill, agente, marco ou gate nos todos. Usar apenas frases-objetivo (ex.: "Descobrir quem usa e quem tem interesse").
+2. **Frases-objetivo, nunca verbos de processo:** itens são substantivo/infinitivo descrevendo o resultado, não a ação interna. Andamento vai no `status` (`pending` / `in_progress` / `completed`), não no texto.
+3. **Só etapa corrente:** materializar apenas os sub-passos da etapa em andamento. Nunca criar todos de etapas futuras antes do gate anterior ser aprovado (consistente com `orchestrator.md:104-106`).
+4. **Crescimento histórico:** ao aprovar um gate, marcar todos da etapa atual como `completed` e **acrescentar** os sub-passos da próxima etapa. A lista nunca é recriada do zero — só cresce.
+5. **Loop-back cirúrgico:** em loop M2/M3, reverter **apenas** o todo do passo afetado para `in_progress`. Não recriar a lista.
+6. **M4 nunca é semeado** a menos que o usuário solicite revisão técnica explicitamente.
+7. **Enforcement:** `scripts/todo_guard.sh` (hook `PreToolUse` em `TodoWrite`) verifica blacklist D1 nos textos dos todos antes de qualquer chamada `TodoWrite`. Bloqueia e solicita reescrita se encontrar jargão.
+
+---
+
 ## REGRAS DE INTERAÇÃO (D14)
 
 - **Batching obrigatório:** coletar TODAS as perguntas de uma sub-fase antes de invocar `AskUserQuestion`
@@ -77,11 +93,17 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 - **Proibido:** invocar `AskUserQuestion` individualmente por gap detectado
 - **Tool call estruturado obrigatório:** perguntas devem ser invocadas via `AskUserQuestion` como TOOL CALL com campos separados. NUNCA escrever perguntas como prosa no chat. NUNCA encadear múltiplas perguntas numa única frase como "X e também Y, e Z?".
 - **Tipos permitidos:** `choice`, `multi-choice`, `text`, `yesno`
-  - `choice` — seleção única, opções mutuamente exclusivas
+  - `choice` — seleção única, **apenas quando as opções são mutuamente exclusivas**
   - `multi-choice` → `AskUserQuestion` com `multiSelect: true`
   - `text` — texto livre
   - `yesno` — decisão binária; obrigatório para gates
-  - Usar `multi-choice` quando a resposta natural é uma combinação (benefícios, perfis, funcionalidades). Manter `choice` para opções mutuamente exclusivas. Manter `yesno` para gates e decisões binárias.
+- **TESTE DA COMBINAÇÃO (obrigatório antes de CADA pergunta de opções):** "O usuário pode legitimamente querer mais de uma destas opções ao mesmo tempo?"
+  - SIM → `multiSelect: true`
+  - NÃO, são genuinamente exclusivas (faixas de tamanho, níveis aninhados, um único caminho) → `choice`
+  - **Na dúvida → `multiSelect: true`.** Custo de permitir múltipla onde só uma se aplica é zero; custo de forçar única onde várias se aplicam é perda de informação.
+  - Exceção: gates e decisões binárias permanecem `yesno`.
+- **Sinalização visível obrigatória:** toda pergunta com `multiSelect: true` deve conter no texto da `question` a indicação `(pode escolher mais de uma)` — o leigo precisa saber que pode marcar várias.
+- **Categorias que quase sempre são `multiSelect: true`:** perfis de pessoas envolvidas; funcionalidades desejadas; dores/frustrações; preocupações de qualidade (desempenho, segurança, privacidade); leis/normas aplicáveis; exclusões de escopo; implícitos a confirmar.
 - **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
 
 ---

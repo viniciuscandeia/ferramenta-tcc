@@ -35,6 +35,15 @@ description: >-
 
 **Lote único** — personalizado com quem já foi extraído. Cobrir as camadas ainda não preenchidas pela pré-extração:
 
+**Candidatos do catálogo `[a confirmar]` (incluir SE Fase 0 gerou ≥ 1 candidato — contar como 1 pergunta do lote):**
+```
+Além das pessoas que você já mencionou, sistemas como o seu costumam ter estes perfis envolvidos. Quais fazem parte do seu projeto? (pode escolher mais de uma)
+(A–C) [máx 3 candidatos gerados na Fase 0 — usar os mais relevantes para o domínio]
+(D) Nenhum destes
+```
+`multiSelect: true`
+*(Omitir se a Fase 0 NÃO gerou candidatos `[a confirmar]` do catálogo.)*
+
 **Camada 2 — Decide-paga (sempre perguntar se não identificado):**
 ```
 Quem precisa aprovar ou pagar pelo produto? Pode ser uma pessoa, um cargo ou um departamento.

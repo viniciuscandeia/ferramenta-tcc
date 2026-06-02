@@ -35,7 +35,7 @@ description: >-
    ```
    O que o produto definitivamente NÃO vai fazer? Mesmo que as pessoas esperem — o que está fora?
    ```
-   *(Se o usuário travar: oferecer candidatos baseados no domínio via choice — ex: para estoque → "financeiro/caixa", "contabilidade", "RH". Esses candidatos vêm do catálogo de domínio ou são inferidos.)*
+   *(Se o usuário travar: oferecer candidatos baseados no domínio via `multi-choice` com `multiSelect: true` — ex: para estoque → "financeiro/caixa", "contabilidade", "RH". O usuário pode excluir mais de um ao mesmo tempo. Candidatos vêm do catálogo de domínio ou são inferidos.)*
 
 2. **Integrações externas** (text — só se lista provisória da Fase 0 estiver vazia):
    ```

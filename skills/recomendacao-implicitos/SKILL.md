@@ -45,7 +45,7 @@ Dos itens restantes:
 
 ## Fase 2 — Construção das Perguntas
 
-Com os 5–10 candidatos filtrados, montar 1 lote de até 4 perguntas. Agrupar candidatos similares numa pergunta `choice` (confirmar múltiplos de uma vez).
+Com os 5–10 candidatos filtrados, montar 1 lote de até 4 perguntas. Agrupar candidatos similares numa pergunta `multi-choice` com `multiSelect: true` (confirmar múltiplos de uma vez).
 
 **Pré-aviso obrigatório antes do lote** (aplicar `traducao-leigo`):
 > "Agora vou sugerir algumas funcionalidades que sistemas como o seu costumam precisar — você me diz se fazem sentido para o seu projeto."

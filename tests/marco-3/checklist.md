@@ -77,6 +77,17 @@ Preencher após execução de cada caso em `tests/marco-3/execucoes/execucao-NN-
 
 ---
 
+## Bloco I — Progresso via TodoWrite (D27)
+
+- [ ] **I1.** Ao iniciar M3, lista TodoWrite acrescenta sub-passos da Etapa 3 ao histórico (itens 3.1–3.6); primeiro item = `in_progress`
+- [ ] **I2.** Cada bloco do documenter (3.1–3.3) tica `completed` e avança para o próximo ao concluir
+- [ ] **I3.** Bloco checker (3.4) tica `completed` quando analyze-report sem CRITICAL
+- [ ] **I4.** Loop-back CRITICAL: apenas item 3.4 ("Conferir se está tudo consistente") volta a `in_progress`; lista não é recriada
+- [ ] **I5.** Ao aprovar Gate 3, todos os itens da Etapa 3 estão `completed`
+- [ ] **I6.** Nenhum texto de todo contém termos da blacklist D1 (sem "skill", "marco", "gate", "stakeholder", "requisito", "SRS", "EARS", "Gherkin", nome interno de skill)
+
+---
+
 ## Registro de execução
 
 | Campo | Valor |

@@ -10,7 +10,7 @@ description: >-
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Condicional rigorosa — padrão é NÃO executar.** Se `lacunas_m1.contagem < 2` no estado, esta skill é invisível. Ativar por precaução gasta turnos do usuário sem retorno (D16).
-2. **Uma chamada. Três perguntas. Fim.** Sem segunda rodada, sem perguntas abertas (`text`). Apenas `choice` ou `yesno` — opções fechadas reduzem carga cognitiva e produzem respostas acionáveis.
+2. **Uma chamada. Três perguntas. Fim.** Sem segunda rodada, sem perguntas abertas (`text`). Apenas `choice`, `multi-choice` ou `yesno` — opções fechadas reduzem carga cognitiva e produzem respostas acionáveis. Aplicar o teste da combinação a cada pergunta: se o usuário pode querer mais de uma opção ao mesmo tempo → `multi-choice` com `multiSelect: true`.
 3. **Foco nas piores lacunas.** Com 3 lacunas e 3 perguntas disponíveis, priorizar: Escopo > Restrições > Itens em aberto.
 4. **Ler estado, não memória.** A condição de ativação e as categorias de lacuna são lidas de `estado-projeto.yaml` (`lacunas_m1`). Nunca depender de contexto efêmero — isso garante funcionamento após sessão desconectada.
 
@@ -49,18 +49,18 @@ Você mencionou controlar estoque de produtos. Isso inclui:
 (C) Algo diferente — vou explicar melhor quando chegarmos nos detalhes
 ```
 
-**Modelo: Restrições de negócio** (`choice`, 3 opções):
+**Modelo: Restrições de negócio** (`multi-choice`, `multiSelect: true`):
 ```
-Você está num setor que tem regras específicas (ex: [domínio detectado]). O produto precisa:
+Você está num setor que tem regras específicas (ex: [domínio detectado]). O produto pode precisar atender mais de uma regra ao mesmo tempo — quais se aplicam? (pode escolher mais de uma)
 (A) Seguir regras de proteção de dados (como a LGPD) — isso vai exigir cuidado com informações pessoais
 (B) Seguir normas do [órgão regulador do domínio] — ex: [norma específica]
 (C) Não tenho certeza ainda — vou verificar com quem sabe
 ```
-*Preencher `[domínio]` e `[órgão regulador]` com o que foi inferido pelo `stakeholder-mapping` Fase 0.*
+*Preencher `[domínio]` e `[órgão regulador]` com o que foi inferido pelo `stakeholder-mapping` Fase 0. LGPD e norma setorial podem valer juntas — use `multiSelect: true`.*
 
 Exemplo concreto (domínio: saúde):
 ```
-Você está na área de saúde. O produto precisa:
+Você está na área de saúde. O produto pode precisar seguir mais de uma regra ao mesmo tempo — quais se aplicam? (pode escolher mais de uma)
 (A) Seguir a LGPD (proteção de dados dos pacientes)
 (B) Seguir normas do CFM (Conselho Federal de Medicina) para registro de atendimentos
 (C) Não tenho certeza ainda — vou verificar antes de decidir

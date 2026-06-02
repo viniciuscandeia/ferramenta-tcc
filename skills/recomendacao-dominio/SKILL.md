@@ -10,7 +10,7 @@ description: >-
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Confirmação de domínio é obrigatória — nunca assumir.** Detecção automática pode errar. O usuário confirma; o catálogo executa. Pular a confirmação = dados de domínio errado invadem `elicitacao-raw.md`.
-2. **Perguntas do catálogo são choice ou yesno — nunca text.** Respostas estruturadas aqui facilitam a classificação do modeler mais tarde. Questão aberta nesta rodada = dado não-classificável.
+2. **Perguntas do catálogo são choice, multi-choice ou yesno — nunca text.** Respostas estruturadas aqui facilitam a classificação do modeler mais tarde. Questão aberta nesta rodada = dado não-classificável. Aplicar o teste da combinação: quando múltiplas opções podem se aplicar ao mesmo tempo (stakeholders, RNFs, restrições) → `multiSelect: true`.
 3. **Zero termos técnicos visíveis.** Nunca mencionar "catálogo", "domínio", "seed", "classificação". Usar "o seu tipo de produto" em vez de "domínio".
 
 <HARD-GATE>
@@ -61,16 +61,16 @@ Se confirmado: usar catálogo do domínio. Se negado: usar catálogo genérico (
 
 ## Fase 3 — 4 Perguntas do Catálogo
 
-**1 chamada `AskUserQuestion` com 4 perguntas (choice ou yesno):**
+**1 chamada `AskUserQuestion` com 4 perguntas (choice, multi-choice ou yesno):**
 
 | Seção do catálogo | Pergunta |
 |---|---|
-| Stakeholders típicos | "Além de [usuários já identificados], existem outros perfis? (Ex: [exemplos do catálogo])" |
-| Funcionalidades típicas | "Quais dessas funcionalidades comuns fazem sentido para o seu produto? [choice 3-4 opções, `multiSelect: true`]" |
-| RNFs típicos | "Há requisitos de [desempenho/segurança/privacidade] que precisa cumprir? (Ex: [exemplos])" |
-| Restrições típicas | "Há lei, regulação ou padrão que o produto precisa seguir? (Ex: [exemplos do domínio])" |
+| Stakeholders típicos | "Além de [usuários já identificados], existem outros perfis que fazem parte do projeto? (pode escolher mais de uma) (Ex: [exemplos do catálogo])" [`multiSelect: true`] |
+| Funcionalidades típicas | "Quais dessas funcionalidades comuns fazem sentido para o seu produto? (pode escolher mais de uma) [3-4 opções, `multiSelect: true`]" |
+| RNFs típicos | "Há preocupações de [desempenho/segurança/privacidade] que o produto precisa atender? (pode escolher mais de uma) (Ex: [exemplos])" [`multiSelect: true`] |
+| Restrições típicas | "O produto precisa seguir alguma lei, regulação ou padrão? (pode escolher mais de uma) (Ex: [exemplos do domínio])" [`multiSelect: true`] |
 
-**Tipo obrigatório:** choice ou yesno — nunca `text` nesta fase.
+**Tipo obrigatório:** choice, multi-choice ou yesno — nunca `text` nesta fase.
 
 ## Fase 4 — Saída
 

@@ -11,7 +11,7 @@ description: >-
 
 1. **Condicional rigorosa — padrão é não executar.** < 3 áreas sem cobertura = o modeler pode inferir ou criar pautas. Executar por precaução desperdiça turnos do usuário.
 2. **Máximo 2 feixes, 2 chamadas.** Um feixe = 1 tema = 1 chamada `AskUserQuestion`. Dois feixes é o limite. Mais que isso = nova iteração de elicitação, não Rodada 5.
-3. **Choice e yesno apenas — nunca text nesta rodada.** Respostas abertas aqui produzem dados não-estruturados que o modeler não consegue classificar diretamente.
+3. **Choice, multi-choice e yesno — nunca text nesta rodada.** Respostas abertas aqui produzem dados não-estruturados que o modeler não consegue classificar diretamente. Para perguntas onde múltiplas respostas se aplicam ao mesmo tempo (ex: tipos de login aceitos, formas de comunicar eventos), usar `multi-choice` com `multiSelect: true`.
 
 <HARD-GATE>
 - NÃO executar antes de `recomendacao-implicitos` concluída (verificar seção `## Implícitos Confirmados` em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`)
@@ -39,7 +39,7 @@ description: >-
 
 ## Fase 1 — Seleção dos Feixes
 
-Selecionar as 2 áreas com maior lacuna de cobertura. Para cada uma, montar 1 feixe de 3–4 perguntas (choice/yesno).
+Selecionar as 2 áreas com maior lacuna de cobertura. Para cada uma, montar 1 feixe de 3–4 perguntas (choice, multi-choice ou yesno). Aplicar o teste da combinação por pergunta antes de definir o tipo.
 
 **Exemplo — Feixe "Acesso e perfis":**
 ```

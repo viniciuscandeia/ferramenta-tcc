@@ -84,6 +84,17 @@ Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-
 
 ---
 
+## Bloco I — Progresso via TodoWrite (D27)
+
+- [ ] **I1.** Ao iniciar M1, lista TodoWrite é semeada com os sub-passos da Etapa 1 (itens 1.1–1.5 + 1.6); primeiro item = `in_progress`
+- [ ] **I2.** Cada passo concluído tica o todo correspondente para `completed` e avança o próximo para `in_progress`
+- [ ] **I3.** Item 1.4 ("Esclarecer dúvidas em aberto") só aparece se `lacunas_m1.contagem ≥ 2`; ausente nos demais casos
+- [ ] **I4.** Ao aprovar Gate 1, todos os itens da Etapa 1 estão `completed` antes de semear a Etapa 2
+- [ ] **I5.** Nenhum texto de todo contém termos da blacklist D1 (sem "skill", "marco", "gate", "stakeholder", "requisito", "elicitação", nome interno de skill)
+- [ ] **I6.** `todo_guard.sh` executado manualmente com payload contendo termo proibido → exit 2 + mensagem de correção no stderr
+
+---
+
 ## Registro de execução
 
 | Campo | Valor |

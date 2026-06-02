@@ -107,6 +107,68 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 
 Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline no main context (D25 — sem Agent/Task() tool).
 
+**Antes de entrar no loop do marco:** semear `TodoWrite` com os sub-passos da etapa corrente conforme **MAPA DE PROGRESSO** (seção abaixo). Primeiro item = `in_progress`; demais = `pending`. Para M2/M3 após gate aprovado: acrescentar sub-passos ao histórico existente — não recriar a lista do zero.
+
+---
+
+## MAPA DE PROGRESSO (TodoWrite)
+
+Tabela interna skill→texto-leigo. O orquestrador usa a coluna "Todo leigo" como `content` ao chamar `TodoWrite`. **Nunca expor a coluna "Skill interna" ao usuário.**
+
+### Etapa 1 — Entender o projeto (M1)
+
+| # | Skill interna | Todo leigo (conteúdo exibido) |
+|---|---|---|
+| 1.1 | necessidade-visao | Entender o problema e a ideia do produto |
+| 1.2 | stakeholder-mapping | Descobrir quem usa e quem tem interesse |
+| 1.3 | contexto-e-limite | Definir o que fica dentro e fora do projeto |
+| 1.4 | clarificacao-pos-visao (condicional D16) | Esclarecer dúvidas em aberto |
+| 1.5 | traducao-leigo + traducao-gate | Preparar o resumo para você revisar |
+| 1.6 | Gate 1 | Confirmar a Etapa 1 com você |
+
+> **Item 1.4 é condicional:** semear apenas quando `lacunas_m1.contagem ≥ 2` (não incluir antes).
+
+### Etapa 2 — Detalhar o produto (M2)
+
+| # | Skill interna | Todo leigo (conteúdo exibido) |
+|---|---|---|
+| 2.1 | entrevista-estruturada (Rodada 1) | Conversar sobre como o produto vai funcionar |
+| 2.2 | cenario-narrativa (Rodada 2) | Imaginar situações reais de uso |
+| 2.3 | recomendacao-dominio (Rodada 3) | Comparar com produtos parecidos do mesmo ramo |
+| 2.4 | recomendacao-implicitos (Rodada 4) | Levantar pontos que costumam passar batido |
+| 2.5 | questionario-feixe (Rodada 5) | Fechar as pontas ainda em aberto |
+| 2.6 | classificacao + priorizacao + glossario + conflitos | Organizar e definir o que é mais importante |
+| 2.7 | traducao-leigo + traducao-gate | Preparar o resumo para você revisar |
+| 2.8 | Gate 2 | Confirmar a Etapa 2 com você |
+
+> **Itens 2.1–2.5:** semear 2.1 no início de M2; semear os subsequentes conforme cada rodada é iniciada (não todos de uma vez). Marcar `completed` ao encerrar cada rodada do collector.
+>
+> **Item 2.6:** semear após Rodada 1 (modeler começa depois da primeira coleta). Marcar `in_progress` a cada iteração de modeler e `completed` ao encerrar Fase B.
+>
+> **Loop-back M2 (pautas abertas):** reverter **apenas** o item 2.6 ("Organizar e definir o que é mais importante") para `in_progress` ao reiniciar o modeler, e o item da rodada collector correspondente. Não recriar a lista.
+
+### Etapa 3 — Gerar o documento do projeto (M3)
+
+| # | Skill interna | Todo leigo (conteúdo exibido) |
+|---|---|---|
+| 3.1 | requisito-ears + srs-ireb-montagem | Escrever cada regra do produto de forma clara |
+| 3.2 | gherkin-spec + modelagem-visual | Descrever as situações de uso e desenhar os fluxos |
+| 3.3 | step-defs-red + testing-strategy + readme-tests | Preparar os testes do produto |
+| 3.4 | analyze-cross-artifact + validacao-checklist-ireb + rastreabilidade-matriz | Conferir se está tudo consistente |
+| 3.5 | traducao-leigo + traducao-gate | Preparar o resumo para você revisar |
+| 3.6 | Gate 3 | Confirmar a Etapa 3 com você |
+
+> **Loop-back M3 (CRITICAL):** reverter **apenas** o item 3.4 ("Conferir se está tudo consistente") para `in_progress` ao reiniciar o checker, e os itens 3.1–3.3 conforme o documenter retrabalha. Não recriar a lista inteira.
+
+### Regras de ciclo de vida
+
+1. **Seed ao iniciar marco:** chamar `TodoWrite` com os todos da etapa corrente imediatamente ao entrar no marco. Primeiro item = `in_progress`; demais = `pending`.
+2. **Tique ao concluir:** após cada skill concluída, chamar `TodoWrite` marcando o todo correspondente `completed` e o próximo `in_progress`.
+3. **Condicionais:** semear o item 1.4 apenas quando a condição dispara — não antes.
+4. **Transição de etapa:** ao aprovar um gate, verificar que todos os todos da etapa estão `completed`, depois **acrescentar** os todos da próxima etapa. Nunca recriar a lista.
+5. **Loop-back:** ver notas por marco acima — sempre cirúrgico.
+6. **M4 oculto:** nunca semear todos de M4 a menos que o usuário solicite revisão técnica explicitamente.
+
 ---
 
 ## ESTADO DO PROJETO — estado-projeto.yaml

@@ -63,6 +63,17 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 
 ---
 
+## Bloco G — Progresso via TodoWrite (D27)
+
+- [ ] **G1.** Ao iniciar M2, lista TodoWrite acrescenta sub-passos da Etapa 2 ao histórico (itens 2.1 + 2.6–2.8 iniciais); primeiro item da Etapa 2 = `in_progress`
+- [ ] **G2.** Rodadas 2.1–2.5 semeadas progressivamente (item da rodada só aparece quando a rodada é iniciada, não todas de uma vez)
+- [ ] **G3.** Item 2.6 ("Organizar e definir o que é mais importante") avança para `in_progress` após a Rodada 1 e volta a `in_progress` em cada iteração de modeler
+- [ ] **G4.** Ao aprovar Gate 2, todos os itens da Etapa 2 estão `completed` antes de semear a Etapa 3
+- [ ] **G5.** Loop-back (pautas abertas): apenas o item 2.6 (e rodada collector afetada) volta a `in_progress`; lista não é recriada
+- [ ] **G6.** Nenhum texto de todo contém termos da blacklist D1 (sem "skill", "marco", "gate", "stakeholder", "requisito", "elicitação", nome interno de skill)
+
+---
+
 ## Registro de execução
 
 | Campo | Valor |
