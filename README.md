@@ -3,9 +3,10 @@
 Ferramenta de elicitação e documentação de requisitos para stakeholder leigo.
 Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 +
 specs Gherkin + step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, SpecFlow).
+Ao concluir, exporta a documentação completa em PDF automaticamente.
 
 **Projeto:** TCC — Vinicius Candeia (deadline 2026-07-01)
-**Plataforma:** Claude Code (v0.13.0+)
+**Plataforma:** Claude Code (v0.16.0+)
 
 ---
 
@@ -26,6 +27,53 @@ claude plugin list      # deve mostrar "ferramenta-tcc"
 
 ---
 
+## Dependências para exportação PDF
+
+A ferramenta gera PDFs automaticamente ao concluir. Requer ao menos uma das ferramentas abaixo:
+
+### Opção 1 — pandoc + LaTeX (recomendado — melhor qualidade tipográfica)
+
+**macOS:**
+```bash
+brew install pandoc
+brew install --cask basictex
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt install pandoc texlive-xetex
+```
+
+### Opção 2 — md-to-pdf (mais leve, requer Node.js)
+
+```bash
+npm install -g md-to-pdf
+```
+
+### Opção 3 — weasyprint (requer Python)
+
+```bash
+pip install weasyprint
+```
+
+> O script detecta automaticamente qual ferramenta está disponível na ordem acima.
+> Se nenhuma estiver instalada, os documentos Markdown são gerados normalmente
+> e o PDF pode ser exportado depois via `/exportar-pdf`.
+
+### Dependência opcional — diagramas Mermaid no PDF
+
+Para renderizar fluxogramas e diagramas como imagens visuais no PDF
+(em vez de código-texto), instale o Mermaid CLI:
+
+```bash
+npm install -g @mermaid-js/mermaid-cli
+```
+
+Requer Node.js ≥ 18. O Mermaid CLI baixa Chromium headless (~200 MB) na primeira execução.
+Se não instalado, blocos `\`\`\`mermaid` aparecem como código no PDF (fallback gracioso).
+
+---
+
 ## Uso
 
 Em qualquer diretório de projeto vazio:
@@ -37,10 +85,16 @@ Em qualquer diretório de projeto vazio:
 O orquestrador conduz o processo de 4 marcos (Definição → Consenso → Detalhamento → Revisão Técnica opcional).
 Responda as perguntas como faria com um analista de requisitos humano.
 
+Para re-exportar o PDF a qualquer momento (útil se o conversor foi instalado após o encerramento):
+
+```
+/exportar-pdf
+```
+
 **Artefatos gerados ao final:**
-- `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md` (Marco 1)
-- `02.1-requisitos-funcionais.md`, `02.2-requisitos-qualidade.md`, `02.5-glossario.md` etc. (Marco 2)
-- `03-srs-completo.md`, `04-spec/*.feature`, `05-tests/`, `06-estrategia-testes.md`, `07-como-rodar-testes.md` (Marco 3)
+- `documentos-para-leigo/` e `documentos-tecnicos/` — documentação em Markdown por marco
+- `pdf/documentacao-cliente.pdf` — versão para o cliente (todos os docs leigo consolidados)
+- `pdf/documentacao-tecnica.pdf` — versão técnica (SRS, specs, estratégia de testes)
 
 ---
 
@@ -55,8 +109,10 @@ ferramenta-tcc/
 │   └── hooks.json         # Todos os 4 hooks (SessionStart, PreToolUse, PostToolUse, UserPromptSubmit)
 ├── agents/                # Definições de agente (orchestrator + 5 sub-agentes)
 │   └── orchestrator.md    # Agente principal (system prompt quando plugin habilitado)
-├── skills/                # 27 skills de elicitação e documentação
-├── scripts/               # Scripts invocados pelos hooks
+├── skills/                # 28 skills de elicitação, documentação e exportação
+│   └── exportar-pdf/      # Re-exportação PDF sob demanda (/exportar-pdf)
+├── scripts/               # Scripts invocados pelos hooks e pelo orquestrador
+│   ├── md_to_pdf.sh       # Conversor MD → PDF (pandoc/md-to-pdf/weasyprint + mmdc para Mermaid)
 │   └── lib/blacklist.txt  # Blacklist D1 (jargão proibido)
 ├── content/               # Conteúdo do plugin (não auto-descoberto pelo CC)
 │   ├── orchestrator.md    # Dispatcher central

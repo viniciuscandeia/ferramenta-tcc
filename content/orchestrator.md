@@ -205,3 +205,12 @@ Ao concluir Gate 3 (ou Gate 4 se solicitado):
 1. Atualizar `estado-projeto.yaml` com `marco_corrente: concluido`
 2. Listar artefatos gerados para o usuário (versão leigo)
 3. Informar próximos passos recomendados (M4 técnico, se não executado)
+4. **Gerar PDFs automaticamente** — rodar via Bash:
+   ```
+   bash "{PLUGIN_ROOT}/scripts/md_to_pdf.sh" "{PROJETO_DIR}"
+   ```
+   - Se o script sair com **exit 0**: informar ao usuário (em linguagem simples, sem jargão D1):
+     "Os documentos também foram salvos em formato PDF, prontos para imprimir ou compartilhar. Você encontra os arquivos em: `{PROJETO_DIR}/pdf/documentacao-cliente.pdf` e `{PROJETO_DIR}/pdf/documentacao-tecnica.pdf`."
+   - Se o script sair com **exit 2** (nenhum conversor disponível): informar ao usuário:
+     "Não foi possível gerar o PDF automaticamente porque nenhuma ferramenta de conversão foi encontrada no computador. Os documentos estão disponíveis em formato texto na pasta do projeto. Para gerar o PDF depois, instale o pandoc (`brew install pandoc` no Mac, `sudo apt install pandoc` no Linux ou `npm install -g md-to-pdf`) e use o comando `/exportar-pdf`."
+   - Se o script sair com **exit 1** (erro de conversão): informar ao usuário que os documentos de texto foram criados com sucesso e que houve uma dificuldade técnica na geração do PDF; sugerir `/exportar-pdf` para tentar novamente.
