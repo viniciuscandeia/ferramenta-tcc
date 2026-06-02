@@ -76,10 +76,19 @@ Mostrar ao usuário:
 Mostrar ao usuário:
 - Que os documentos de texto estão intactos.
 - Que para gerar o PDF é preciso instalar uma ferramenta gratuita:
-  - Mac: `brew install pandoc && brew install --cask basictex`
-  - Linux: `sudo apt install pandoc texlive-xetex`
+  - Mac:
+    ```
+    brew install pandoc
+    brew install --cask basictex
+    sudo /Library/TeX/texbin/tlmgr update --self
+    sudo /Library/TeX/texbin/tlmgr install fvextra
+    ```
+  - Linux: `sudo apt install pandoc texlive-xetex texlive-latex-extra`
   - Alternativa leve (Node.js): `npm install -g md-to-pdf`
 - Que após instalar, basta usar `/exportar-pdf` novamente.
+
+> **Nota:** se o usuário já tem pandoc + LaTeX mas o PDF sai com código ultrapassando
+> a margem, o `fvextra` não está instalado. Orientar a instalar conforme acima.
 
 ### Exit 1 — erro de conversão
 

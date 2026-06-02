@@ -6,7 +6,7 @@ specs Gherkin + step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, S
 Ao concluir, exporta a documentação completa em PDF automaticamente.
 
 **Projeto:** TCC — Vinicius Candeia (deadline 2026-07-01)
-**Plataforma:** Claude Code (v0.17.1+)
+**Plataforma:** Claude Code (v0.17.2+)
 
 ---
 
@@ -37,12 +37,21 @@ A ferramenta gera PDFs automaticamente ao concluir. Requer ao menos uma das ferr
 ```bash
 brew install pandoc
 brew install --cask basictex
+sudo /Library/TeX/texbin/tlmgr update --self
+sudo /Library/TeX/texbin/tlmgr install fvextra
 ```
+
+> `fvextra` corrige a quebra de linha de código inline e blocos de código no PDF.
+> Sem ele, caminhos longos (ex.: `documentos-tecnicos/02-requisitos/...`) podem
+> ultrapassar a margem direita. A exportação funciona sem ele, mas com o bug visual.
 
 **Ubuntu/Debian:**
 ```bash
-sudo apt install pandoc texlive-xetex
+sudo apt install pandoc texlive-xetex texlive-latex-extra
 ```
+
+> `texlive-latex-extra` inclui `fvextra`. Se preferir instalar só o necessário:
+> `sudo tlmgr install fvextra` (requer TeX Live instalado via tlmgr, não apt).
 
 ### Opção 2 — md-to-pdf (mais leve, requer Node.js)
 
