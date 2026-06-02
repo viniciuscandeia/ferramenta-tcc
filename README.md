@@ -33,7 +33,9 @@ A ferramenta gera PDFs automaticamente ao concluir. Requer ao menos uma das ferr
 
 ### Opção 1 — pandoc + LaTeX (recomendado — melhor qualidade tipográfica)
 
-**macOS:**
+<details open>
+<summary><strong>macOS</strong></summary>
+
 ```bash
 brew install pandoc
 brew install --cask basictex
@@ -41,29 +43,111 @@ sudo /Library/TeX/texbin/tlmgr update --self
 sudo /Library/TeX/texbin/tlmgr install fvextra
 ```
 
-> `fvextra` corrige a quebra de linha de código inline e blocos de código no PDF.
+> `fvextra` corrige quebra de linha de código inline e blocos no PDF.
 > Sem ele, caminhos longos (ex.: `documentos-tecnicos/02-requisitos/...`) podem
 > ultrapassar a margem direita. A exportação funciona sem ele, mas com o bug visual.
 
-**Ubuntu/Debian:**
+</details>
+
+<details>
+<summary><strong>Ubuntu / Debian</strong></summary>
+
 ```bash
+sudo apt update
 sudo apt install pandoc texlive-xetex texlive-latex-extra
 ```
 
-> `texlive-latex-extra` inclui `fvextra`. Se preferir instalar só o necessário:
-> `sudo tlmgr install fvextra` (requer TeX Live instalado via tlmgr, não apt).
+> `texlive-latex-extra` inclui `fvextra` (fix de quebra de linha no PDF).
 
-### Opção 2 — md-to-pdf (mais leve, requer Node.js)
+</details>
+
+<details>
+<summary><strong>Fedora / RHEL / CentOS</strong></summary>
+
+```bash
+sudo dnf install pandoc texlive-xetex texlive-fvextra
+```
+
+Se `texlive-fvextra` não estiver disponível no repositório, instale via tlmgr após instalar o TeX Live:
+```bash
+sudo dnf install pandoc texlive-xetex
+sudo tlmgr install fvextra
+```
+
+</details>
+
+<details>
+<summary><strong>Arch Linux / Manjaro</strong></summary>
+
+```bash
+sudo pacman -S pandoc texlive-core texlive-latexextra
+```
+
+> `texlive-latexextra` inclui `fvextra`.
+
+</details>
+
+<details>
+<summary><strong>Windows (WSL — recomendado)</strong></summary>
+
+A ferramenta roda via Claude Code no terminal. No Windows, use WSL (Windows Subsystem for Linux)
+com Ubuntu e siga as instruções de Ubuntu acima.
+
+Instalar WSL (PowerShell como administrador):
+```powershell
+wsl --install
+```
+
+Após reiniciar, abra o terminal Ubuntu e execute:
+```bash
+sudo apt update
+sudo apt install pandoc texlive-xetex texlive-latex-extra
+```
+
+</details>
+
+<details>
+<summary><strong>Windows (nativo, sem WSL)</strong></summary>
+
+```powershell
+# Instalar Scoop (gerenciador de pacotes, PowerShell):
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+
+# Instalar pandoc e MiKTeX:
+scoop install pandoc
+scoop bucket add extras
+scoop install miktex
+```
+
+Após instalar o MiKTeX, abrir o **MiKTeX Console** → aba "Packages" → buscar `fvextra` → instalar.
+
+Alternativa: instalar pelo instalador oficial em [miktex.org](https://miktex.org/download) e
+depois no MiKTeX Console instalar `fvextra`.
+
+> No Windows nativo, o Claude Code roda via Node.js. Confirme que o `pandoc` e o `xelatex`
+> estão no PATH antes de usar `/exportar-pdf`.
+
+</details>
+
+### Opção 2 — md-to-pdf (mais leve, requer Node.js ≥ 18)
+
+Funciona em macOS, Linux e Windows nativamente.
 
 ```bash
 npm install -g md-to-pdf
 ```
 
-### Opção 3 — weasyprint (requer Python)
+> Não requer LaTeX. Qualidade tipográfica inferior à Opção 1, mas sem dependências pesadas.
+> Não produz tabela de conteúdo automática.
+
+### Opção 3 — weasyprint (requer Python ≥ 3.9)
 
 ```bash
 pip install weasyprint
 ```
+
+> Converte via HTML+CSS → PDF. Requer pandoc instalado para melhor resultado.
 
 > O script detecta automaticamente qual ferramenta está disponível na ordem acima.
 > Se nenhuma estiver instalada, os documentos Markdown são gerados normalmente
@@ -95,6 +179,14 @@ brew install git
 
 # Ubuntu/Debian:
 sudo apt install git
+
+# Fedora/RHEL:
+sudo dnf install git
+
+# Arch:
+sudo pacman -S git
+
+# Windows: já incluído no Git for Windows (https://git-scm.com) ou via WSL
 ```
 
 Se git não estiver disponível, o rastreio é desativado silenciosamente — o fluxo não é interrompido.
