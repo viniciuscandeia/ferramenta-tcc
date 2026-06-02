@@ -6,7 +6,7 @@ specs Gherkin + step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, S
 Ao concluir, exporta a documentação completa em PDF automaticamente.
 
 **Projeto:** TCC — Vinicius Candeia (deadline 2026-07-01)
-**Plataforma:** Claude Code (v0.16.0+)
+**Plataforma:** Claude Code (v0.17.0+)
 
 ---
 
@@ -71,6 +71,36 @@ npm install -g @mermaid-js/mermaid-cli
 
 Requer Node.js ≥ 18. O Mermaid CLI baixa Chromium headless (~200 MB) na primeira execução.
 Se não instalado, blocos `\`\`\`mermaid` aparecem como código no PDF (fallback gracioso).
+
+### Dependência opcional — rastreio de mudanças (git)
+
+A ferramenta inicializa um repositório git na pasta do projeto ao começar e faz commit
+automático a cada etapa concluída. Requer git instalado (já presente na maioria dos sistemas):
+
+```bash
+# Verificar se disponível:
+git --version
+
+# macOS (se ausente):
+brew install git
+
+# Ubuntu/Debian:
+sudo apt install git
+```
+
+Se git não estiver disponível, o rastreio é desativado silenciosamente — o fluxo não é interrompido.
+
+**Como consultar o histórico de mudanças dos requisitos:**
+```bash
+# Ver todas as etapas documentadas:
+git -C <pasta-do-projeto> log --oneline
+
+# Ver o que mudou entre duas etapas:
+git -C <pasta-do-projeto> diff HEAD~1
+
+# Ver mudanças específicas de um arquivo de requisitos:
+git -C <pasta-do-projeto> log --follow documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md
+```
 
 ---
 

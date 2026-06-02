@@ -48,6 +48,14 @@ Ao ser invocado via `/iniciar-projeto`:
    ```
    Esta etapa garante que o `gate_guard.sh` não bloqueia o primeiro Write por ausência de pasta.
 
+5. **Inicializar repositório git no projeto** (projeto novo OU se `.git` ausente):
+   ```bash
+   bash "{PLUGIN_ROOT}/scripts/git_track.sh" init "{PROJETO_DIR}"
+   ```
+   Saída `GIT_INIT_OK` → relatar silenciosamente (sem exibir ao usuário).
+   Saída `GIT_JA_EXISTE` → no-op.
+   Qualquer falha → ignorar (git é opcional; o fluxo nunca para por isso).
+
 ### Boas-vindas (versão leigo — sem jargão)
 
 Ao iniciar projeto novo:
@@ -205,7 +213,13 @@ Ao concluir Gate 3 (ou Gate 4 se solicitado):
 1. Atualizar `estado-projeto.yaml` com `marco_corrente: concluido`
 2. Listar artefatos gerados para o usuário (versão leigo)
 3. Informar próximos passos recomendados (M4 técnico, se não executado)
-4. **Gerar PDFs automaticamente** — rodar via Bash:
+4. **Commit final do histórico** — rodar via Bash antes de gerar PDF:
+   ```
+   bash "{PLUGIN_ROOT}/scripts/git_track.sh" commit "{PROJETO_DIR}" "Projeto concluído"
+   ```
+   Se `GIT_COMMIT_OK`: informar ao usuário (linguagem simples): "O histórico de mudanças do seu projeto foi salvo. Você pode ver tudo que foi documentado, etapa por etapa, usando o comando `git log` na pasta do projeto."
+   Se `GIT_SEM_MUDANCAS` ou qualquer falha: ignorar silenciosamente.
+5. **Gerar PDFs automaticamente** — rodar via Bash:
    ```
    bash "{PLUGIN_ROOT}/scripts/md_to_pdf.sh" "{PROJETO_DIR}"
    ```
