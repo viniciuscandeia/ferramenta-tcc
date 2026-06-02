@@ -4,6 +4,11 @@
 # Saída: <PROJETO_DIR>/pdf/documentacao-cliente.pdf
 #         <PROJETO_DIR>/pdf/documentacao-tecnica.pdf
 # Exit 0 = sucesso; exit 1 = erro; exit 2 = nenhum conversor disponível
+#
+# Pré-requisito opcional (mas fortemente recomendado) para quebra de linha em
+# blocos e código inline no PDF LaTeX:
+#   macOS  : sudo tlmgr install fvextra
+#   Ubuntu : sudo tlmgr install fvextra   (ou: sudo apt install texlive-latex-extra)
 
 set -euo pipefail
 
@@ -45,6 +50,77 @@ for _texbin in /Library/TeX/texbin /usr/local/texlive/*/bin/universal-apple-darw
   done
 done
 export PATH
+
+# ---------------------------------------------------------------------------
+# Detectar fvextra e criar preâmbulo LaTeX para quebra de linha correta
+# ---------------------------------------------------------------------------
+# fvextra corrige:
+#   - blocos de código (```...```) que estouram a margem (Verbatim/Highlighting)
+#   - código inline (`...`) via scanner de tokens que insere pontos de quebra
+#     após / . - (seguro com escapes do pandoc como \_ \# etc.)
+#   - emergencystretch generosa como rede de segurança
+#
+# Se fvextra não estiver instalado: avisa, gera PDF sem o fix (comportamento
+# original — não aborta a geração do gate).
+#   Instalar: sudo tlmgr install fvextra
+# ---------------------------------------------------------------------------
+PREAMBLE_TEX=""
+
+if command -v kpsewhich &>/dev/null && kpsewhich fvextra.sty &>/dev/null; then
+  PREAMBLE_TEX="$(mktemp /tmp/ferramenta_tcc_preamble_XXXXXX)"
+  cat > "$PREAMBLE_TEX" <<'LATEXPREAMBLE'
+% === ferramenta-tcc: fix quebra de linha em PDF LaTeX ===
+% Requer: fvextra  (sudo tlmgr install fvextra)
+
+% Fix 1 — blocos de código fenced (```...```):
+%   Redefine Highlighting env gerada pelo pandoc para permitir quebra em qualquer char.
+\usepackage{fvextra}
+\fvset{breaklines=true,breakanywhere=true}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{%
+  breaklines=true,breakanywhere=true,commandchars=\\\{\}}
+
+% Fix 2 — código inline (\texttt{...}):
+%   Scanner token-a-token: insere \discretionary (ponto de quebra zero-custo)
+%   após / . -  sem afetar o conteúdo já escapado pelo pandoc (\_ \# etc.).
+%   Sentinel: \chardef único, nunca produzido por conteúdo normal.
+\makeatletter
+\let\ferr@orig@texttt\texttt
+\renewcommand{\texttt}[1]{%
+  \ferr@orig@texttt{\ferr@ttscan#1\ferr@ttend}%
+}
+\chardef\ferr@ttend=0
+\def\ferr@ttscan#1{%
+  \ifx#1\ferr@ttend\else
+    #1%
+    \if#1/\discretionary{}{}{}\fi
+    \if#1.\discretionary{}{}{}\fi
+    \if#1-\discretionary{}{}{}\fi
+    \expandafter\ferr@ttscan
+  \fi
+}
+\makeatother
+
+% Fix 3 — rede de segurança para overflows residuais
+\setlength{\emergencystretch}{10em}
+
+% Fix 4 — imagens (incluindo diagramas Mermaid) escaladas para caber na página
+%   Idêntico ao padrão do template pandoc default.latex.
+%   Imagens menores que a coluna ficam no tamanho natural; maiores são reduzidas.
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\makeatother
+LATEXPREAMBLE
+  # Limpar ao sair do script
+  # shellcheck disable=SC2064
+  trap "rm -f '$PREAMBLE_TEX'" EXIT
+else
+  echo "[md_to_pdf] AVISO: fvextra não encontrado — código pode estourar margem no PDF." >&2
+  echo "[md_to_pdf]   Instalar: sudo tlmgr install fvextra" >&2
+  echo "[md_to_pdf]   Gerando PDF sem fix de quebra de linha." >&2
+fi
 
 # ---------------------------------------------------------------------------
 # Detectar mmdc (Mermaid CLI) — opcional, para renderizar diagramas como imagem
@@ -91,7 +167,9 @@ if [[ -z "$ENGINE" ]]; then
 [md_to_pdf] Nenhum conversor PDF encontrado.
 Para instalar:
   macOS  : brew install pandoc && brew install --cask basictex
+           sudo tlmgr install fvextra       # fix quebra de linha (recomendado)
   Ubuntu : sudo apt install pandoc texlive-xetex
+           sudo tlmgr install fvextra       # ou: sudo apt install texlive-latex-extra
   Node   : npm install -g md-to-pdf
   Python : pip install weasyprint
 EOF
@@ -163,6 +241,10 @@ PYEOF
 # _convert <tmp_md> <out_pdf> <titulo>
 _convert() {
   local src="$1" dst="$2" titulo="$3"
+  # Montar array de args do preâmbulo LaTeX (vazio se fvextra não instalado)
+  local -a _preamble_args=()
+  [[ -n "${PREAMBLE_TEX:-}" && -f "${PREAMBLE_TEX:-}" ]] \
+    && _preamble_args=(--include-in-header "$PREAMBLE_TEX")
   case "$ENGINE" in
     pandoc-xelatex)
       pandoc "$src" -o "$dst" \
@@ -172,6 +254,7 @@ _convert() {
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
         --standalone \
+        "${_preamble_args[@]+"${_preamble_args[@]}"}" \
         2> >(grep -vE "Missing character|Float too large for page|^\s+input line [0-9]+\." >&2)
       ;;
     pandoc-pdflatex)
@@ -182,6 +265,7 @@ _convert() {
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
         --standalone \
+        "${_preamble_args[@]+"${_preamble_args[@]}"}" \
         2> >(grep -vE "Missing character|Float too large for page|^\s+input line [0-9]+\." >&2)
       ;;
     pandoc-wkhtmltopdf)
@@ -221,7 +305,7 @@ _convert() {
 _gerar_pdf() {
   local pasta="$1" out_pdf="$2" titulo="$3" excluir_internos="$4"
   local tmp_md tmp_img_dir
-  tmp_md="$(mktemp /tmp/ferramenta_tcc_XXXXXX.md)"
+  tmp_md="$(mktemp /tmp/ferramenta_tcc_XXXXXX)"
   tmp_img_dir="$(mktemp -d /tmp/ferramenta_tcc_imgs_XXXXXX)"
   # shellcheck disable=SC2064
   trap "rm -f '$tmp_md'; rm -rf '$tmp_img_dir'" RETURN
