@@ -14,12 +14,12 @@
 #   exato para julgamento humano/Claude. Mitigação futura: blacklist-allow.txt.
 
 # ── Grupo 1 — requisito funcional / RF ───────────────────────────────────────
-requisitos? funcionais?
+requisitos? funciona(l|is)
 \bRFs?\b
 
 # ── Grupo 2 — requisito não-funcional / RNF / requisito de qualidade ─────────
-requisitos? não-funcionais?
-requisitos? nao-funcionais?
+requisitos? não-funciona(l|is)
+requisitos? nao-funciona(l|is)
 \bRNFs?\b
 requisitos? de qualidade
 
