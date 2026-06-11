@@ -1,6 +1,6 @@
 # Catálogo da Ferramenta — TCC Elicitação de Requisitos
 
-**Arquitetura:** 1 orquestrador + 5 sub-agentes + 27 skills + 3 workflows  
+**Arquitetura:** 1 orquestrador + 5 sub-agentes + 25 skills + 3 workflows  
 **Canon arquitetural:** `docs/planejamento/3 - Arquitetura da Ferramenta.md`  
 **Constituição (guardrails runtime):** `content/constitution.md`
 
@@ -12,7 +12,7 @@
 |---|---|---|---|
 | M1 — Definição da Necessidade | `stakeholder-identifier` | necessidade-visao, stakeholder-mapping, contexto-e-limite, clarificacao-pos-visao¹, traducao-gate, traducao-leigo | Gate 1: usuário aprova `documentos-para-leigo/01-visao/01-visao-produto.md` |
 | M2 — Consenso de Escopo | `collector` ⇄ `modeler` (loop) | entrevista-estruturada, cenario-narrativa, recomendacao-dominio, recomendacao-implicitos, questionario-feixe¹, classificacao-rf-rnf, priorizacao, glossario, conflitos-detect, pautas-reelicitacao, traducao-gate, traducao-leigo | Gate 2: aprova versões leigo dos artefatos + `pautas-reelicitacao.md` sem pendências |
-| M3 — Detalhamento | `documenter` ⇄ `checker` (loop) | requisito-ears, srs-ireb-template, gherkin-spec, step-defs-red, testing-strategy, readme-tests, validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate, traducao-leigo | Gate 3: aprova SRS leigo + `analyze-report.md` sem CRITICAL |
+| M3 — Detalhamento | `documenter` ⇄ `checker` (loop) | requisito-ears, modelagem-visual, srs-ireb-montagem, validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate, traducao-leigo | Gate 3: aprova SRS leigo + `analyze-report.md` sem CRITICAL |
 | M4 — Revisão Técnica (opcional) | `checker` modo técnico | (internamente: validacao-checklist-ireb) | Gate 4: dev/tech lead aprova `aprovacao-tecnica.md` |
 
 ¹ Skill condicional — ver `when_to_use`.
@@ -64,9 +64,9 @@
 
 **Arquivo:** `agents/documenter.md`  
 **Marco:** M3 — Detalhamento  
-**Papel:** Geração dos 5 outputs finais (SRS + Gherkin specs + step defs RED + TESTING-STRATEGY + README-TESTS). No loop M3, recebe `analyze-report.md` com CRITICAL e reexecuta apenas as skills afetadas.  
-**Workflow:** `content/workflows/m3-srs-specs-tests.md` (Fase A)  
-**Skills que invoca:** `requisito-ears` → `srs-ireb-template` → `gherkin-spec` → `step-defs-red` → `testing-strategy` → `readme-tests` → `traducao-gate` (SRS)
+**Papel:** Geração dos outputs finais (SRS com 8 seções e diagramas embutidos + versão leigo). No loop M3, recebe `analyze-report.md` com CRITICAL e reexecuta apenas as skills afetadas.  
+**Workflow:** `content/workflows/m3-srs.md` (Fase A)  
+**Skills que invoca:** `requisito-ears` → `modelagem-visual` → `srs-ireb-montagem` → `traducao-gate` (SRS)
 
 ---
 
@@ -75,8 +75,8 @@
 **Arquivo:** `agents/checker.md`  
 **Marcos:** M3 (loop validação) + M4 (revisão técnica stub — opcional)  
 **Papel M3:** Valida o SRS e artefatos do documenter — aplica IREB §3.8, faz analyze cross-artifact e gera `analyze-report.md`. CRITICAL bloqueia Gate 3 e reinicia o loop.  
-**Papel M4:** Gera `revisao-tecnica.md` (checklist técnico) + apresenta `aprovacao-tecnica.md` ao dev/tech lead via yesno.  
-**Workflow:** `content/workflows/m3-srs-specs-tests.md` (Fase B)  
+**Papel M4:** Gera `revisao-tecnica.md` (checklist técnico sobre SRS + rastreabilidade + diagramas) + apresenta `aprovacao-tecnica.md` ao dev/tech lead via yesno.  
+**Workflow:** `content/workflows/m3-srs.md` (Fase B)  
 **Skills que invoca:** `validacao-checklist-ireb` → `analyze-cross-artifact` → `rastreabilidade-matriz`
 
 ---
@@ -103,13 +103,13 @@
 
 ---
 
-### m3-srs-specs-tests
+### m3-srs
 
-**Arquivo:** `content/workflows/m3-srs-specs-tests.md`  
+**Arquivo:** `content/workflows/m3-srs.md`  
 **Sub-agentes responsáveis:** `documenter` (Fase A) → `checker` (Fase B, loop de validação)  
 **Entrada:** artefatos M1 aprovados (Gate 1) + artefatos M2 aprovados (Gate 2)  
-**Saída:** `SRS-completo.md` + `SRS-completo-leigo.md` + `spec/*.feature` + `spec/_skipped.md` + `tests/unit/` + `tests/acceptance/` + `TESTING-STRATEGY.md` + `README-TESTS.md` + `analyze-report.md` + `rastreabilidade.md`  
-**Gate de saída:** Gate 3 — usuário aprova `SRS-completo-leigo.md`; `analyze-report.md` sem issues CRITICAL
+**Saída:** `03-srs-completo.md` + `03-documento-do-projeto.md` (leigo) + `03.3-diagramas.md` + `03.1-analyze-report.md` + `03.2-rastreabilidade.md`  
+**Gate de saída:** Gate 3 — usuário aprova `03-documento-do-projeto.md`; `03.1-analyze-report.md` sem issues CRITICAL
 
 ---
 
@@ -299,7 +299,7 @@
 
 ---
 
-### M3 — documenter: Geração de Artefatos (6)
+### M3 — documenter: Geração de Artefatos (3)
 
 ---
 
@@ -307,59 +307,29 @@
 
 **Arquivo:** `skills/requisito-ears/SKILL.md`
 
-**Descrição:** Formata todos os RFs e RNFs de M2 com sintaxe EARS (5 padrões) e modais RFC 2119 (DEVE/DEVERIA/PODE), gerando tabela estruturada com colunas: ID | Tipo-EARS | Sujeito | Modal | Verbo | Objeto | Condição | Modal-original. Base para srs-ireb-template e gherkin-spec.
+**Descrição:** Formata todos os RFs e RNFs de M2 com sintaxe EARS (5 padrões) e modais RFC 2119 (DEVE/DEVERIA/PODE), gerando tabela estruturada com colunas: ID | Tipo-EARS | Sujeito | Modal | Verbo | Objeto | Condição | Modal-original. Base para srs-ireb-montagem.
 
 **Quando usar:** Invocada pelo documenter como Passo 1 do Processo M3. Entrada obrigatória: 03.1-funcionais.md e 03.2-qualidade.md com campos modal RFC 2119 já atribuídos pela skill priorizacao (M2).
 
 ---
 
-#### srs-ireb-template
+#### modelagem-visual
 
-**Arquivo:** `skills/srs-ireb-template/SKILL.md`
+**Arquivo:** `skills/modelagem-visual/SKILL.md`
 
-**Descrição:** Monta o SRS-completo.md com as 6 seções IREB §3.3.3 (ISO/IEC/IEEE 29148), consumindo todos os artefatos M1+M2 e a saída formatada de requisito-ears. Seção 3 com RFs EARS+RFC2119; seção 4 com RNFs mensuráveis; seção 5 com restrições+premissas+glossário; seção 6 com rastreabilidade. Não gera versão leigo (traducao-gate faz isso no Passo 7 do documenter).
+**Descrição:** Gera 3 diagramas Mermaid (Contexto do Sistema, Caso de Uso, Entidade-Relacionamento) a partir dos artefatos M1+M2, sem interação com o usuário. Inclui subconjunto leigo-safe (contexto + caso de uso com rótulos de negócio) consumido pelo traducao-gate. Saída: 03.3-diagramas.md.
 
-**Quando usar:** Invocada pelo documenter como Passo 2 do Processo M3. Depende de requisito-ears (Passo 1) ter executado primeiro.
-
----
-
-#### gherkin-spec
-
-**Arquivo:** `skills/gherkin-spec/SKILL.md`
-
-**Descrição:** Gera arquivos .feature Gherkin para cada RF com modal DEVE (RFC 2119 MUST). RFs com modal DEVERIA ou PODE são listados em spec/_skipped.md com justificativa. 1 arquivo .feature por RF-DEVE com nome `<id-rf>-<slug-descricao>.feature`. Cada feature tem `Feature:` + ≥ 1 `Scenario` (caminho feliz) + até 2 Scenarios borda. Referências: D20, D22.
-
-**Quando usar:** Invocada pelo documenter como Passo 3 do Processo M3. Depende de srs-ireb-template (Passo 2) ter executado. Entrada obrigatória: 03.1-funcionais.md com campo modal preenchido (DEVE/DEVERIA/PODE) pela priorizacao de M2.
+**Quando usar:** Invocada pelo documenter como Passo 2 do Processo M3 (após requisito-ears, antes de srs-ireb-montagem). Os diagramas são embutidos nas seções do SRS pelo passo seguinte.
 
 ---
 
-#### step-defs-red
+#### srs-ireb-montagem
 
-**Arquivo:** `skills/step-defs-red/SKILL.md`
+**Arquivo:** `skills/srs-ireb-montagem/SKILL.md`
 
-**Descrição:** Gera arquivos de step definitions em estado RED (falham imediatamente — sem implementação real) para os 3 frameworks alvo: Pytest-BDD (Python), Cucumber-js (JavaScript/TypeScript) e SpecFlow (.NET C#). Lê spec/*.feature gerado por gherkin-spec e gera 1 step def file por .feature em cada framework. Estado RED garantido: `NotImplementedError` (Python), `throw new Error('PENDING')` (JS), `throw new PendingStepException()` (C#).
+**Descrição:** Monta o SRS-completo.md com 8 seções IREB §3.3.3 (ISO/IEC/IEEE 29148) — 6 obrigatórias + §7 conflitos (condicional) + §8 glossário —, consumindo todos os artefatos M1+M2, a saída formatada de requisito-ears e os diagramas de modelagem-visual (embutidos em §2.1, §3 e §4). Não gera versão leigo (traducao-gate faz isso no Passo 4 do documenter).
 
-**Quando usar:** Invocada pelo documenter como Passo 4 do Processo M3. Depende de gherkin-spec (Passo 3) ter executado. Entrada: spec/*.feature. Saída: tests/unit/ e tests/acceptance/ com step defs RED em 3 frameworks.
-
----
-
-#### testing-strategy
-
-**Arquivo:** `skills/testing-strategy/SKILL.md`
-
-**Descrição:** Gera TESTING-STRATEGY.md com 1 entrada por RNF de 03.2-qualidade.md. Cada entrada define: categoria do bucket Wiegers (Performance/Security/Usability/Reliability/Maintainability/Portability/Privacy+Compliance/Accessibility), ferramenta sugerida, métrica alvo, critério de aceite e framework de teste alvo. Referência: D21.
-
-**Quando usar:** Invocada pelo documenter como Passo 5 do Processo M3. Entrada: 03.2-qualidade.md. Saída: TESTING-STRATEGY.md com entrada por RNF.
-
----
-
-#### readme-tests
-
-**Arquivo:** `skills/readme-tests/SKILL.md`
-
-**Descrição:** Gera README-TESTS.md documentando como configurar e rodar os testes nos 3 frameworks: Pytest-BDD (Python), Cucumber-js (JavaScript/TypeScript) e SpecFlow (.NET C#). Cada seção inclui: pré-requisitos, comandos de instalação, comando para rodar todos os testes, comando para rodar teste específico, e estrutura de pastas esperada. Referência: D23.
-
-**Quando usar:** Invocada pelo documenter como Passo 6 do Processo M3. Depende de step-defs-red (Passo 4) ter executado. Saída: README-TESTS.md na raiz do projeto.
+**Quando usar:** Invocada pelo documenter como Passo 3 do Processo M3. Depende de requisito-ears (Passo 1) e modelagem-visual (Passo 2) terem executado.
 
 ---
 
@@ -381,7 +351,7 @@
 
 **Arquivo:** `skills/analyze-cross-artifact/SKILL.md`
 
-**Descrição:** Valida consistência entre artefatos de diferentes marcos: Visão (M1) ↔ Elicitação (M2) ↔ SRS (M3) ↔ Specs (M3). Detecta 4 tipos de defeito (Omissão, Contradição, Superespecificação, Inexequibilidade) com severidades CRITICAL/HIGH/MEDIUM/LOW. CRITICAL bloqueia Gate 3. Referência: D17 + content/catalogos-seed/conceitos/qualidade-e-validacao.md §5.
+**Descrição:** Valida consistência entre artefatos de diferentes marcos: Visão (M1) ↔ Elicitação (M2) ↔ SRS (M3). Detecta 4 tipos de defeito (Omissão, Contradição, Superespecificação, Inexequibilidade) com severidades CRITICAL/HIGH/MEDIUM/LOW. CRITICAL bloqueia Gate 3. Referência: D17 + content/catalogos-seed/conceitos/qualidade-e-validacao.md §5.
 
 **Quando usar:** Invocada pelo checker no Passo 2 do Processo M3. Depende de validacao-checklist-ireb (Passo 1) ter executado. Entrada: todos os artefatos M1+M2+M3. Saída: seção "Análise Cross-Artifact (D17)" adicionada a analyze-report.md.
 
@@ -391,9 +361,9 @@
 
 **Arquivo:** `skills/rastreabilidade-matriz/SKILL.md`
 
-**Descrição:** Gera rastreabilidade.md com matriz bidirecional ligando Objetivo de negócio (M1) → RF/RNF (M2) → Seção SRS (M3) → Spec (.feature) → Step definitions → Stakeholder origem. Detecta lacunas (células vazias = candidatos a issues para analyze-cross-artifact). Referência: content/catalogos-seed/conceitos/qualidade-e-validacao.md §4 (rastreabilidade bidirecional forward+backward).
+**Descrição:** Gera 03.2-rastreabilidade.md com matriz bidirecional ligando Objetivo de negócio (M1) → RF/RNF (M2) → Seção SRS (M3) → Stakeholder origem. Detecta lacunas (células vazias = candidatos a issues para analyze-cross-artifact). Referência: content/catalogos-seed/conceitos/qualidade-e-validacao.md §4 (rastreabilidade bidirecional forward+backward).
 
-**Quando usar:** Invocada pelo checker no Passo 3 do Processo M3. Entrada: `documentos-tecnicos/01-visao/01-visao-produto.md` + 03.1-funcionais.md + 03.2-qualidade.md + SRS-completo.md + spec/*.feature. Saída: rastreabilidade.md.
+**Quando usar:** Invocada pelo checker no Passo 3 do Processo M3. Entrada: `documentos-tecnicos/01-visao/01-visao-produto.md` + 02.1-requisitos-funcionais.md + 02.2-requisitos-qualidade.md + 03-srs-completo.md. Saída: 03.2-rastreabilidade.md.
 
 ---
 

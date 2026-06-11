@@ -75,11 +75,11 @@ Ordenar `DEVE_TER` em sequência de implementação:
 Atualizar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campos preenchidos:
 
 ```markdown
-| ID | Descrição | Modal | MoSCoW | Kano | ordem_impl | Fonte |
-|---|---|---|---|---|---|---|
-| RF-001 | O sistema DEVE permitir cadastro de produto com nome, preço e foto | DEVE | DEVE_TER | — | 1 | cenario-narrativa §2 |
-| RF-002 | O sistema DEVERIA enviar confirmação por e-mail após pedido | DEVERIA | DEVERIA_TER | Proporcional | — | recomendacao-implicitos |
-| RF-003 | O sistema PODE exibir sugestões de produtos relacionados | PODE | PODERIA_TER | Encantador | — | recomendacao-dominio |
+| ID | Descrição | Modal | Kano | ordem_impl | Fonte |
+|---|---|---|---|---|---|
+| RF-001 | O sistema DEVE permitir cadastro de produto com nome, preço e foto | DEVE | — | 1 | cenario-narrativa §2 |
+| RF-002 | O sistema DEVERIA enviar confirmação por e-mail após pedido | DEVERIA | Proporcional | — | recomendacao-implicitos |
+| RF-003 | O sistema PODE exibir sugestões de produtos relacionados | PODE | Encantador | — | recomendacao-dominio |
 ```
 
 Itens `NAO_TERA` → seção "Fora do escopo desta versão" ao final de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`.

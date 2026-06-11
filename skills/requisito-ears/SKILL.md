@@ -4,7 +4,7 @@ marco: [M3]
 description: >-
   Formata todos os itens funcionais e de comportamento com estrutura padronizada usando modais de obrigatoriedade (DEVE/DEVERIA/PODE) e padrões de condição (evento, estado, exceção, ubíquo, opcional).
   Use no início do Marco 3, com os itens classificados e priorizados do Marco 2.
-  Format RF/RNF items with EARS syntax and RFC 2119 modals; no user interaction; produces structured table for SRS and Gherkin.
+  Format RF/RNF items with EARS syntax and RFC 2119 modals; no user interaction; produces structured table for SRS.
 ---
 
 ## Filosofia desta skill (Regras Absolutas)
@@ -15,7 +15,7 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar antes de Gate 2 aprovado (verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campo modal preenchido)
-- NÃO executar se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` não tem nenhum item com modal `DEVE` (sem items DEVE = nenhuma spec Gherkin possível em Passo 3)
+- NÃO executar se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` não tem nenhum item com modal `DEVE` (sem itens DEVE = nenhum requisito obrigatório — indica erro de priorização em M2; retornar ao orquestrador)
 - ⛔ STOP se contagem de itens na saída ≠ contagem de entrada — omissão silenciosa proibida
 </HARD-GATE>
 
@@ -55,7 +55,7 @@ Sujeito é sempre "O sistema" (EARS canônico). Sem interação com usuário.
 ## Fase 2 — Saída
 
 ```markdown
-# Requisitos Formatados (EARS + RFC 2119)
+# Requisitos Formatados
 
 ## Funcionais
 

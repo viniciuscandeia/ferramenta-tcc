@@ -4,10 +4,7 @@ Usado pela skill **`modelagem-visual`** para gerar diagramas consistentes entre
 projetos. Cada template é canônico — a skill substitui os placeholders com dados
 reais dos artefatos de entrada.
 
-Fundamento normativo:
-- IREB CPRE AL — 3 perspectivas: estrutural/dados, funcional, comportamental
-- ISO/IEC/IEEE 29148 — diagrama de contexto e casos de uso como recommended practices
-- Motor: Mermaid (render nativo GitHub/VSCode, sem runtime extra)
+Motor: Mermaid (render nativo GitHub/VSCode, sem runtime extra)
 
 ---
 
@@ -89,43 +86,7 @@ flowchart LR
 
 ---
 
-## 3. Diagrama de Fluxo / Atividade — Caminho Principal (obrigatório)
-
-**Perspectiva:** IREB funcional
-**Leigo-safe:** ✅ sim
-**Fonte:** `documentos-tecnicos/03-documento/04-spec/*.feature` (cenário "caminho
-feliz" de cada RF DEVE) ou `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`
-(narrativa de uso, se cenário não disponível ainda)
-
-**Algoritmo:**
-1. Selecionar o fluxo principal do produto (feature mais importante — RF DEVE de
-   maior prioridade no MoSCoW, ou o primeiro RF na lista)
-2. Extrair passos do Gherkin: `Given` → pré-condição, `When` → ação, `Then` → resultado
-3. Montar flowchart TD com decisões para caminhos de erro se existirem no cenário
-
-```mermaid
-flowchart TD
-    Start([Início])
-    P1["[Pré-condição: contexto inicial]"]
-    A1["[Ação: o que o usuário faz]"]
-    D{"[Decisão se houver]?"}
-    R1["[Resultado esperado]"]
-    R2["[Resultado alternativo]"]
-    End([Fim])
-
-    Start --> P1 --> A1 --> D
-    D -->|Sim| R1 --> End
-    D -->|Não| R2 --> End
-```
-
-**Regras:**
-- Se não há decisão → usar flowchart linear (sem losango)
-- Máximo 8 nós no fluxo principal — encurtar se necessário
-- Rótulos: linguagem de negócio, sem jargão técnico
-
----
-
-## 4. Diagrama Entidade-Relacionamento (técnico — não leigo)
+## 3. Diagrama Entidade-Relacionamento (técnico — não leigo)
 
 **Perspectiva:** IREB estrutural/dados
 **Leigo-safe:** ❌ (versão técnica apenas)
@@ -167,60 +128,24 @@ erDiagram
 
 ---
 
-## 5. Diagrama de Estados (técnico — condicional)
-
-**Perspectiva:** IREB comportamental
-**Leigo-safe:** ❌ (versão técnica apenas)
-**Condição de geração:** só gerar se houver ≥ 1 entidade com ciclo de vida explícito
-nos RFs ou glossário (ex: "Pedido: novo → confirmado → enviado → entregue";
-"Usuário: ativo → suspenso → excluído")
-**Fonte:** `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + glossário
-
-**Algoritmo:**
-1. Buscar padrões de ciclo de vida nos RFs: verbos que implicam transição de estado
-   ("cancelar", "aprovar", "publicar", "arquivar", "expirar")
-2. Buscar campos de status no glossário (ex: "status: ativo/inativo")
-3. Para cada entidade com ciclo de vida identificado: montar stateDiagram-v2
-
-```mermaid
-stateDiagram-v2
-    direction LR
-    [*] --> Estado1 : criação
-    Estado1 --> Estado2 : [evento que dispara]
-    Estado2 --> Estado3 : [evento]
-    Estado3 --> [*] : conclusão
-    Estado2 --> Estado1 : [reversão se possível]
-```
-
-**Regras:**
-- Nomear estados em PascalCase descritivo ("Aguardando", "EmAnalise", "Aprovado")
-- Se não há ciclo de vida identificável → não gerar; registrar nota explícita:
-  "Nenhum ciclo de vida de entidade identificado nos artefatos — diagrama de
-  estados omitido."
-- Máximo 2 entidades por arquivo — criar diagrama separado por entidade se mais
-
 ---
 
-## 6. Subconjunto leigo-safe — o que vai para traducao-gate
+## 4. Subconjunto leigo-safe — o que vai para traducao-gate
 
 O arquivo `03.3-diagramas.md` contém uma seção marcada que `traducao-gate`
-extrai para embutir no doc leigo:
+extrai para embutir no doc leigo (2 diagramas: contexto e caso de uso):
 
 ```markdown
 <!-- LEIGO-SAFE-START -->
-## Como o sistema funciona
+## Como o produto funciona
 
-### Quem usa e o que o sistema faz
+### Quem usa e o que o produto faz
 
 [diagrama de contexto aqui]
 
 ### O que cada pessoa pode fazer
 
 [diagrama de caso de uso aqui]
-
-### Como o fluxo principal funciona
-
-[diagrama de fluxo aqui]
 <!-- LEIGO-SAFE-END -->
 ```
 

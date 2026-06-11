@@ -32,12 +32,12 @@ Checar presença de qualquer termo da blacklist D1:
 | requisito não-funcional, RNF, requisito de qualidade | como o produto precisa se comportar |
 | elicitar, elicitação, levantar requisitos | descobrir, entender, levantar |
 | rastreabilidade, rastrear | saber de onde veio cada decisão |
-| stakeholder, partes interessadas (no sentido técnico) | pessoas envolvidas, quem tem interesse no projeto |
-| escopo (no sentido técnico de ER) | o que está dentro e fora do projeto |
+| stakeholder, partes interessadas (no sentido técnico) | pessoas envolvidas, quem tem interesse no produto |
+| escopo (no sentido técnico de ER) | o que está dentro e fora do produto |
 | iteração, sprint | etapa, rodada de trabalho |
 | backlog | lista de coisas a fazer |
 | caso de uso | situação de uso, como a pessoa vai usar |
-| SRS, ERS, documento de requisitos (sigla) | documento do projeto |
+| SRS, ERS, documento de requisitos (sigla) | documento do produto |
 | marco (no sentido de fase ER) | fase, etapa principal |
 | sub-agente, agente (ferramenta interna) | [remover — não mencionar ao usuário] |
 | skill, técnica de ER | [remover — não mencionar ao usuário] |

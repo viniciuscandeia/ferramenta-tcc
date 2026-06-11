@@ -59,7 +59,7 @@ Destas funcionalidades que ainda não mencionamos, quais fariam sentido para o s
 (C) Histórico de atividades do usuário
 (D) Nenhuma dessas por enquanto
 ```
-`multiSelect: true` — usuário pode confirmar múltiplos implícitos de uma vez.
+`header`: usar 1 palavra descritiva do tema ≤ 12 chars (ex: `"Funções"`, `"Segurança"`, `"Acesso"`) · `multiSelect: true` · última opção sempre `"Nenhuma dessas"` · 2–4 opções totais.
 
 ## Fase 3 — Coleta
 

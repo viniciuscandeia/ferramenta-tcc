@@ -21,7 +21,7 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 
 ## Bloco B — Qualidade dos artefatos
 
-- [ ] **B1.** ≥ 1 RF com modal `DEVE` em `03.1-funcionais.md` (necessário para M3 gerar Gherkin — D20)
+- [ ] **B1.** ≥ 1 RF com modal `DEVE` em `03.1-funcionais.md` (sem nenhum DEVE = erro de priorização)
 - [ ] **B2.** ≥ 1 RNF com métrica verificável em `03.2-qualidade.md` (ex: "tempo de resposta < 2s para 95% das requisições")
 - [ ] **B3.** Restrições em `03.3-restricoes.md` classificadas corretamente (não misturadas com RNFs)
 - [ ] **B4.** Cada item de `03.1-funcionais.md` tem: ID único, modal, descrição EARS, prioridade MoSCoW
@@ -59,7 +59,7 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 
 - [ ] **F1.** `estado-projeto.yaml` reflete `marco_corrente: M2` durante execução e `gate_status.gate_2: aprovado` após Gate 2
 - [ ] **F2.** `estado-projeto.yaml` registra `gate_status.gate_2: aprovado` e `gate_2_aprovado_em` após aprovação do Gate 2
-- [ ] **F3.** Artefatos M2 compatíveis com entrada esperada de M3: `03.1-funcionais.md` tem RFs com `DEVE` para `gherkin-spec` (D20)
+- [ ] **F3.** Artefatos M2 compatíveis com entrada esperada de M3: `03.1-funcionais.md` com modais RFC 2119 preenchidos para `requisito-ears`
 
 ---
 

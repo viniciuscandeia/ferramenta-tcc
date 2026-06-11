@@ -39,7 +39,7 @@ description: >-
 
 ## Fase 1 — Seleção dos Feixes
 
-Selecionar as 2 áreas com maior lacuna de cobertura. Para cada uma, montar 1 feixe de 3–4 perguntas (choice, multi-choice ou yesno). Aplicar o teste da combinação por pergunta antes de definir o tipo.
+Selecionar as 2 áreas com maior lacuna de cobertura. Para cada uma, montar 1 feixe de 3–4 perguntas (choice, multi-choice ou yesno). Aplicar o teste da combinação por pergunta antes de definir o tipo. Declarar `multiSelect: true` ou `multiSelect: false` explicitamente em cada pergunta. Usar `header` de 1 palavra ≤ 12 chars por feixe (ex: `"Acesso"`, `"Histórico"`).
 
 **Exemplo — Feixe "Acesso e perfis":**
 ```

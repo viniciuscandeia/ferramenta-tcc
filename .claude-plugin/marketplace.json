@@ -7,7 +7,7 @@
     {
       "name": "ferramenta-tcc",
       "source": "./",
-      "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 + specs Gherkin + testes RED."
+      "description": "Ferramenta de elicitação e documentação de requisitos para stakeholder leigo. Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 com diagramas e rastreabilidade."
     }
   ]
 }

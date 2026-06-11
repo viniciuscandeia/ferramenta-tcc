@@ -21,11 +21,11 @@ Nunca use estes termos em perguntas, títulos, resumos ou qualquer texto apresen
 | Elicitar / elicitação | "Descobrir" / "levantar" / "entender" |
 | Rastreabilidade | "Saber de onde veio cada decisão" |
 | Stakeholder | "Pessoa envolvida" / "quem tem interesse" |
-| Escopo | "O que está dentro e fora do projeto" |
+| Escopo | "O que está dentro e fora do produto" |
 | Iteração / Sprint | "Etapa" / "rodada de trabalho" |
 | Backlog | "Lista de coisas a fazer" |
 | Caso de uso | "Situação de uso" / "como a pessoa vai usar" |
-| SRS / ERS / documento de requisitos | "Documento do projeto" |
+| SRS / ERS / documento de requisitos | "Documento do produto" |
 | Marco | "Etapa principal" / "fase" |
 | Sub-agente / agente | (nunca mencionar internamente) |
 | Skill / técnica de ER | (nunca mencionar internamente) |
@@ -97,13 +97,22 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
   - `multi-choice` → `AskUserQuestion` com `multiSelect: true`
   - `text` — texto livre
   - `yesno` — decisão binária; obrigatório para gates
+- **PRECEDÊNCIA DE TIPO (regra inviolável):** cada pergunta tem um TIPO declarado pela skill de origem. O TESTE DA COMBINAÇÃO e a lista de categorias definem multi vs. single apenas entre perguntas **já declaradas como opções** — **NUNCA convertem uma pergunta narrativa/aberta (`text`) em lista de opções.**
 - **TESTE DA COMBINAÇÃO (obrigatório antes de CADA pergunta de opções):** "O usuário pode legitimamente querer mais de uma destas opções ao mesmo tempo?"
   - SIM → `multiSelect: true`
   - NÃO, são genuinamente exclusivas (faixas de tamanho, níveis aninhados, um único caminho) → `choice`
   - **Na dúvida → `multiSelect: true`.** Custo de permitir múltipla onde só uma se aplica é zero; custo de forçar única onde várias se aplicam é perda de informação.
   - Exceção: gates e decisões binárias permanecem `yesno`.
 - **Sinalização visível obrigatória:** toda pergunta com `multiSelect: true` deve conter no texto da `question` a indicação `(pode escolher mais de uma)` — o leigo precisa saber que pode marcar várias.
-- **Categorias que quase sempre são `multiSelect: true`:** perfis de pessoas envolvidas; funcionalidades desejadas; dores/frustrações; preocupações de qualidade (desempenho, segurança, privacidade); leis/normas aplicáveis; exclusões de escopo; implícitos a confirmar.
+- **Opção "Other" automática (não duplicar):** o Claude Code adiciona automaticamente uma opção "Other" (texto livre) a TODA pergunta. **Nunca** criar `"Outro (escrever)"` manual — duplica a nativa e gasta 1 slot. Para "nenhuma se aplica" (resposta frequente, 1 toque), incluir `"Nenhum destes"` explícito — esse é semanticamente distinto da "Other".
+- **Categorias que, quando apresentadas como opções, quase sempre são `multiSelect: true`:** perfis de pessoas envolvidas; funcionalidades desejadas; dores/frustrações; preocupações de qualidade (desempenho, segurança, privacidade); leis/normas aplicáveis; exclusões de escopo; implícitos a confirmar.
+- **Limites invioláveis da primitiva `AskUserQuestion`:**
+  - 1–4 perguntas por chamada
+  - **2–4 opções na array por pergunta** — a "Other" automática **não** conta para o mínimo de 2
+  - **`header` ≤ 12 caracteres** — preferir 1 palavra
+  - `multiSelect: true` exige no mínimo 2 opções na array
+- **Guardas de borda para perguntas de catálogo:** se catálogo gerar < 2 candidatos → completar com `"Nenhum destes"` ou usar `text`. Se gerar > 4 candidatos → escolher os 4 mais relevantes.
+- **Campo `multiSelect` obrigatório:** toda pergunta de opções deve declarar explicitamente `multiSelect: true` ou `multiSelect: false`. Proibido descrever a pergunta apenas em prosa com tipo implícito.
 - **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
 
 ---
@@ -156,7 +165,7 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 
 ## ARQUITETURA DE EXECUÇÃO (D6 revisada)
 
-**Topologia:** 1 orquestrador + 5 sub-agentes funcionais MARE-style + 29 skills
+**Topologia:** 1 orquestrador + 5 sub-agentes funcionais MARE-style + 25 skills
 
 | Marco | Sub-agente ativo |
 |---|---|
@@ -179,7 +188,7 @@ Todo artefato de gate deve existir em **duas versões**:
 
 O usuário **só vê e aprova** a versão leigo.
 
-**Exceção D18+D19 (artefatos técnicos M3):** `spec/*.feature`, `tests/`, `TESTING-STRATEGY.md`, `README-TESTS.md` são consumidos pelo time de desenvolvimento — gerados em versão única (técnica). Não gerar versão leigo para estes 4 artefatos.
+**Exceção D18+D19 (artefatos internos M3):** `03.1-analyze-report.md`, `03.2-rastreabilidade.md` e `03.3-diagramas.md` são internos/técnicos — gerados em versão única. Não gerar versão leigo separada para estes artefatos (o bloco leigo-safe dos diagramas é embutido no documento leigo pelo `traducao-gate`).
 
 ---
 
@@ -188,7 +197,6 @@ O usuário **só vê e aprova** a versão leigo.
 Requisitos funcionais e não-funcionais gerados pela ferramenta devem seguir:
 - **Estrutura EARS** com slots: `[sujeito] [modal RFC 2119] [verbo] [objeto] [condição]`
 - **Modais RFC 2119:** `DEVE` (MUST) = obrigatório, `DEVERIA` (SHOULD) = recomendado, `PODE` (MAY) = opcional
-- Specs Gherkin geradas apenas para RFs com modal `DEVE` (D20)
 
 ---
 

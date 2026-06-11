@@ -39,6 +39,11 @@ case "$BASENAME" in
     echo "   Consulte marcos/m{N}.md para a lista completa do marco corrente." >&2
     exit 2
     ;;
+  *.feature|06-estrategia-testes.md|07-como-rodar-testes.md|TESTING-STRATEGY.md|README-TESTS.md)
+    echo "🔴 BLOQUEADO: '$BASENAME' é artefato do pipeline de testes, removido da ferramenta em v0.22.0." >&2
+    echo "   M3 gera apenas: 03-srs-completo.md, 03.1-analyze-report.md, 03.2-rastreabilidade.md, 03.3-diagramas.md + versão leigo." >&2
+    exit 2
+    ;;
 esac
 
 # ──────────────────────────────────────────────
@@ -71,11 +76,10 @@ fi
 # ──────────────────────────────────────────────
 # Regra 2a: artefatos de M3/M4 proibidos em M1 e M2
 # M3: documentos-tecnicos/03-documento/, documentos-para-leigo/03-documento/
-#     documentos-tecnicos/04-spec/, documentos-tecnicos/05-tests/, documentos-tecnicos/04-revisao/
+#     documentos-tecnicos/04-revisao/ (M4)
 # ──────────────────────────────────────────────
 if [[ "$MARCO" == "M1" || "$MARCO" == "M2" ]]; then
   # Paths canônicos confirmados por orchestrator.md e marcos/m3.md.
-  # 03-documento casa por substring com 03-documento/04-spec e 03-documento/05-tests.
   # 04-revisao (M4) vive diretamente em documentos-tecnicos/04-revisao (não aninhado).
   M3_PATHS=(
     "documentos-tecnicos/03-documento"
@@ -89,13 +93,6 @@ if [[ "$MARCO" == "M1" || "$MARCO" == "M2" ]]; then
       exit 2
     fi
   done
-  # Block .feature files regardless of path
-  case "$BASENAME" in
-    *.feature)
-      echo "🔴 BLOQUEADO: arquivos .feature são artefatos de M3, mas marco_corrente=$MARCO." >&2
-      exit 2
-      ;;
-  esac
 fi
 
 # ──────────────────────────────────────────────

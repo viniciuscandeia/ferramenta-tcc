@@ -80,9 +80,9 @@ Mínimo 5 termos para qualquer projeto. Se menos: relaxar critério de frequênc
 Criar `documentos-tecnicos/02-requisitos/02.5-glossario.md`:
 
 ```markdown
-# Glossário do Projeto
+# Glossário do Produto
 
-> Termos específicos do domínio usados neste projeto.
+> Termos específicos do domínio usados neste produto.
 
 ---
 

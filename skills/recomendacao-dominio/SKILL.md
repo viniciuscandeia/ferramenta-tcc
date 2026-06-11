@@ -63,12 +63,12 @@ Se confirmado: usar catálogo do domínio. Se negado: usar catálogo genérico (
 
 **1 chamada `AskUserQuestion` com 4 perguntas (choice, multi-choice ou yesno):**
 
-| Seção do catálogo | Pergunta |
-|---|---|
-| Stakeholders típicos | "Além de [usuários já identificados], existem outros perfis que fazem parte do projeto? (pode escolher mais de uma) (Ex: [exemplos do catálogo])" [`multiSelect: true`] |
-| Funcionalidades típicas | "Quais dessas funcionalidades comuns fazem sentido para o seu produto? (pode escolher mais de uma) [3-4 opções, `multiSelect: true`]" |
-| RNFs típicos | "Há preocupações de [desempenho/segurança/privacidade] que o produto precisa atender? (pode escolher mais de uma) (Ex: [exemplos])" [`multiSelect: true`] |
-| Restrições típicas | "O produto precisa seguir alguma lei, regulação ou padrão? (pode escolher mais de uma) (Ex: [exemplos do domínio])" [`multiSelect: true`] |
+| Seção do catálogo | `header` | `multiSelect` | Pergunta | Opções |
+|---|---|---|---|---|
+| Stakeholders típicos | `"Perfis"` | `true` | "Além de [usuários já identificados], existem outros perfis que fazem parte do projeto? (pode escolher mais de uma)" | 3 candidatos do catálogo + `"Nenhum destes"` |
+| Funcionalidades típicas | `"Funções"` | `true` | "Quais dessas funcionalidades fazem sentido para o seu produto? (pode escolher mais de uma)" | 3 opções do catálogo + `"Nenhuma destas"` |
+| RNFs típicos | `"Qualidade"` | `true` | "Há preocupações de [desempenho/segurança/privacidade] que o produto precisa atender? (pode escolher mais de uma)" | 3 opções do catálogo + `"Nenhuma destas"` |
+| Restrições típicas | `"Regras"` | `true` | "O produto precisa seguir alguma lei, regulação ou padrão? (pode escolher mais de uma)" | 3 opções do catálogo + `"Nenhuma destas"` |
 
 **Tipo obrigatório:** choice, multi-choice ou yesno — nunca `text` nesta fase.
 

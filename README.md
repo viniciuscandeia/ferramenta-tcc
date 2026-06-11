@@ -1,8 +1,8 @@
 # ferramenta-tcc
 
 Ferramenta de elicitação e documentação de requisitos para stakeholder leigo.
-Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3 +
-specs Gherkin + step definitions RED em 3 frameworks (Pytest-BDD, Cucumber-js, SpecFlow).
+Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3
+com diagramas, matriz de rastreabilidade e versão em linguagem de negócio.
 Ao concluir, exporta a documentação completa em PDF automaticamente.
 
 **Projeto:** TCC — Vinicius Candeia (deadline 2026-07-01)
@@ -225,7 +225,7 @@ Para re-exportar o PDF a qualquer momento (útil se o conversor foi instalado ap
 **Artefatos gerados ao final:**
 - `documentos-para-leigo/` e `documentos-tecnicos/` — documentação em Markdown por marco
 - `pdf/documentacao-cliente.pdf` — versão para o cliente (todos os docs leigo consolidados)
-- `pdf/documentacao-tecnica.pdf` — versão técnica (SRS, specs, estratégia de testes)
+- `pdf/documentacao-tecnica.pdf` — versão técnica (SRS, diagramas, rastreabilidade)
 
 ---
 
@@ -240,7 +240,7 @@ ferramenta-tcc/
 │   └── hooks.json         # Todos os 4 hooks (SessionStart, PreToolUse, PostToolUse, UserPromptSubmit)
 ├── agents/                # Definições de agente (orchestrator + 5 sub-agentes)
 │   └── orchestrator.md    # Agente principal (system prompt quando plugin habilitado)
-├── skills/                # 28 skills de elicitação, documentação e exportação
+├── skills/                # 25 skills de elicitação, documentação e exportação
 │   └── exportar-pdf/      # Re-exportação PDF sob demanda (/exportar-pdf)
 ├── scripts/               # Scripts invocados pelos hooks e pelo orquestrador
 │   ├── md_to_pdf.sh       # Conversor MD → PDF (pandoc/md-to-pdf/weasyprint + mmdc para Mermaid)

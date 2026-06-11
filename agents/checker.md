@@ -5,7 +5,7 @@
 **Marcos:** M3 (validação no loop documenter ⇄ checker) + M4 (revisão técnica opcional, D24)
 **Papel no loop M3:** Validação — analisa artefatos do documenter e bloqueia ou libera Gate 3
 **Papel em M4:** Revisão técnica para dev/tech lead (stub opcional)
-**Workflow:** `content/workflows/m3-srs-specs-tests.md` (Fase B)
+**Workflow:** `content/workflows/m3-srs.md` (Fase B)
 
 ---
 
@@ -16,8 +16,8 @@
 Validar qualidade e consistência dos artefatos gerados pelo `documenter` usando:
 
 1. **IREB §3.8** — 6 critérios por requisito individual + 6 critérios por SRS como documento
-2. **Análise cross-artifact** — consistência entre Visão (M1) ↔ Elicitação (M2) ↔ SRS (M3) ↔ Specs (D17)
-3. **Rastreabilidade bidirecional** — cadeia Objetivo → RF/RNF → Seção SRS → Spec → Step def
+2. **Análise cross-artifact** — consistência entre Visão (M1) ↔ Elicitação (M2) ↔ SRS (M3) (D17)
+3. **Rastreabilidade bidirecional** — cadeia Objetivo → RF/RNF → Seção SRS → Stakeholder origem
 
 Issues CRITICAL bloqueiam Gate 3: o checker retorna ao `documenter` com `documentos-tecnicos/03-documento/03.1-analyze-report.md` para correção.
 Issues HIGH/MEDIUM/LOW são registrados no report mas não bloqueiam o gate.
@@ -26,10 +26,9 @@ Issues HIGH/MEDIUM/LOW são registrados no report mas não bloqueiam o gate.
 
 Revisar artefatos técnicos para aprovação de dev/tech lead:
 
-- `documentos-tecnicos/03-documento/04-spec/` — cobertura de cenários, cenários de borda, nomenclatura Gherkin
-- `documentos-tecnicos/03-documento/05-tests/` — step defs em estado RED confirmado, sem falsos passes
-- `documentos-tecnicos/03-documento/06-estrategia-testes.md` — 1 entrada por RNF, ferramentas adequadas ao contexto
-- `documentos-tecnicos/03-documento/07-como-rodar-testes.md` — comandos corretos para os 3 frameworks declarados
+- `documentos-tecnicos/03-documento/03-srs-completo.md` — estrutura EARS correta, modais RFC 2119 coerentes, métricas de RNF verificáveis
+- `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` — cadeia completa, sem gaps não justificados
+- `documentos-tecnicos/03-documento/03.3-diagramas.md` — diagramas consistentes com os RFs e o glossário
 
 ---
 
@@ -38,10 +37,7 @@ Revisar artefatos técnicos para aprovação de dev/tech lead:
 1. _(Constitution injetada inline — D15. Não ler em runtime.)_
 2. Ler artefatos do `documenter`:
    - `documentos-tecnicos/03-documento/03-srs-completo.md` — documento principal gerado em M3
-   - `documentos-tecnicos/03-documento/04-spec/*.feature` — arquivos Gherkin por RF DEVE
-   - `documentos-tecnicos/03-documento/05-tests/` — step definitions nos 3 frameworks
-   - `documentos-tecnicos/03-documento/06-estrategia-testes.md` — estratégia por RNF
-   - `documentos-tecnicos/03-documento/07-como-rodar-testes.md` — guia de execução dos frameworks
+   - `documentos-tecnicos/03-documento/03.3-diagramas.md` — diagramas Mermaid (se gerado)
 3. Ler artefatos M1+M2 para cruzamentos:
    - `documentos-tecnicos/01-visao/01-visao-produto.md` — objetivos de negócio + funcionalidades-chave (M1)
    - `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` — lista fonte de verdade dos RFs (M2)
@@ -64,15 +60,15 @@ Executar na ordem:
 **Passo 2 — analyze-cross-artifact**
 - Invocar 'analyze-cross-artifact'
 - Input: todos os artefatos M1 + M2 + M3
-- Executar 3 cruzamentos obrigatórios: Visão↔Elicitação, Elicitação↔SRS, SRS↔Spec
+- Executar 2 cruzamentos obrigatórios: Visão↔Elicitação, Elicitação↔SRS
 - Detectar 4 tipos de defeito: Omissão, Contradição, Superespecificação, Inexequibilidade
 - Output: seção "Análise Cross-Artifact (D17)" adicionada ao rascunho de `documentos-tecnicos/03-documento/03.1-analyze-report.md`
 - Depende do Passo 1 ter executado (pode reusar contexto já carregado)
 
 **Passo 3 — rastreabilidade-matriz**
 - Invocar 'rastreabilidade-matriz'
-- Input: `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` + `documentos-tecnicos/03-documento/03-srs-completo.md` + `documentos-tecnicos/03-documento/04-spec/*.feature`
-- Output: `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` com matriz bidirecional Objetivo → RF/RNF → Seção SRS → Spec → Test → Stakeholder
+- Input: `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` + `documentos-tecnicos/03-documento/03-srs-completo.md`
+- Output: `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` com matriz bidirecional Objetivo → RF/RNF → Seção SRS → Stakeholder
 - Lacunas na matriz (células "—" onde não deveria) alimentam `analyze-cross-artifact` como evidência adicional
 
 **Passo 4 — Consolidar documentos-tecnicos/03-documento/03.1-analyze-report.md**
@@ -91,15 +87,14 @@ Executar na ordem:
 
 **Passo 1 — Gerar documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md**
 - Produzir checklist técnico cobrindo:
-  - `documentos-tecnicos/03-documento/04-spec/` — cobertura de RF DEVE, cenários de borda presentes, nomenclatura Gherkin correta
-  - `documentos-tecnicos/03-documento/05-tests/` — estado RED confirmado (step defs falham propositalmente), sem falsos passes
-  - `documentos-tecnicos/03-documento/06-estrategia-testes.md` — 1 entrada por RNF, ferramentas adequadas declaradas
-  - `documentos-tecnicos/03-documento/07-como-rodar-testes.md` — comandos de execução corretos para os 3 frameworks declarados
+  - `documentos-tecnicos/03-documento/03-srs-completo.md` — sintaxe EARS correta por requisito, modais RFC 2119 coerentes com a priorização de M2, métricas de RNF mensuráveis
+  - `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` — todos os objetivos M1 cobertos, sem gaps não justificados na cadeia
+  - `documentos-tecnicos/03-documento/03.3-diagramas.md` — sintaxe Mermaid válida, consistência com RFs e glossário
 - Salvar `documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md` na pasta do projeto
 
 **Passo 2 — Apresentar ao tech lead**
 - Invocar `AskUserQuestion` (yesno):
-  > "A revisão técnica está completa. [Resumo dos achados]. Você aprova os artefatos de especificação e testes?"
+  > "A revisão técnica está completa. [Resumo dos achados]. Você aprova o documento de requisitos e os artefatos técnicos?"
 - Máximo 1 pergunta; sem jargão de ER
 
 **Passo 3 — Registrar decisão**
@@ -123,8 +118,8 @@ Executar na ordem:
 | Arquivo | Modo | Conteúdo | Gate relevante |
 |---|---|---|---|
 | `documentos-tecnicos/03-documento/03.1-analyze-report.md` | M3 | Issues CRITICAL/HIGH/MEDIUM/LOW de todos os 3 passos | Bloqueia Gate 3 se houver CRITICAL |
-| `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` | M3 | Matriz Objetivo→RF/RNF→Seção SRS→Spec→Test→Stakeholder | Informativo Gate 3 |
-| `documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md` | M4 (stub) | Checklist técnico de spec + tests + strategy + README | Gate 4 (opcional) |
+| `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` | M3 | Matriz Objetivo→RF/RNF→Seção SRS→Stakeholder | Informativo Gate 3 |
+| `documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md` | M4 (stub) | Checklist técnico de SRS + rastreabilidade + diagramas | Gate 4 (opcional) |
 | `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` | M4 (stub) | Registro formal de aprovação do tech lead | Gate 4 aprovado |
 
 ---

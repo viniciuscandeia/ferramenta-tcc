@@ -42,8 +42,7 @@ Ao ser invocado via `/iniciar-projeto`:
    ```bash
    mkdir -p {PROJETO_DIR}/documentos-para-leigo/01-visao {PROJETO_DIR}/documentos-para-leigo/02-requisitos {PROJETO_DIR}/documentos-para-leigo/03-documento
    mkdir -p {PROJETO_DIR}/documentos-tecnicos/01-visao {PROJETO_DIR}/documentos-tecnicos/02-requisitos
-   mkdir -p {PROJETO_DIR}/documentos-tecnicos/03-documento/04-spec
-   mkdir -p {PROJETO_DIR}/documentos-tecnicos/03-documento/05-tests/unit {PROJETO_DIR}/documentos-tecnicos/03-documento/05-tests/acceptance
+   mkdir -p {PROJETO_DIR}/documentos-tecnicos/03-documento
    mkdir -p {PROJETO_DIR}/documentos-tecnicos/04-revisao
    ```
    Esta etapa garante que o `gate_guard.sh` não bloqueia o primeiro Write por ausência de pasta.
@@ -62,12 +61,12 @@ Ao iniciar projeto novo:
 
 1. Exibir como texto livre (única exceção ao D14 — é apresentação, não pergunta):
 
-   > Olá! Vou ajudar você a documentar seu projeto de software de forma organizada.
+   > Olá! Vou ajudar você a documentar seu produto de software de forma organizada.
    >
    > Vamos passar por três etapas:
    > • Etapa 1 — Entender o que você quer construir e para quem
    > • Etapa 2 — Detalhar o que o produto precisa fazer e como deve funcionar
-   > • Etapa 3 — Gerar o documento completo do projeto
+   > • Etapa 3 — Gerar o documento completo do produto
    >
    > Cada etapa termina com uma confirmação sua antes de seguirmos em frente.
 
@@ -75,7 +74,7 @@ Ao iniciar projeto novo:
    - `question`: "Como você gostaria de começar?"
    - `header`: "Início"
    - `multiSelect`: false
-   - Opção 1: label `"Vamos começar"`, description `"Iniciar a documentação do meu projeto agora"`
+   - Opção 1: label `"Vamos começar"`, description `"Iniciar a documentação do meu produto agora"`
    - Opção 2: label `"Tenho dúvidas antes"`, description `"Quero entender melhor como funciona antes de começar"`
    - Opção 3: label `"Quanto tempo leva?"`, description `"Quero saber o tempo estimado antes de decidir"`
 
@@ -115,13 +114,13 @@ Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a seq
 
 Tabela interna skill→texto-leigo. O orquestrador usa a coluna "Todo leigo" como `content` ao chamar `TodoWrite`. **Nunca expor a coluna "Skill interna" ao usuário.**
 
-### Etapa 1 — Entender o projeto (M1)
+### Etapa 1 — Entender o produto (M1)
 
 | # | Skill interna | Todo leigo (conteúdo exibido) |
 |---|---|---|
 | 1.1 | necessidade-visao | Entender o problema e a ideia do produto |
 | 1.2 | stakeholder-mapping | Descobrir quem usa e quem tem interesse |
-| 1.3 | contexto-e-limite | Definir o que fica dentro e fora do projeto |
+| 1.3 | contexto-e-limite | Definir o que fica dentro e fora do produto |
 | 1.4 | clarificacao-pos-visao (condicional D16) | Esclarecer dúvidas em aberto |
 | 1.5 | traducao-leigo + traducao-gate | Preparar o resumo para você revisar |
 | 1.6 | Gate 1 | Confirmar a Etapa 1 com você |
@@ -147,13 +146,13 @@ Tabela interna skill→texto-leigo. O orquestrador usa a coluna "Todo leigo" com
 >
 > **Loop-back M2 (pautas abertas):** reverter **apenas** o item 2.6 ("Organizar e definir o que é mais importante") para `in_progress` ao reiniciar o modeler, e o item da rodada collector correspondente. Não recriar a lista.
 
-### Etapa 3 — Gerar o documento do projeto (M3)
+### Etapa 3 — Gerar o documento do produto (M3)
 
 | # | Skill interna | Todo leigo (conteúdo exibido) |
 |---|---|---|
-| 3.1 | requisito-ears + srs-ireb-montagem | Escrever cada regra do produto de forma clara |
-| 3.2 | gherkin-spec + modelagem-visual | Descrever as situações de uso e desenhar os fluxos |
-| 3.3 | step-defs-red + testing-strategy + readme-tests | Preparar os testes do produto |
+| 3.1 | requisito-ears | Escrever cada regra do produto de forma clara |
+| 3.2 | modelagem-visual | Desenhar os fluxos do produto |
+| 3.3 | srs-ireb-montagem | Montar o documento completo do produto |
 | 3.4 | analyze-cross-artifact + validacao-checklist-ireb + rastreabilidade-matriz | Conferir se está tudo consistente |
 | 3.5 | traducao-leigo + traducao-gate | Preparar o resumo para você revisar |
 | 3.6 | Gate 3 | Confirmar a Etapa 3 com você |
@@ -257,14 +256,14 @@ Se `estado-projeto.yaml` ausente ou ilegível, inferir marco corrente lendo arte
 
 **Migração de layout antigo:** Se detectar artefatos em layout antigo (ex: `visao-produto-leigo.md` / `visao-produto-normativo.md` na raiz ou em `01-visao/` sem as subpastas `documentos-para-leigo/`/`documentos-tecnicos/`), apresentar ao usuário:
 ```
-Encontrei arquivos de projeto, mas no formato antigo (sem pastas). Quer organizar em pastas (01-visao/, 02-requisitos/, 03-documento/) ou continuar no formato atual?
+Encontrei arquivos do produto, mas no formato antigo (sem pastas). Quer organizar em pastas (01-visao/, 02-requisitos/, 03-documento/) ou continuar no formato atual?
 ```
 
 **Recovery de agenda_m2:** se `marco_corrente: M2` e `agenda_m2` ausente no yaml → criar campo com defaults: `topico_atual: "entrevista"`, `topicos_pendentes: [entrevista, cenarios, dominio, implicitos, feixe]`, `topicos_concluidos: []`, `rodada_corrente: 1`.
 
 Ao recuperar via detection, apresentar ao usuário:
 ```
-Encontrei trabalho anterior neste projeto. Parece que estamos na [fase X].
+Encontrei trabalho anterior neste produto. Parece que estamos na [fase X].
 Quer continuar de onde paramos?
 ```
 
@@ -280,7 +279,7 @@ Ao concluir Gate 3 (ou Gate 4 se solicitado):
    ```
    bash "{PLUGIN_ROOT}/scripts/git_track.sh" commit "{PROJETO_DIR}" "Projeto concluído"
    ```
-   Se `GIT_COMMIT_OK`: informar ao usuário (linguagem simples): "O histórico de mudanças do seu projeto foi salvo. Você pode ver tudo que foi documentado, etapa por etapa, usando o comando `git log` na pasta do projeto."
+   Se `GIT_COMMIT_OK`: informar ao usuário (linguagem simples): "O histórico de mudanças do seu produto foi salvo. Você pode ver tudo que foi documentado, etapa por etapa, usando o comando `git log` na pasta do produto."
    Se `GIT_SEM_MUDANCAS` ou qualquer falha: ignorar silenciosamente.
 5. **Gerar PDFs automaticamente** — rodar via Bash:
    ```
@@ -289,5 +288,5 @@ Ao concluir Gate 3 (ou Gate 4 se solicitado):
    - Se o script sair com **exit 0**: informar ao usuário (em linguagem simples, sem jargão D1):
      "Os documentos também foram salvos em formato PDF, prontos para imprimir ou compartilhar. Você encontra os arquivos em: `{PROJETO_DIR}/pdf/documentacao-cliente.pdf` e `{PROJETO_DIR}/pdf/documentacao-tecnica.pdf`."
    - Se o script sair com **exit 2** (nenhum conversor disponível): informar ao usuário:
-     "Não foi possível gerar o PDF automaticamente porque nenhuma ferramenta de conversão foi encontrada no computador. Os documentos estão disponíveis em formato texto na pasta do projeto. Para gerar o PDF depois, instale o pandoc e o LaTeX (no Mac: `brew install pandoc && brew install --cask basictex`, depois `sudo /Library/TeX/texbin/tlmgr install fvextra`; no Linux: `sudo apt install pandoc texlive-xetex texlive-latex-extra`; alternativa Node.js: `npm install -g md-to-pdf`) e use o comando `/exportar-pdf`."
+     "Não foi possível gerar o PDF automaticamente porque nenhuma ferramenta de conversão foi encontrada no computador. Os documentos estão disponíveis em formato texto na pasta do produto. Para gerar o PDF depois, instale o pandoc e o LaTeX (no Mac: `brew install pandoc && brew install --cask basictex`, depois `sudo /Library/TeX/texbin/tlmgr install fvextra`; no Linux: `sudo apt install pandoc texlive-xetex texlive-latex-extra`; alternativa Node.js: `npm install -g md-to-pdf`) e use o comando `/exportar-pdf`."
    - Se o script sair com **exit 1** (erro de conversão): informar ao usuário que os documentos de texto foram criados com sucesso e que houve uma dificuldade técnica na geração do PDF; sugerir `/exportar-pdf` para tentar novamente.

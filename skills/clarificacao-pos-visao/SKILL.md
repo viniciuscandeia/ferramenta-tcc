@@ -32,7 +32,7 @@ description: >-
 
 Selecionar exatamente as perguntas correspondentes às categorias com lacuna (máx 3), usando os modelos abaixo com os dados reais do projeto.
 
-**Modelo: Escopo funcional** (`choice`, 3 opções):
+**Modelo: Escopo funcional** (`header: "Escopo"`, `choice`, 3 opções, `multiSelect: false`):
 ```
 Você mencionou [atividade X inferida]. Isso inclui:
 (A) Apenas [interpretação mais simples, ex: só visualizar]
@@ -49,7 +49,7 @@ Você mencionou controlar estoque de produtos. Isso inclui:
 (C) Algo diferente — vou explicar melhor quando chegarmos nos detalhes
 ```
 
-**Modelo: Restrições de negócio** (`multi-choice`, `multiSelect: true`):
+**Modelo: Restrições de negócio** (`header: "Regras"`, `multi-choice`, `multiSelect: true`):
 ```
 Você está num setor que tem regras específicas (ex: [domínio detectado]). O produto pode precisar atender mais de uma regra ao mesmo tempo — quais se aplicam? (pode escolher mais de uma)
 (A) Seguir regras de proteção de dados (como a LGPD) — isso vai exigir cuidado com informações pessoais

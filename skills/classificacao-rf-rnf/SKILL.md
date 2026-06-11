@@ -68,11 +68,11 @@ Sem duplicatas: dois itens que descrevem a mesma coisa → consolidar em 1 com a
 
 **documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md (rascunho):**
 ```markdown
-| ID | Descrição | Modal | MoSCoW | Fonte |
-|---|---|---|---|---|
-| RF-001 | [descrição em EARS] | DEVE/DEVERIA/PODE | — | elicitacao-raw §N |
+| ID | Descrição | Modal | Fonte |
+|---|---|---|---|
+| RF-001 | [descrição em EARS] | DEVE/DEVERIA/PODE | elicitacao-raw §N |
 ```
-*Modal e MoSCoW preenchidos na skill `priorizacao` (Passo 2).*
+*Modal preenchido na skill `priorizacao` (Passo 2).*
 
 **documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md (rascunho):**
 ```markdown

@@ -68,7 +68,7 @@ Cruzar `documentos-tecnicos/02-requisitos/02.5-glossario.md` com `documentos-tec
 **≥ 1 conflito → criar `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md`:**
 
 ```markdown
-# Conflitos Detectados — M2
+# Conflitos Detectados e Resolvidos — M2
 
 > Conflitos não resolvidos podem bloquear Gate 3 (analyze-cross-artifact — D17).
 

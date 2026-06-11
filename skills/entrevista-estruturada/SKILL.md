@@ -70,7 +70,7 @@ Como você vai saber que [funcionalidade X] funcionou do jeito certo?
 O que precisa aparecer na tela ou acontecer para você confirmar que deu certo?
 ```
 
-**RNF sem métrica (choice):**
+**RNF sem métrica (choice, `multiSelect: false`):**
 ```
 Quando você usa [funcionalidade Y], quanto tempo de espera seria aceitável?
 (A) Até 2 segundos  (B) Até 5 segundos  (C) Precisa ser instantâneo

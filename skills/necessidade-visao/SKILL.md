@@ -17,7 +17,7 @@ description: >-
 5. **Zero jargão.** Nunca mencionar "requisito", "visão", "produto mínimo viável", "escopo", "stakeholder" ou qualquer jargão de produto/ER (blacklist D1).
 
 <HARD-GATE>
-- NÃO executar se seções `## 1. Visão`, `## 2. Problema & Necessidade` e `## 3. Objetivos e Metas de Sucesso` já existem em `documentos-tecnicos/01-visao/01-visao-produto.md` (idempotência)
+- NÃO executar se seções `## 1. Visão` e `## 2. Problema & Necessidade` já existem em `documentos-tecnicos/01-visao/01-visao-produto.md` (idempotência)
 - ⛔ STOP e registrar em `_pendencias.md` se o usuário não fornecer nome do produto E nem descrição alguma do problema (campos mínimos para síntese)
 - PROIBIDO: propor solução, listar features ou funcionalidades durante esta skill — qualquer menção a "o produto vai fazer X" é barrada
 </HARD-GATE>
@@ -26,28 +26,36 @@ description: >-
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `estado-projeto.yaml`; se ausente: inicializar com `marco_corrente: M1`
-3. Checar idempotência: se seções `## 1. Visão` e `## 2. Problema & Necessidade` já existem → pular para Fase 5 (sinalização)
+3. Checar idempotência: se seções `## 1. Visão` e `## 2. Problema & Necessidade` já existem → pular para Fase 4 (síntese) ou Fase 5 (sinalização)
 4. **Pré-extração:** se o usuário forneceu texto inicial com `/iniciar-projeto`, extrair:
    - Nome candidato do produto (se mencionado)
    - Dor/problema central (se descrito)
    - Pessoas mencionadas
    - Restrições mencionadas
    Usar tudo que foi extraído para personalizar as perguntas (não re-perguntar o que o usuário já disse).
+5. **Inferência preliminar de domínio:** com base nas palavras do texto inicial (se houver), identificar o domínio mais provável dentre: `ecommerce`, `educacao`, `saude`, `mobile`, `dashboard`. Usar para selecionar dores do catálogo no Turno 1. Se nenhum domínio identificável: usar lista **Genérico**. Não é necessário confirmar com o usuário aqui — a confirmação ocorre em `recomendacao-dominio` no M2.
 
 ## Fase 1 — Descoberta do Problema (5-Whys/JTBD, adaptativo)
 
-**Objetivo:** chegar na dor raiz. Máximo 3 turnos de sondagem. Cada pergunta = 1 `AskUserQuestion` com 1 pergunta (`text`).
+**Objetivo:** chegar na dor raiz. Máximo 3 turnos de sondagem. Turno 1 = 1 `AskUserQuestion` multi-choice + 1 adicional `text` se "Outro" marcado; Turnos 2 e 3 = 1 `AskUserQuestion` com 1 pergunta (`text`) cada.
 
-**Turno 1 — O que está errado hoje:**
+**Turno 1 — O que está errado hoje (multi-choice):**
 
 Se o problema NÃO foi descrito no texto inicial:
-```
-O que te incomoda na situação atual? O que está difícil, lento, custoso ou causando problema para você ou para quem você atende?
-```
+1. Ler `{PLUGIN_ROOT}/content/catalogos-seed/dores-tipicas.md` → seção do domínio inferido na Fase 0. Se domínio não identificado: usar seção **Genérico**.
+2. Selecionar 3–4 dores mais prováveis para o contexto (limite de 4 opções na array).
+3. Invocar 1 `AskUserQuestion`:
+   - `question`: "O que mais te incomoda na situação atual? (pode marcar mais de uma)"
+   - `header`: "Hoje"
+   - `multiSelect`: true
+   - Opções: [as 3–4 dores do catálogo]
+   *(O Claude Code adiciona automaticamente uma opção "Other" de texto livre — não incluir "Outro" manual.)*
+4. Se o usuário usar a opção **"Other" nativa** para descrever uma dor própria: usar o texto digitado como base do Turno 2 — não re-perguntar.
+
 Se o problema JÁ foi descrito no texto inicial: pular para Turno 2 usando o que foi descrito.
 
 **Turno 2 — Sondagem de impacto (5-Whys):**
-Com base na resposta do Turno 1, perguntar:
+Com base nas dores marcadas no Turno 1 (e/ou no texto livre de "Outro"), perguntar:
 ```
 O que acontece por causa disso? Qual é a consequência mais concreta — tempo perdido, erros, dinheiro, frustração?
 ```
@@ -80,7 +88,7 @@ Quando você imagina que esse problema foi resolvido, o que muda na prática? O 
    ```
    *(Se o público já ficou claro na Fase 1, inferir e pular esta pergunta.)*
 
-## Fase 3 — Metas de Sucesso
+## Fase 3 — Indicadores de Sucesso
 
 **1 `AskUserQuestion`, 1 pergunta (text):**
 
@@ -88,7 +96,7 @@ Quando você imagina que esse problema foi resolvido, o que muda na prática? O 
 Como você vai saber que esse produto resolveu o problema? O que precisa acontecer ou melhorar para você dizer "funcionou"?
 ```
 
-*(Exemplos de resposta esperada: "menos de X reclamações por mês", "economizar Y horas por semana", "atender Z pedidos a mais". Se o usuário não souber: registrar `[a definir]` e adicionar aos Itens em Aberto.)*
+*(Exemplos de resposta esperada: "menos de X reclamações por mês", "economizar Y horas por semana", "atender Z pedidos a mais". Se o usuário não souber: registrar `[a definir]` e adicionar aos Itens em Aberto. Esta informação é incorporada à seção §2 do documento de visão — não gera seção separada.)*
 
 ## Fase 4 — Síntese e Confirmação
 
@@ -138,14 +146,11 @@ Preencher as seções do template `content/templates/01-documento-visao.md`:
 - Quem sofre: pessoas impactadas
 - Impacto concreto: consequências da Fase 1 Turno 2
 - Necessidade central (JTBD): síntese do Turno 3 ou inferida
+- **Indicadores de sucesso:** resposta da Fase 3 — o que precisará acontecer para o produto ser considerado bem-sucedido. Campos não respondidos: `[a definir]` + adicionar a `## 5. Premissas e Itens em Aberto`.
 - Campos inferidos marcados como `[inferido]` na versão normativa
 
-**Seção `## 3. Objetivos e Metas de Sucesso`:**
-- Preencher tabela com respostas da Fase 3
-- Campos não respondidos: `[a definir]` + adicionar a `## 6. Premissas e Itens em Aberto`
-
 **Saída em disco:**
-1. Append seções `## 1. Visão`, `## 2. Problema & Necessidade`, `## 3. Objetivos e Metas de Sucesso` em `documentos-tecnicos/01-visao/01-visao-produto.md` (criar arquivo com cabeçalho do template se inexistente)
+1. Append seções `## 1. Visão`, `## 2. Problema & Necessidade` em `documentos-tecnicos/01-visao/01-visao-produto.md` (criar arquivo com cabeçalho do template se inexistente)
 2. Registrar em `estado-projeto.yaml`:
    ```yaml
    artefatos:

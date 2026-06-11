@@ -1,6 +1,5 @@
 # Template — Documento de Visão (Marco 1)
 
-**Padrão:** ISO/IEC/IEEE 29148 — Stakeholder Needs and Requirements Definition (StRS / Documento de Visão)  
 **Gerado por:** skill `necessidade-visao` + `stakeholder-mapping` + `contexto-e-limite` → compilado por `traducao-gate` (Fase 1, M1)  
 **Artefato:** `documentos-tecnicos/01-visao/01-visao-produto.md`  
 **Tamanho esperado:** 350–700 palavras  
@@ -35,43 +34,24 @@
 
 ---
 
-## 3. Objetivos e Metas de Sucesso
+## 3. Pessoas Envolvidas
 
-> Como saberemos que o produto deu certo? Formulado como objetivos mensuráveis (KPIs / metas de negócio).
+> Quem usa o produto diretamente no dia a dia.
 
-| Objetivo | Indicador de sucesso | Prazo / horizonte |
+| Papel | Interesse principal | Influência |
 |---|---|---|
-| [Objetivo de negócio 1] | [Como medir — ex: reduzir X em Y%, atingir Z usuários] | [Quando esperamos ver] |
-| [Objetivo de negócio 2] | ... | ... |
+| [Nome do papel — usuário direto] | [O que precisa ou espera do produto] | Alta / Média / Baixa |
 
-*Se o usuário não souber: registrar como `[a definir]` e adicionar à seção 6 (Premissas e Itens em Aberto).*
-
----
-
-## 4. Pessoas Envolvidas
-
-> Mapeamento Stakeholder Onion — trabalhado da camada interna para a externa.
-
-| Papel | Camada | Interesse principal | Influência | Decisor |
-|---|---|---|---|---|
-| [Nome do papel] | Usa diretamente / Decide-paga / Mantém-suporta / Afetado / Regula / Adversário | [O que precisa ou espera do produto] | Alta / Média / Baixa | Sim / Não |
+> *Somente usuários diretos do produto são listados aqui.*  
+> *Demais envolvidos (quem decide/paga, mantém, é afetado, regula ou representa risco) são registrados em `estado-projeto.yaml` para rastreamento interno.*
 
 **Regras de preenchimento:**
-- Cada camada do onion deve ter pelo menos uma entrada ou justificativa de por que não se aplica.
-- Campo "Decisor: Sim" obrigatório para pelo menos um papel antes do Gate 1.
-- Papéis marcados `[a identificar]` → adicionar à seção 6 e a `pautas_abertas` no `estado-projeto.yaml`.
-
-**Camadas do Stakeholder Onion:**
-1. **Usa diretamente** — opera o produto no dia a dia
-2. **Decide-paga** — aprova, financia ou define prioridades
-3. **Mantém-suporta** — cuida da operação após entrega (suporte, infra, manutenção)
-4. **Afetado** — impactado pelos resultados sem usar diretamente
-5. **Regula** — entidade que impõe regras externas (legal, compliance, órgão regulador)
-6. **Adversário** — quem pode tentar abusar, atacar ou contornar o sistema (não tem acesso)
+- Campo "Decisor" registrado em `estado-projeto.yaml` (não exposto neste documento) — obrigatório para Gate 1.
+- Papéis marcados `[a identificar]` → adicionar à seção 5 e a `pautas_abertas` no `estado-projeto.yaml`.
 
 ---
 
-## 5. Contexto e Limites
+## 4. Contexto e Limites
 
 > O que está dentro e fora do produto — define a fronteira do sistema.
 
@@ -97,7 +77,7 @@
 
 ---
 
-## 6. Premissas e Itens em Aberto
+## 5. Premissas e Itens em Aberto
 
 > Suposições que o produto assume como verdadeiras — a serem validadas no Marco 2 ou além.
 
@@ -106,8 +86,7 @@
 
 **Itens em aberto (pautas_abertas):**
 - [Papéis ou restrições marcados como `[a identificar]` neste documento]
-- [Metas de sucesso marcadas `[a definir]`]
-- [Qualquer ponto que exige elicitação adicional no Marco 2]
+- [Qualquer ponto que exige levantamento adicional no próximo passo]
 
 ---
 

@@ -41,7 +41,7 @@ Além das pessoas que você já mencionou, sistemas como o seu costumam ter este
 (A–C) [máx 3 candidatos gerados na Fase 0 — usar os mais relevantes para o domínio]
 (D) Nenhum destes
 ```
-`multiSelect: true`
+`header: "Perfis"` · `multiSelect: true`
 *(Omitir se a Fase 0 NÃO gerou candidatos `[a confirmar]` do catálogo.)*
 
 **Camada 2 — Decide-paga (sempre perguntar se não identificado):**
@@ -75,27 +75,28 @@ Tem algum grupo que NÃO deve ter acesso ao produto ou que poderia tentar usá-l
 
 ## Fase 2 — Síntese
 
-Montar tabela Stakeholder Onion, fazendo merge da pré-extração com as respostas do lote:
+Montar tabela com os **usuários diretos** (Camada 1 — "Usa diretamente") para o documento entregue. Demais camadas ficam registradas apenas em `estado-projeto.yaml`:
 
 ```markdown
-## 4. Pessoas Envolvidas
+## 3. Pessoas Envolvidas
 
-| Papel | Camada | Interesse principal | Influência | Decisor |
-|---|---|---|---|---|
-| [Nome do papel] | Usa diretamente / Decide-paga / Mantém-suporta / Afetado / Regula / Adversário | [O que precisa ou espera] | Alta / Média / Baixa | Sim / Não |
+| Papel | Interesse principal | Influência |
+|---|---|---|
+| [Nome do papel — usuário direto] | [O que precisa ou espera] | Alta / Média / Baixa |
 ```
 
 **Regras de síntese:**
-- Cada grupo mencionado (pré-extração + lote) → uma linha na tabela
-- Influência: inferir da camada (Decide-paga = Alta; Usa diretamente = Média/Alta; Afetado = Baixa/Média; Regula = Alta; Adversário = [não se aplica])
+- Listar **somente** perfis da Camada 1 (Usa diretamente) no documento
+- Influência: inferir da intensidade de uso (usuário principal = Alta; uso ocasional = Média)
 - Inferências marcadas como `[inferido]` na versão normativa
-- Se usuário não souber: registrar como `[a identificar]` + adicionar à `pautas_abertas` em `estado-projeto.yaml`
-- Verificar: ao menos 1 papel com `Decisor: Sim` — se ausente, registrar pendência crítica
+- Se usuário não souber quem usa: registrar como `[a identificar]` + adicionar à `pautas_abertas` em `estado-projeto.yaml`
+- **Demais camadas** (Decide-paga, Mantém-suporta, Afetado, Regula, Adversário): registrar em `estado-projeto.yaml` com campos `decisor`, `reguladores`, `afetados`; não incluir no documento entregue
+- Verificar: ao menos 1 papel identificado como "Decisor: Sim" em `estado-projeto.yaml` (campo interno) — se ausente, registrar pendência crítica
 - Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
 
 ## Fase 3 — Saída
 
-1. Append seção `## 4. Pessoas Envolvidas` em `documentos-tecnicos/01-visao/01-visao-produto.md`
+1. Append seção `## 3. Pessoas Envolvidas` em `documentos-tecnicos/01-visao/01-visao-produto.md`
 2. Atualizar `estado-projeto.yaml`:
    - Se houver `[a identificar]`: adicionar à lista `pautas_abertas`
    - Se decisor ausente: registrar `pendencia_gate_1: "Decisor não identificado — bloqueará Gate 1"`

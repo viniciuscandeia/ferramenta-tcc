@@ -21,6 +21,14 @@ EXCLUIR_TECNICO=(
   "*analyze-report*"
 )
 
+# Pastas/arquivos de M1 e M2 excluídos do PDF técnico:
+# O PDF técnico começa pelo SRS (03-documento/) — M1 (visão) e M2 (requisitos
+# intermediários) são artefatos de processo, não o documento entregue final.
+EXCLUIR_PASTAS_TECNICO=(
+  "01-visao"
+  "02-requisitos"
+)
+
 # ---------------------------------------------------------------------------
 # Argumentos
 # ---------------------------------------------------------------------------
@@ -329,6 +337,17 @@ _gerar_pdf() {
     if [[ "$excluir_internos" == "true" ]] && _excluido "$f"; then
       continue
     fi
+    # Excluir pastas M1/M2 do PDF técnico (SRS é o primeiro documento entregue)
+    if [[ "$excluir_internos" == "true" ]]; then
+      local _excluir_pasta=false
+      for _pasta_excl in "${EXCLUIR_PASTAS_TECNICO[@]}"; do
+        if [[ "$f" == *"/$_pasta_excl/"* ]]; then
+          _excluir_pasta=true
+          break
+        fi
+      done
+      [[ "$_excluir_pasta" == "true" ]] && continue
+    fi
     arquivos+=("$f")
   done < <(find "$pasta" -maxdepth 4 -name '*.md' -print0 | sort -z)
 
@@ -369,7 +388,7 @@ erros=()
 PASTA_LEIGO="$PROJETO_DIR/documentos-para-leigo"
 OUT_CLIENTE="$PDF_DIR/documentacao-cliente.pdf"
 if [[ -d "$PASTA_LEIGO" ]]; then
-  if _gerar_pdf "$PASTA_LEIGO" "$OUT_CLIENTE" "Documentação do Projeto — versão para o cliente" "false"; then
+  if _gerar_pdf "$PASTA_LEIGO" "$OUT_CLIENTE" "Visão do Produto — $NOME_PROJETO" "false"; then
     [[ -f "$OUT_CLIENTE" ]] && gerados+=("$OUT_CLIENTE")
   else
     erros+=("documentacao-cliente.pdf")

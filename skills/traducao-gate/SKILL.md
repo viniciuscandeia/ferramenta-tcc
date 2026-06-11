@@ -27,22 +27,18 @@ when_to_use: Ao final de cada marco (M1, M2, M3) antes de apresentar artefatos a
 
 **Marco-aware:** o formato normativo varia por marco.
 
-**M1 — Documento de Visão (ISO 29148):**
-Estruturar o artefato normativo seguindo o template `content/templates/01-documento-visao.md` com 6 seções:
+**M1 — Documento de Visão:**
+Estruturar o artefato normativo seguindo o template `content/templates/01-documento-visao.md` com 5 seções:
 1. Visão — frase-síntese estilo Geoffrey Moore
-2. Problema & Necessidade — dor real, quem sofre, impacto (sem lista de solução/features)
-3. Objetivos e Metas de Sucesso — como saberemos que deu certo (KPIs/métricas)
-4. Pessoas Envolvidas — tabela Stakeholder Onion (Papel | Camada | Interesse | Influência | Decisor s/n)
-5. Contexto e Limites — dentro / fora / integrações / restrições tipadas
-6. Premissas e Itens em Aberto
+2. Problema & Necessidade — dor real, quem sofre, impacto, indicadores de sucesso (sem lista de solução/features)
+3. Pessoas Envolvidas — tabela com usuários diretos (Papel | Interesse | Influência)
+4. Contexto e Limites — dentro / fora / integrações / restrições tipadas
+5. Premissas e Itens em Aberto
 
-**Não aplicar** EARS / RFC 2119 no M1 — esses formalismos são para documentos de requisitos (M2/M3), não para visão.
-
-**M2/M3 — Requisitos (IREB §3.3.3 + EARS + RFC 2119):**
-Aplicar formatação EARS se ainda não aplicada:
+**M2/M3 — Requisitos:**
+Aplicar formatação estruturada se ainda não aplicada:
 - Requisitos funcionais: `[Sujeito] DEVE [verbo] [objeto] [condição opcional]`
 - Requisitos não-funcionais: `[Sistema] DEVE [critério mensurável] quando [condição]`
-- Seções seguindo estrutura IREB §3.3.3
 
 Salvar com o nome canônico do marco (ver Fase 4).
 
@@ -52,9 +48,9 @@ Transformar conteúdo normativo em linguagem de negócio. A versão leigo tem es
 
 | Marco | Versão normativa contém | Versão leigo apresenta |
 |---|---|---|
-| M1 | Documento de Visão: frase-síntese + problema/necessidade + metas/KPIs + stakeholders (Onion) + contexto/limites + premissas | Resumo em prosa: "Seu projeto é X, resolve o problema Y, as pessoas envolvidas são Z, o objetivo é A..." |
-| M2 | Listas RF/RNF com EARS + MoSCoW + glossário técnico | Listas em linguagem de negócio: "O produto vai fazer... / O produto precisa funcionar..." |
-| M3 | SRS completo IREB §3.3.3 com 6 seções + diagramas técnicos (`03.3-diagramas.md`) | Resumo executivo com destaques por seção, sem siglas ou sintaxe + 3 diagramas Mermaid leigo-safe |
+| M1 | Documento de Visão: frase-síntese + problema/necessidade + indicadores de sucesso + usuários diretos + contexto/limites + premissas | Resumo em prosa: "Seu produto é X, resolve o problema Y, as pessoas que usam são Z, o objetivo é A..." |
+| M2 | Listas RF/RNF com modais + glossário técnico | Listas em linguagem de negócio: "O produto vai fazer... / O produto precisa funcionar..." |
+| M3 | SRS completo com 8 seções + diagramas embutidos | **Único documento "Visão do Produto"** — resumo executivo com destaques por tema de negócio, sem siglas ou sintaxe técnica + 2 diagramas Mermaid leigo-safe (contexto e caso de uso) |
 
 **Regras de transformação:**
 - Remover toda sintaxe EARS/RFC 2119 (DEVE/DEVERIA/PODE → linguagem natural)
@@ -68,26 +64,29 @@ Transformar conteúdo normativo em linguagem de negócio. A versão leigo tem es
 
 Entrada normativa:
 ```markdown
-## 2. Situação-Problema
+## 2. Problema & Necessidade
 
-| Slot | Conteúdo |
-|---|---|
-| O problema de | processo manual de agendamento gera conflitos de horário |
-| Afeta | clientes e recepcionistas da clínica |
-| Cujo impacto é | perda de consultas, insatisfação e retrabalho administrativo |
-| Uma solução bem-sucedida seria | sistema de agendamento online com controle de disponibilidade em tempo real |
+**A dor:** processo manual de agendamento gera conflitos de horário
+
+**Quem sofre:** clientes e recepcionistas da clínica
+
+**Impacto concreto:** perda de consultas, insatisfação e retrabalho administrativo
+
+**Indicadores de sucesso:** reduzir conflitos de horário em 90% no primeiro mês
 ```
 
 Saída versão leigo:
 ```markdown
-## O problema que seu projeto resolve
+## O problema que seu produto resolve
 
 Hoje, o agendamento é feito manualmente e isso causa confusão nos horários.
 Isso afeta diretamente seus clientes e a equipe que cuida da agenda.
 O resultado: consultas perdidas, pessoas insatisfeitas e muito retrabalho.
 
-Seu projeto resolve isso com um sistema online onde os clientes marcam
+Seu produto resolve isso com um sistema online onde os clientes marcam
 horários disponíveis em tempo real, sem risco de conflito.
+
+Será um sucesso quando: conflitos de horário reduzirem 90% no primeiro mês.
 ```
 
 ## Fase 3 — Aplicar traducao-leigo
@@ -105,17 +104,20 @@ Salvar ambas as versões no subdiretório do marco correspondente:
 |---|---|---|
 | M1 | `documentos-tecnicos/01-visao/01-visao-produto.md` | `documentos-para-leigo/01-visao/01-visao-produto.md` |
 | M2 | `documentos-tecnicos/02-requisitos/<nome>.md` | `documentos-para-leigo/02-requisitos/<nome>.md` |
-| M3 | `documentos-tecnicos/03-documento/03-srs-completo.md` | `documentos-para-leigo/03-documento/03-documento-do-projeto.md` |
+| M3 | `documentos-tecnicos/03-documento/03-srs-completo.md` | `documentos-para-leigo/03-documento/03-visao-do-produto.md` |
+
+> **M3 leigo — "Visão do Produto":** único documento para o cliente. Contém resumo executivo do produto (o que faz, para quem, quais as regras principais) em linguagem de negócio, organizado por tema — não por seção técnica. Não espelha a estrutura do SRS.
 
 **M3 — Inclusão de diagramas leigo-safe (Fase 2.5):**
 Após gerar o resumo executivo do SRS (M3), antes de aplicar `traducao-leigo`:
 1. Verificar se `documentos-tecnicos/03-documento/03.3-diagramas.md` existe
-2. Se sim: extrair o bloco entre `<!-- LEIGO-SAFE-START -->` e `<!-- LEIGO-SAFE-END -->`
+2. Se sim: extrair o bloco entre `<!-- LEIGO-SAFE-START -->` e `<!-- LEIGO-SAFE-END -->`.
+   O bloco contém **2 diagramas** (contexto do sistema e caso de uso — o diagrama de fluxo foi removido).
 3. Inserir o bloco extraído no doc leigo como nova seção, após o resumo executivo:
    ```markdown
-   ## Como o sistema funciona visualmente
+   ## Como o produto funciona visualmente
 
-   > Os diagramas abaixo mostram como o sistema se encaixa no seu dia a dia.
+   > Os diagramas abaixo mostram como o produto se encaixa no seu dia a dia.
    > Eles foram gerados automaticamente a partir das informações que você forneceu.
 
    [conteúdo leigo-safe aqui]

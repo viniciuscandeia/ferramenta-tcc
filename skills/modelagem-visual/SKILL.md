@@ -2,10 +2,10 @@
 name: modelagem-visual
 marco: [M3]
 description: >-
-  Gera diagramas Mermaid cobrindo as 3 perspectivas de modelagem IREB (estrutural/dados, funcional/atividade, comportamental/estados) mais contexto de sistema e caso de uso — a partir dos artefatos já produzidos em M1, M2 e M3, sem nenhuma interação com o usuário.
-  Use no Marco 3, após gherkin-spec, para produzir documentos-tecnicos/03-documento/03.3-diagramas.md e o subconjunto leigo-safe consumido por traducao-gate.
-  Generate Mermaid diagrams covering IREB modeling perspectives (structural, functional, behavioral) + context + use case from M1/M2/M3 artifacts; no user interaction; output to 03.3-diagramas.md.
-when_to_use: Invocada pelo documenter no Passo 3.5 do Processo M3 (após gherkin-spec, antes de step-defs-red). Entrada: documentos-tecnicos/01-visao/01-visao-produto.md + 02.1-requisitos-funcionais.md + 02.5-glossario.md + 04-spec/*.feature. Saída: documentos-tecnicos/03-documento/03.3-diagramas.md.
+  Gera 3 diagramas Mermaid — Contexto do Sistema, Caso de Uso e Entidade-Relacionamento — a partir dos artefatos já produzidos em M1, M2 e M3, sem nenhuma interação com o usuário.
+  Use no Marco 3, após requisito-ears, para produzir documentos-tecnicos/03-documento/03.3-diagramas.md. Os diagramas são embutidos nas seções do SRS pelo srs-ireb-montagem (Passo seguinte).
+  Generate 3 Mermaid diagrams (context, use-case, ER) from M1/M2 artifacts; no user interaction; output to 03.3-diagramas.md for embedding into SRS sections.
+when_to_use: Invocada pelo documenter no Passo 2 do Processo M3 (após requisito-ears, ANTES de srs-ireb-montagem). Entrada: documentos-tecnicos/01-visao/01-visao-produto.md + 02.1-requisitos-funcionais.md + 02.5-glossario.md. Saída: documentos-tecnicos/03-documento/03.3-diagramas.md.
 ---
 
 ## Filosofia desta skill (Regras Absolutas)
@@ -23,11 +23,12 @@ when_to_use: Invocada pelo documenter no Passo 3.5 do Processo M3 (após gherkin
    a ausência do diagrama.
 
 <HARD-GATE>
-- NÃO executar antes de `gherkin-spec` (Passo 3) concluído — usa `04-spec/*.feature` para derivar o fluxo
+- NÃO executar antes de `requisito-ears` concluído — usa os RFs com modal preenchido
 - NÃO executar sem `documentos-tecnicos/01-visao/01-visao-produto.md` (contexto + stakeholders)
 - NÃO executar sem `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` (caso de uso)
 - NÃO executar sem `documentos-tecnicos/02-requisitos/02.5-glossario.md` (ER)
 - ⛔ STOP se qualquer bloco Mermaid gerado falhar na validação de sintaxe antes de salvar
+- Executar ANTES de `srs-ireb-montagem` — os diagramas são embutidos no SRS pelo próximo passo
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
@@ -37,9 +38,8 @@ when_to_use: Invocada pelo documenter no Passo 3.5 do Processo M3 (após gherkin
    - `documentos-tecnicos/01-visao/01-visao-produto.md` (seções: Contexto e Limites, Pessoas Envolvidas, Visão)
    - `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` (RFs com modal preenchido)
    - `documentos-tecnicos/02-requisitos/02.5-glossario.md` (termos do domínio)
-   - `documentos-tecnicos/03-documento/04-spec/` (pelo menos 1 `.feature`)
 3. Carregar opcionais se existirem: `documentos-tecnicos/02-requisitos/02.3-restricoes.md` (sistemas externos)
-4. Registrar: `nome_produto`, `perfis_onion` (camada 1), `integrações_externas`, lista de RFs DEVE, glossário, cenários Gherkin
+4. Registrar: `nome_produto`, `perfis_onion` (camada 1), `integrações_externas`, lista de RFs DEVE, glossário
 5. Consultar `content/catalogos-seed/conceitos/modelagem-visual.md` para templates canônicos
 
 ## Fase 1 — Diagrama de Contexto (obrigatório)
@@ -67,26 +67,7 @@ rótulos com espaço entre `["..."]`.
 
 **Limite:** se ≥ 8 funcionalidades, usar `subgraph` por módulo/grupo lógico.
 
-## Fase 3 — Diagrama de Fluxo/Atividade (obrigatório)
-
-**Input:** `04-spec/*.feature` — cenário "caminho feliz" do RF DEVE de maior prioridade
-
-1. Selecionar o RF DEVE com modal prioritário (primeiro na lista ou explicitar o motivo)
-2. Extrair passos do cenário "caminho feliz":
-   - `Background` / `Given` → pré-condição (nó retangular antes da ação)
-   - `When` → ação do usuário (nó retangular)
-   - `And` após `When` → passos intermediários
-   - `Then` → resultado esperado (nó retangular)
-3. Se houver `Scenario Outline` com variações → identificar o caminho padrão
-4. Se houver decisão implícita (ex: "usuário com permissão / sem permissão") →
-   incluir losango de decisão com os dois caminhos
-5. Montar `flowchart TD` conforme template catálogo `§3`
-
-**Fallback:** se `04-spec/` estiver vazio ou sem caminho feliz claro → usar narrativa
-de `cenario-narrativa` ou derivar do RF mais descritivo. Registrar no arquivo qual
-fonte foi usada.
-
-## Fase 4 — Diagrama ER (técnico)
+## Fase 3 — Diagrama ER (técnico)
 
 **Input:** `02.5-glossario.md`
 
@@ -105,40 +86,24 @@ não gerar ER. Registrar:
 > identificáveis nos artefatos de M2.
 ```
 
-## Fase 5 — Diagrama de Estados (técnico, condicional)
+## Fase 4 — Montar 03.3-diagramas.md
 
-**Input:** `02.1-requisitos-funcionais.md` + `02.5-glossario.md`
-
-1. Buscar padrões de ciclo de vida:
-   - Verbos que implicam transição: cancelar, aprovar, publicar, arquivar, expirar,
-     ativar, suspender, finalizar, confirmar, rejeitar
-   - Campos de status no glossário (ex: "status: ativo | inativo | suspenso")
-   - RFs do tipo "O sistema DEVE permitir cancelar [entidade]"
-2. Se ≥ 1 entidade com ciclo de vida identificável → gerar `stateDiagram-v2`
-   por entidade (máx 2; se mais, priorizar a mais central ao produto)
-3. Se nenhum ciclo de vida → registrar nota e omitir:
-   ```markdown
-   > **Nota:** Diagrama de estados omitido — nenhum ciclo de vida de entidade
-   > identificado nos artefatos de M1/M2.
-   ```
-
-## Fase 6 — Montar 03.3-diagramas.md
-
-Estrutura do arquivo de saída:
+Estrutura do arquivo de saída (3 diagramas técnicos + bloco leigo-safe com 2):
 
 ```markdown
-# Diagramas do Projeto — [Nome do Produto]
+# Diagramas do Produto — [Nome do Produto]
 
 > Gerado por: `modelagem-visual` (ferramenta-tcc)
-> Base normativa: IREB §3 perspectivas de modelagem + ISO 29148 (contexto e casos de uso)
 > Motor: Mermaid (renderiza nativamente no GitHub e VSCode)
+> Os diagramas abaixo são embutidos nas seções do documento de requisitos pelo próximo passo.
 
 ---
 
 ## 1. Contexto do Sistema
 
-> Mostra onde o sistema se encaixa: quem usa e com quais outros sistemas ele se
+> Mostra onde o produto se encaixa: quem usa e com quais outros sistemas ele se
 > comunica.
+> Destinado à Seção 2.1 do documento de requisitos.
 
 [bloco mermaid contexto]
 
@@ -147,42 +112,25 @@ Estrutura do arquivo de saída:
 ## 2. Caso de Uso — O que o Sistema Faz
 
 > Mostra as funcionalidades principais e quem as executa.
+> Destinado à Seção 3 do documento de requisitos.
 
 [bloco mermaid caso de uso]
 
 ---
 
-## 3. Fluxo Principal — [Nome do RF ou Processo]
-
-> Passo a passo do processo mais importante do sistema.
-> Baseado em: [ID do RF].
-
-[bloco mermaid fluxo]
-
----
-
-## 4. Estrutura de Dados (Entidade-Relacionamento)
+## 3. Estrutura de Dados (Entidade-Relacionamento)
 
 > Mostra as informações que o sistema armazena e como se relacionam.
-> Versão técnica — destinada à equipe de desenvolvimento.
+> Versão técnica — destinada à Seção 4 do documento de requisitos.
 
 [bloco mermaid erDiagram | ou nota de omissão]
 
 ---
 
-## 5. Ciclo de Vida — [Nome da Entidade(s)]
-
-> Mostra os estados pelos quais [entidade] passa durante o uso do sistema.
-> Versão técnica — destinada à equipe de desenvolvimento.
-
-[bloco mermaid stateDiagram-v2 | ou nota de omissão]
-
----
-
 <!-- LEIGO-SAFE-START -->
-## Como o sistema funciona
+## Como o produto funciona
 
-### Quem usa e o que o sistema faz
+### Quem usa e o que o produto faz
 
 > [rótulos em linguagem de negócio]
 
@@ -193,30 +141,33 @@ Estrutura do arquivo de saída:
 > [rótulos em linguagem de negócio]
 
 [bloco mermaid caso de uso com rótulos leigo-safe]
-
-### Como o fluxo principal funciona
-
-> [rótulos em linguagem de negócio]
-
-[bloco mermaid fluxo com rótulos leigo-safe]
 <!-- LEIGO-SAFE-END -->
 ```
 
 **Rótulos leigo-safe:** aplicar a transformação da blacklist D1 nos rótulos dos
-nós dos 3 diagramas dentro do bloco `<!-- LEIGO-SAFE-START/END -->`.
+nós dos 2 diagramas dentro do bloco `<!-- LEIGO-SAFE-START/END -->`.
 Ver `content/catalogos-seed/conceitos/modelagem-visual.md §Regras de rotulagem leigo-safe`.
 
-## Fase 7 — Saída e Sinalização
+## Fase 5 — Saída e Sinalização
 
-1. Salvar `documentos-tecnicos/03-documento/03.3-diagramas.md` (tamanho esperado: 80–200 linhas)
+1. Salvar `documentos-tecnicos/03-documento/03.3-diagramas.md` (tamanho esperado: 60–150 linhas)
 2. Registrar em `estado-projeto.yaml`: `modelagem_visual_gerada: true`
-3. Sinalizar ao `documenter`: `modelagem-visual concluída → prosseguir para step-defs-red (Passo 4)`
+3. Sinalizar ao `documenter`: `modelagem-visual concluída → prosseguir para srs-ireb-montagem (Passo 3)`
+
+<!-- internal -->
+## Futuro — Diagramas de Caso de Uso por Módulo (item 13 do feedback)
+
+Melhoria futura: gerar um diagrama de caso de uso por módulo de requisitos (§3.X do SRS),
+em vez de um único diagrama global. Requer que o agrupamento de módulos (srs-ireb-montagem)
+seja executado primeiro e que o diagrama receba os módulos como subgraphs.
+Não implementar agora — registrar como ponto de evolução para a próxima versão.
+<!-- /internal -->
 
 <!-- internal -->
 ## Anti-Padrão: Diagrama Vazio sem Nota
 
-**Como acontece:** Fase 4 (ER) encontra glossário pequeno e salva uma seção vazia
-(apenas o heading `## 4. Estrutura de Dados` sem conteúdo ou bloco).
+**Como acontece:** Fase 3 (ER) encontra glossário pequeno e salva uma seção vazia
+(apenas o heading `## 3. Estrutura de Dados` sem conteúdo ou bloco).
 
 **Como detectar:** Seção presente no arquivo sem bloco `mermaid` nem nota de omissão.
 

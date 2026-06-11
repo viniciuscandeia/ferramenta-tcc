@@ -44,7 +44,7 @@ Para cada opção marcada, exibir a resposta correspondente **em uma única mens
 Após exibir as respostas, invocar `AskUserQuestion`:
 
 - `question`: "Suas dúvidas foram respondidas?"
-- `header`: "Próximo passo"
+- `header`: "Próximo"
 - `multiSelect`: false
 - Opção 1: label `"Sim, posso começar"`, description `"Iniciar a documentação do projeto"`
 - Opção 2: label `"Tenho mais dúvidas"`, description `"Quero esclarecer mais alguma coisa antes"`
