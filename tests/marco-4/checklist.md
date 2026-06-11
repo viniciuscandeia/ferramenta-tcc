@@ -2,13 +2,13 @@
 
 ## Bloco A — Revisão IREB
 
-- [ ] **A1.** `revisao-tecnica.md` existe
+- [ ] **A1.** `documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md` existe
 - [ ] **A2.** Revisão lista itens verificados (≥ 3 seções)
 - [ ] **A3.** Nenhum CRITICAL blocker não-resolvido
 
 ## Bloco B — Aprovação Técnica
 
-- [ ] **B1.** `aprovacao-tecnica.md` existe
+- [ ] **B1.** `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` existe
 - [ ] **B2.** Campo "Aprovado por" preenchido
 - [ ] **B3.** Campo "Data" preenchido
 

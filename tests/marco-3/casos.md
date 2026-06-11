@@ -80,6 +80,16 @@ Nota: `02.7-conflitos-detectados.md` herdado do M2 (conflito criança vs. pai de
 2. `analyze-cross-artifact`: cruzamento detecta que conflito de stakeholder em M1 está registrado em M2 mas não tem resolução no SRS — gera HIGH (não bloqueia)
 3. `rastreabilidade-matriz`: 14 RFs + 6 RNFs rastreados até seção do SRS e stakeholder origem
 
+### Artefatos esperados ao final
+
+| Arquivo | Obrigatório? | Esperado? |
+|---|---|---|
+| `documentos-tecnicos/03-documento/03-srs-completo.md` | Sim | Sim (8 seções IREB §3.3.3, §7 com conflito herdado) |
+| `documentos-para-leigo/03-documento/03-documento-do-projeto.md` | Sim | Sim (sem "LGPD" nu) |
+| `documentos-tecnicos/03-documento/03.1-analyze-report.md` | Sim | Sim (sem CRITICAL; HIGH registrado) |
+| `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` | Condicional | Sim |
+| `documentos-tecnicos/03-documento/03.3-diagramas.md` | Condicional | Sim (múltiplos atores) |
+
 ### Critério de aceitação do Gate 3 (Caso 2)
 
 - `03.1-analyze-report.md` sem CRITICAL (HIGH por conflito não-resolvido não bloqueia)

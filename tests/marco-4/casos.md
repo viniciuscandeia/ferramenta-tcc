@@ -19,22 +19,22 @@ Olá! Podemos revisar tecnicamente o documento gerado?
 
 ### Comportamento esperado — sequência de skills
 
-1. **`validacao-checklist-ireb`**: verifica conformidade IREB §3.3.3.
-2. **`analyze-cross-artifact`**: verifica consistência entre artefatos.
-3. **`traducao-gate`**: gera versão de aprovação técnica.
+1. **`analyze-cross-artifact`**: varredura técnica completa (Visão ↔ Elicitação ↔ SRS) — sem issues.
+2. **`validacao-checklist-ireb`**: 12 critérios IREB §3.8 sobre o SRS — conformidade plena.
+3. **`rastreabilidade-matriz`**: rastreabilidade completa M1 → spec.
 
 ### Artefatos esperados ao final
 
 | Arquivo | Obrigatório? | Esperado? |
 |---|---|---|
-| `03-documento/revisao-tecnica.md` | Sim | Sim |
-| `03-documento/aprovacao-tecnica.md` | Sim | Sim |
+| `documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md` | Sim | Sim |
+| `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` | Sim | Sim |
 | `estado-projeto.yaml` | Sim | Sim |
 
 ### Critério de aceitação
 
-- Revisão técnica sem CRITICAL no analyze-report
-- Aprovação técnica assinada pelo tech lead persona
+- Revisão técnica em `04.1-revisao-tecnica.md` sem CRITICAL
+- Aprovação técnica (`04.2-aprovacao-tecnica.md`) assinada pelo tech lead persona
 
 ---
 
@@ -52,21 +52,21 @@ Vamos revisar tecnicamente? Quero garantir que está tudo claro para implementar
 
 ### Comportamento esperado — sequência de skills
 
-1. **`validacao-checklist-ireb`**: detecta ambiguidades.
-2. **`analyze-cross-artifact`**: cross-check falha (2 MEDIUM issues).
-3. **`traducao-gate`**: gera versão com issues listados.
+1. **`analyze-cross-artifact`**: cross-check detecta 2 issues MEDIUM.
+2. **`validacao-checklist-ireb`**: detecta ambiguidades (IREB §3.8).
+3. **`rastreabilidade-matriz`**: rastreabilidade M1 → spec com lacunas anotadas.
 
 ### Artefatos esperados ao final
 
 | Arquivo | Obrigatório? | Esperado? |
 |---|---|---|
-| `03-documento/revisao-tecnica.md` | Sim | Sim |
-| `03-documento/aprovacao-tecnica.md` | Sim | Sim |
+| `documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md` | Sim | Sim |
+| `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` | Sim | Sim |
 | `estado-projeto.yaml` | Sim | Sim |
 
 ### Critério de aceitação
 
-- Revisão lista os 2 issues detectados
+- Revisão em `04.1-revisao-tecnica.md` lista os 2 issues detectados
 - Gate 4 aprovado após resolução (tech lead diz Sim)
 
 ---
@@ -85,16 +85,16 @@ Por favor, fazer revisão técnica do documento.
 
 ### Comportamento esperado — sequência de skills
 
-1. **`validacao-checklist-ireb`**: detecta CRITICAL.
-2. **`analyze-cross-artifact`**: confirma blocker.
-3. **`traducao-gate`**: apresenta para aprovação com CRITICAL destacado.
+1. **`analyze-cross-artifact`**: detecta CRITICAL blocker.
+2. **`validacao-checklist-ireb`**: confirma violação de critério IREB §3.8.
+3. **`rastreabilidade-matriz`**: rastreabilidade com lacuna ligada ao CRITICAL.
 
 ### Artefatos esperados ao final
 
 | Arquivo | Obrigatório? | Esperado? |
 |---|---|---|
-| `03-documento/revisao-tecnica.md` | Sim | Sim |
-| `03-documento/aprovacao-tecnica.md` | Sim | Sim |
+| `documentos-tecnicos/04-revisao/04.1-revisao-tecnica.md` | Sim | Sim |
+| `documentos-tecnicos/04-revisao/04.2-aprovacao-tecnica.md` | Sim | Sim |
 | `estado-projeto.yaml` | Sim | Sim |
 
 ### Critério de aceitação (CORTÁVEL)

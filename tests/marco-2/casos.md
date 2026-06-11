@@ -35,24 +35,24 @@ Restrições: orçamento pequeno; precisar cumprir LGPD; funcionar em celular
 1. `classificacao-rf-rnf`: ≥ 8 RFs classificados (mix DEVE/DEVERIA/PODE), ≥ 3 RNFs mensuráveis
 2. `priorizacao`: MoSCoW ativo; Kano **não ativado** (Should < 8); IEEE **não ativado** (total < 25)
 3. `glossario`: ≥ 5 termos extraídos (artesão, pedido, catálogo, carrinho, LGPD)
-4. `conflitos-detect`: 0 conflitos (sem stakeholders contraditórios) — `conflitos-detectados.md` **não gerado**
+4. `conflitos-detect`: 0 conflitos (sem stakeholders contraditórios) — `02.7-conflitos-detectados.md` **não gerado**
 5. `pautas-reelicitacao`: **vazio** → Gate 2 pode abrir diretamente
 
 ### Artefatos esperados ao final
 
 | Arquivo | Obrigatório? | Esperado? |
 |---|---|---|
-| `elicitacao-raw.md` | Sim (interno) | Sim |
-| `03.1-funcionais.md` | Sim | Sim |
-| `03.1-funcionais-leigo.md` | Sim | Sim |
-| `03.2-qualidade.md` | Sim | Sim |
-| `03.2-qualidade-leigo.md` | Sim | Sim |
-| `03.3-restricoes.md` | Sim | Sim (LGPD + mobile) |
-| `03.3-restricoes-leigo.md` | Sim | Sim |
-| `03.4-premissas.md` | Condicional | Não esperado |
-| `glossario.md` | Sim | Sim |
-| `pautas-reelicitacao.md` | Sim | Sim (vazio) |
-| `conflitos-detectados.md` | Condicional | Não esperado |
+| `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` | Sim (interno) | Sim |
+| `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` | Sim | Sim |
+| `documentos-para-leigo/02-requisitos/02.1-requisitos-funcionais.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` | Sim | Sim |
+| `documentos-para-leigo/02-requisitos/02.2-requisitos-qualidade.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.3-restricoes.md` | Sim | Sim (LGPD + mobile) |
+| `documentos-para-leigo/02-requisitos/02.3-restricoes.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.4-premissas.md` | Condicional | Não esperado |
+| `documentos-tecnicos/02-requisitos/02.5-glossario.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` | Sim | Sim (vazio) |
+| `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` | Condicional | Não esperado |
 
 ---
 
@@ -87,13 +87,29 @@ Restrições: criança não lê (interface só visual/áudio); LGPD para menores
 1. `classificacao-rf-rnf`: ≥ 10 RFs; ≥ 4 RNFs (desempenho em tablet básico, acessibilidade visual/áudio, LGPD, privacidade menores)
 2. `priorizacao`: MoSCoW ativo; Kano **ativado** se RFs Should/Could ≥ 8; IEEE **não ativado**
 3. `glossario`: ≥ 8 termos (controle parental, progressão de nível, modo de jogo, relatório, LGPD, menores de idade)
-4. `conflitos-detect`: possível conflito criança (quer mais jogos) vs. pai (quer limitar tempo) — registrar em `conflitos-detectados.md`
+4. `conflitos-detect`: possível conflito criança (quer mais jogos) vs. pai (quer limitar tempo) — registrar em `02.7-conflitos-detectados.md`
 5. `pautas-reelicitacao`: **pode ter 1–2 pautas** (ex: métrica de acessibilidade, detalhe LGPD para menores)
+
+### Artefatos esperados ao final
+
+| Arquivo | Obrigatório? | Esperado? |
+|---|---|---|
+| `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` | Sim (interno) | Sim |
+| `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` | Sim | Sim |
+| `documentos-para-leigo/02-requisitos/02.1-requisitos-funcionais.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` | Sim | Sim |
+| `documentos-para-leigo/02-requisitos/02.2-requisitos-qualidade.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.3-restricoes.md` | Sim | Sim (LGPD menores + acessibilidade) |
+| `documentos-para-leigo/02-requisitos/02.3-restricoes.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.4-premissas.md` | Condicional | Não esperado |
+| `documentos-tecnicos/02-requisitos/02.5-glossario.md` | Sim | Sim |
+| `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` | Sim | Sim (1–2 pautas) |
+| `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` | Condicional | Sim (conflito criança vs. pai) |
 
 ### Critério de aceitação do Gate 2 (Caso 2)
 
-- Se `pautas-reelicitacao.md` não-vazio: loop B deve resolver pautas antes de abrir Gate 2
-- `conflitos-detectados.md` deve existir com conflito stakeholder registrado
+- Se `02.6-pautas-reelicitacao.md` não-vazio: loop B deve resolver pautas antes de abrir Gate 2
+- `02.7-conflitos-detectados.md` deve existir com conflito stakeholder registrado
 - Versões leigo sem termos "LGPD" nu (deve aparecer como "proteção de dados de crianças")
 
 ---
@@ -120,15 +136,15 @@ Após Fase A, modeler detecta:
 
 ### Comportamento esperado
 
-1. `pautas-reelicitacao.md` não-vazio → Gate 2 **bloqueado**
+1. `02.6-pautas-reelicitacao.md` não-vazio → Gate 2 **bloqueado**
 2. Orquestrador retorna ao `collector` em modo Fase B com as pautas
 3. `collector` executa `entrevista-estruturada` com 2 perguntas focadas nas pautas
-4. `modeler` reprocessa: atualiza `03.1-funcionais.md` e `03.2-qualidade.md` com critérios
-5. `pautas-reelicitacao.md` **zerado** → Gate 2 **abre**
+4. `modeler` reprocessa: atualiza `02.1-requisitos-funcionais.md` e `02.2-requisitos-qualidade.md` com critérios
+5. `02.6-pautas-reelicitacao.md` **zerado** → Gate 2 **abre**
 
 ### Critério de aceitação
 
-- `pautas-reelicitacao.md` final com todos os itens `[x]` (ou arquivo vazio)
+- `02.6-pautas-reelicitacao.md` final com todos os itens `[x]` (ou arquivo vazio)
 - RF de lembrete agora tem critério: canal (SMS ou e-mail), timing (24h antes)
 - RNF de desempenho agora tem métrica: tempo de resposta < 2s para 95% das requisições
 - Loop encerrou em ≤ 2 iterações (mínimo suficiente para este caso)

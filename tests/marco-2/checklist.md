@@ -7,50 +7,50 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 
 ## Bloco A — Estrutura de artefatos
 
-- [ ] **A1.** `elicitacao-raw.md` gerado pelo collector (arquivo interno, não-gate)
-- [ ] **A2.** `03.1-funcionais.md` existe com ≥ 1 RF em formato EARS + modal RFC 2119 (`DEVE`/`DEVERIA`/`PODE`)
-- [ ] **A3.** `03.1-funcionais-leigo.md` existe (versão leigo correspondente)
-- [ ] **A4.** `03.2-qualidade.md` existe com ≥ 1 RNF mensurável (com métrica explícita)
-- [ ] **A5.** `03.2-qualidade-leigo.md` existe (versão leigo correspondente)
-- [ ] **A6.** `03.3-restricoes.md` existe com restrições classificadas por tipo (legal / técnica / organizacional)
-- [ ] **A7.** `03.3-restricoes-leigo.md` existe (versão leigo correspondente)
-- [ ] **A8.** `glossario.md` existe com ≥ 5 termos (cada um com definição + exemplos)
-- [ ] **A9.** `pautas-reelicitacao.md` existe (pode estar vazio — Gate 2 requer que esteja vazio ou com todos `[x]`)
+- [ ] **A1.** `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` gerado pelo collector (arquivo interno, não-gate)
+- [ ] **A2.** `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` existe com ≥ 1 RF em formato EARS + modal RFC 2119 (`DEVE`/`DEVERIA`/`PODE`)
+- [ ] **A3.** `documentos-para-leigo/02-requisitos/02.1-requisitos-funcionais.md` existe (versão leigo correspondente)
+- [ ] **A4.** `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existe com ≥ 1 RNF mensurável (com métrica explícita)
+- [ ] **A5.** `documentos-para-leigo/02-requisitos/02.2-requisitos-qualidade.md` existe (versão leigo correspondente)
+- [ ] **A6.** `documentos-tecnicos/02-requisitos/02.3-restricoes.md` existe com restrições classificadas por tipo (legal / técnica / organizacional)
+- [ ] **A7.** `documentos-para-leigo/02-requisitos/02.3-restricoes.md` existe (versão leigo correspondente)
+- [ ] **A8.** `documentos-tecnicos/02-requisitos/02.5-glossario.md` existe com ≥ 5 termos (cada um com definição + exemplos)
+- [ ] **A9.** `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` existe (pode estar vazio — Gate 2 requer que esteja vazio ou com todos `[x]`)
 
 ---
 
 ## Bloco B — Qualidade dos artefatos
 
-- [ ] **B1.** ≥ 1 RF com modal `DEVE` em `03.1-funcionais.md` (sem nenhum DEVE = erro de priorização)
-- [ ] **B2.** ≥ 1 RNF com métrica verificável em `03.2-qualidade.md` (ex: "tempo de resposta < 2s para 95% das requisições")
-- [ ] **B3.** Restrições em `03.3-restricoes.md` classificadas corretamente (não misturadas com RNFs)
-- [ ] **B4.** Cada item de `03.1-funcionais.md` tem: ID único, modal, descrição EARS, prioridade MoSCoW
-- [ ] **B5.** `glossario.md` tem ≥ 1 termo que aparecia sem definição na elicitacao-raw.md (anti-ambiguidade Wiegers Ch11)
+- [ ] **B1.** ≥ 1 RF com modal `DEVE` em `02.1-requisitos-funcionais.md` (sem nenhum DEVE = erro de priorização)
+- [ ] **B2.** ≥ 1 RNF com métrica verificável em `02.2-requisitos-qualidade.md` (ex: "tempo de resposta < 2s para 95% das requisições")
+- [ ] **B3.** Restrições em `02.3-restricoes.md` classificadas corretamente (não misturadas com RNFs)
+- [ ] **B4.** Cada item de `02.1-requisitos-funcionais.md` tem: ID único, modal, descrição EARS, prioridade MoSCoW
+- [ ] **B5.** `02.5-glossario.md` tem ≥ 1 termo que aparecia sem definição na `02-elicitacao-raw.md` (anti-ambiguidade Wiegers Ch11)
 
 ---
 
 ## Bloco C — Controle do loop
 
-- [ ] **C1.** Se `pautas-reelicitacao.md` estava não-vazio após Fase B: Gate 2 foi **bloqueado** e loop voltou ao collector
-- [ ] **C2.** Após resolução das pautas: `pautas-reelicitacao.md` final sem itens `[ ]` em aberto
-- [ ] **C3.** Loop M2 encerrou em ≤ 3 iterações (teto do core/constitution.md)
-- [ ] **C4.** Se loop atingiu 3 iterações com pauta ainda aberta: usuário foi consultado (yesno conforme core/constitution.md)
+- [ ] **C1.** Se `02.6-pautas-reelicitacao.md` estava não-vazio após Fase B: Gate 2 foi **bloqueado** e loop voltou ao collector
+- [ ] **C2.** Após resolução das pautas: `02.6-pautas-reelicitacao.md` final sem itens `[ ]` em aberto
+- [ ] **C3.** Loop M2 encerrou por convergência (`02.6-pautas-reelicitacao.md` sem `[ ]`) ou por decisão explícita do usuário (sem teto fixo — `content/constitution.md`)
+- [ ] **C4.** Se o loop chegou à 3ª rodada com pauta ainda aberta: usuário foi consultado (yesno conforme `content/constitution.md`)
 
 ---
 
 ## Bloco D — Guardrail leigo (D1 + D19)
 
-- [ ] **D1.** `03.1-funcionais-leigo.md` sem termos da blacklist (grep: "requisito funcional|RF|elicitação|stakeholder|escopo|iteração|sprint|backlog|caso de uso|SRS|ERS|marco|sub-agente|skill|MoSCoW|Kano|baseline|gate|EARS|RFC|Gherkin|BDD")
-- [ ] **D2.** `03.2-qualidade-leigo.md` sem termos da blacklist
-- [ ] **D3.** `03.3-restricoes-leigo.md` sem termos da blacklist
+- [ ] **D1.** `documentos-para-leigo/02-requisitos/02.1-requisitos-funcionais.md` sem termos da blacklist (grep: "requisito funcional|RF|elicitação|stakeholder|escopo|iteração|sprint|backlog|caso de uso|SRS|ERS|marco|sub-agente|skill|MoSCoW|Kano|baseline|gate|EARS|RFC|Gherkin|BDD")
+- [ ] **D2.** `documentos-para-leigo/02-requisitos/02.2-requisitos-qualidade.md` sem termos da blacklist
+- [ ] **D3.** `documentos-para-leigo/02-requisitos/02.3-restricoes.md` sem termos da blacklist
 - [ ] **D4.** Perguntas feitas ao usuário durante M2 não contêm termos da blacklist
 
 ---
 
 ## Bloco E — Arquivos condicionais
 
-- [ ] **E1.** Se `conflitos-detect` detectou ≥ 1 conflito: `conflitos-detectados.md` foi criado com tipo + estratégia de resolução
-- [ ] **E2.** Se `modeler` detectou premissas implícitas: `03.4-premissas.md` foi criado
+- [ ] **E1.** Se `conflitos-detect` detectou ≥ 1 conflito: `02.7-conflitos-detectados.md` foi criado com tipo + estratégia de resolução
+- [ ] **E2.** Se `modeler` detectou premissas implícitas: `02.4-premissas.md` foi criado
 - [ ] **E3.** Ausência de arquivos condicionais quando não aplicável (não criar arquivo vazio)
 
 ---
@@ -59,7 +59,7 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 
 - [ ] **F1.** `estado-projeto.yaml` reflete `marco_corrente: M2` durante execução e `gate_status.gate_2: aprovado` após Gate 2
 - [ ] **F2.** `estado-projeto.yaml` registra `gate_status.gate_2: aprovado` e `gate_2_aprovado_em` após aprovação do Gate 2
-- [ ] **F3.** Artefatos M2 compatíveis com entrada esperada de M3: `03.1-funcionais.md` com modais RFC 2119 preenchidos para `requisito-ears`
+- [ ] **F3.** Artefatos M2 compatíveis com entrada esperada de M3: `02.1-requisitos-funcionais.md` com modais RFC 2119 preenchidos para `requisito-ears`
 
 ---
 
