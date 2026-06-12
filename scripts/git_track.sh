@@ -71,8 +71,7 @@ GITIGNORE
   # Commit inicial (pode estar vazio se o projeto ainda não tem artefatos)
   _git add -A
   if ! _git diff --cached --quiet 2>/dev/null; then
-    _git commit --quiet -m "chore: início do projeto" \
-      --allow-empty-message 2>/dev/null || true
+    _git commit --quiet -m "chore: início do projeto" 2>/dev/null || true
   else
     # repo novo vazio — commit vazio de marcação
     _git commit --quiet --allow-empty -m "chore: início do projeto" 2>/dev/null || true

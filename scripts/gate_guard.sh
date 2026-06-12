@@ -20,7 +20,7 @@ fi
 TOOL_INPUT=$(cat)
 
 # Extrair file_path do JSON
-FILE_PATH=$(echo "$TOOL_INPUT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('file_path',''))" 2>/dev/null || true)
+FILE_PATH=$(echo "$TOOL_INPUT" | /usr/bin/env python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('file_path',''))" 2>/dev/null || true)
 
 if [[ -z "$FILE_PATH" ]]; then
   exit 0
@@ -49,15 +49,20 @@ esac
 # ──────────────────────────────────────────────
 # Regra 2: artefatos de marco futuro (requer estado-projeto.yaml)
 # ──────────────────────────────────────────────
-# Localizar estado-projeto.yaml a partir do diretório atual
+# Localizar estado-projeto.yaml: primeiro subindo a partir do arquivo sendo
+# escrito (paths de Write/Edit são absolutos {PROJETO_DIR}/... — invariante Z18),
+# depois fallback a partir de $PWD (fluxo canônico: PROJETO_DIR = CWD).
 STATE_YAML=""
-SEARCH_DIR="$PWD"
-for i in 1 2 3 4 5; do
-  if [[ -f "$SEARCH_DIR/estado-projeto.yaml" ]]; then
-    STATE_YAML="$SEARCH_DIR/estado-projeto.yaml"
-    break
-  fi
-  SEARCH_DIR=$(dirname "$SEARCH_DIR")
+for BASE_DIR in "$(dirname "$FILE_PATH")" "$PWD"; do
+  SEARCH_DIR="$BASE_DIR"
+  for i in 1 2 3 4 5; do
+    if [[ -f "$SEARCH_DIR/estado-projeto.yaml" ]]; then
+      STATE_YAML="$SEARCH_DIR/estado-projeto.yaml"
+      break
+    fi
+    SEARCH_DIR=$(dirname "$SEARCH_DIR")
+  done
+  [[ -n "$STATE_YAML" ]] && break
 done
 
 if [[ -z "$STATE_YAML" ]]; then
@@ -142,7 +147,8 @@ fi
 # gate_status.gate_1: aprovado sem os pré-requisitos satisfeitos.
 # ──────────────────────────────────────────────
 if [[ "$BASENAME" == "estado-projeto.yaml" ]]; then
-  CONTENT=$(echo "$TOOL_INPUT" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('content',''))" 2>/dev/null || true)
+  # Write envia 'content'; Edit envia 'new_string' — cobrir ambos (matcher é Write|Edit)
+  CONTENT=$(echo "$TOOL_INPUT" | /usr/bin/env python3 -c "import json,sys; d=json.load(sys.stdin); t=d.get('tool_input',{}); print(t.get('content') or t.get('new_string',''))" 2>/dev/null || true)
 
   if echo "$CONTENT" | grep -q "gate_1.*aprovado"; then
     CURRENT_STATE="${STATE_YAML:-}"

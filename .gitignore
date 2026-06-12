@@ -5,4 +5,9 @@ tests/marco-*/execucoes/*
 # OS
 .DS_Store
 
-# Não distribuível — fica no monorepo pai, fora desta pasta
+# Não redistribuível — mantido apenas no disco local (restrição de licença IREB/IEEE/ISO)
+# Fontes oficiais para download: references/normas/README.md → "Fontes originais"
+references/normas/cpre_foundationlevel_handbook_BR_v1.2.md
+references/normas/cpre_foundationlevel_handbook_en_v1.2.pdf
+references/normas/ears-mavin-2009.pdf
+references/normas/iso/iso-iec-ieee-29148-2018-preview.pdf

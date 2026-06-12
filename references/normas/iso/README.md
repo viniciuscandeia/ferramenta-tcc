@@ -1,6 +1,6 @@
 # Normas ISO — Metadado e Preview
 
-Normas ISO proprietárias usadas como base técnica. O preview oficial de 29148 está incluído; 25010 apenas metadado.
+Normas ISO proprietárias usadas como base técnica. Nenhum PDF acompanha o repositório (restrição de licença ISO) — o preview oficial de 29148 existe apenas no disco local do autor (`.gitignore`); 25010 apenas metadado. Links de obtenção abaixo.
 
 ---
 
@@ -16,7 +16,7 @@ Normas ISO proprietárias usadas como base técnica. O preview oficial de 29148 
 | Uso na ferramenta | Template SRS §3.3.3; seções obrigatórias do documento gerado; estrutura SyRS/SRS |
 | Acesso oficial | [iso.org/standard/72089.html](https://www.iso.org/standard/72089.html) |
 | IEEE Xplore | [ieeexplore.ieee.org/document/8559686](https://ieeexplore.ieee.org/document/8559686) |
-| **Arquivo local** | `iso-iec-ieee-29148-2018-preview.pdf` — **preview oficial** (14pp de ~150) |
+| **Arquivo local** | `iso-iec-ieee-29148-2018-preview.pdf` — **preview oficial** (14pp de ~150); **não versionado** — baixe em [standards.iteh.ai](https://cdn.standards.iteh.ai/samples/72089/62bb2ea1ef8b4f33a80d984f826267c1/ISO-IEC-IEEE-29148-2018.pdf) |
 
 **Seções-chave referenciadas pela ferramenta:**
 - §5.2: SRS (Software Requirements Specification) — estrutura obrigatória

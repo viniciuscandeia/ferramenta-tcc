@@ -6,7 +6,7 @@ com diagramas, matriz de rastreabilidade e versão em linguagem de negócio.
 Ao concluir, exporta a documentação completa em PDF automaticamente.
 
 **Projeto:** TCC — Vinicius Candeia (deadline 2026-07-01)
-**Plataforma:** Claude Code (v0.17.2+)
+**Plataforma:** Claude Code (CLI)
 
 ---
 
@@ -237,7 +237,7 @@ ferramenta-tcc/
 │   └── plugin.json        # Manifesto (metadados apenas — sem hooks inline)
 ├── settings.json          # Apenas: {"agent": "orchestrator"}
 ├── hooks/
-│   └── hooks.json         # Todos os 4 hooks (SessionStart, PreToolUse, PostToolUse, UserPromptSubmit)
+│   └── hooks.json         # Todos os 5 hooks em 4 eventos (SessionStart, PreToolUse ×2, PostToolUse, UserPromptSubmit)
 ├── agents/                # Definições de agente (orchestrator + 5 sub-agentes)
 │   └── orchestrator.md    # Agente principal (system prompt quando plugin habilitado)
 ├── skills/                # 25 skills de elicitação, documentação e exportação
@@ -265,8 +265,8 @@ Veja `CATALOGO.md` para o índice completo de agentes e skills.
 
 ## Testar localmente
 
-Casos canônicos (3 por marco) em `tests/marco-{1,2,3}/casos.md`.
-Checklists de critérios em `tests/marco-{1,2,3}/checklist.md`.
+Casos canônicos (3 por marco) em `tests/marco-{1,2,3,4}/casos.md`.
+Checklists de critérios em `tests/marco-{1,2,3,4}/checklist.md`.
 
 Procedimento E2E:
 1. Criar pasta `tests/marco-1/execucoes/execucao-01-<descritor>/`
@@ -280,4 +280,4 @@ Critério de aprovação: checklist 100% `[x]` e `CRITICAL = 0` no `analyze-repo
 
 ## Licença
 
-Código aberto para fins acadêmicos. Referências bibliográficas em `referencias/` (monorepo pai) não são distribuídas por restrição de licença.
+Código aberto para fins acadêmicos. Em `references/normas/` são distribuídos apenas materiais com licença permissiva (RFCs IETF, paper arXiv, paper RESI); o handbook IREB, o paper IEEE (EARS 2009) e o preview da ISO 29148 **não** são redistribuídos — obtenha-os nos links oficiais indicados em `references/normas/README.md`. As demais referências bibliográficas ficam no monorepo pai (`referencias/`), fora deste repositório.

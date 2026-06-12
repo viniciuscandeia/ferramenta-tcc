@@ -11,9 +11,9 @@
 | Marco | Sub-agente(s) | Skills ativas | Gate |
 |---|---|---|---|
 | M1 — Definição da Necessidade | `stakeholder-identifier` | necessidade-visao, stakeholder-mapping, contexto-e-limite, clarificacao-pos-visao¹, traducao-gate, traducao-leigo | Gate 1: usuário aprova `documentos-para-leigo/01-visao/01-visao-produto.md` |
-| M2 — Consenso de Escopo | `collector` ⇄ `modeler` (loop) | entrevista-estruturada, cenario-narrativa, recomendacao-dominio, recomendacao-implicitos, questionario-feixe¹, classificacao-rf-rnf, priorizacao, glossario, conflitos-detect, pautas-reelicitacao, traducao-gate, traducao-leigo | Gate 2: aprova versões leigo dos artefatos + `pautas-reelicitacao.md` sem pendências |
-| M3 — Detalhamento | `documenter` ⇄ `checker` (loop) | requisito-ears, modelagem-visual, srs-ireb-montagem, validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate, traducao-leigo | Gate 3: aprova SRS leigo + `analyze-report.md` sem CRITICAL |
-| M4 — Revisão Técnica (opcional) | `checker` modo técnico | validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate | Gate 4: dev/tech lead aprova `aprovacao-tecnica.md` |
+| M2 — Consenso de Escopo | `collector` ⇄ `modeler` (loop) | entrevista-estruturada, cenario-narrativa, recomendacao-dominio, recomendacao-implicitos, questionario-feixe¹, classificacao-rf-rnf, priorizacao, glossario, conflitos-detect, pautas-reelicitacao, traducao-gate, traducao-leigo | Gate 2: aprova versões leigo dos artefatos + `02.6-pautas-reelicitacao.md` sem pendências |
+| M3 — Detalhamento | `documenter` ⇄ `checker` (loop) | requisito-ears, modelagem-visual, srs-ireb-montagem, validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate, traducao-leigo | Gate 3: aprova SRS leigo + `03.1-analyze-report.md` sem CRITICAL |
+| M4 — Revisão Técnica (opcional) | `checker` modo técnico | validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate | Gate 4: dev/tech lead aprova `04.2-aprovacao-tecnica.md` |
 
 ¹ Skill condicional — ver `when_to_use`.
 
@@ -44,7 +44,7 @@
 
 **Arquivo:** `agents/collector.md`  
 **Marco:** M2 — Consenso de Escopo  
-**Papel:** Elicitação ativa — Fase A linear (5 rondas de coleta) e Fase B modo focado (resolve pautas de `pautas-reelicitacao.md`).  
+**Papel:** Elicitação ativa — Fase A linear (5 rondas de coleta) e Fase B modo focado (resolve pautas de `02.6-pautas-reelicitacao.md`).  
 **Workflow:** `content/workflows/m2-requisitos.md`  
 **Skills que invoca:** `entrevista-estruturada` → `cenario-narrativa` → `recomendacao-dominio` → `recomendacao-implicitos` → `questionario-feixe` (condicional); na Fase B: skill-alvo indicada pela pauta
 
@@ -64,7 +64,7 @@
 
 **Arquivo:** `agents/documenter.md`  
 **Marco:** M3 — Detalhamento  
-**Papel:** Geração dos outputs finais (SRS com 8 seções e diagramas embutidos + versão leigo). No loop M3, recebe `analyze-report.md` com CRITICAL e reexecuta apenas as skills afetadas.  
+**Papel:** Geração dos outputs finais (SRS com 8 seções e diagramas embutidos + versão leigo). No loop M3, recebe `03.1-analyze-report.md` com CRITICAL e reexecuta apenas as skills afetadas.  
 **Workflow:** `content/workflows/m3-srs.md` (Fase A)  
 **Skills que invoca:** `requisito-ears` → `modelagem-visual` → `srs-ireb-montagem` → `traducao-gate` (SRS)
 
@@ -74,8 +74,8 @@
 
 **Arquivo:** `agents/checker.md`  
 **Marcos:** M3 (loop validação) + M4 (revisão técnica stub — opcional)  
-**Papel M3:** Valida o SRS e artefatos do documenter — aplica IREB §3.8, faz analyze cross-artifact e gera `analyze-report.md`. CRITICAL bloqueia Gate 3 e reinicia o loop.  
-**Papel M4:** Gera `revisao-tecnica.md` (checklist técnico sobre SRS + rastreabilidade + diagramas) + apresenta `aprovacao-tecnica.md` ao dev/tech lead via yesno.  
+**Papel M3:** Valida o SRS e artefatos do documenter — aplica IREB §3.8, faz analyze cross-artifact e gera `03.1-analyze-report.md`. CRITICAL bloqueia Gate 3 e reinicia o loop.  
+**Papel M4:** Gera `04.1-revisao-tecnica.md` (checklist técnico sobre SRS + rastreabilidade + diagramas) + apresenta `04.2-aprovacao-tecnica.md` ao dev/tech lead via yesno.  
 **Workflow:** `content/workflows/m3-srs.md` (Fase B)  
 **Skills que invoca:** `validacao-checklist-ireb` → `analyze-cross-artifact` → `rastreabilidade-matriz`
 
@@ -98,8 +98,8 @@
 **Arquivo:** `content/workflows/m2-requisitos.md`  
 **Sub-agentes responsáveis:** `collector` (Fase A) → `modeler` (Fase B, loop)  
 **Entrada:** `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-para-leigo/01-visao/01-visao-produto.md` (aprovados pelo Gate 1)  
-**Saída:** `03.1-funcionais.md` + `03.2-qualidade.md` + `03.3-restricoes.md` + `glossario.md` + `pautas-reelicitacao.md` + versões leigo dos 3 primeiros + condicionais (`03.4-premissas.md`, `conflitos-detectados.md`)  
-**Gate de saída:** Gate 2 — usuário aprova versões leigo; `pautas-reelicitacao.md` sem pendências abertas
+**Saída:** `02.1-requisitos-funcionais.md` + `02.2-requisitos-qualidade.md` + `02.3-restricoes.md` + `02.5-glossario.md` + `02.6-pautas-reelicitacao.md` + versões leigo dos 3 primeiros + condicionais (`02.4-premissas.md`, `02.7-conflitos-detectados.md`)  
+**Gate de saída:** Gate 2 — usuário aprova versões leigo; `02.6-pautas-reelicitacao.md` sem pendências abertas
 
 ---
 
@@ -191,6 +191,16 @@
 
 ---
 
+#### faq-inicial
+
+**Arquivo:** `skills/faq-inicial/SKILL.md`
+
+**Descrição:** Responde dúvidas comuns do usuário antes de iniciar a documentação do projeto (o que será perguntado, quanto tempo leva, o que é gerado ao final). Invocada quando o usuário escolhe "Tenho dúvidas antes" no início de `/iniciar-projeto`.
+
+**Quando usar:** Quando o usuário sinaliza que tem dúvidas antes de começar. Invocada via orquestrador — não invocar diretamente. Pode ser re-invocada a pedido em qualquer ponto do fluxo.
+
+---
+
 ### M2 — collector: Elicitação (5)
 
 ---
@@ -199,7 +209,7 @@
 
 **Arquivo:** `skills/entrevista-estruturada/SKILL.md`
 
-**Descrição:** Conduz entrevista estruturada com o usuário leigo usando 4 perguntas-âncora baseadas em IREB §4.2 (entrevistas) e Pohl, K. "Requirements Engineering" (2010) §22. Coleta rotina, frustrações, visão ideal e restrições percebidas. Saída: seção de elicitacao-raw.md.
+**Descrição:** Conduz entrevista estruturada com o usuário leigo usando 4 perguntas-âncora baseadas em IREB §4.2 (entrevistas) e Pohl, K. "Requirements Engineering" (2010) §22. Coleta rotina, frustrações, visão ideal e restrições percebidas. Saída: seção de 02-elicitacao-raw.md.
 
 **Quando usar:** Invocada pelo collector na Ronda 1 da Fase A (sempre) ou na Fase B quando skill-alvo de uma pauta. Única chamada AskUserQuestion com exatamente 4 perguntas (ou menos se foco em pauta específica).
 
@@ -209,7 +219,7 @@
 
 **Arquivo:** `skills/cenario-narrativa/SKILL.md`
 
-**Descrição:** Solicita ao usuário 1–2 cenários narrativos "um dia normal de [perfil]" e extrai RFs candidatos implícitos do texto. Baseado em IREB §4.3 (cenários como técnica de elicitação) e Robertson & Robertson "Mastering the Requirements Process" 3rd ed. (2012) cap. 9. Saída: cenários + RFs candidatos em elicitacao-raw.md.
+**Descrição:** Solicita ao usuário 1–2 cenários narrativos "um dia normal de [perfil]" e extrai RFs candidatos implícitos do texto. Baseado em IREB §4.3 (cenários como técnica de elicitação) e Robertson & Robertson "Mastering the Requirements Process" 3rd ed. (2012) cap. 9. Saída: cenários + RFs candidatos em 02-elicitacao-raw.md.
 
 **Quando usar:** Invocada pelo collector na Ronda 2 da Fase A. Sempre executar após entrevista-estruturada. Única chamada AskUserQuestion com 1–2 perguntas de texto livre.
 
@@ -219,7 +229,7 @@
 
 **Arquivo:** `skills/recomendacao-dominio/SKILL.md`
 
-**Descrição:** Detecta o domínio do projeto a partir de `documentos-tecnicos/01-visao/01-visao-produto.md` (matching contra 5 catálogos de domínio), confirma com o usuário e faz 4 perguntas sobre seções do catálogo. Saída: RFs/RNFs/restrições confirmados em elicitacao-raw.md.
+**Descrição:** Detecta o domínio do projeto a partir de `documentos-tecnicos/01-visao/01-visao-produto.md` (matching contra 5 catálogos de domínio), confirma com o usuário e faz 4 perguntas sobre seções do catálogo. Saída: RFs/RNFs/restrições confirmados em 02-elicitacao-raw.md.
 
 **Quando usar:** Invocada pelo collector na Ronda 3 da Fase A. Sempre executar após cenario-narrativa. Duas chamadas AskUserQuestion: 1 yesno/choice para confirmar domínio + 1 lote de 4 perguntas.
 
@@ -253,9 +263,9 @@
 
 **Arquivo:** `skills/classificacao-rf-rnf/SKILL.md`
 
-**Descrição:** Classifica itens de elicitacao-raw.md nos tipos RF (o que faz), RNF (como se comporta), Restrição (escolha imposta) e Premissa (pressuposto aceito). Gera rascunhos de 03.1-funcionais.md, 03.2-qualidade.md, 03.3-restricoes.md e 03.4-premissas.md (condicional). Segue IREB §1.1 e 9 buckets Wiegers Ch7.
+**Descrição:** Classifica itens de 02-elicitacao-raw.md nos tipos RF (o que faz), RNF (como se comporta), Restrição (escolha imposta) e Premissa (pressuposto aceito). Gera rascunhos de 02.1-requisitos-funcionais.md, 02.2-requisitos-qualidade.md, 02.3-restricoes.md e 02.4-premissas.md (condicional). Segue IREB §1.1 e 9 buckets Wiegers Ch7.
 
-**Quando usar:** Invocada pelo modeler no Passo 1 da Fase B do workflow M2. Entrada obrigatória: elicitacao-raw.md completo.
+**Quando usar:** Invocada pelo modeler no Passo 1 da Fase B do workflow M2. Entrada obrigatória: 02-elicitacao-raw.md completo.
 
 ---
 
@@ -265,7 +275,7 @@
 
 **Descrição:** Atribui modal RFC 2119 (DEVE/DEVERIA/PODE) e campo de prioridade de negócio a cada RF e RNF classificado. Usa MoSCoW como base obrigatória; aciona Kano e IEEE como sub-rotinas automáticas conforme gatilhos (D9). Usuário nunca vê os nomes das técnicas.
 
-**Quando usar:** Invocada pelo modeler no Passo 2 da Fase B após classificacao-rf-rnf. Entrada: rascunhos de 03.1-funcionais.md e 03.2-qualidade.md.
+**Quando usar:** Invocada pelo modeler no Passo 2 da Fase B após classificacao-rf-rnf. Entrada: rascunhos de 02.1-requisitos-funcionais.md e 02.2-requisitos-qualidade.md.
 
 ---
 
@@ -273,9 +283,9 @@
 
 **Arquivo:** `skills/glossario/SKILL.md`
 
-**Descrição:** Detecta termos do domínio usados pelo usuário sem definição clara e constrói glossario.md com definição, exemplos e sinônimos. Previne ambiguidade nos artefatos M2 e M3. Referência: Wiegers Ch11 (anti-ambiguidade).
+**Descrição:** Detecta termos do domínio usados pelo usuário sem definição clara e constrói 02.5-glossario.md com definição, exemplos e sinônimos. Previne ambiguidade nos artefatos M2 e M3. Referência: Wiegers Ch11 (anti-ambiguidade).
 
-**Quando usar:** Invocada pelo modeler no Passo 3 da Fase B. Entrada: elicitacao-raw.md + rascunhos M2. Sem interação com usuário — opera sobre texto já coletado.
+**Quando usar:** Invocada pelo modeler no Passo 3 da Fase B. Entrada: 02-elicitacao-raw.md + rascunhos M2. Sem interação com usuário — opera sobre texto já coletado.
 
 ---
 
@@ -283,7 +293,7 @@
 
 **Arquivo:** `skills/conflitos-detect/SKILL.md`
 
-**Descrição:** Detecta conflitos entre requisitos ou stakeholders usando os 6 tipos IREB §4.4 e propõe estratégias de resolução. Gera conflitos-detectados.md apenas se ≥ 1 conflito encontrado. Versão M2 foca em duplicatas, contradições escopo-limite e conflitos entre stakeholders — expansão completa em M3 via analyze-cross-artifact.
+**Descrição:** Detecta conflitos entre requisitos ou stakeholders usando os 6 tipos IREB §4.4 e propõe estratégias de resolução. Gera 02.7-conflitos-detectados.md apenas se ≥ 1 conflito encontrado. Versão M2 foca em duplicatas, contradições escopo-limite e conflitos entre stakeholders — expansão completa em M3 via analyze-cross-artifact.
 
 **Quando usar:** Invocada pelo modeler no Passo 4 da Fase B. Sempre executar, mas só criar arquivo de saída se ≥ 1 conflito. Sem interação com usuário.
 
@@ -293,7 +303,7 @@
 
 **Arquivo:** `skills/pautas-reelicitacao/SKILL.md`
 
-**Descrição:** Identifica lacunas nos artefatos M2 que impedem avanço para Gate 2 e gera pautas-reelicitacao.md com checkboxes e skill-alvo para resolução. Arquivo vazio = Gate 2 pode abrir. Referência: Vazquez & Simões (2016) cap. 8 Fig. 8.3.
+**Descrição:** Identifica lacunas nos artefatos M2 que impedem avanço para Gate 2 e gera 02.6-pautas-reelicitacao.md com checkboxes e skill-alvo para resolução. Arquivo vazio = Gate 2 pode abrir. Referência: Vazquez & Simões (2016) cap. 8 Fig. 8.3.
 
 **Quando usar:** Invocada pelo modeler no Passo 5 da Fase B. Determina se o loop collector⇄modeler deve continuar. Sem interação com usuário.
 
@@ -309,7 +319,7 @@
 
 **Descrição:** Formata todos os RFs e RNFs de M2 com sintaxe EARS (5 padrões) e modais RFC 2119 (DEVE/DEVERIA/PODE), gerando tabela estruturada com colunas: ID | Tipo-EARS | Sujeito | Modal | Verbo | Objeto | Condição | Modal-original. Base para srs-ireb-montagem.
 
-**Quando usar:** Invocada pelo documenter como Passo 1 do Processo M3. Entrada obrigatória: 03.1-funcionais.md e 03.2-qualidade.md com campos modal RFC 2119 já atribuídos pela skill priorizacao (M2).
+**Quando usar:** Invocada pelo documenter como Passo 1 do Processo M3. Entrada obrigatória: 02.1-requisitos-funcionais.md e 02.2-requisitos-qualidade.md com campos modal RFC 2119 já atribuídos pela skill priorizacao (M2).
 
 ---
 
@@ -327,7 +337,7 @@
 
 **Arquivo:** `skills/srs-ireb-montagem/SKILL.md`
 
-**Descrição:** Monta o SRS-completo.md com 8 seções IREB §3.3.3 (ISO/IEC/IEEE 29148) — 6 obrigatórias + §7 conflitos (condicional) + §8 glossário —, consumindo todos os artefatos M1+M2, a saída formatada de requisito-ears e os diagramas de modelagem-visual (embutidos em §2.1, §3 e §4). Não gera versão leigo (traducao-gate faz isso no Passo 4 do documenter).
+**Descrição:** Monta o 03-srs-completo.md com 8 seções IREB §3.3.3 (ISO/IEC/IEEE 29148) — 6 obrigatórias + §7 conflitos (condicional) + §8 glossário —, consumindo todos os artefatos M1+M2, a saída formatada de requisito-ears e os diagramas de modelagem-visual (embutidos em §2.1, §3 e §4). Não gera versão leigo (traducao-gate faz isso no Passo 4 do documenter).
 
 **Quando usar:** Invocada pelo documenter como Passo 3 do Processo M3. Depende de requisito-ears (Passo 1) e modelagem-visual (Passo 2) terem executado.
 
@@ -341,9 +351,9 @@
 
 **Arquivo:** `skills/validacao-checklist-ireb/SKILL.md`
 
-**Descrição:** Aplica os 12 critérios de qualidade IREB §3.8 sobre o SRS gerado pelo documenter — 6 critérios por requisito individual e 6 critérios por SRS como documento. Gera seção "Validação IREB §3.8" em analyze-report.md com 1 linha por violação (ID do critério + requisito afetado + severidade). Referência: content/catalogos-seed/conceitos/qualidade-e-validacao.md.
+**Descrição:** Aplica os 12 critérios de qualidade IREB §3.8 sobre o SRS gerado pelo documenter — 6 critérios por requisito individual e 6 critérios por SRS como documento. Gera seção "Validação IREB §3.8" em 03.1-analyze-report.md com 1 linha por violação (ID do critério + requisito afetado + severidade). Referência: content/catalogos-seed/conceitos/qualidade-e-validacao.md.
 
-**Quando usar:** Invocada pelo checker no Passo 1 do Processo M3. Entrada: SRS-completo.md + 03.1-funcionais.md + 03.2-qualidade.md. Saída: seção em analyze-report.md (não arquivo separado).
+**Quando usar:** Invocada pelo checker no Passo 1 do Processo M3. Entrada: 03-srs-completo.md + 02.1-requisitos-funcionais.md + 02.2-requisitos-qualidade.md. Saída: seção em 03.1-analyze-report.md (não arquivo separado).
 
 ---
 
@@ -353,7 +363,7 @@
 
 **Descrição:** Valida consistência entre artefatos de diferentes marcos: Visão (M1) ↔ Elicitação (M2) ↔ SRS (M3). Detecta 4 tipos de defeito (Omissão, Contradição, Superespecificação, Inexequibilidade) com severidades CRITICAL/HIGH/MEDIUM/LOW. CRITICAL bloqueia Gate 3. Referência: D17 + content/catalogos-seed/conceitos/qualidade-e-validacao.md §5.
 
-**Quando usar:** Invocada pelo checker no Passo 2 do Processo M3. Depende de validacao-checklist-ireb (Passo 1) ter executado. Entrada: todos os artefatos M1+M2+M3. Saída: seção "Análise Cross-Artifact (D17)" adicionada a analyze-report.md.
+**Quando usar:** Invocada pelo checker no Passo 2 do Processo M3. Depende de validacao-checklist-ireb (Passo 1) ter executado. Entrada: todos os artefatos M1+M2+M3. Saída: seção "Análise Cross-Artifact (D17)" adicionada a 03.1-analyze-report.md.
 
 ---
 
@@ -367,11 +377,35 @@
 
 ---
 
+### Utilitárias e entrada (2)
+
+---
+
+#### iniciar-projeto
+
+**Arquivo:** `skills/iniciar-projeto/SKILL.md`
+
+**Descrição:** Entry-point único da ferramenta (`/iniciar-projeto`). Resolve `PLUGIN_ROOT` via `installed_plugins.json`, lê `content/orchestrator.md` e dispara o fluxo de marcos — internalizando constitution, verificando `estado-projeto.yaml` e carregando o slice do marco corrente.
+
+**Quando usar:** Sempre que o usuário inicia ou retoma a documentação de um projeto. Primeira skill de qualquer sessão.
+
+---
+
+#### exportar-pdf
+
+**Arquivo:** `skills/exportar-pdf/SKILL.md`
+
+**Descrição:** Re-exporta a documentação do projeto para PDF a partir dos artefatos Markdown já gerados (via `scripts/md_to_pdf.sh`). Caminho de recuperação quando a exportação automática no encerramento falhou por falta de conversor instalado.
+
+**Quando usar:** A pedido do usuário (`/exportar-pdf`) em qualquer ponto do fluxo, ou após instalar um conversor (pandoc/md-to-pdf/weasyprint) para regenerar os PDFs.
+
+---
+
 ## Como navegar
 
 | Objetivo | Por onde começar |
 |---|---|
-| Entender a sequência completa M1→M2→M3 | `content/workflows/m1-visao.md` → `content/workflows/m2-requisitos.md` → `content/workflows/m3-srs-specs-tests.md` |
+| Entender a sequência completa M1→M2→M3 | `content/workflows/m1-visao.md` → `content/workflows/m2-requisitos.md` → `content/workflows/m3-srs.md` |
 | Saber o que cada sub-agente faz | Seção "Sub-agentes" acima ou `agents/<nome>.md` |
 | Ver uma técnica específica de ER | Seção "Skills" acima ou `skills/<nome>/SKILL.md` |
 | Canon teórico (decisões D1–D26, arquitetura) | `docs/planejamento/3 - Arquitetura da Ferramenta.md` |
@@ -379,4 +413,4 @@
 | Skills e agentes | `ferramenta-tcc/skills/`, `ferramenta-tcc/agents/` |
 | Hook scripts (gate_guard, blacklist_guard, etc.) | `ferramenta-tcc/scripts/` |
 | Catálogos seed (stakeholders, RFs, domínios) | `ferramenta-tcc/content/catalogos-seed/` |
-| Testes E2E (casos + checklist por marco) | `ferramenta-tcc/tests/marco-{1,2,3}/` |
+| Testes E2E (casos + checklist por marco) | `ferramenta-tcc/tests/marco-{1,2,3,4}/` |

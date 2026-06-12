@@ -1,8 +1,9 @@
 # Normas e Referências Técnicas
 
 Documentos normativos e referências bibliográficas usados como base técnica da ferramenta.
-Arquivos físicos presentes nesta pasta estão indicados com ✅.
-Referências proprietárias (não distribuíveis) têm apenas metadado e link de acesso.
+Arquivos distribuídos com o repositório estão indicados com ✅.
+Arquivos marcados ❌ **não acompanham o repositório** (restrição de licença — listados em `.gitignore`); existem apenas no disco local do autor. Para obtê-los, use a tabela "Fontes originais" ao final deste documento.
+Referências proprietárias sem arquivo têm apenas metadado e link de acesso.
 
 ---
 
@@ -10,14 +11,14 @@ Referências proprietárias (não distribuíveis) têm apenas metadado e link de
 
 | Arquivo | Referência | Licença | Status |
 |---|---|---|---|
-| `cpre_foundationlevel_handbook_BR_v1.2.md` | IREB CPRE Foundation Level Handbook v1.2 — PT-BR | Livre — IREB freely distributable | ✅ Completo (markdown) |
-| `cpre_foundationlevel_handbook_en_v1.2.pdf` | IREB CPRE Foundation Level Handbook v1.2 — EN | Livre — IREB freely distributable | ✅ Completo (PDF, 158pp) |
-| `ears-mavin-2009.pdf` | EARS — Mavin et al., IEEE RE'09 | Acadêmico — IEEE © 2009 | ✅ Paper completo (PDF, 8pp) |
+| `cpre_foundationlevel_handbook_BR_v1.2.md` | IREB CPRE Foundation Level Handbook v1.2 — PT-BR | Download gratuito (ireb.org); redistribuição restrita | ❌ Local apenas (não versionado — obter na fonte oficial) |
+| `cpre_foundationlevel_handbook_en_v1.2.pdf` | IREB CPRE Foundation Level Handbook v1.2 — EN | Download gratuito (ireb.org); redistribuição restrita | ❌ Local apenas (não versionado — obter na fonte oficial) |
+| `ears-mavin-2009.pdf` | EARS — Mavin et al., IEEE RE'09 | IEEE © 2009 — redistribuição proibida | ❌ Local apenas (não versionado — obter na fonte oficial) |
 | `rfc2119.txt` | RFC 2119 — Bradner, IETF 1997 | IETF — domínio público | ✅ Completo (TXT) |
 | `rfc8174.txt` | RFC 8174 — Leiba, IETF 2017 | IETF — domínio público | ✅ Completo (TXT) |
 | `gorski-stadzisz-problem-based-srs-resi-2016.pdf` | Problem-Based SRS — Gorski & Stadzisz, RESI 2016 | Open access — IBEPES | ✅ Paper completo (PDF, 27pp) |
 | `mare-jin-2024-arxiv-2405.03256.pdf` | MARE framework — Jin et al., arXiv 2024 | Open access — arXiv | ✅ Paper completo (PDF, 4pp) |
-| `iso/iso-iec-ieee-29148-2018-preview.pdf` | ISO/IEC/IEEE 29148:2018 — Requirements Engineering | Proprietária — ISO | ⚠️ Preview oficial (14pp de ~150) |
+| `iso/iso-iec-ieee-29148-2018-preview.pdf` | ISO/IEC/IEEE 29148:2018 — Requirements Engineering | Proprietária — ISO | ❌ Local apenas (não versionado — preview oficial, 14pp de ~150) |
 | `iso/README.md` | ISO/IEC 25010:2023 — Software Product Quality | Proprietária — ISO | ❌ Apenas metadado + links |
 
 ---
@@ -29,7 +30,7 @@ Referências proprietárias (não distribuíveis) têm apenas metadado e link de
 | IREB CPRE FL Handbook | Base da metodologia ER: tipos de requisito, atributos de qualidade IREB §3.8, SRS IREB §3.3.3 |
 | EARS (Mavin 2009) | Sintaxe obrigatória dos requisitos em `requisito-ears` e no SRS gerado |
 | RFC 2119 + RFC 8174 | Vocabulário MUST/SHOULD/MAY em `requisito-ears`; RFC 8174 clarifica que só maiúsculas têm valor normativo |
-| ISO/IEC/IEEE 29148 | Template SRS em `srs-ireb-template`; seções obrigatórias do documento final |
+| ISO/IEC/IEEE 29148 | Template SRS em `srs-ireb-montagem`; seções obrigatórias do documento final |
 | ISO/IEC 25010 | Categorias de qualidade em `classificacao-rf-rnf` e `content/catalogos-seed/rnfs-tipicos.md` |
 | Gorski & Stadzisz (2016) | Arquitetura Problem-Based-SRS: D10 detection-based recovery, slots estruturados, algoritmo Zigzag |
 | MARE (Jin et al., 2024) | Topologia MARE-style para os 5 sub-agentes da ferramenta (D6 revisada) |

@@ -99,9 +99,9 @@ artefatos:
   # - nome: documentos-tecnicos/03-documento/03.3-diagramas.md        (condicional)
   # 03.1-analyze-report.md, 03.2-rastreabilidade.md e 03.3-diagramas.md são internos/técnicos — não gerar versão leigo separada (exceção D18/D19)
 
-pautas_abertas: []           # lista de IDs de pautas abertas em pautas-reelicitacao.md
+pautas_abertas: []           # lista de IDs de pautas abertas em pautas-reelicitacao.md — manter formato inline [...] (load_state.sh lê apenas a forma inline)
 
-versao_leigo_aprovada: []    # lista de artefatos com versão leigo aprovada pelo usuário
+versao_leigo_aprovada: []    # lista de artefatos com versão leigo aprovada pelo usuário — manter formato inline [...]
 
 ultima_atualizacao: "2026-05-18T00:00:00"
 

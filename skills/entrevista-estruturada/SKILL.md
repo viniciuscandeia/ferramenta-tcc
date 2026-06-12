@@ -15,7 +15,7 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar se Gate 1 não foi aprovado (verificar `documentos-para-leigo/01-visao/01-visao-produto.md` + `documentos-tecnicos/01-visao/01-visao-produto.md` existem)
-- ⛔ STOP após Fase A se P1 (rotina) e P2 (frustrações) retornarem ≤ 2 palavras cada (sem dados suficientes para derivar RFs) — re-sondar com exemplo concreto antes de registrar
+- ⛔ STOP após Fase A se P1 (rotina) ou P2 (frustrações) retornarem resposta ≤ 5 palavras OU sem verbo de ação (sem dados suficientes para derivar RFs — mesmo critério do Anti-Padrão "Resposta Monossilábica Aceita") — re-sondar com exemplo concreto antes de registrar
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
