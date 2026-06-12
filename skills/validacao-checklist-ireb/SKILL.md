@@ -78,7 +78,8 @@ Escrever seção no `documentos-tecnicos/03-documento/03.1-analyze-report.md`:
 | Consistência | §3.2 afirma "cadastro obrigatório" e §3.7 afirma "acesso sem cadastro possível" | CRITICAL |
 ```
 
-Sinalizar ao `checker`: validacao-checklist-ireb concluída → prosseguir para `analyze-cross-artifact` (Passo 2).
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("analyze-cross-artifact")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Critério Marcado OK Sem Evidência

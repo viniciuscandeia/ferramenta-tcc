@@ -83,7 +83,10 @@ Salvar como `documentos-tecnicos/03-documento/03.2-rastreabilidade.md`:
 | RF/RNF sem stakeholder origem | 0 | — |
 ```
 
-Sinalizar ao `checker`: rastreabilidade-matriz concluída → gaps não reportados em `analyze-cross-artifact` devem ser considerados para consolidação final antes de Gate 3.
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Orquestrador deve agir imediatamente: executar PRE-FLIGHT do Gate 3 e abrir gate via `AskUserQuestion`.
+Gaps não reportados em `analyze-cross-artifact` devem ser considerados na consolidação final.
+**PROIBIDO** qualquer TextBlock antes desta ação.
 
 <!-- internal -->
 ## Anti-Padrão: Ausência Intencional Marcada como Gap

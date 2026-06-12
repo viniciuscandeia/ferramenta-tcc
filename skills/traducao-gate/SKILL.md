@@ -104,9 +104,9 @@ Salvar ambas as versões no subdiretório do marco correspondente:
 |---|---|---|
 | M1 | `documentos-tecnicos/01-visao/01-visao-produto.md` | `documentos-para-leigo/01-visao/01-visao-produto.md` |
 | M2 | `documentos-tecnicos/02-requisitos/<nome>.md` | `documentos-para-leigo/02-requisitos/<nome>.md` |
-| M3 | `documentos-tecnicos/03-documento/03-srs-completo.md` | `documentos-para-leigo/03-documento/03-visao-do-produto.md` |
+| M3 | `documentos-tecnicos/03-documento/03-srs-completo.md` | `documentos-para-leigo/03-documento/03-documento-do-projeto.md` |
 
-> **M3 leigo — "Visão do Produto":** único documento para o cliente. Contém resumo executivo do produto (o que faz, para quem, quais as regras principais) em linguagem de negócio, organizado por tema — não por seção técnica. Não espelha a estrutura do SRS.
+> **M3 leigo — "Documento do Projeto":** único documento para o cliente. Contém resumo executivo do produto (o que faz, para quem, quais as regras principais) em linguagem de negócio, organizado por tema — não por seção técnica. Não espelha a estrutura do SRS.
 
 **M3 — Inclusão de diagramas leigo-safe (Fase 2.5):**
 Após gerar o resumo executivo do SRS (M3), antes de aplicar `traducao-leigo`:
@@ -129,7 +129,13 @@ Após gerar o resumo executivo do SRS (M3), antes de aplicar `traducao-leigo`:
 - Versão normativa — pronto para equipe técnica
 - Versão leigo — pronto para apresentar ao usuário no gate
 
-Sinalizar ao orquestrador: traducao-gate concluída → apresentar versão leigo ao usuário para aprovação.
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Verificar `marco_corrente` em `estado-projeto.yaml` e agir imediatamente:
+- `marco_corrente: M1` → executar PRE-FLIGHT do Gate 1 e abrir via `AskUserQuestion`
+- `marco_corrente: M2` → executar PRE-FLIGHT do Gate 2 e abrir via `AskUserQuestion`
+- `marco_corrente: M3`, Fase A → Invocar imediatamente `Skill("validacao-checklist-ireb")` (Fase B começa agora)
+
+**PROIBIDO** qualquer TextBlock antes desta ação.
 
 <!-- internal -->
 ## Anti-Padrão: Versão Leigo = Versão Normativa Parafraseada

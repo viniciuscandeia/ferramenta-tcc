@@ -86,7 +86,8 @@ Cruzar `documentos-tecnicos/02-requisitos/02.5-glossario.md` com `documentos-tec
 
 Conflito tipo Semântico com definição já em `documentos-tecnicos/02-requisitos/02.5-glossario.md` → pode marcar `resolvido` automaticamente.
 
-Sinalizar ao `modeler`: conflitos-detect concluído → prosseguir para `pautas-reelicitacao` (Passo 5).
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("pautas-reelicitacao")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Sinonímia Classificada como Conflito Semântico

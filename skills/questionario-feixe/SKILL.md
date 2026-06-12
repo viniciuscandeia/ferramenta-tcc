@@ -93,7 +93,8 @@ Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 ...
 ```
 
-Sinalizar ao `collector`: questionario-feixe concluído → Fase A encerrada → passar `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` para `modeler`.
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Fase A encerrada. Orquestrador deve invocar imediatamente o `modeler` (persona inline) com `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` como input. **PROIBIDO** qualquer TextBlock antes desta ação.
 
 <!-- internal -->
 ## Anti-Padrão: Ativação com < 3 Áreas

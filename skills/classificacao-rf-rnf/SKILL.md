@@ -97,8 +97,9 @@ Sem duplicatas: dois itens que descrevem a mesma coisa → consolidar em 1 com a
 
 ## Fase 3 — Sinalização
 
-Sinalizar ao `modeler`: classificação concluída → prosseguir para `priorizacao` (Passo 2).
-Reportar: N RFs, N RNFs, N Restrições, N Premissas, N itens AMBÍGUO, N lacunas de métrica.
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("priorizacao")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
+Estatísticas internas (N RFs, N RNFs, etc.) devem ser registradas em `estado-projeto.yaml`, não exibidas ao usuário.
 
 <!-- internal -->
 ## Anti-Padrão: Ambíguo Classificado como RF por Default

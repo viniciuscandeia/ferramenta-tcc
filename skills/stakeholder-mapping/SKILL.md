@@ -100,7 +100,15 @@ Montar tabela com os **usuários diretos** (Camada 1 — "Usa diretamente") para
 2. Atualizar `estado-projeto.yaml`:
    - Se houver `[a identificar]`: adicionar à lista `pautas_abertas`
    - Se decisor ausente: registrar `pendencia_gate_1: "Decisor não identificado — bloqueará Gate 1"`
-3. Sinalizar ao `stakeholder-identifier`: mapeamento concluído → prosseguir para `contexto-e-limite`
+3. ⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+   Invocar imediatamente `Skill("contexto-e-limite")` usando a ferramenta Skill.
+
+   **PROIBIDO antes desta chamada:**
+   - Produzir qualquer TextBlock ao usuário (ex: "✓ Mapeei...", "Próximo passo é...", "Salvei o arquivo...")
+   - Escrever qualquer prosa assistente no chat
+   - Finalizar o turno sem invocar a próxima Skill
+
+   A chamada `Skill("contexto-e-limite")` deve ser a próxima ferramenta invocada após os Writes de artefato.
 
 <!-- internal -->
 ## Anti-Padrão: Pré-Extração Perde Entidade de Texto Longo

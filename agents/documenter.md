@@ -13,7 +13,7 @@
 Processar os artefatos de M1 e M2 e gerar os outputs finais da ferramenta:
 
 1. `documentos-tecnicos/03-documento/03-srs-completo.md` — documento de requisitos com 8 seções (diagramas embutidos)
-2. `documentos-para-leigo/03-documento/03-visao-do-produto.md` — "Visão do Produto": resumo executivo em linguagem acessível para aprovação no Gate 3
+2. `documentos-para-leigo/03-documento/03-documento-do-projeto.md` — "Visão do Produto": resumo executivo em linguagem acessível para aprovação no Gate 3
 3. `documentos-tecnicos/03-documento/03.3-diagramas.md` — 3 diagramas Mermaid (Contexto, Caso de Uso, ER) + subconjunto leigo-safe
 
 Após geração completa, sinalizar `checker` para validação. Em caso de issues CRITICAL, corrigir os artefatos afetados e repetir o loop sem interação com o usuário.
@@ -76,7 +76,7 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Se `documentos-tecnicos/03-documento/03.3-diagramas.md` existir: ler o bloco
   `<!-- LEIGO-SAFE-START -->` / `<!-- LEIGO-SAFE-END -->` (2 diagramas: contexto e caso de uso) e embutir como seção
   "Como o produto funciona visualmente" no doc leigo (ver `skills/traducao-gate/SKILL.md`)
-- Gerar `documentos-para-leigo/03-documento/03-visao-do-produto.md`: **"Visão do Produto"** — resumo executivo em linguagem acessível, organizado por tema de negócio (não por seção técnica)
+- Gerar `documentos-para-leigo/03-documento/03-documento-do-projeto.md`: **"Visão do Produto"** — resumo executivo em linguagem acessível, organizado por tema de negócio (não por seção técnica)
 - Aplicar lista-negra de jargão de ER (conforme `content/constitution.md`)
 - Atualizar `estado-projeto.yaml` com os artefatos gerados
 - **Sinalizar checker:** "M3 geração concluída — aguardando validação"
@@ -92,7 +92,7 @@ Ativado quando `checker` retorna `documentos-tecnicos/03-documento/03.1-analyze-
 3. Executar **somente as skills correspondentes** aos artefatos afetados:
    - CRITICAL em RFs/RNFs formatados → re-executar Passo 1 (requisito-ears) e Passo 3 (srs-ireb-montagem)
    - CRITICAL em diagramas → re-executar Passo 2 (modelagem-visual) e Passo 3 (srs-ireb-montagem)
-   - Sempre regenerar `documentos-para-leigo/03-documento/03-visao-do-produto.md` se `documentos-tecnicos/03-documento/03-srs-completo.md` for alterado (Passo 4)
+   - Sempre regenerar `documentos-para-leigo/03-documento/03-documento-do-projeto.md` se `documentos-tecnicos/03-documento/03-srs-completo.md` for alterado (Passo 4)
 4. Salvar artefatos corrigidos (sobrescrever versão anterior)
 5. Registrar correção em `_pendencias.md` se necessário (falha parcial)
 6. Re-sinalizar checker: "Correções aplicadas — iteração [N] — aguardando nova validação"
@@ -119,7 +119,7 @@ Ativado quando `checker` retorna `documentos-tecnicos/03-documento/03.1-analyze-
 | Arquivo | Versão | Quando | Usado em |
 |---|---|---|---|
 | `documentos-tecnicos/03-documento/03-srs-completo.md` | Normativa | Sempre — Passo 3 | `checker`, equipe técnica |
-| `documentos-para-leigo/03-documento/03-visao-do-produto.md` | Leigo | Sempre — Passo 4 | Gate 3 (aprovação leigo) |
+| `documentos-para-leigo/03-documento/03-documento-do-projeto.md` | Leigo | Sempre — Passo 4 | Gate 3 (aprovação leigo) |
 | `documentos-tecnicos/03-documento/03.3-diagramas.md` | Técnica + leigo-safe | Sempre — Passo 2 | Embutido no SRS (Passo 3); `traducao-gate` (bloco leigo) |
 
 ---

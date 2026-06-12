@@ -94,7 +94,9 @@ Após a única chamada `AskUserQuestion`:
 ## Fase 3 — Saída
 
 1. `documentos-tecnicos/01-visao/01-visao-produto.md` atualizado com lacunas resolvidas inline (esta skill NÃO cria arquivo novo)
-2. Sinalizar ao `stakeholder-identifier`: clarificação concluída → prosseguir para `traducao-gate`
+2. ⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+   Invocar imediatamente `Skill("traducao-gate")` usando a ferramenta Skill.
+   **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Ativação por Precaução

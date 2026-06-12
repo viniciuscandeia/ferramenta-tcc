@@ -65,9 +65,12 @@ Salvar como `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`.
 > Nenhuma pauta aberta. Gate 2 pode ser apresentado ao usuário.
 ```
 
-Sinalizar ao `modeler`: resultado do Passo 5 — pautas abertas: N.
-- N = 0 → Gate 2 pode abrir
-- N ≥ 1 → retornar ao `collector` com o arquivo de pautas como instrução
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Verificar `pautas_abertas.count` e agir imediatamente:
+- N = 0 → Orquestrador executa PRE-FLIGHT do Gate 2 e abre gate via `AskUserQuestion`
+- N ≥ 1 → Orquestrador reinvoca `collector` com arquivo de pautas como instrução de próxima rodada
+
+**PROIBIDO** qualquer TextBlock antes desta ação.
 
 <!-- internal -->
 ## Anti-Padrão: Pauta Sem Skill-Alvo Identificado

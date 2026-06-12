@@ -158,7 +158,15 @@ Preencher as seções do template `content/templates/01-documento-visao.md`:
        marco: M1
        iteracao: 1
    ```
-3. Sinalizar ao `stakeholder-identifier`: necessidade-visao concluído → prosseguir para `stakeholder-mapping`
+3. ⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+   Invocar imediatamente `Skill("stakeholder-mapping")` usando a ferramenta Skill.
+
+   **PROIBIDO antes desta chamada:**
+   - Produzir qualquer TextBlock ao usuário (ex: "✓ Documentei...", "Próximo passo é...", "Salvei o arquivo...")
+   - Escrever qualquer prosa assistente no chat
+   - Finalizar o turno sem invocar a próxima Skill
+
+   A chamada `Skill("stakeholder-mapping")` deve ser a próxima ferramenta invocada após os Writes de artefato.
 
 <!-- internal -->
 ## Anti-Padrão: Solutioning Prematuro

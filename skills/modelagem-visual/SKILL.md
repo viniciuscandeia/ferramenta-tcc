@@ -152,7 +152,8 @@ Ver `content/catalogos-seed/conceitos/modelagem-visual.md §Regras de rotulagem 
 
 1. Salvar `documentos-tecnicos/03-documento/03.3-diagramas.md` (tamanho esperado: 60–150 linhas)
 2. Registrar em `estado-projeto.yaml`: `modelagem_visual_gerada: true`
-3. Sinalizar ao `documenter`: `modelagem-visual concluída → prosseguir para srs-ireb-montagem (Passo 3)`
+3. ⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+   Invocar imediatamente `Skill("srs-ireb-montagem")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Futuro — Diagramas de Caso de Uso por Módulo (item 13 do feedback)

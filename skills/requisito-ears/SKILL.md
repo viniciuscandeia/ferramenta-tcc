@@ -78,7 +78,8 @@ Sujeito é sempre "O sistema" (EARS canônico). Sem interação com usuário.
 
 Verificar: contagem saída == contagem entrada (RF + RNF). Se divergir: ⛔ STOP — localizar item omitido antes de prosseguir.
 
-Sinalizar ao `documenter`: requisito-ears concluído → prosseguir para `srs-ireb-montagem` (Passo 2).
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("modelagem-visual")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Ubíquo por Preguiça de Classificar

@@ -109,7 +109,13 @@ Se usuário responde "não sei" em qualquer pergunta: registrar em `documentos-t
 
 ## Fase 3 — Saída
 
-Seção adicionada a `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`. Sinalizar ao `collector`: entrevista-estruturada concluída → prosseguir para `cenario-narrativa` (Fase A) ou retornar resultado da pauta (Fase B).
+Seção adicionada a `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`.
+
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+- Fase A → Invocar imediatamente `Skill("cenario-narrativa")`
+- Fase B → Retornar ao orquestrador para avaliação de pautas (sem TextBlock)
+
+**PROIBIDO** qualquer TextBlock antes desta ação.
 
 <!-- internal -->
 ## Anti-Padrão: Resposta Monossilábica Aceita

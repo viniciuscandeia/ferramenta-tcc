@@ -85,7 +85,12 @@ Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 **Itens rejeitados pelo usuário:** [lista resumida]
 ```
 
-Sinalizar ao `collector`: recomendacao-implicitos concluída → prosseguir para `questionario-feixe` (se condição atendida) ou encerrar Fase A.
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Verificar condição e invocar imediatamente:
+- Condição atendida → `Skill("questionario-feixe")`
+- Encerrar Fase A → Retornar ao orquestrador (sem TextBlock)
+
+**PROIBIDO** qualquer TextBlock antes desta ação.
 
 <!-- internal -->
 ## Anti-Padrão: Lista Completa do Catálogo Sem Filtragem

@@ -124,7 +124,17 @@ lacunas_m1:
 
 1. Append seção `## 5. Contexto e Limites` em `documentos-tecnicos/01-visao/01-visao-produto.md`
 2. Persistir `lacunas_m1` em `estado-projeto.yaml` (ver Fase 4)
-3. Sinalizar conclusão → `stakeholder-identifier` avalia `lacunas_m1.contagem` → prosseguir para `clarificacao-pos-visao` (se ≥ 2) ou `traducao-gate` (se < 2)
+3. ⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+   Verificar `lacunas_m1.contagem` em `estado-projeto.yaml` e invocar imediatamente:
+   - Se `contagem ≥ 2` → `Skill("clarificacao-pos-visao")`
+   - Se `contagem < 2` → `Skill("traducao-gate")`
+
+   **PROIBIDO antes desta chamada:**
+   - Produzir qualquer TextBlock ao usuário (ex: "✓ Defini...", "Próximo passo é...", "Salvei o arquivo...")
+   - Escrever qualquer prosa assistente no chat
+   - Finalizar o turno sem invocar a próxima Skill
+
+   A chamada de Skill deve ser a próxima ferramenta invocada após os Writes de artefato.
 
 <!-- internal -->
 ## Anti-Padrão: Re-Perguntar "O Que O Produto Faz"

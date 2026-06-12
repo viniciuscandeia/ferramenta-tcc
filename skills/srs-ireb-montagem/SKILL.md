@@ -169,7 +169,8 @@ Se qualquer item `[ ]`: ⛔ STOP — corrigir antes de salvar.
 
 Salvar como `documentos-tecnicos/03-documento/03-srs-completo.md` (tamanho esperado: 400–700 linhas conforme projeto).
 
-Sinalizar ao `documenter`: srs-ireb-montagem concluído → prosseguir para `traducao-gate` (Passo 4).
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("traducao-gate")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Seção 6 Vazia Sem Flag

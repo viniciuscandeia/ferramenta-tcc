@@ -81,7 +81,8 @@ Escrever seção no `documentos-tecnicos/03-documento/03.1-analyze-report.md`:
 | RNF-004 | ❌ Ausente na seção 4 do SRS | **CRITICAL: Omissão** |
 ```
 
-Sinalizar ao `checker`: analyze-cross-artifact concluída → prosseguir para `rastreabilidade-matriz` (Passo 3).
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("rastreabilidade-matriz")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Defeito MEDIUM Inflado para CRITICAL

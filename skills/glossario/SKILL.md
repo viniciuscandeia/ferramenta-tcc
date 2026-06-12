@@ -91,7 +91,8 @@ Criar `documentos-tecnicos/02-requisitos/02.5-glossario.md`:
 
 Criar pauta em `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` para cada termo marcado `[DEFINIÇÃO INCERTA]`.
 
-Sinalizar ao `modeler`: glossário concluído → prosseguir para `conflitos-detect` (Passo 4).
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("conflitos-detect")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Termo Polissêmico com Uma Só Definição

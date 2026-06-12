@@ -86,7 +86,8 @@ Itens `NAO_TERA` → seção "Fora do escopo desta versão" ao final de `documen
 
 Criar pauta para `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` (Passo 5) se: RNF `DEVE_TER` sem métrica OU RF `DEVE` sem critério de aceitação claro.
 
-Sinalizar ao `modeler`: priorizacao concluída → prosseguir para `glossario` (Passo 3).
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("glossario")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Modal Inferido Sem Verificar Gatilhos Kano

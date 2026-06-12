@@ -75,7 +75,8 @@ Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 - RF-CAND-002: O sistema DEVERIA [ação extraída] — fonte: "Cenário 1, [trecho]"
 ```
 
-Sinalizar ao `collector`: cenario-narrativa concluída → prosseguir para `recomendacao-dominio`.
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("recomendacao-dominio")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Extração Sem Verificar Vagueza

@@ -88,7 +88,8 @@ Acrescentar seção em `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md`:
 **Restrições confirmadas:** [lista com referência legal se houver]
 ```
 
-Sinalizar ao `collector`: recomendacao-dominio concluída → prosseguir para `recomendacao-implicitos`.
+⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
+Invocar imediatamente `Skill("recomendacao-implicitos")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
 ## Anti-Padrão: Domínio Confirmado Sem yesno Claro
