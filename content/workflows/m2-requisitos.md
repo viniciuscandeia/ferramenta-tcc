@@ -131,6 +131,7 @@ ENTRADA (artefatos M1 aprovados)
 
 #### [B6] traducao-gate
 
+- Persona: collector (fechamento — cf. `content/marcos/m2.md`)
 - Invocar skill 'traducao-gate'
 - Input: artefatos finalizados M2
 - Output: versões leigo de `02.1-requisitos-funcionais`, `02.2-requisitos-qualidade`, `02.3-restricoes`
@@ -141,7 +142,7 @@ ENTRADA (artefatos M1 aprovados)
 
 ## REGRAS DO LOOP B
 
-1. **Loop dinâmico:** encerra automaticamente quando `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). A partir da 3ª rodada, se ainda houver itens `[ ]`, escalar ao usuário (yesno: "Ainda há pontos em aberto sobre o projeto — quer continuar detalhando ou prefere seguir assim?"). Se SIM → nova rodada. Se NÃO → avançar para gate.
+1. **Loop dinâmico:** encerra automaticamente quando `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). Itens `[ ]` são bloqueadores — o Gate 2 não abre com pendência aberta. A partir da 3ª rodada, se ainda houver itens `[ ]`, oferecer ao usuário (choice): `"Continuar agora"` → nova rodada | `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente (a retomada via `/iniciar-projeto` continua o loop). Nunca oferecer "seguir assim".
 2. **Collector modo focado:** recebe `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` e executa apenas a skill indicada por cada pauta (não refaz Fase A completa)
 3. **Formato da pauta esperado:**
    ```markdown

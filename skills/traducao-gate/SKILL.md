@@ -133,7 +133,8 @@ Após gerar o resumo executivo do SRS (M3), antes de aplicar `traducao-leigo`:
 Verificar `marco_corrente` em `estado-projeto.yaml` e agir imediatamente:
 - `marco_corrente: M1` → executar PRE-FLIGHT do Gate 1 e abrir via `AskUserQuestion`
 - `marco_corrente: M2` → executar PRE-FLIGHT do Gate 2 e abrir via `AskUserQuestion`
-- `marco_corrente: M3`, Fase A → Invocar imediatamente `Skill("validacao-checklist-ireb")` (Fase B começa agora)
+- `marco_corrente: M3`, Fase A (primeira geração da versão leigo) → Invocar imediatamente `Skill("validacao-checklist-ireb")` (Fase B começa agora)
+- `marco_corrente: M3`, Fechamento (refresh pós-loop — `analyze-report.md` sem CRITICAL) → executar PRE-FLIGHT do Gate 3 e abrir via `AskUserQuestion` (não reiniciar a Fase B)
 
 **PROIBIDO** qualquer TextBlock antes desta ação.
 

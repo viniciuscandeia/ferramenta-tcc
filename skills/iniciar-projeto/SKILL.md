@@ -28,6 +28,7 @@ Filtragem de skills por marco (C0):
 - Antes de invocar qualquer Agent ou Skill, verificar `estado-projeto.yaml.marco_corrente`
 - Invocar APENAS skills cujo campo `marco:` no frontmatter inclua o marco corrente
 - Skills transversais (traducao-leigo, traducao-gate) têm marco: [M1, M2, M3] — sempre disponíveis
+- Exceção (utilitárias/entrada): `iniciar-projeto`, `faq-inicial` e `exportar-pdf` podem ser invocadas a pedido do usuário em qualquer ponto do fluxo
 
 Sequência canônica (C1): Executar skills na ordem definida em `{PLUGIN_ROOT}/content/marcos/{marco_corrente}.md`
 chamando cada skill por nome explícito antes de aguardar auto-invocação.

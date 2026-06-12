@@ -176,7 +176,7 @@ if [[ "$BASENAME" == "estado-projeto.yaml" ]]; then
 
       # Verificar seções obrigatórias no artefato normativo
       if [[ -f "$NORM_FILE" ]]; then
-        for SECTION in "## 1. Visão" "## 2. Problema" "## 4. Pessoas Envolvidas" "## 5. Contexto e Limites"; do
+        for SECTION in "## 1. Visão" "## 2. Problema" "## 3. Pessoas Envolvidas" "## 4. Contexto e Limites" "## 5. Premissas"; do
           if ! grep -q "$SECTION" "$NORM_FILE" 2>/dev/null; then
             GATE1_ERRORS+=("MISSING_SECTION: '${SECTION}' ausente em 01-visao-produto.md (normativo)")
           fi

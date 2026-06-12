@@ -16,7 +16,7 @@ description: >-
 
 <HARD-GATE>
 - NÃO executar se `estado-projeto.yaml` NÃO tem `lacunas_m1.contagem ≥ 2` (D16)
-- NÃO executar se `## 5. Contexto e Limites` não existe (indica que `contexto-e-limite` não rodou)
+- NÃO executar se `## 4. Contexto e Limites` não existe (indica que `contexto-e-limite` não rodou)
 - ⛔ STOP e registrar erro se houver tentativa de segunda chamada `AskUserQuestion` nesta skill — uma chamada é o limite absoluto
 - Esta skill NÃO tem guarda de idempotência para re-elicitação de seções individuais — ela atualiza seções existentes inline (necessário para o loop Gate-1 "Não")
 </HARD-GATE>
@@ -39,7 +39,7 @@ Você mencionou [atividade X inferida]. Isso inclui:
 (B) Também [interpretação mais completa, ex: editar e deletar]
 (C) Algo diferente — eu explico melhor na próxima conversa
 ```
-*Preencher `[atividade X]`, `[mais simples]` e `[mais completa]` com o conteúdo REAL da Seção 2 e Seção 5 do artefato. Nunca usar o modelo literal.*
+*Preencher `[atividade X]`, `[mais simples]` e `[mais completa]` com o conteúdo REAL da Seção 2 e Seção 4 do artefato. Nunca usar o modelo literal.*
 
 Exemplo concreto (domínio: estoque):
 ```
@@ -84,10 +84,10 @@ Quando o produto estiver pronto, como você vai saber que valeu a pena? Qual ser
 
 Após a única chamada `AskUserQuestion`:
 
-1. **Escopo** → atualizar `### O que o produto faz` e `### O que o produto NÃO faz` em `## 5. Contexto e Limites`
-2. **Restrições** → atualizar tabela `### Restrições` em `## 5. Contexto e Limites`
-3. **Decisor** → atualizar linha correspondente em `## 4. Pessoas Envolvidas` (remover `[a identificar]` se respondido)
-4. **Metas** → atualizar `## 3. Objetivos e Metas de Sucesso` (remover `[a definir]` se respondido)
+1. **Escopo** → atualizar `### O que o produto faz` e `### O que o produto NÃO faz` em `## 4. Contexto e Limites`
+2. **Restrições** → atualizar tabela `### Restrições` em `## 4. Contexto e Limites`
+3. **Decisor** → atualizar linha correspondente em `## 3. Pessoas Envolvidas` (remover `[a identificar]` se respondido)
+4. **Metas** → atualizar o campo `**Indicadores de sucesso:**` em `## 2. Problema & Necessidade` (remover `[a definir]` se respondido)
 5. Atualizar `estado-projeto.yaml`: `lacunas_m1.contagem: 0` (ou remover categorias resolvidas)
 6. Aplicar `traducao-leigo` sobre qualquer texto novo adicionado (D1)
 
@@ -123,5 +123,5 @@ Após a única chamada `AskUserQuestion`:
 
 **Contexto:** No loop Gate-1 "Não", o orquestrador pode precisar re-invocar esta skill para resolver pontos que o usuário rejeitou. As skills `necessidade-visao`, `stakeholder-mapping` e `contexto-e-limite` têm guarda de idempotência (não executam se seção já existe). Esta skill NÃO tem — ela atualiza seções existentes inline.
 
-**Comportamento esperado:** Se chamada novamente com feedback do Gate-1 "Não", esta skill resolve os pontos específicos do feedback (ex: canal errado → atualizar Seção 1 e Seção 5) sem re-executar o fluxo completo.
+**Comportamento esperado:** Se chamada novamente com feedback do Gate-1 "Não", esta skill resolve os pontos específicos do feedback (ex: canal errado → atualizar Seção 1 e Seção 4) sem re-executar o fluxo completo.
 <!-- /internal -->

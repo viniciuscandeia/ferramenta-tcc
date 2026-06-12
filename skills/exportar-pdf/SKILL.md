@@ -1,5 +1,6 @@
 ---
 name: exportar-pdf
+marco: [M1, M2, M3, M4]
 description: >-
   Gera os arquivos PDF da documentação do projeto a partir dos documentos em
   formato texto já criados. Use quando o usuário pedir para gerar, salvar ou

@@ -14,17 +14,17 @@ ENTRADA
   │
   ▼
 [1] necessidade-visao
-  │  → Gera: Seções "## 1. Visão", "## 2. Problema & Necessidade", "## 3. Objetivos e Metas"
+  │  → Gera: Seções "## 1. Visão", "## 2. Problema & Necessidade" (inclui campo "Indicadores de sucesso")
   │  → Perguntas: problema (5-Whys, 1-3 turnos adaptativos) + nome/público (1 lote de 2) + meta (1)
   │  → Disciplina problema-space: PROIBIDO mencionar solução/features durante descoberta
   ▼
 [2] stakeholder-mapping
-  │  → Gera: Seção "## 4. Pessoas Envolvidas" (tabela Stakeholder Onion)
+  │  → Gera: Seção "## 3. Pessoas Envolvidas" (tabela Stakeholder Onion)
   │  → Perguntas: checklist de camadas pré-preenchido da Fase 0 (1 lote, ≤ 4 perguntas)
   │  → Persiste: pendência de decisor em pautas_abertas se não identificado
   ▼
 [3] contexto-e-limite
-  │  → Gera: Seção "## 5. Contexto e Limites"
+  │  → Gera: Seção "## 4. Contexto e Limites"
   │  → Perguntas: fora-do-escopo + integrações (se não inferidas) + restrições (1 lote, ≤ 3)
   │  → Confirmação: dentro inferido apresentado em choice (1 turno)
   │  → Persiste: lacunas_m1 em estado-projeto.yaml
@@ -54,7 +54,7 @@ ENTRADA
 ### [1] necessidade-visao
 - Invocar skill 'necessidade-visao'
 - Input: texto inicial do usuário (se fornecido via `/iniciar-projeto`); usar para pré-extração
-- Output: seções `## 1. Visão`, `## 2. Problema & Necessidade`, `## 3. Objetivos e Metas de Sucesso`
+- Output: seções `## 1. Visão`, `## 2. Problema & Necessidade` (com campo `Indicadores de sucesso`)
 - Modo: **problema-primeiro** (5-Whys → JTBD → síntese Moore confirmada)
 - Uma pergunta por turno na fase de descoberta (Fase 1 da skill)
 - Lote compacto só nas Fases 2 e 3 (campos independentes)
@@ -62,13 +62,13 @@ ENTRADA
 ### [2] stakeholder-mapping
 - Invocar skill 'stakeholder-mapping'
 - Input: seções `## 1. Visão` e `## 2. Problema & Necessidade` (pré-popular com pessoas mencionadas)
-- Output: seção `## 4. Pessoas Envolvidas` (tabela Onion)
+- Output: seção `## 3. Pessoas Envolvidas` (tabela Onion)
 - Checklist de camadas, não perguntas abertas
 
 ### [3] contexto-e-limite
 - Invocar skill 'contexto-e-limite'
 - Input: todas as seções anteriores
-- Output: seção `## 5. Contexto e Limites` + campo `lacunas_m1` em estado-projeto.yaml
+- Output: seção `## 4. Contexto e Limites` + campo `lacunas_m1` em estado-projeto.yaml
 - **Não re-perguntar "o que faz"** — inferir da Seção 2 e confirmar em choice
 
 ### [4] clarificacao-pos-visao (condicional — D16)
@@ -79,7 +79,7 @@ ENTRADA
 
 ### [5] traducao-gate
 - Invocar skill 'traducao-gate'
-- Input: `documentos-tecnicos/01-visao/01-visao-produto.md` completo (6 seções do template)
+- Input: `documentos-tecnicos/01-visao/01-visao-produto.md` completo (5 seções do template)
 - Output: versão normativa finalizada + `documentos-para-leigo/01-visao/01-visao-produto.md`
 - Salvar ambos nas pastas correspondentes do projeto
 - Atualizar `estado-projeto.yaml` (artefatos)

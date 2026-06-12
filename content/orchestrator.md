@@ -97,12 +97,19 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 | M2 | `content/marcos/m2.md` | `collector` ⇄ `modeler` |
 | M3 | `content/marcos/m3.md` | `documenter` ⇄ `checker` |
 | M4 | `content/marcos/m4.md` | `checker` (modo técnico) |
+| concluido | — (sem slice; ver regra abaixo) | — |
 
 **REGRAS DE CARREGAMENTO:**
 1. Carregar `content/marcos/{marco_corrente}.md` — contém tabela canônica, skills e gate deste marco
 2. **NUNCA** mencionar artefatos, skills ou gates de marcos futuros ao usuário
 3. **NUNCA** listar a tabela canônica completa — apenas o slice do marco corrente
 4. Marcos futuros não existem até que o gate anterior seja aprovado
+
+**Projeto concluído (`marco_corrente: concluido`):** não carregar slice nem persona. Invocar `AskUserQuestion`:
+- `question`: "A documentação deste produto já está concluída. O que você gostaria de fazer?"
+- Opção 1: label `"Revisão técnica"`, description `"Uma pessoa técnica (dev/tech lead) revisa e aprova o documento"` → escrever `marco_corrente: M4` e `gate_status.gate_4: pendente`; carregar `content/marcos/m4.md`
+- Opção 2: label `"Gerar os PDFs novamente"`, description `"Recriar os arquivos PDF a partir dos documentos atuais"` → invocar skill `exportar-pdf`
+- Opção 3: label `"Nada por agora"`, description `"Só conferir; encerrar"` → encerrar amigavelmente
 
 Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline no main context (D25 — sem Agent/Task() tool).
 
@@ -153,7 +160,7 @@ Tabela interna skill→texto-leigo. O orquestrador usa a coluna "Todo leigo" com
 | 3.1 | requisito-ears | Escrever cada regra do produto de forma clara |
 | 3.2 | modelagem-visual | Desenhar os fluxos do produto |
 | 3.3 | srs-ireb-montagem | Montar o documento completo do produto |
-| 3.4 | analyze-cross-artifact + validacao-checklist-ireb + rastreabilidade-matriz | Conferir se está tudo consistente |
+| 3.4 | validacao-checklist-ireb + analyze-cross-artifact + rastreabilidade-matriz | Conferir se está tudo consistente |
 | 3.5 | traducao-leigo + traducao-gate | Preparar o resumo para você revisar |
 | 3.6 | Gate 3 | Confirmar a Etapa 3 com você |
 
@@ -198,6 +205,13 @@ loop_m3_iteracoes: 0     # incrementado a cada volta ao documenter; sem teto fix
 versao_leigo_aprovada: []
 ultima_atualizacao: "2026-05-18T00:00:00"
 violacoes_detectadas: []    # append-only (C4.4); cada entrada: {data, tipo, turno, acao_corretiva}
+# Campos adicionais escritos ao longo do fluxo (documentados em content/catalogos-seed/estado-projeto.exemplo.yaml):
+# gate_1_aprovado_em / gate_2_aprovado_em / gate_3_aprovado_em / gate_4_aprovado_em: "<timestamp ISO>" (na aprovação de cada gate)
+# gate_N_motivo_bloqueio: "motivo" (quando um gate é bloqueado)
+# lacunas_m1: {categorias: [...], contagem: N}    # escrito por contexto-e-limite (D16)
+# agenda_m2: {...}                                # criado na transição M1→M2 (ver TRANSIÇÃO M1 → M2)
+# modelagem_visual_gerada: true                   # M3, após modelagem-visual
+# fase_a_concluida: true                          # M3, após Fase A completa
 # Pass log — append-only (Z20). Nunca sobrescrever entradas existentes.
 passes: []
 # Formato de cada Pass:
@@ -275,13 +289,7 @@ Ao concluir Gate 3 (ou Gate 4 se solicitado):
 1. Atualizar `estado-projeto.yaml` com `marco_corrente: concluido`
 2. Listar artefatos gerados para o usuário (versão leigo)
 3. Informar próximos passos recomendados (M4 técnico, se não executado)
-4. **Commit final do histórico** — rodar via Bash antes de gerar PDF:
-   ```
-   bash "{PLUGIN_ROOT}/scripts/git_track.sh" commit "{PROJETO_DIR}" "Projeto concluído"
-   ```
-   Se `GIT_COMMIT_OK`: informar ao usuário (linguagem simples): "O histórico de mudanças do seu produto foi salvo. Você pode ver tudo que foi documentado, etapa por etapa, usando o comando `git log` na pasta do produto."
-   Se `GIT_SEM_MUDANCAS` ou qualquer falha: ignorar silenciosamente.
-5. **Gerar PDFs automaticamente** — rodar via Bash:
+4. **Gerar PDFs automaticamente** — rodar via Bash:
    ```
    bash "{PLUGIN_ROOT}/scripts/md_to_pdf.sh" "{PROJETO_DIR}"
    ```
@@ -290,3 +298,9 @@ Ao concluir Gate 3 (ou Gate 4 se solicitado):
    - Se o script sair com **exit 2** (nenhum conversor disponível): informar ao usuário:
      "Não foi possível gerar o PDF automaticamente porque nenhuma ferramenta de conversão foi encontrada no computador. Os documentos estão disponíveis em formato texto na pasta do produto. Para gerar o PDF depois, instale o pandoc e o LaTeX (no Mac: `brew install pandoc && brew install --cask basictex`, depois `sudo /Library/TeX/texbin/tlmgr install fvextra`; no Linux: `sudo apt install pandoc texlive-xetex texlive-latex-extra`; alternativa Node.js: `npm install -g md-to-pdf`) e use o comando `/exportar-pdf`."
    - Se o script sair com **exit 1** (erro de conversão): informar ao usuário que os documentos de texto foram criados com sucesso e que houve uma dificuldade técnica na geração do PDF; sugerir `/exportar-pdf` para tentar novamente.
+5. **Commit final do histórico** (após os PDFs — para `pdf/` entrar no commit) — rodar via Bash:
+   ```
+   bash "{PLUGIN_ROOT}/scripts/git_track.sh" commit "{PROJETO_DIR}" "Projeto concluído"
+   ```
+   Se `GIT_COMMIT_OK`: informar ao usuário (linguagem simples): "O histórico de mudanças do seu produto foi salvo. Você pode ver tudo que foi documentado, etapa por etapa, usando o comando `git log` na pasta do produto."
+   Se `GIT_SEM_MUDANCAS` ou qualquer falha: ignorar silenciosamente.

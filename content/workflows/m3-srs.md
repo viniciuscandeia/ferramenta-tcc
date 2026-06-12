@@ -130,13 +130,14 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 ## REGRAS DO LOOP M3
 
-1. **Loop dinâmico:** encerra automaticamente quando `analyze-report.md` não tiver issues CRITICAL (convergência). A partir da 3ª rodada, se CRITICAL persistir, escalar ao usuário (yesno: "Ainda há pontos que precisam revisão — quer continuar ajustando ou prefere seguir assim?"). Se SIM → nova rodada. Se NÃO → avançar para gate.
+1. **Loop dinâmico:** encerra automaticamente quando `analyze-report.md` não tiver issues CRITICAL (convergência). CRITICAL é bloqueador — o Gate 3 não abre com CRITICAL aberto. A partir da 3ª rodada, se CRITICAL persistir, oferecer ao usuário (choice): `"Continuar agora"` → nova rodada | `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente (a retomada via `/iniciar-projeto` continua o loop). Nunca oferecer "seguir assim".
 2. **Documenter modo correção:** recebe `documentos-tecnicos/03-documento/03.1-analyze-report.md` com lista de CRITICAL; executa **apenas** as skills afetadas (não refaz toda a Fase A)
    - Issues IREB §3.8 → refazer [A1] e/ou [A3] para os RFs/RNFs afetados
    - Issues de diagramas → refazer [A2] e [A3]
+   - Sempre refazer [A4] (traducao-gate) ao final de qualquer correção que tenha refeito [A1]/[A2]/[A3] — a versão leigo nunca pode ficar desatualizada em relação ao SRS apresentado no gate
 3. **Checker reexecuta [B1]–[B3]** após cada rodada de correção do documenter
 4. **Contador de iterações:** registrar em `estado-projeto.yaml` campo `loop_m3_iteracoes: N`; incrementar a cada retorno ao documenter
-5. **A partir da 3ª rodada com CRITICAL:** orquestrador escala ao usuário via `AskUserQuestion` (yesno) antes de continuar ou encerrar
+5. **A partir da 3ª rodada com CRITICAL:** orquestrador oferece ao usuário via `AskUserQuestion` (choice) continuar agora ou pausar e retomar depois — CRITICAL aberto nunca avança para o gate
 
 ---
 

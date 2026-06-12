@@ -32,6 +32,9 @@
 **Necessidade central (JTBD):**  
 [Em linguagem Jobs-to-be-Done: "Quando [situação], eu preciso [resultado desejado], para que [motivação/consequência positiva]."]
 
+**Indicadores de sucesso:**  
+[O que precisa acontecer ou melhorar para o produto ser considerado bem-sucedido — ex: "reduzir conflitos de horário em 90% no primeiro mês". Se não definido: `[a definir]` e registrar na seção 5.]
+
 ---
 
 ## 3. Pessoas Envolvidas

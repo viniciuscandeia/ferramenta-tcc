@@ -13,7 +13,7 @@
 | M1 — Definição da Necessidade | `stakeholder-identifier` | necessidade-visao, stakeholder-mapping, contexto-e-limite, clarificacao-pos-visao¹, traducao-gate, traducao-leigo | Gate 1: usuário aprova `documentos-para-leigo/01-visao/01-visao-produto.md` |
 | M2 — Consenso de Escopo | `collector` ⇄ `modeler` (loop) | entrevista-estruturada, cenario-narrativa, recomendacao-dominio, recomendacao-implicitos, questionario-feixe¹, classificacao-rf-rnf, priorizacao, glossario, conflitos-detect, pautas-reelicitacao, traducao-gate, traducao-leigo | Gate 2: aprova versões leigo dos artefatos + `pautas-reelicitacao.md` sem pendências |
 | M3 — Detalhamento | `documenter` ⇄ `checker` (loop) | requisito-ears, modelagem-visual, srs-ireb-montagem, validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate, traducao-leigo | Gate 3: aprova SRS leigo + `analyze-report.md` sem CRITICAL |
-| M4 — Revisão Técnica (opcional) | `checker` modo técnico | (internamente: validacao-checklist-ireb) | Gate 4: dev/tech lead aprova `aprovacao-tecnica.md` |
+| M4 — Revisão Técnica (opcional) | `checker` modo técnico | validacao-checklist-ireb, analyze-cross-artifact, rastreabilidade-matriz, traducao-gate | Gate 4: dev/tech lead aprova `aprovacao-tecnica.md` |
 
 ¹ Skill condicional — ver `when_to_use`.
 

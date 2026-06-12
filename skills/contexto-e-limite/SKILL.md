@@ -16,14 +16,14 @@ description: >-
 4. **Lacunas persistidas em estado, não perdidas no contexto.** O relatório de lacunas (D16) é salvo em `estado-projeto.yaml` para sobreviver a sessões desconectadas.
 
 <HARD-GATE>
-- NÃO executar antes de `stakeholder-mapping` concluído (verificar que `## 4. Pessoas Envolvidas` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
+- NÃO executar antes de `stakeholder-mapping` concluído (verificar que `## 3. Pessoas Envolvidas` existe em `documentos-tecnicos/01-visao/01-visao-produto.md`)
 - ⛔ STOP se "dentro" e "fora" forem semanticamente idênticos (usuário não entendeu a distinção) — re-explicar com exemplo concreto antes de continuar
 </HARD-GATE>
 
 ## Fase 0 — Inicialização e Pré-Inferência
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar pré-condição: `## 4. Pessoas Envolvidas` existe
+2. Verificar pré-condição: `## 3. Pessoas Envolvidas` existe
 3. **Pré-inferência do dentro:** ler seções `## 2. Problema & Necessidade` e `## 1. Visão` → extrair atividades e capacidades mencionadas pelo usuário → montar lista provisória de "O que o produto faz"
 4. Extrair integrações já mencionadas (sistemas, dispositivos, serviços citados) → lista provisória
 
@@ -70,7 +70,7 @@ Opções: `"Está correto"` / `"Tem algo para ajustar"` / `"Quero adicionar uma 
 Gerar seção de contexto e limites:
 
 ```markdown
-## 5. Contexto e Limites
+## 4. Contexto e Limites
 
 ### O que o produto faz
 
@@ -98,7 +98,7 @@ Gerar seção de contexto e limites:
 - "O que está no projeto" deve ser consistente com a Seção 2 (Problema) — divergência = flag de lacuna
 - Integrações mencionadas: registrar como "a detalhar em fase seguinte"
 - Restrições vagas → marcar como `[a detalhar]`
-- Verificar consistência com restrições regulatórias da Seção 4 (Pessoas Envolvidas, Camada Regula) — se Regula presente → deve haver ao menos 1 restrição do tipo Legal
+- Verificar consistência com restrições regulatórias da Seção 3 (Pessoas Envolvidas, Camada Regula) — se Regula presente → deve haver ao menos 1 restrição do tipo Legal
 - Aplicar `traducao-leigo` antes de qualquer exibição ao usuário (D1)
 
 ## Fase 4 — Detecção e Persistência de Lacunas (para `clarificacao-pos-visao` — D16)
@@ -109,7 +109,7 @@ Verificar 3 categorias críticas:
 |---|---|---|
 | Escopo funcional | "O que está no projeto" tem < 3 itens OU contradiz Seção 2 (Problema) | Alta |
 | Restrições de negócio | Domínio regulado (Fase 0 de `stakeholder-mapping`) E nenhuma restrição Legal identificada | Alta |
-| Itens em aberto críticos | Decisor `[a identificar]` OU metas de sucesso `[a definir]` em Seção 3 | Média |
+| Itens em aberto críticos | Decisor `[a identificar]` OU Indicadores de sucesso `[a definir]` na Seção 2 | Média |
 
 **Persistir em `estado-projeto.yaml`:**
 ```yaml
@@ -122,7 +122,7 @@ lacunas_m1:
 
 ## Fase 5 — Saída
 
-1. Append seção `## 5. Contexto e Limites` em `documentos-tecnicos/01-visao/01-visao-produto.md`
+1. Append seção `## 4. Contexto e Limites` em `documentos-tecnicos/01-visao/01-visao-produto.md`
 2. Persistir `lacunas_m1` em `estado-projeto.yaml` (ver Fase 4)
 3. ⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
    Verificar `lacunas_m1.contagem` em `estado-projeto.yaml` e invocar imediatamente:

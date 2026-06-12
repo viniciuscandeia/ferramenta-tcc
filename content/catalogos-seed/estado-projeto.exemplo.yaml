@@ -19,7 +19,7 @@ modo: padrao                # padrao | express  (Z15 — express reduz loops e r
 gate_status:
   gate_1: pendente           # pendente | aprovado | bloqueado
   gate_2: pendente           # bloqueado se pautas-reelicitacao.md tiver itens [ ]
-  gate_3: pendente           # bloqueado se analyze-report.md tiver issues BLOQUEADOR (🔴)
+  gate_3: pendente           # bloqueado se analyze-report.md tiver issues CRITICAL (🔴 BLOQUEADOR)
   gate_4: nao_solicitado     # nao_solicitado | pendente | aprovado
 
 # ──────────────────────────────────────────────
@@ -27,7 +27,18 @@ gate_status:
 # ──────────────────────────────────────────────
 
 loop_m2_iteracoes: 0         # incrementado a cada retorno ao collector (sem teto fixo — ver content/constitution.md §POLÍTICA DE GATES)
-loop_m3_iteracoes: 0         # incrementado a cada retorno ao documenter (sem teto fixo — loop para por convergência ou escolha do usuário)
+loop_m3_iteracoes: 0         # incrementado a cada retorno ao documenter (sem teto fixo — loop para somente por convergência; usuário pode pausar, nunca pular o gate)
+
+# ──────────────────────────────────────────────
+# CAMPOS ESCRITOS AO LONGO DO FLUXO (presentes só após o evento)
+# ──────────────────────────────────────────────
+# gate_1_aprovado_em: "2026-06-01T10:30:00"   # escrito na aprovação do Gate 1 (idem gate_2/3/4_aprovado_em)
+# gate_1_motivo_bloqueio: "motivo"            # escrito quando o gate é bloqueado (idem gate_2/3/4_motivo_bloqueio)
+# lacunas_m1:                                 # escrito por contexto-e-limite (D16)
+#   categorias: [escopo_funcional]
+#   contagem: 1
+# modelagem_visual_gerada: true               # M3 — após modelagem-visual
+# fase_a_concluida: true                      # M3 — após Fase A completa
 
 # ──────────────────────────────────────────────
 # AGENDA M2 — pacing state-driven (C3)
@@ -86,7 +97,7 @@ artefatos:
   # - nome: documentos-tecnicos/03-documento/03.1-analyze-report.md
   # - nome: documentos-tecnicos/03-documento/03.2-rastreabilidade.md  (condicional)
   # - nome: documentos-tecnicos/03-documento/03.3-diagramas.md        (condicional)
-  # 04-spec/*.feature, 05-tests/, 06-estrategia-testes.md, 07-como-rodar-testes.md são técnicos — não gerar versão leigo (D18, D19)
+  # 03.1-analyze-report.md, 03.2-rastreabilidade.md e 03.3-diagramas.md são internos/técnicos — não gerar versão leigo separada (exceção D18/D19)
 
 pautas_abertas: []           # lista de IDs de pautas abertas em pautas-reelicitacao.md
 
@@ -125,6 +136,7 @@ passes: []
 #   gate_2: pendente
 #   gate_3: pendente
 #   gate_4: nao_solicitado
+# gate_1_aprovado_em: "2026-06-01T10:30:00"
 # loop_m2_iteracoes: 0
 # loop_m3_iteracoes: 0
 # agenda_m2:

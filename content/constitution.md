@@ -47,7 +47,7 @@ Aplica a **todos** os agentes e skills em qualquer saída gerada. Estas regras c
 ### Regras absolutas de output
 
 1. **Sumários intermediários:** apenas quantitativos, ≤ 2 linhas. Formato: `🔴 N | 🟠 N | 🟡 N | 🔵 N`.
-2. **Escala de severidade obrigatória:** 🔴 BLOQUEADOR (impede gate), 🟠 ALTO (requer correção no loop), 🟡 MÉDIO (sugestão — registrar em pautas), 🔵 BAIXO (cosmético — não registrar).
+2. **Escala de severidade obrigatória:** 🔴 BLOQUEADOR (impede gate), 🟠 ALTO (requer correção no loop), 🟡 MÉDIO (sugestão — registrar em pautas), 🔵 BAIXO (cosmético — não registrar). Equivalência nos relatórios técnicos (analyze-report): 🔴 = CRITICAL, 🟠 = HIGH, 🟡 = MEDIUM, 🔵 = LOW.
 3. **Categoria vazia = omitida.** Nunca escrever "Nenhum item crítico identificado" — omitir a categoria.
 4. **Nunca repetir contexto anterior.** Banido: "Como vimos antes", "Resumindo o que fizemos", "Lembrete:", "Conforme mencionado".
 5. **Nunca narrar processo interno.** Banido: "Estou lendo...", "Baseado no arquivo X...", "Vou agora analisar...", "Analisando...".
@@ -145,9 +145,9 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 | Gate 3 | Usuário aprova versão leigo do SRS **E** `analyze-report.md` sem issues CRITICAL | Avançar para M4 (opcional) ou encerrar |
 | Gate 4 (opcional) | Dev/tech lead aprova `aprovacao-tecnica.md` | Encerrar |
 
-**Loop M2 collector ⇄ modeler:** sem teto fixo. O loop para automaticamente quando `pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). A partir da 3ª rodada, se ainda houver itens `[ ]`, apresentar ao usuário (yesno): "Ainda há pontos em aberto sobre o projeto — quer continuar detalhando ou prefere seguir assim?" Se SIM → nova rodada. Se NÃO → fechar loop e avançar para gate. Exceção: modo express mantém teto de 1 rodada.
+**Loop M2 collector ⇄ modeler:** sem teto fixo. O loop encerra SOMENTE quando `pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). Itens `[ ]` abertos são BLOQUEADORES: o Gate 2 jamais abre com pendência aberta — não existe opção de "seguir assim". A partir da 3ª rodada, se ainda houver itens `[ ]`, apresentar ao usuário (choice): "Ainda há pontos em aberto que precisam de resposta antes de fechar esta etapa. Quer continuar agora ou pausar e retomar depois?" — `"Continuar agora"` → nova rodada; `"Pausar e retomar depois"` → salvar estado (+ `.draft` se houver artefato em andamento) e encerrar a sessão amigavelmente; a retomada via `/iniciar-projeto` continua o loop do ponto onde parou. Modo express: o teto de 1 rodada vale para o refinamento opcional — itens `[ ]` abertos continuam exigindo rodadas extras.
 
-**Loop M3 documenter ⇄ checker:** sem teto fixo. O loop para automaticamente quando `analyze-report.md` não tiver issues CRITICAL (convergência). A partir da 3ª rodada, se CRITICAL persistir, apresentar ao usuário (yesno): "Ainda há pontos que precisam revisão — quer continuar ajustando ou prefere seguir assim?" Se SIM → nova rodada. Se NÃO → fechar loop e avançar para gate. Campo `loop_m3_iteracoes: N` em `estado-projeto.yaml`.
+**Loop M3 documenter ⇄ checker:** sem teto fixo. O loop encerra SOMENTE quando `analyze-report.md` não tiver issues CRITICAL (convergência). Issues CRITICAL são BLOQUEADORES: o Gate 3 jamais abre com CRITICAL aberto — não existe opção de "seguir assim". A partir da 3ª rodada, se CRITICAL persistir, apresentar ao usuário (choice): "Ainda há pontos que precisam de revisão antes de fechar esta etapa. Quer continuar agora ou pausar e retomar depois?" — `"Continuar agora"` → nova rodada; `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente; a retomada via `/iniciar-projeto` continua o loop. Campo `loop_m3_iteracoes: N` em `estado-projeto.yaml`.
 
 **Loops dentro de marco:** permitidos sem restrição.
 **Loops entre marcos:** proibidos sem gate aprovado.

@@ -153,6 +153,7 @@ Preencher as seções do template `content/templates/01-documento-visao.md`:
 1. Append seções `## 1. Visão`, `## 2. Problema & Necessidade` em `documentos-tecnicos/01-visao/01-visao-produto.md` (criar arquivo com cabeçalho do template se inexistente)
 2. Registrar em `estado-projeto.yaml`:
    ```yaml
+   nome_projeto: "<nome confirmado na Fase 2 (ou ajustado na Fase 4)>"   # obrigatório — Gate 1 exige ≠ "Ainda não definido"
    artefatos:
      - nome: documentos-tecnicos/01-visao/01-visao-produto.md
        marco: M1

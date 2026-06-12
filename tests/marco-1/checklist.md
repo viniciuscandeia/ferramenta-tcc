@@ -1,4 +1,4 @@
-# Checklist de Verificação — Marco 1: Definição da Necessidade (v0.7.0)
+# Checklist de Verificação — Marco 1: Definição da Necessidade (v0.23.0)
 
 **Critério de "passou":** todos os itens `[x]` abaixo.
 Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-<descritor>/`.
@@ -10,10 +10,10 @@ Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-
 - [ ] **A1.** `documentos-tecnicos/01-visao/01-visao-produto.md` existe e não está vazio
 - [ ] **A2.** Seção `## 1. Visão` presente com frase-síntese estilo Moore (Para [quem]... o [produto] é... que... Diferente de... ele...)
 - [ ] **A3.** Seção `## 2. Problema & Necessidade` presente com: dor real, quem sofre, impacto concreto (sem lista de solução/features)
-- [ ] **A4.** Seção `## 3. Objetivos e Metas de Sucesso` presente (pode ter campos `[a definir]` se usuário não soube responder)
-- [ ] **A5.** Seção `## 4. Pessoas Envolvidas` presente com tabela Stakeholder Onion (colunas: Papel | Camada | Interesse | Influência | Decisor)
-- [ ] **A6.** Seção `## 5. Contexto e Limites` presente com: dentro / fora (≥1 exclusão) / integrações / restrições
-- [ ] **A7.** Seção `## 6. Premissas e Itens em Aberto` presente
+- [ ] **A4.** Campo `**Indicadores de sucesso:**` presente na Seção 2 (pode estar `[a definir]` se usuário não soube responder)
+- [ ] **A5.** Seção `## 3. Pessoas Envolvidas` presente com tabela de usuários diretos (colunas: Papel | Interesse principal | Influência); demais camadas e Decisor registrados em `estado-projeto.yaml`
+- [ ] **A6.** Seção `## 4. Contexto e Limites` presente com: dentro / fora (≥1 exclusão) / integrações / restrições
+- [ ] **A7.** Seção `## 5. Premissas e Itens em Aberto` presente
 
 ---
 
@@ -21,10 +21,10 @@ Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-
 
 - [ ] **B1.** Seção 2 NÃO contém lista de funcionalidades ou proposta de solução (disciplina problema-space)
 - [ ] **B2.** Seção 2 descreve a DOR RAIZ, não apenas o sintoma (indica que 5-Whys foi aplicado)
-- [ ] **B3.** Decisor identificado na tabela (Camada "Decide-paga", coluna "Decisor: Sim") — ou justificativa em Seção 6
-- [ ] **B4.** Pelo menos 1 exclusão explícita em "O que o produto NÃO faz" (Seção 5)
-- [ ] **B5.** Restrições da Seção 5 têm tipo especificado (Legal / Técnica / Prazo / Orçamento / Organizacional)
-- [ ] **B6.** Se domínio regulado detectado (saúde / finanças / educação / alimentos): Camada "Regula" presente na tabela (Seção 4) E ao menos 1 restrição Legal na Seção 5
+- [ ] **B3.** Decisor identificado em `estado-projeto.yaml` (registro interno) — ou pendência registrada em `pautas_abertas`/Seção 5
+- [ ] **B4.** Pelo menos 1 exclusão explícita em "O que o produto NÃO faz" (Seção 4)
+- [ ] **B5.** Restrições da Seção 4 têm tipo especificado (Legal / Técnica / Prazo / Orçamento / Organizacional)
+- [ ] **B6.** Se domínio regulado detectado (saúde / finanças / educação / alimentos): Camada "Regula" registrada (`estado-projeto.yaml`) E ao menos 1 restrição Legal na Seção 4
 
 ---
 
@@ -50,7 +50,7 @@ Preencher após execução de cada caso em `tests/marco-1/execucoes/execucao-NN-
 ## Bloco E — Guardrail Leigo (D1 + D19)
 
 - [ ] **E1.** `documentos-para-leigo/01-visao/01-visao-produto.md` existe e não está vazio
-- [ ] **E2.** Versão leigo sem termos da blacklist: `grep -iE "requisito funcional|RF|RNF|elicitação|stakeholder|\bescopo\b|\bgate [0-9]\b|iteração|sprint|backlog|caso de uso|SRS|ERS|\bmarco [0-9]\b|sub-agente|skill|MoSCoW|Kano|baseline|EARS|RFC|Gherkin|BDD"` retorna 0 resultados
+- [ ] **E2.** Versão leigo sem termos da blacklist: `grep -iE "requisito funcional|\bRF\b|\bRNF\b|elicitação|stakeholder|\bescopo\b|\bgate [0-9]\b|iteração|sprint|backlog|caso de uso|\bSRS\b|\bERS\b|\bmarco [0-9]\b|sub-agente|skill|MoSCoW|Kano|baseline|\bEARS\b|RFC|Gherkin|BDD"` retorna 0 resultados
 - [ ] **E3.** Perguntas feitas ao usuário durante M1 não contêm termos da blacklist
 - [ ] **E4.** Versão leigo é PROSA NARRATIVA (não cópia parafraseada das seções técnicas da versão normativa — estrutura diferente)
 - [ ] **E5.** As duas versões são arquivos distintos com estrutura diferente
