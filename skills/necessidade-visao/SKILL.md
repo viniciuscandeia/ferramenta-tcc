@@ -10,7 +10,7 @@ description: >-
 
 ## Filosofia desta skill (Regras Absolutas)
 
-1. **Problema antes de solução.** A skill começa pelo problema/dor real — não pelo produto. Soluções, features e funcionalidades são PROIBIDOS aqui. A visão emerge do problema entendido.
+1. **Problema antes de solução.** A skill abre com UMA pergunta de enquadramento ("o que você quer construir?", Turno 0) e em seguida mergulha no problema/dor real. O **agente** nunca propõe soluções, features ou funcionalidades — mas a frase de produto que o usuário dá é capturada como âncora. A visão emerge do problema entendido.
 2. **Uma pergunta adaptativa por vez na fase de descoberta.** Na Fase 1 (5-Whys), cada pergunta depende da resposta anterior. Não há lote rígido — o agente sonda até chegar na dor raiz (máximo 3 turnos de sondagem).
 3. **Síntese confirmada, não pergunta a frio.** Visão (frase Moore), benefício e diferencial são SINTETIZADOS pelo agente com base no que o usuário disse — então CONFIRMADOS em choice/yesno. Nunca perguntar "qual o benefício?" diretamente.
 4. **Ancoragem estrita.** Toda pergunta preenche um campo do template `content/templates/01-documento-visao.md`. Se não preenche um campo, a pergunta não é feita.
@@ -19,7 +19,7 @@ description: >-
 <HARD-GATE>
 - NÃO executar se seções `## 1. Visão` e `## 2. Problema & Necessidade` já existem em `documentos-tecnicos/01-visao/01-visao-produto.md` (idempotência)
 - ⛔ STOP e registrar em `_pendencias.md` se o usuário não fornecer nome do produto E nem descrição alguma do problema (campos mínimos para síntese)
-- PROIBIDO: propor solução, listar features ou funcionalidades durante esta skill — qualquer menção a "o produto vai fazer X" é barrada
+- PROIBIDO: **o agente** propor solução, listar features ou funcionalidades — qualquer menção do agente a "o produto vai fazer X" é barrada. (Capturar a descrição de produto que o USUÁRIO fornece no Turno 0 é permitido e esperado.)
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
@@ -27,7 +27,7 @@ description: >-
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar `estado-projeto.yaml`; se ausente: inicializar com `marco_corrente: M1`
 3. Checar idempotência: se seções `## 1. Visão` e `## 2. Problema & Necessidade` já existem → pular para Fase 4 (síntese) ou Fase 5 (sinalização)
-4. **Pré-extração:** se o usuário forneceu texto inicial com `/iniciar-projeto`, extrair:
+4. **Pré-extração:** se o usuário forneceu texto inicial com `/iniciar-produto`, extrair:
    - Nome candidato do produto (se mencionado)
    - Dor/problema central (se descrito)
    - Pessoas mencionadas
@@ -38,6 +38,16 @@ description: >-
 ## Fase 1 — Descoberta do Problema (5-Whys/JTBD, adaptativo)
 
 **Objetivo:** chegar na dor raiz. Máximo 3 turnos de sondagem. Turno 1 = 1 `AskUserQuestion` multi-choice + 1 adicional `text` se "Outro" marcado; Turnos 2 e 3 = 1 `AskUserQuestion` com 1 pergunta (`text`) cada.
+
+**Turno 0 — Enquadramento do produto (1 `AskUserQuestion`, `text`):**
+
+Antes de mergulhar no problema, entender O QUE será construído:
+```
+Em poucas palavras, o que você quer construir? (que produto ou ferramenta é esse?)
+```
+- **Pular** se o texto inicial de `/iniciar-produto` já descreveu o produto (usar o que foi dito — não re-perguntar).
+- Guardar como **âncora de produto**: alimenta a pré-extração, a síntese (Fase 4) e a seção `## 1. Visão`. Não pedir features nem detalhar — é só o enquadramento de uma frase.
+- O agente não comenta nem propõe nada sobre o produto; em seguida segue para o Turno 1 (problema).
 
 **Turno 1 — O que está errado hoje (multi-choice):**
 
@@ -68,9 +78,9 @@ Quando você imagina que esse problema foi resolvido, o que muda na prática? O 
 ```
 
 **Regras da Fase 1:**
-- Nunca mencionar o produto ou solução nesta fase
+- Após o Turno 0 (enquadramento), o **agente** não propõe produto/solução/features — os Turnos 1–3 são só sobre o problema
 - Se a resposta for vaga (ex: "quero melhorar as coisas"), sondar com: "Pode me dar um exemplo concreto de quando isso deu errado?"
-- Parar em 3 turnos — mesmo se o problema ainda tiver pontos obscuros (lacunas vão para Fase Condicional ou M2)
+- Parar em 3 turnos de sondagem — mesmo se o problema ainda tiver pontos obscuros (lacunas vão para Fase Condicional ou M2)
 
 ## Fase 2 — Identificação do Produto e Público
 
@@ -176,7 +186,7 @@ Preencher as seções do template `content/templates/01-documento-visao.md`:
 
 **Como detectar:** Qualquer frase do agente que começa com "O produto vai...", "O sistema vai...", "Poderíamos criar...", "Uma funcionalidade de..." durante a Fase 1.
 
-**O que fazer:** Bloquear completamente. Na Fase 1, o agente só faz perguntas sobre o problema — nunca propõe nada. A solução/visão só emerge na Fase 4 (síntese).
+**O que fazer:** Bloquear completamente. Nos Turnos 1–3 da Fase 1, o agente só faz perguntas sobre o problema — nunca propõe nada. (O Turno 0 apenas CAPTURA a descrição de produto dada pelo usuário, sem o agente propor.) A solução/visão sintetizada só emerge na Fase 4.
 
 ---
 

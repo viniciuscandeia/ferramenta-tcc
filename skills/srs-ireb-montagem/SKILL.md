@@ -34,7 +34,7 @@ Antes de qualquer seção, inserir o cabeçalho de controle de versão do docume
 ```markdown
 # [Nome do Produto] — Especificação de Requisitos de Software
 
-**Ferramenta:** ferramenta-tcc  
+**Gerado por:** Assistente de Especificação de Software  
 
 > Ver Glossário na Seção 8.
 
@@ -44,7 +44,7 @@ Antes de qualquer seção, inserir o cabeçalho de controle de versão do docume
 
 | Versão | Data | Responsável | Descrição da Revisão |
 |---|---|---|---|
-| 1.0 | [DATA-GERAÇÃO] | ferramenta-tcc | Versão inicial — gerada automaticamente via elicitação estruturada |
+| 1.0 | [DATA-GERAÇÃO] | Assistente de Especificação de Software | Versão inicial — gerada automaticamente via elicitação estruturada |
 
 > Versões subsequentes registradas aqui após cada ciclo de revisão.
 
@@ -83,7 +83,7 @@ Preencher `[DATA-GERAÇÃO]` com a data atual no formato `YYYY-MM-DD`.
 Organizar **sempre por módulo** (padrão). Lista plana só como fallback explícito (ver regra abaixo).
 
 **Parágrafo introdutório obrigatório (inserir antes das subseções de módulo):**
-> O sistema foi dividido em grupos de funcionalidades relacionadas — chamados **módulos**. Cada módulo reúne as regras de uma área específica do produto. Os modais `DEVE`, `DEVERIA` e `PODE` indicam respectivamente: obrigatório nesta versão, recomendado mas não crítico, e opcional.
+> O sistema foi dividido em grupos de funcionalidades relacionadas — chamados **módulos**. Cada módulo reúne as regras de uma área específica do produto. A coluna **Prioridade** classifica cada regra como **Essencial** (obrigatória nesta versão), **Importante** (recomendada, com alternativa temporária) ou **Desejável** (bom ter, postergável). O verbo de obrigatoriedade (`DEVE`/`DEVERIA`/`PODE`) está embutido na própria frase de cada requisito.
 
 **Diagrama de caso de uso (inserir após o parágrafo introdutório, antes das tabelas):**
 Embutir o bloco `## 2. Caso de Uso — O que o Sistema Faz` de `documentos-tecnicos/03-documento/03.3-diagramas.md`.  
@@ -110,13 +110,14 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
    [diagrama de caso de uso aqui]
 
    ### 3.1 Módulo de [Nome]
-   | ID | Condição | Sujeito | Modal | Verbo | Objeto | Critério |
-   |---|---|---|---|---|---|---|
-   | RF-001 | ... | ... | DEVE | ... | ... | ... |
+   | ID | Tipo-EARS | Requisito (frase EARS) | Prioridade | Critério |
+   |---|---|---|---|---|
+   | RF-001 | Evento | Quando [evento], o sistema DEVE [verbo] [objeto] | Essencial | ... |
 
    ### 3.2 Módulo de [Nome]
    | ID | ...
    ```
+   > **Legenda de prioridade (MoSCoW):** Essencial (Must) · Importante (Should) · Desejável (Could) · Fora desta versão (Won't). Inserir esta legenda uma vez, logo após o parágrafo introdutório de §3.
 
 5. **Fallback — lista plana:** usar SOMENTE se N_RF < 5 **E** não houver nenhum agrupamento natural identificável. Nesse caso: inserir tabela única com todos os RFs e registrar nota:
    > _Nota: menos de 5 requisitos funcionais identificados — agrupamento por módulo omitido._
@@ -130,7 +131,7 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
 Embutir o bloco `## 4. Estrutura de Dados (Entidade-Relacionamento)` de `documentos-tecnicos/03-documento/03.3-diagramas.md`.  
 Se o bloco estiver ausente ou com nota de omissão → copiar a nota de omissão diretamente (não omitir em silêncio).
 
-Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Bucket | Modal | Comportamento | Métrica | Critério de aceite.
+Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Bucket | Comportamento (frase, com DEVE/DEVERIA/PODE embutido) | Prioridade | Métrica | Critério de aceite. (Sem coluna "Modal" — o verbo de obrigatoriedade vive na frase do comportamento. Repetir a legenda de prioridade MoSCoW, se útil.)
 Critério de aceite = condição verificável derivada da métrica (ex: "teste de carga com k6 sob 1000 req/s sem degradação > 10%").
 
 **Seção 5 — Interfaces Externas:**

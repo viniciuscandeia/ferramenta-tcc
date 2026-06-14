@@ -53,7 +53,7 @@ ENTRADA
 
 ### [1] necessidade-visao
 - Invocar skill 'necessidade-visao'
-- Input: texto inicial do usuário (se fornecido via `/iniciar-projeto`); usar para pré-extração
+- Input: texto inicial do usuário (se fornecido via `/iniciar-produto`); usar para pré-extração
 - Output: seções `## 1. Visão`, `## 2. Problema & Necessidade` (com campo `Indicadores de sucesso`)
 - Modo: **problema-primeiro** (5-Whys → JTBD → síntese Moore confirmada)
 - Uma pergunta por turno na fase de descoberta (Fase 1 da skill)

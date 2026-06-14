@@ -26,14 +26,14 @@ description: >-
 
 ## Fase 1 — MoSCoW (sempre executar)
 
-**Mapeamento de saída:**
+**Mapeamento interno (NÃO vira coluna na saída):** a prioridade MoSCoW é a única coluna de prioridade nas tabelas. O modal RFC 2119 é derivado internamente apenas para o `requisito-ears` montar o verbo DENTRO da frase do requisito — nunca como coluna separada (D8 mantém o modal embutido na sentença EARS).
 
-| Valor interno | Apresentado ao usuário | Modal RFC 2119 |
-|---|---|---|
-| `DEVE_TER` | "vem primeiro / é essencial" | `DEVE` |
-| `DEVERIA_TER` | "vem logo depois / importante mas não crítico" | `DEVERIA` |
-| `PODERIA_TER` | "fica para depois / bom ter se der" | `PODE` |
-| `NAO_TERA` | "fica fora desta versão" | (sem modal) |
+| Valor interno | Rótulo de prioridade (coluna "Prioridade") | Rótulo leigo | Modal embutido na frase (uso interno) |
+|---|---|---|---|
+| `DEVE_TER` | **Essencial** | "vem primeiro / é essencial" | `DEVE` |
+| `DEVERIA_TER` | **Importante** | "vem logo depois / importante mas não crítico" | `DEVERIA` |
+| `PODERIA_TER` | **Desejável** | "fica para depois / bom ter se der" | `PODE` |
+| `NAO_TERA` | **Fora desta versão** | "fica fora desta versão" | (sem modal) |
 
 **Critérios MoSCoW por item:**
 - **DEVE_TER:** sem este item o produto falha ou viola restrição legal. "Se removermos, o produto não funciona ou é ilegal?"
@@ -75,11 +75,13 @@ Ordenar `DEVE_TER` em sequência de implementação:
 Atualizar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campos preenchidos:
 
 ```markdown
-| ID | Descrição | Modal | Kano | ordem_impl | Fonte |
+| ID | Descrição | Prioridade | Kano | ordem_impl | Fonte |
 |---|---|---|---|---|---|
-| RF-001 | O sistema DEVE permitir cadastro de produto com nome, preço e foto | DEVE | — | 1 | cenario-narrativa §2 |
-| RF-002 | O sistema DEVERIA enviar confirmação por e-mail após pedido | DEVERIA | Proporcional | — | recomendacao-implicitos |
-| RF-003 | O sistema PODE exibir sugestões de produtos relacionados | PODE | Encantador | — | recomendacao-dominio |
+| RF-001 | O sistema DEVE permitir cadastro de produto com nome, preço e foto | Essencial | — | 1 | cenario-narrativa §2 |
+| RF-002 | O sistema DEVERIA enviar confirmação por e-mail após pedido | Importante | Proporcional | — | recomendacao-implicitos |
+| RF-003 | O sistema PODE exibir sugestões de produtos relacionados | Desejável | Encantador | — | recomendacao-dominio |
+
+> **Legenda de prioridade (MoSCoW):** Essencial = obrigatório nesta versão (Must); Importante = recomendado, com alternativa temporária (Should); Desejável = bom ter, postergável (Could); Fora desta versão = explicitamente excluído (Won't). O verbo de obrigatoriedade (DEVE/DEVERIA/PODE) já está embutido na própria descrição — não há coluna "Modal" separada.
 ```
 
 Itens `NAO_TERA` → seção "Fora do escopo desta versão" ao final de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`.

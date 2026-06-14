@@ -3,7 +3,7 @@
 # stakeholder-identifier — Sub-agente M1
 
 **Marco:** M1 — Definição da Necessidade
-**Invocado por:** orquestrador após `/iniciar-projeto` em projeto novo ou ao retomar M1
+**Invocado por:** orquestrador após `/iniciar-produto` em projeto novo ou ao retomar M1
 **Workflow:** `content/workflows/m1-visao.md`
 
 ---

@@ -8,7 +8,7 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 ## Bloco A — Estrutura de artefatos
 
 - [ ] **A1.** `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` gerado pelo collector (arquivo interno, não-gate)
-- [ ] **A2.** `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` existe com ≥ 1 RF em formato EARS + modal RFC 2119 (`DEVE`/`DEVERIA`/`PODE`)
+- [ ] **A2.** `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` existe com ≥ 1 RF em formato EARS com o modal (`DEVE`/`DEVERIA`/`PODE`) embutido na frase (sem coluna "Modal" separada)
 - [ ] **A3.** `documentos-para-leigo/02-requisitos/02.1-requisitos-funcionais.md` existe (versão leigo correspondente)
 - [ ] **A4.** `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existe com ≥ 1 RNF mensurável (com métrica explícita)
 - [ ] **A5.** `documentos-para-leigo/02-requisitos/02.2-requisitos-qualidade.md` existe (versão leigo correspondente)
@@ -21,10 +21,10 @@ Preencher após execução de cada caso em `tests/marco-2/execucoes/execucao-NN-
 
 ## Bloco B — Qualidade dos artefatos
 
-- [ ] **B1.** ≥ 1 RF com modal `DEVE` em `02.1-requisitos-funcionais.md` (sem nenhum DEVE = erro de priorização)
+- [ ] **B1.** ≥ 1 RF com prioridade `Essencial` em `02.1-requisitos-funcionais.md` (sem nenhum Essencial = erro de priorização)
 - [ ] **B2.** ≥ 1 RNF com métrica verificável em `02.2-requisitos-qualidade.md` (ex: "tempo de resposta < 2s para 95% das requisições")
 - [ ] **B3.** Restrições em `02.3-restricoes.md` classificadas corretamente (não misturadas com RNFs)
-- [ ] **B4.** Cada item de `02.1-requisitos-funcionais.md` tem: ID único, modal, descrição EARS, prioridade MoSCoW
+- [ ] **B4.** Cada item de `02.1-requisitos-funcionais.md` tem: ID único, descrição EARS (com verbo de obrigatoriedade embutido), prioridade MoSCoW (coluna "Prioridade") — **sem** coluna "Modal" separada
 - [ ] **B5.** `02.5-glossario.md` tem ≥ 1 termo que aparecia sem definição na `02-elicitacao-raw.md` (anti-ambiguidade Wiegers Ch11)
 
 ---

@@ -1,6 +1,6 @@
 ---
 name: orchestrator
-description: Orquestrador central da ferramenta TCC. Gerencia o fluxo de elicitação e documentação de requisitos em 4 marcos (M1→M4), gates de aprovação. Assume a thread principal quando a ferramenta está habilitada — toda interação passa por este agente.
+description: Orquestrador central do Assistente de Especificação de Software. Gerencia o fluxo de elicitação e documentação de requisitos em 4 marcos (M1→M4), gates de aprovação. Assume a thread principal quando a ferramenta está habilitada — toda interação passa por este agente.
 ---
 
 # Orchestrator Agent — Claude Code

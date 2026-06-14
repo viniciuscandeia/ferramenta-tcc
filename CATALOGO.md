@@ -1,4 +1,4 @@
-# Catálogo da Ferramenta — TCC Elicitação de Requisitos
+# Catálogo — Assistente de Especificação de Software
 
 **Arquitetura:** 1 orquestrador + 5 sub-agentes + 25 skills + 3 workflows  
 **Canon arquitetural:** `docs/planejamento/3 - Arquitetura da Ferramenta.md`  
@@ -23,7 +23,7 @@
 
 **Arquivo:** `content/orchestrator.md`
 
-**Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-projeto`.  
+**Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-produto`.  
 **Responsabilidades:** Ler `content/constitution.md` + `estado-projeto.yaml`, rotear para o sub-agente do marco corrente, gerenciar 4 gates, acionar detection-based recovery (D10) se `estado-projeto.yaml` ausente.
 
 ---
@@ -195,7 +195,7 @@
 
 **Arquivo:** `skills/faq-inicial/SKILL.md`
 
-**Descrição:** Responde dúvidas comuns do usuário antes de iniciar a documentação do projeto (o que será perguntado, quanto tempo leva, o que é gerado ao final). Invocada quando o usuário escolhe "Tenho dúvidas antes" no início de `/iniciar-projeto`.
+**Descrição:** Responde dúvidas comuns do usuário antes de iniciar a documentação do projeto (o que será perguntado, quanto tempo leva, o que é gerado ao final). Invocada quando o usuário escolhe "Tenho dúvidas antes" no início de `/iniciar-produto`.
 
 **Quando usar:** Quando o usuário sinaliza que tem dúvidas antes de começar. Invocada via orquestrador — não invocar diretamente. Pode ser re-invocada a pedido em qualquer ponto do fluxo.
 
@@ -273,7 +273,7 @@
 
 **Arquivo:** `skills/priorizacao/SKILL.md`
 
-**Descrição:** Atribui modal RFC 2119 (DEVE/DEVERIA/PODE) e campo de prioridade de negócio a cada RF e RNF classificado. Usa MoSCoW como base obrigatória; aciona Kano e IEEE como sub-rotinas automáticas conforme gatilhos (D9). Usuário nunca vê os nomes das técnicas.
+**Descrição:** Atribui prioridade MoSCoW (coluna única "Prioridade": Essencial/Importante/Desejável) a cada RF e RNF classificado; o modal RFC 2119 (DEVE/DEVERIA/PODE) é derivado internamente para o `requisito-ears` embutir na frase — não há coluna "Modal" separada. Aciona Kano e IEEE como sub-rotinas automáticas conforme gatilhos (D9). Usuário nunca vê os nomes das técnicas.
 
 **Quando usar:** Invocada pelo modeler no Passo 2 da Fase B após classificacao-rf-rnf. Entrada: rascunhos de 02.1-requisitos-funcionais.md e 02.2-requisitos-qualidade.md.
 
@@ -317,9 +317,9 @@
 
 **Arquivo:** `skills/requisito-ears/SKILL.md`
 
-**Descrição:** Formata todos os RFs e RNFs de M2 com sintaxe EARS (5 padrões) e modais RFC 2119 (DEVE/DEVERIA/PODE), gerando tabela estruturada com colunas: ID | Tipo-EARS | Sujeito | Modal | Verbo | Objeto | Condição | Modal-original. Base para srs-ireb-montagem.
+**Descrição:** Formata todos os RFs e RNFs de M2 com sintaxe EARS (5 padrões), montando a frase completa com o modal RFC 2119 (DEVE/DEVERIA/PODE) embutido. Gera tabela estruturada com colunas: ID | Tipo-EARS | Requisito (frase EARS) | Prioridade | Verificar? — sem coluna "Modal" separada. Base para srs-ireb-montagem.
 
-**Quando usar:** Invocada pelo documenter como Passo 1 do Processo M3. Entrada obrigatória: 02.1-requisitos-funcionais.md e 02.2-requisitos-qualidade.md com campos modal RFC 2119 já atribuídos pela skill priorizacao (M2).
+**Quando usar:** Invocada pelo documenter como Passo 1 do Processo M3. Entrada obrigatória: 02.1-requisitos-funcionais.md e 02.2-requisitos-qualidade.md com a coluna "Prioridade" já atribuída pela skill priorizacao (M2).
 
 ---
 
@@ -381,11 +381,11 @@
 
 ---
 
-#### iniciar-projeto
+#### iniciar-produto
 
-**Arquivo:** `skills/iniciar-projeto/SKILL.md`
+**Arquivo:** `skills/iniciar-produto/SKILL.md`
 
-**Descrição:** Entry-point único da ferramenta (`/iniciar-projeto`). Resolve `PLUGIN_ROOT` via `installed_plugins.json`, lê `content/orchestrator.md` e dispara o fluxo de marcos — internalizando constitution, verificando `estado-projeto.yaml` e carregando o slice do marco corrente.
+**Descrição:** Entry-point único da ferramenta (`/iniciar-produto`). Resolve `PLUGIN_ROOT` via `installed_plugins.json`, lê `content/orchestrator.md` e dispara o fluxo de marcos — internalizando constitution, verificando `estado-projeto.yaml` e carregando o slice do marco corrente.
 
 **Quando usar:** Sempre que o usuário inicia ou retoma a documentação de um projeto. Primeira skill de qualquer sessão.
 

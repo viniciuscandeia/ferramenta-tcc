@@ -7,7 +7,7 @@ when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: documento
 
 ## Filosofia desta skill (Regras Absolutas)
 
-1. **"—" vs "❌" é o controle de qualidade central.** "—" = ausência intencional por design (ex.: restrição sem modal). "❌" = gap real. Confundir os dois mascara gaps ou gera alarmes falsos para o checker.
+1. **"—" vs "❌" é o controle de qualidade central.** "—" = ausência intencional por design (ex.: restrição sem prioridade de requisito). "❌" = gap real. Confundir os dois mascara gaps ou gera alarmes falsos para o checker.
 2. **Gerar a matriz mesmo incompleta.** Célula "❌" é mais informativa que linha ausente. Omitir linha = silenciar gap = pior resultado que registrar o problema explicitamente.
 3. **Resumo de Gaps é obrigatório** — alimenta o checker para consolidação final e decisão de Gate 3.
 
@@ -59,15 +59,15 @@ Salvar como `documentos-tecnicos/03-documento/03.2-rastreabilidade.md`:
 > Forward tracing: Objetivo M1 → RF/RNF → Seção SRS → Stakeholder.
 > Backward tracing: qualquer "❌" indica gap na cadeia de rastreabilidade.
 
-| Objetivo M1 | RF/RNF | Modal | Seção SRS | Stakeholder |
+| Objetivo M1 | RF/RNF | Prioridade | Seção SRS | Stakeholder |
 |---|---|---|---|---|
-| OBJ-001 — Vender produtos online | RF-001 | DEVE | §3.1 | Artesão |
-| OBJ-001 — Vender produtos online | RF-003 | DEVE | §3.3 | Artesão, Comprador |
-| OBJ-002 — Pagamento online | RF-005 | DEVE | §3.5 | Comprador |
-| OBJ-003 — Gestão de estoque | RF-008 | DEVE | §3.8 | Artesão |
-| OBJ-003 — Gestão de estoque | RF-009 | DEVERIA | §3.9 | Artesão |
-| OBJ-004 — Segurança de dados | RNF-002 | DEVE | §4.2 | Todos |
-| OBJ-004 — Segurança de dados | RNF-003 | DEVE | §4.3 | Todos |
+| OBJ-001 — Vender produtos online | RF-001 | Essencial | §3.1 | Artesão |
+| OBJ-001 — Vender produtos online | RF-003 | Essencial | §3.3 | Artesão, Comprador |
+| OBJ-002 — Pagamento online | RF-005 | Essencial | §3.5 | Comprador |
+| OBJ-003 — Gestão de estoque | RF-008 | Essencial | §3.8 | Artesão |
+| OBJ-003 — Gestão de estoque | RF-009 | Importante | §3.9 | Artesão |
+| OBJ-004 — Segurança de dados | RNF-002 | Essencial | §4.2 | Todos |
+| OBJ-004 — Segurança de dados | RNF-003 | Essencial | §4.3 | Todos |
 | OBJ-005 — [objetivo sem RF] | ❌ Nenhum RF encontrado | — | — | — |
 | OBJ-001 — Vender produtos online | REST-001 | — | §5.1 | Artesão |
 
@@ -91,9 +91,9 @@ Gaps não reportados em `analyze-cross-artifact` devem ser considerados na conso
 <!-- internal -->
 ## Anti-Padrão: Ausência Intencional Marcada como Gap
 
-**Como acontece:** REST-001 (restrição) não tem modal RFC 2119 → coluna Modal marcada "❌" → reportado como gap → checker escala desnecessariamente, poluindo o relatório com falso positivo.
+**Como acontece:** REST-001 (restrição) não é um requisito priorizável → coluna Prioridade marcada "❌" → reportado como gap → checker escala desnecessariamente, poluindo o relatório com falso positivo.
 
-**Como detectar:** "❌" em coluna que, para aquele tipo de item, é ausência por design (restrições não têm modal; premissas não têm seção de requisito).
+**Como detectar:** "❌" em coluna que, para aquele tipo de item, é ausência por design (restrições não têm prioridade de requisito; premissas não têm seção de requisito).
 
 **O que fazer:** Ausência por design → registrar "—", não "❌". "❌" é reservado para quebra real da cadeia: objetivo sem RF, RF/RNF sem seção no SRS, item sem stakeholder identificável.
 <!-- /internal -->

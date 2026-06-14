@@ -29,6 +29,14 @@ EXCLUIR_PASTAS_TECNICO=(
   "02-requisitos"
 )
 
+# Pastas excluídas do PDF do CLIENTE:
+# O cliente recebe apenas o resumo do produto (01-visao/). Os requisitos
+# detalhados (02-requisitos/) e o documento completo (03-documento/) ficam fora.
+EXCLUIR_PASTAS_CLIENTE=(
+  "02-requisitos"
+  "03-documento"
+)
+
 # ---------------------------------------------------------------------------
 # Argumentos
 # ---------------------------------------------------------------------------
@@ -87,28 +95,21 @@ if command -v kpsewhich &>/dev/null && kpsewhich fvextra.sty &>/dev/null; then
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{%
   breaklines=true,breakanywhere=true,commandchars=\\\{\}}
 
-% Fix 2 — código inline (\texttt{...}):
-%   Scanner token-a-token: insere \discretionary (ponto de quebra zero-custo)
-%   após / . -  sem afetar o conteúdo já escapado pelo pandoc (\_ \# etc.).
-%   Sentinel: \chardef único, nunca produzido por conteúdo normal.
-\makeatletter
-\let\ferr@orig@texttt\texttt
-\renewcommand{\texttt}[1]{%
-  \ferr@orig@texttt{\ferr@ttscan#1\ferr@ttend}%
-}
-\chardef\ferr@ttend=0
-\def\ferr@ttscan#1{%
-  \ifx#1\ferr@ttend\else
-    #1%
-    \if#1/\discretionary{}{}{}\fi
-    \if#1.\discretionary{}{}{}\fi
-    \if#1-\discretionary{}{}{}\fi
-    \expandafter\ferr@ttscan
-  \fi
-}
-\makeatother
+% Fix 2 — quebra de código inline (\texttt{...}) longo:
+%   REMOVIDO. A versão anterior redefinia \texttt com um scanner token-a-token
+%   que inseria \discretionary após / . -. Esse scanner vazava para "moving
+%   arguments" (títulos de seção → arquivo .toc e bookmarks do hyperref),
+%   gerando \discretionary literal no .toc e o erro FATAL
+%   "Improper discretionary list" / "Missing { inserted" — que impedia a
+%   geração do PDF técnico (o .toc inclui §3/§4 com caminhos em código inline).
+%   Tentativas de blindar (\DeclareRobustCommand) causavam loop infinito na
+%   geração de bookmarks. Como o ganho era apenas cosmético (caminhos longos
+%   quebrando na margem) e o custo era o PDF inteiro falhar, o fix foi removido.
+%   Mitigação de overflow residual: \emergencystretch abaixo (Fix 3) + \sloppy.
+\sloppy
 
-% Fix 3 — rede de segurança para overflows residuais
+% Fix 3 — rede de segurança para overflows residuais (inclui caminhos longos
+%   em código inline, antes tratados pelo Fix 2)
 \setlength{\emergencystretch}{10em}
 
 % Fix 4 — imagens (incluindo diagramas Mermaid) escaladas para caber na página
@@ -309,9 +310,11 @@ _convert() {
 }
 
 # Construir PDF a partir de uma pasta de documentos
-# _gerar_pdf <pasta_docs> <out_pdf> <titulo_capa> <excluir_internos: true|false>
+# _gerar_pdf <pasta_docs> <out_pdf> <titulo_capa> <perfil: cliente|tecnico>
+#   cliente — só o resumo do produto (exclui 02-requisitos/ e 03-documento/)
+#   tecnico — entregáveis (exclui internos + 01-visao/ + 02-requisitos/)
 _gerar_pdf() {
-  local pasta="$1" out_pdf="$2" titulo="$3" excluir_internos="$4"
+  local pasta="$1" out_pdf="$2" titulo="$3" perfil="$4"
   local tmp_md tmp_img_dir
   tmp_md="$(mktemp /tmp/ferramenta_tcc_XXXXXX)"
   tmp_img_dir="$(mktemp -d /tmp/ferramenta_tcc_imgs_XXXXXX)"
@@ -328,26 +331,32 @@ _gerar_pdf() {
     echo ""
   } > "$tmp_md"
 
+  # Selecionar pastas a excluir conforme o perfil
+  local -a _pastas_excluidas=()
+  if [[ "$perfil" == "tecnico" ]]; then
+    _pastas_excluidas=("${EXCLUIR_PASTAS_TECNICO[@]}")
+  elif [[ "$perfil" == "cliente" ]]; then
+    _pastas_excluidas=("${EXCLUIR_PASTAS_CLIENTE[@]}")
+  fi
+
   # Coletar arquivos em ordem canônica (prefixos numéricos garantem sort correto)
   local -a arquivos=()
   while IFS= read -r -d '' f; do
     # Excluir arquivos _internos (prefixo _)
     [[ "$(basename "$f")" == _* ]] && continue
-    # Excluir padrões internos do técnico, se solicitado
-    if [[ "$excluir_internos" == "true" ]] && _excluido "$f"; then
+    # Excluir padrões internos (somente perfil técnico)
+    if [[ "$perfil" == "tecnico" ]] && _excluido "$f"; then
       continue
     fi
-    # Excluir pastas M1/M2 do PDF técnico (SRS é o primeiro documento entregue)
-    if [[ "$excluir_internos" == "true" ]]; then
-      local _excluir_pasta=false
-      for _pasta_excl in "${EXCLUIR_PASTAS_TECNICO[@]}"; do
-        if [[ "$f" == *"/$_pasta_excl/"* ]]; then
-          _excluir_pasta=true
-          break
-        fi
-      done
-      [[ "$_excluir_pasta" == "true" ]] && continue
-    fi
+    # Excluir pastas conforme o perfil (técnico: 01/02; cliente: 02/03)
+    local _excluir_pasta=false
+    for _pasta_excl in "${_pastas_excluidas[@]+"${_pastas_excluidas[@]}"}"; do
+      if [[ "$f" == *"/$_pasta_excl/"* ]]; then
+        _excluir_pasta=true
+        break
+      fi
+    done
+    [[ "$_excluir_pasta" == "true" ]] && continue
     arquivos+=("$f")
   done < <(find "$pasta" -maxdepth 4 -name '*.md' -print0 | sort -z)
 
@@ -388,7 +397,7 @@ erros=()
 PASTA_LEIGO="$PROJETO_DIR/documentos-para-leigo"
 OUT_CLIENTE="$PDF_DIR/documentacao-cliente.pdf"
 if [[ -d "$PASTA_LEIGO" ]]; then
-  if _gerar_pdf "$PASTA_LEIGO" "$OUT_CLIENTE" "Visão do Produto — $NOME_PROJETO" "false"; then
+  if _gerar_pdf "$PASTA_LEIGO" "$OUT_CLIENTE" "Visão do Produto — $NOME_PROJETO" "cliente"; then
     [[ -f "$OUT_CLIENTE" ]] && gerados+=("$OUT_CLIENTE")
   else
     erros+=("documentacao-cliente.pdf")
@@ -399,7 +408,7 @@ fi
 PASTA_TEC="$PROJETO_DIR/documentos-tecnicos"
 OUT_TEC="$PDF_DIR/documentacao-tecnica.pdf"
 if [[ -d "$PASTA_TEC" ]]; then
-  if _gerar_pdf "$PASTA_TEC" "$OUT_TEC" "Documentação Técnica — $NOME_PROJETO" "true"; then
+  if _gerar_pdf "$PASTA_TEC" "$OUT_TEC" "Documentação Técnica — $NOME_PROJETO" "tecnico"; then
     [[ -f "$OUT_TEC" ]] && gerados+=("$OUT_TEC")
   else
     erros+=("documentacao-tecnica.pdf")

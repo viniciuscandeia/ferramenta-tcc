@@ -78,8 +78,8 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 
 1. **Todo texto é leigo (D1 aplica):** proibido nome de skill, agente, marco ou gate nos todos. Usar apenas frases-objetivo (ex.: "Descobrir quem usa e quem tem interesse").
 2. **Frases-objetivo, nunca verbos de processo:** itens são substantivo/infinitivo descrevendo o resultado, não a ação interna. Andamento vai no `status` (`pending` / `in_progress` / `completed`), não no texto.
-3. **Só etapa corrente:** materializar apenas os sub-passos da etapa em andamento. Nunca criar todos de etapas futuras antes do gate anterior ser aprovado (consistente com `orchestrator.md:104-106`).
-4. **Crescimento histórico:** ao aprovar um gate, marcar todos da etapa atual como `completed` e **acrescentar** os sub-passos da próxima etapa. A lista nunca é recriada do zero — só cresce.
+3. **Marco atual inteiro, de uma vez:** ao entrar numa etapa, semear **todos** os sub-passos não-condicionais dela na mesma chamada `TodoWrite` (primeiro `in_progress`, demais `pending`). Nunca semear etapas futuras antes do gate anterior ser aprovado. Passos condicionais (ex.: esclarecimento M1, fechar-pontas M2) só entram quando o gatilho dispara.
+4. **Substituição por marco (não acumular):** ao aprovar um gate e entrar na próxima etapa, **recriar** a lista do `TodoWrite` apenas com os sub-passos da nova etapa — os da etapa anterior (já `completed`) saem da lista. A lista **nunca** mistura passos de etapas diferentes (evita "vazamento" de passos de uma etapa em outra).
 5. **Loop-back cirúrgico:** em loop M2/M3, reverter **apenas** o todo do passo afetado para `in_progress`. Não recriar a lista.
 6. **M4 nunca é semeado** a menos que o usuário solicite revisão técnica explicitamente.
 7. **Enforcement:** `scripts/todo_guard.sh` (hook `PreToolUse` em `TodoWrite`) verifica blacklist D1 nos textos dos todos antes de qualquer chamada `TodoWrite`. Bloqueia e solicita reescrita se encontrar jargão.
@@ -145,12 +145,25 @@ Se o modelo detectar que está prestes a marcar um gate como aprovado sem cumpri
 | Gate 3 | Usuário aprova versão leigo do SRS **E** `analyze-report.md` sem issues CRITICAL | Avançar para M4 (opcional) ou encerrar |
 | Gate 4 (opcional) | Dev/tech lead aprova `aprovacao-tecnica.md` | Encerrar |
 
-**Loop M2 collector ⇄ modeler:** sem teto fixo. O loop encerra SOMENTE quando `pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). Itens `[ ]` abertos são BLOQUEADORES: o Gate 2 jamais abre com pendência aberta — não existe opção de "seguir assim". A partir da 3ª rodada, se ainda houver itens `[ ]`, apresentar ao usuário (choice): "Ainda há pontos em aberto que precisam de resposta antes de fechar esta etapa. Quer continuar agora ou pausar e retomar depois?" — `"Continuar agora"` → nova rodada; `"Pausar e retomar depois"` → salvar estado (+ `.draft` se houver artefato em andamento) e encerrar a sessão amigavelmente; a retomada via `/iniciar-projeto` continua o loop do ponto onde parou. Modo express: o teto de 1 rodada vale para o refinamento opcional — itens `[ ]` abertos continuam exigindo rodadas extras.
+**Loop M2 collector ⇄ modeler:** sem teto fixo. O loop encerra SOMENTE quando `pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). Itens `[ ]` abertos são BLOQUEADORES: o Gate 2 jamais abre com pendência aberta — não existe opção de "seguir assim". A partir da 3ª rodada, se ainda houver itens `[ ]`, apresentar ao usuário (choice): "Ainda há pontos em aberto que precisam de resposta antes de fechar esta etapa. Quer continuar agora ou pausar e retomar depois?" — `"Continuar agora"` → nova rodada; `"Pausar e retomar depois"` → escrever `sessao_pausada: true` em `estado-projeto.yaml`, salvar estado (+ `.draft` se houver artefato em andamento) e encerrar a sessão amigavelmente; a retomada via `/iniciar-produto` continua o loop do ponto onde parou. Modo express: o teto de 1 rodada vale para o refinamento opcional — itens `[ ]` abertos continuam exigindo rodadas extras.
 
-**Loop M3 documenter ⇄ checker:** sem teto fixo. O loop encerra SOMENTE quando `analyze-report.md` não tiver issues CRITICAL (convergência). Issues CRITICAL são BLOQUEADORES: o Gate 3 jamais abre com CRITICAL aberto — não existe opção de "seguir assim". A partir da 3ª rodada, se CRITICAL persistir, apresentar ao usuário (choice): "Ainda há pontos que precisam de revisão antes de fechar esta etapa. Quer continuar agora ou pausar e retomar depois?" — `"Continuar agora"` → nova rodada; `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente; a retomada via `/iniciar-projeto` continua o loop. Campo `loop_m3_iteracoes: N` em `estado-projeto.yaml`.
+**Loop M3 documenter ⇄ checker:** sem teto fixo. O loop encerra SOMENTE quando `analyze-report.md` não tiver issues CRITICAL (convergência). Issues CRITICAL são BLOQUEADORES: o Gate 3 jamais abre com CRITICAL aberto — não existe opção de "seguir assim". A partir da 3ª rodada, se CRITICAL persistir, apresentar ao usuário (choice): "Ainda há pontos que precisam de revisão antes de fechar esta etapa. Quer continuar agora ou pausar e retomar depois?" — `"Continuar agora"` → nova rodada; `"Pausar e retomar depois"` → escrever `sessao_pausada: true` em `estado-projeto.yaml`, salvar estado e encerrar amigavelmente; a retomada via `/iniciar-produto` continua o loop. Campo `loop_m3_iteracoes: N` em `estado-projeto.yaml`.
 
 **Loops dentro de marco:** permitidos sem restrição.
 **Loops entre marcos:** proibidos sem gate aprovado.
+
+---
+
+## CONTRATO DE CONTINUAÇÃO — NÃO ENCERRAR CEDO (D27)
+
+O turno **só pode terminar** em um destes 3 estados terminais:
+1. Há um `AskUserQuestion` aguardando resposta do usuário; **ou**
+2. `marco_corrente: concluido` em `estado-projeto.yaml`; **ou**
+3. `sessao_pausada: true` (o usuário pediu pausa explicitamente).
+
+Em **qualquer outro estado** (marco em andamento, sem pergunta pendente, sem pausa), o orquestrador **encadeia o próximo passo** — invoca a próxima skill/etapa — em vez de encerrar o turno. Concluir uma skill da cadeia **não** é fim de turno: as instruções "⚡ AÇÃO OBRIGATÓRIA — invocar próxima skill" são vinculantes.
+
+**Enforcement:** `scripts/stop_guard.sh` (hook `Stop`) bloqueia o encerramento (exit 2) sempre que o turno tentar terminar com projeto em andamento e sem pausa, devolvendo o controle ao modelo para continuar. Encerrar sem cumprir um dos 3 estados terminais é falha do orquestrador (bug "encerrou sozinho, sem mensagem").
 
 ---
 

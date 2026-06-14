@@ -1,7 +1,7 @@
 # Casos de Teste — Marco 1: Definição da Necessidade (v0.7.0)
 
 Três casos canônicos para verificação do workflow M1 (`stakeholder-identifier`).
-Cada caso parte do zero — simula a primeira interação do usuário com `/iniciar-projeto`.
+Cada caso parte do zero — simula a primeira interação do usuário com `/iniciar-produto`.
 
 **Sequência esperada em todos os casos:** `necessidade-visao` → `stakeholder-mapping` → `contexto-e-limite` → [`clarificacao-pos-visao`] → `traducao-gate` → Gate 1
 

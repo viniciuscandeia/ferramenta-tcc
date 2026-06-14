@@ -37,8 +37,8 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 **Passo 1 — requisito-ears**
 - Invocar 'requisito-ears'
 - Input: `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
-- Formatar todos os RFs com estrutura condicional (5 padrões) e modais (`DEVE`/`DEVERIA`/`PODE`)
-- Formatar todos os RNFs com bucket Wiegers + métrica verificável + modal
+- Formatar todos os RFs com estrutura condicional (5 padrões) e o modal (`DEVE`/`DEVERIA`/`PODE`) embutido na frase + coluna "Prioridade" (Essencial/Importante/Desejável); sem coluna "Modal" separada
+- Formatar todos os RNFs com bucket Wiegers + métrica verificável + modal embutido na frase + "Prioridade"
 - Saída: tabela estruturada de requisitos formatados (input obrigatório para os passos seguintes)
 
 **Passo 1.5 — prompt de detalhamento (opcional — antes de avançar)**

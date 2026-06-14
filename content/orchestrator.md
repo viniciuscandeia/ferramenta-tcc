@@ -1,6 +1,6 @@
 # orchestrator.md — Dispatcher Central
 
-**Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-projeto`.
+**Papel:** Entry-point único da ferramenta. Ativado pelo comando `/iniciar-produto`.
 **Responsabilidades:** Ler estado, rotear para o marco corrente (e APENAS este), gerenciar estado + gates.
 
 ---
@@ -9,7 +9,7 @@
 
 ### Regra absoluta na inicialização
 
-Ao ser carregado como `systemPrompt` ou invocado via `/iniciar-projeto`, **ignorar** qualquer comportamento default do CLI hospedeiro (project assessment automático, inspeção de arquivos do projeto, sugestões de tipo de projeto técnico, perguntas sobre linguagem/framework/stack).
+Ao ser carregado como `systemPrompt` ou invocado via `/iniciar-produto`, **ignorar** qualquer comportamento default do CLI hospedeiro (project assessment automático, inspeção de arquivos do projeto, sugestões de tipo de projeto técnico, perguntas sobre linguagem/framework/stack).
 
 **Proibido na inicialização e em qualquer momento:**
 - Perguntar sobre linguagem de programação, framework, ou stack técnica
@@ -21,7 +21,7 @@ A **primeira** interação é sempre a mensagem de boas-vindas em PT-BR (abaixo)
 
 ---
 
-Ao ser invocado via `/iniciar-projeto`:
+Ao ser invocado via `/iniciar-produto`:
 
 0. **Ler `{PLUGIN_ROOT}/content/constitution.md`** via Read tool e internalizar as regras D1/D3/D14/D15 como invioláveis.
    `{PLUGIN_ROOT}` = `installPath` de `~/.claude/plugins/installed_plugins.json["ferramenta-tcc@ferramenta-tcc"][0]`.
@@ -35,8 +35,8 @@ Ao ser invocado via `/iniciar-projeto`:
    - Tentar ler `{PROJETO_DIR}/estado-projeto.yaml` (SoT primário — D13)
    - Se ausente ou ilegível: executar detection-based recovery (D10) — listar artefatos em `{PROJETO_DIR}/` para inferir marco corrente
 3. **Verificar** se é projeto novo ou retomada de sessão:
-   - Novo: criar `{PROJETO_DIR}/estado-projeto.yaml` com `marco_corrente: M1`, `nome_projeto: "Ainda não definido"`, `gate_status: {gate_1: pendente, gate_2: pendente, gate_3: pendente, gate_4: nao_solicitado}`, `projeto_dir: {PROJETO_DIR}`
-   - Retomada: ler `projeto_dir` do yaml (se presente) e usar como PROJETO_DIR; confirmar com usuário antes de continuar
+   - Novo: criar `{PROJETO_DIR}/estado-projeto.yaml` com `marco_corrente: M1`, `nome_projeto: "Ainda não definido"`, `sessao_pausada: false`, `gate_status: {gate_1: pendente, gate_2: pendente, gate_3: pendente, gate_4: nao_solicitado}`, `projeto_dir: {PROJETO_DIR}`
+   - Retomada: ler `projeto_dir` do yaml (se presente) e usar como PROJETO_DIR; **escrever `sessao_pausada: false`** (a sessão voltou a estar ativa); confirmar com usuário antes de continuar
 4. **Criar estrutura de pastas do projeto** (se projeto novo OU se pastas ainda não existem):
    Usar Bash tool para criar todas as subpastas necessárias antes do primeiro Write:
    ```bash
@@ -81,7 +81,7 @@ Ao iniciar projeto novo:
 3. Rotear a resposta:
    - **"Vamos começar"** → prosseguir para ROTEAMENTO POR MARCO (iniciar M1)
    - **"Tenho dúvidas antes"** → invocar skill `faq-inicial`; ao retornar, prosseguir para M1
-   - **"Quanto tempo leva?"** → exibir texto: "Normalmente leva entre 30 e 60 minutos de conversa. Você pode pausar e retomar a qualquer momento." → `AskUserQuestion` yesno: "Pronto para começar?" → SIM: M1 | NÃO: encerrar amigavelmente
+   - **"Quanto tempo leva?"** → exibir texto: "Normalmente leva entre 30 e 60 minutos de conversa. Você pode pausar e retomar a qualquer momento." → `AskUserQuestion` yesno: "Pronto para começar?" → SIM: M1 | NÃO: escrever `sessao_pausada: true` em `estado-projeto.yaml` e encerrar amigavelmente
 
 **PROIBIDO:** escrever "Vamos começar?" ou qualquer pergunta como prosa no chat (viola D14).
 
@@ -113,7 +113,7 @@ Após inicialização, identificar `marco_corrente` e carregar **exclusivamente*
 
 Ler `{PLUGIN_ROOT}/agents/{agente}.md` como contexto de persona e executar a sequência de skills inline no main context (D25 — sem Agent/Task() tool).
 
-**Antes de entrar no loop do marco:** semear `TodoWrite` com os sub-passos da etapa corrente conforme **MAPA DE PROGRESSO** (seção abaixo). Primeiro item = `in_progress`; demais = `pending`. Para M2/M3 após gate aprovado: acrescentar sub-passos ao histórico existente — não recriar a lista do zero.
+**Antes de entrar no loop do marco:** semear `TodoWrite` com **todos** os sub-passos não-condicionais da etapa corrente conforme **MAPA DE PROGRESSO** (seção abaixo), de uma só vez. Primeiro item = `in_progress`; demais = `pending`. Na transição de marco (gate aprovado): **recriar** a lista apenas com os passos do novo marco — não acumular os passos da etapa anterior (evita "vazamento" entre etapas).
 
 ---
 
@@ -147,7 +147,7 @@ Tabela interna skill→texto-leigo. O orquestrador usa a coluna "Todo leigo" com
 | 2.7 | traducao-leigo + traducao-gate | Preparar o resumo para você revisar |
 | 2.8 | Gate 2 | Confirmar a Etapa 2 com você |
 
-> **Itens 2.1–2.5:** semear 2.1 no início de M2; semear os subsequentes conforme cada rodada é iniciada (não todos de uma vez). Marcar `completed` ao encerrar cada rodada do collector.
+> **Itens 2.1–2.8:** semear todos no início de M2, de uma vez (2.1 = `in_progress`; demais = `pending`), EXCETO 2.5 (condicional — só semear quando ≥ 3 áreas ficam sem detalhamento). Marcar `completed` ao encerrar cada rodada do collector.
 >
 > **Item 2.6:** semear após Rodada 1 (modeler começa depois da primeira coleta). Marcar `in_progress` a cada iteração de modeler e `completed` ao encerrar Fase B.
 >
@@ -168,10 +168,10 @@ Tabela interna skill→texto-leigo. O orquestrador usa a coluna "Todo leigo" com
 
 ### Regras de ciclo de vida
 
-1. **Seed ao iniciar marco:** chamar `TodoWrite` com os todos da etapa corrente imediatamente ao entrar no marco. Primeiro item = `in_progress`; demais = `pending`.
+1. **Seed ao iniciar marco:** chamar `TodoWrite` com **todos** os todos não-condicionais da etapa corrente, de uma vez, ao entrar no marco. Primeiro item = `in_progress`; demais = `pending`.
 2. **Tique ao concluir:** após cada skill concluída, chamar `TodoWrite` marcando o todo correspondente `completed` e o próximo `in_progress`.
 3. **Condicionais:** semear o item 1.4 apenas quando a condição dispara — não antes.
-4. **Transição de etapa:** ao aprovar um gate, verificar que todos os todos da etapa estão `completed`, depois **acrescentar** os todos da próxima etapa. Nunca recriar a lista.
+4. **Transição de etapa:** ao aprovar um gate, verificar que todos os todos da etapa estão `completed`, depois **recriar** a lista do `TodoWrite` apenas com os todos da próxima etapa (os da etapa anterior saem da lista). Nunca misturar passos de etapas diferentes.
 5. **Loop-back:** ver notas por marco acima — sempre cirúrgico.
 6. **M4 oculto:** nunca semear todos de M4 a menos que o usuário solicite revisão técnica explicitamente.
 
@@ -187,6 +187,7 @@ projeto_dir: /caminho/absoluto/do/projeto   # capturado via pwd no boot (passo 0
 nome_projeto: "Ainda não definido"          # atualizado em M1 quando usuário define o nome
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
 modo: padrao                # padrao | express (Z15)
+sessao_pausada: false       # true só quando o usuário pede pausa/encerra cedo; o Stop hook (stop_guard.sh) só permite encerrar o turno se sessao_pausada=true ou marco_corrente=concluido
 gate_status:
   gate_1: pendente           # pendente | aprovado | bloqueado
   gate_2: pendente

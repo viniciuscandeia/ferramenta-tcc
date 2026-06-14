@@ -61,7 +61,7 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
 **Passo 2 — priorizacao**
 - Invocar 'priorizacao'
 - Input: rascunhos do Passo 1
-- Atribuir modal RFC 2119 (`DEVE`/`DEVERIA`/`PODE`) e campo MoSCoW a cada RF/RNF
+- Atribuir prioridade MoSCoW (Essencial/Importante/Desejável) a cada RF/RNF — coluna única "Prioridade"; o modal (`DEVE`/`DEVERIA`/`PODE`) é derivado internamente para o `requisito-ears` embutir na frase (sem coluna "Modal")
 - Gatilhos automáticos (D-S4.2):
   - Kano: ativar se RFs `DEVERIA`/`PODE` ≥ 8 **e** stakeholders distintos ≥ 2
   - IEEE: ativar se RFs+RNFs ≥ 25 **e** `documentos-tecnicos/02-requisitos/02.3-restricoes.md` contém restrição de prazo fixo

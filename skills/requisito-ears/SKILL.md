@@ -10,19 +10,19 @@ description: >-
 ## Filosofia desta skill (Regras Absolutas)
 
 1. **Crítico de forma** — RF sem sujeito + verbo + objeto não é requisito, é intenção. Decomposição EARS é obrigatória. Item que não se decompõe recebe flag `[VERIFICAR]` — nunca é omitido silenciosamente.
-2. **Preservar modal original, não reinterpretar.** O modal vem de `priorizacao` (M2). Esta skill formata, não reprioriza.
+2. **Preservar a prioridade original, não reinterpretar.** A prioridade (Essencial/Importante/Desejável) vem de `priorizacao` (M2) e determina o modal embutido na frase (Essencial→DEVE, Importante→DEVERIA, Desejável→PODE). Esta skill formata, não reprioriza.
 3. **Ubíquo é padrão residual.** Usar apenas quando nenhum dos outros 4 padrões EARS se aplica. Classificação prematura como Ubíquo mascara condições que deveriam ser Evento ou Estado.
 
 <HARD-GATE>
-- NÃO executar antes de Gate 2 aprovado (verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campo modal preenchido)
-- NÃO executar se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` não tem nenhum item com modal `DEVE` (sem itens DEVE = nenhum requisito obrigatório — indica erro de priorização em M2; retornar ao orquestrador)
+- NÃO executar antes de Gate 2 aprovado (verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` com campo de prioridade preenchido)
+- NÃO executar se `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` não tem nenhum item com prioridade `Essencial` (sem itens Essencial = nenhum requisito obrigatório — indica erro de priorização em M2; retornar ao orquestrador)
 - ⛔ STOP se contagem de itens na saída ≠ contagem de entrada — omissão silenciosa proibida
 </HARD-GATE>
 
 ## Fase 0 — Inicialização
 
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
-2. Verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existem com campo modal preenchido
+2. Verificar `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` e `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md` existem com campo de prioridade preenchido
 3. Contar itens de entrada para verificação de completude na Fase 2
 
 ## Fase 1 — Formatação EARS
@@ -37,20 +37,20 @@ description: >-
 | 4 | **Opcional** | "onde [recurso disponível]" | "Onde [recurso], o sistema [Modal] [verbo] [objeto]" |
 | 5 | **Ubíquo** | nenhum dos anteriores | "O sistema [Modal] [verbo] [objeto]" |
 
-**Modais RFC 2119:**
+**Modais RFC 2119 (referência interna — o modal vai DENTRO da frase, nunca em coluna própria):**
 
-| Modal | Força | EN |
-|---|---|---|
-| `DEVE` | Obrigatório | MUST |
-| `DEVERIA` | Recomendado | SHOULD |
-| `PODE` | Opcional | MAY |
+| Modal | Força | EN | Prioridade MoSCoW de origem |
+|---|---|---|---|
+| `DEVE` | Obrigatório | MUST | Essencial |
+| `DEVERIA` | Recomendado | SHOULD | Importante |
+| `PODE` | Opcional | MAY | Desejável |
 
-**Por RF:** detectar padrão → decompor em Sujeito/Verbo/Objeto/Condição → registrar linha.
-Item com padrão ambíguo ou descrição vaga → coluna Condição recebe `[VERIFICAR]`.
+**Por RF:** detectar padrão → montar a **frase EARS completa** (com o modal embutido) → registrar a frase + a prioridade vinda de `priorizacao`. Não criar coluna "Modal" separada.
+Item com padrão ambíguo ou descrição vaga → marcar `[VERIFICAR]`.
 
-**Por RNF:** não aplicar padrão EARS estrutural. Formatar como linha de qualidade: ID | Bucket | Sujeito | Modal | Comportamento | Métrica.
+**Por RNF:** não aplicar padrão EARS estrutural. Formatar como linha de qualidade com o modal embutido na frase do comportamento: ID | Bucket | Comportamento (frase, com DEVE/DEVERIA/PODE) | Prioridade | Métrica.
 
-Sujeito é sempre "O sistema" (EARS canônico). Sem interação com usuário.
+Sujeito é sempre "O sistema" (EARS canônico), embutido na frase. Sem interação com usuário.
 
 ## Fase 2 — Saída
 
@@ -59,21 +59,23 @@ Sujeito é sempre "O sistema" (EARS canônico). Sem interação com usuário.
 
 ## Funcionais
 
-| ID | Tipo-EARS | Sujeito | Modal | Verbo | Objeto | Condição |
-|---|---|---|---|---|---|---|
-| RF-001 | Ubíquo | O sistema | DEVE | permitir | cadastro de produto | — |
-| RF-002 | Evento | O sistema | DEVE | enviar | confirmação por e-mail | Quando um pedido for concluído |
-| RF-003 | Indesejado | O sistema | DEVE | exibir | mensagem de erro detalhada | Se o pagamento falhar |
-| RF-004 | Estado | O sistema | DEVERIA | bloquear | novas requisições | Enquanto o limite de sessões for atingido |
-| RF-005 | Opcional | O sistema | PODE | exportar | relatório em PDF | Onde o módulo de relatórios estiver habilitado |
-| RF-006 | Ubíquo | O sistema | DEVE | [descrição vaga] | [VERIFICAR] | — |
+| ID | Tipo-EARS | Requisito (frase EARS) | Prioridade | Verificar? |
+|---|---|---|---|---|
+| RF-001 | Ubíquo | O sistema DEVE permitir o cadastro de produto | Essencial | — |
+| RF-002 | Evento | Quando um pedido for concluído, o sistema DEVE enviar confirmação por e-mail | Essencial | — |
+| RF-003 | Indesejado | Se o pagamento falhar, o sistema DEVE exibir mensagem de erro detalhada | Essencial | — |
+| RF-004 | Estado | Enquanto o limite de sessões for atingido, o sistema DEVERIA bloquear novas requisições | Importante | — |
+| RF-005 | Opcional | Onde o módulo de relatórios estiver habilitado, o sistema PODE exportar relatório em PDF | Desejável | — |
+| RF-006 | Ubíquo | O sistema DEVE [descrição vaga] | Essencial | [VERIFICAR] |
 
 ## Qualidade
 
-| ID | Bucket | Sujeito | Modal | Comportamento | Métrica |
-|---|---|---|---|---|---|
-| RNF-001 | Desempenho | O sistema | DEVE | responder a requisições | < 2s para 95% das chamadas |
-| RNF-002 | Disponibilidade | O sistema | DEVE | estar disponível | 99,5% em 30 dias |
+| ID | Bucket | Comportamento (frase) | Prioridade | Métrica |
+|---|---|---|---|---|
+| RNF-001 | Desempenho | O sistema DEVE responder a requisições | Essencial | < 2s para 95% das chamadas |
+| RNF-002 | Disponibilidade | O sistema DEVE estar disponível | Essencial | 99,5% em 30 dias |
+
+> **Legenda de prioridade (MoSCoW):** Essencial (Must) · Importante (Should) · Desejável (Could) · Fora desta versão (Won't). O verbo de obrigatoriedade (DEVE/DEVERIA/PODE) está embutido na própria frase do requisito — não há coluna "Modal".
 ```
 
 Verificar: contagem saída == contagem entrada (RF + RNF). Se divergir: ⛔ STOP — localizar item omitido antes de prosseguir.

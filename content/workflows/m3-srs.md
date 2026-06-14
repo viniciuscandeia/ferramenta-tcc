@@ -130,7 +130,7 @@ ENTRADA (artefatos M1+M2 aprovados)
 
 ## REGRAS DO LOOP M3
 
-1. **Loop dinâmico:** encerra automaticamente quando `analyze-report.md` não tiver issues CRITICAL (convergência). CRITICAL é bloqueador — o Gate 3 não abre com CRITICAL aberto. A partir da 3ª rodada, se CRITICAL persistir, oferecer ao usuário (choice): `"Continuar agora"` → nova rodada | `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente (a retomada via `/iniciar-projeto` continua o loop). Nunca oferecer "seguir assim".
+1. **Loop dinâmico:** encerra automaticamente quando `analyze-report.md` não tiver issues CRITICAL (convergência). CRITICAL é bloqueador — o Gate 3 não abre com CRITICAL aberto. A partir da 3ª rodada, se CRITICAL persistir, oferecer ao usuário (choice): `"Continuar agora"` → nova rodada | `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente (a retomada via `/iniciar-produto` continua o loop). Nunca oferecer "seguir assim".
 2. **Documenter modo correção:** recebe `documentos-tecnicos/03-documento/03.1-analyze-report.md` com lista de CRITICAL; executa **apenas** as skills afetadas (não refaz toda a Fase A)
    - Issues IREB §3.8 → refazer [A1] e/ou [A3] para os RFs/RNFs afetados
    - Issues de diagramas → refazer [A2] e [A3]

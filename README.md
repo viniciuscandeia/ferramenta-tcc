@@ -1,4 +1,6 @@
-# ferramenta-tcc
+# Assistente de Especificação de Software
+
+> Identificador do plugin no Claude Code: `ferramenta-tcc`
 
 Ferramenta de elicitação e documentação de requisitos para stakeholder leigo.
 Conduz o usuário por perguntas estruturadas e gera SRS no padrão IREB §3.3.3
@@ -210,7 +212,7 @@ git -C <pasta-do-projeto> log --follow documentos-tecnicos/02-requisitos/02.1-re
 Em qualquer diretório de projeto vazio:
 
 ```
-/iniciar-projeto
+/iniciar-produto
 ```
 
 O orquestrador conduz o processo de 4 marcos (Definição → Consenso → Detalhamento → Revisão Técnica opcional).
@@ -270,7 +272,7 @@ Checklists de critérios em `tests/marco-{1,2,3,4}/checklist.md`.
 
 Procedimento E2E:
 1. Criar pasta `tests/marco-1/execucoes/execucao-01-<descritor>/`
-2. Executar `/iniciar-projeto` nessa pasta com o input do caso
+2. Executar `/iniciar-produto` nessa pasta com o input do caso
 3. Preencher `checklist.md` com `[x]` / `[ ]`
 4. Salvar artefatos gerados + `notas.md` na pasta de execução
 

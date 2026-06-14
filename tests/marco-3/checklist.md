@@ -31,7 +31,7 @@ Preencher após execução de cada caso em `tests/marco-3/execucoes/execucao-NN-
 - [ ] **C1.** `03.1-analyze-report.md` existe com resultados de `validacao-checklist-ireb` + `analyze-cross-artifact` + gaps de `rastreabilidade-matriz`
 - [ ] **C2.** `03.1-analyze-report.md` sem issues CRITICAL ao abrir Gate 3 (D17 — CRITICAL bloqueia gate)
 - [ ] **C3.** Issues HIGH/MEDIUM/LOW listados no report (não bloqueiam gate, apenas informativos)
-- [ ] **C4.** `03.2-rastreabilidade.md` com colunas: Objetivo (M1) | RF/RNF | Modal | Seção SRS | Stakeholder origem
+- [ ] **C4.** `03.2-rastreabilidade.md` com colunas: Objetivo (M1) | RF/RNF | Prioridade | Seção SRS | Stakeholder origem
 - [ ] **C5.** Resumo de Gaps presente na matriz (mesmo que zerado)
 
 ---

@@ -23,7 +23,7 @@ when_to_use: Invocada pelo documenter no Passo 2 do Processo M3 (após requisito
    a ausência do diagrama.
 
 <HARD-GATE>
-- NÃO executar antes de `requisito-ears` concluído — usa os RFs com modal preenchido
+- NÃO executar antes de `requisito-ears` concluído — usa os RFs com prioridade preenchida
 - NÃO executar sem `documentos-tecnicos/01-visao/01-visao-produto.md` (contexto + stakeholders)
 - NÃO executar sem `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` (caso de uso)
 - NÃO executar sem `documentos-tecnicos/02-requisitos/02.5-glossario.md` (ER)
@@ -36,7 +36,7 @@ when_to_use: Invocada pelo documenter no Passo 2 do Processo M3 (após requisito
 1. _(Constitution injetada no contexto do agente invocador — D15. Não ler em runtime.)_
 2. Verificar artefatos obrigatórios:
    - `documentos-tecnicos/01-visao/01-visao-produto.md` (seções: Contexto e Limites, Pessoas Envolvidas, Visão)
-   - `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` (RFs com modal preenchido)
+   - `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` (RFs com prioridade preenchida)
    - `documentos-tecnicos/02-requisitos/02.5-glossario.md` (termos do domínio)
 3. Carregar opcionais se existirem: `documentos-tecnicos/02-requisitos/02.3-restricoes.md` (sistemas externos)
 4. Registrar: `nome_produto`, `perfis_onion` (camada 1), `integrações_externas`, lista de RFs DEVE, glossário
@@ -56,9 +56,9 @@ rótulos com espaço entre `["..."]`.
 
 ## Fase 2 — Diagrama de Caso de Uso (obrigatório)
 
-**Input:** `02.1-requisitos-funcionais.md` (RFs com modal DEVE) × onion camada 1
+**Input:** `02.1-requisitos-funcionais.md` (RFs com prioridade Essencial) × onion camada 1
 
-1. Extrair RFs com modal `DEVE` — são as funcionalidades que ganham caso de uso
+1. Extrair RFs com prioridade Essencial — são as funcionalidades que ganham caso de uso
 2. Para cada RF: identificar o ator principal (quem executa — inferir do contexto ou
    do sujeito do EARS; se ambíguo, usar o perfil principal do onion)
 3. Agrupar por ator → montar `flowchart LR` com atores à esquerda e funcionalidades à direita

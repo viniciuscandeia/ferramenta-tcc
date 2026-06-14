@@ -21,7 +21,7 @@ os arquivos PDF em `pdf/`.
 
 Antes de qualquer coisa, verificar:
 
-1. **PLUGIN_ROOT** — usar o valor já resolvido na sessão (skill `iniciar-projeto`
+1. **PLUGIN_ROOT** — usar o valor já resolvido na sessão (skill `iniciar-produto`
    fez a resolução no boot via `installed_plugins.json`). Se não disponível no
    contexto, resolver:
    ```bash

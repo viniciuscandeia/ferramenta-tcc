@@ -14,7 +14,7 @@ description: >-
 3. **Termo com definição incerta não é silenciado.** Flag `[DEFINIÇÃO INCERTA]` + pauta em `pautas-reelicitacao` — melhor uma lacuna visível do que uma definição errada.
 
 <HARD-GATE>
-- NÃO executar antes de `priorizacao` concluída (verificar que `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` tem campo Modal preenchido)
+- NÃO executar antes de `priorizacao` concluída (verificar que `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` tem campo Prioridade preenchido)
 - NÃO executar com `documentos-tecnicos/02-requisitos/02-elicitacao-raw.md` ausente
 - ⛔ STOP se resultado tem 0 termos candidatos — revisar critérios (frequência mínima pode ser muito alta para projeto pequeno) e reexecutar com critério relaxado
 </HARD-GATE>

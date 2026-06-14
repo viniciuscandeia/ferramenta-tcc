@@ -16,7 +16,7 @@ Cada caso pressupõe artefatos M1 + M2 já aprovados (simulados).
 ### Artefatos M2 simulados (input M3)
 
 ```
-02.1-requisitos-funcionais.md: 10 RFs — 6 com modal DEVE, 3 DEVERIA, 1 PODE
+02.1-requisitos-funcionais.md: 10 RFs — 6 Essencial (DEVE), 3 Importante (DEVERIA), 1 Desejável (PODE)
 02.2-requisitos-qualidade.md: 4 RNFs mensuráveis (performance, segurança, LGPD, mobile)
 02.3-restricoes.md: 3 restrições (orçamento, LGPD, mobile-first)
 02.5-glossario.md: 8 termos
@@ -24,7 +24,7 @@ Cada caso pressupõe artefatos M1 + M2 já aprovados (simulados).
 
 ### Comportamento esperado — documenter (Fase A)
 
-1. `requisito-ears`: 10 RFs + 4 RNFs formatados com EARS + RFC 2119 (sujeito + modal + verbo + objeto + condição)
+1. `requisito-ears`: 10 RFs + 4 RNFs formatados com EARS (frase com sujeito + modal + verbo + objeto + condição) + coluna "Prioridade" (sem coluna "Modal")
 2. `modelagem-visual`: `03.3-diagramas.md` com diagrama de contexto + caso de uso + ER (8 termos ≥ 3 entidades) + bloco leigo-safe
 3. `srs-ireb-montagem`: SRS com 8 seções IREB §3.3.3 (6 obrigatórias + §7 condicional ausente sem conflitos + §8 glossário); diagramas embutidos em §2.1, §3 e §4
 4. `traducao-gate`: `03-documento-do-projeto.md` (versão leigo) com seção visual

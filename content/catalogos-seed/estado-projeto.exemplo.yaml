@@ -15,6 +15,7 @@ projeto_dir: /caminho/absoluto/do/projeto   # capturado via `pwd` no boot (passo
 nome_projeto: "Ainda não definido"          # atualizado em M1 quando usuário define o nome; lido pelo md_to_pdf.sh
 marco_corrente: M1          # M1 | M2 | M3 | M4 | concluido
 modo: padrao                # padrao | express  (Z15 — express reduz loops e rigor de checker)
+sessao_pausada: false       # true só quando o usuário pede pausa; stop_guard.sh só permite encerrar se true ou marco_corrente=concluido
 
 gate_status:
   gate_1: pendente           # pendente | aprovado | bloqueado

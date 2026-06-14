@@ -103,7 +103,7 @@ ENTRADA (artefatos M1 aprovados)
 
 - Invocar skill 'priorizacao'
 - Input: rascunhos de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
-- Output: modal RFC 2119 + campo MoSCoW atribuído a cada item
+- Output: prioridade MoSCoW atribuída a cada item (coluna única "Prioridade"; modal derivado internamente p/ a frase EARS — sem coluna "Modal")
 - Gatilhos automáticos (D-S4.2): Kano se RFs Should/Could ≥ 8 **e** stakeholders ≥ 2; IEEE se RFs+RNFs ≥ 25 **e** restrição de prazo fixo
 - Sem interação com usuário
 
@@ -142,7 +142,7 @@ ENTRADA (artefatos M1 aprovados)
 
 ## REGRAS DO LOOP B
 
-1. **Loop dinâmico:** encerra automaticamente quando `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). Itens `[ ]` são bloqueadores — o Gate 2 não abre com pendência aberta. A partir da 3ª rodada, se ainda houver itens `[ ]`, oferecer ao usuário (choice): `"Continuar agora"` → nova rodada | `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente (a retomada via `/iniciar-projeto` continua o loop). Nunca oferecer "seguir assim".
+1. **Loop dinâmico:** encerra automaticamente quando `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` não tiver itens `[ ]` (convergência). Itens `[ ]` são bloqueadores — o Gate 2 não abre com pendência aberta. A partir da 3ª rodada, se ainda houver itens `[ ]`, oferecer ao usuário (choice): `"Continuar agora"` → nova rodada | `"Pausar e retomar depois"` → salvar estado e encerrar amigavelmente (a retomada via `/iniciar-produto` continua o loop). Nunca oferecer "seguir assim".
 2. **Collector modo focado:** recebe `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` e executa apenas a skill indicada por cada pauta (não refaz Fase A completa)
 3. **Formato da pauta esperado:**
    ```markdown

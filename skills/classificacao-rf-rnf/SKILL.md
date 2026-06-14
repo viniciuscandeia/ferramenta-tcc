@@ -68,17 +68,17 @@ Sem duplicatas: dois itens que descrevem a mesma coisa → consolidar em 1 com a
 
 **documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md (rascunho):**
 ```markdown
-| ID | Descrição | Modal | Fonte |
+| ID | Descrição | Prioridade | Fonte |
 |---|---|---|---|
-| RF-001 | [descrição em EARS] | DEVE/DEVERIA/PODE | elicitacao-raw §N |
+| RF-001 | [descrição em EARS, com DEVE/DEVERIA/PODE embutido] | [Essencial/Importante/Desejável] | elicitacao-raw §N |
 ```
-*Modal preenchido na skill `priorizacao` (Passo 2).*
+*Coluna Prioridade preenchida na skill `priorizacao` (Passo 2). O verbo de obrigatoriedade fica embutido na própria descrição — sem coluna "Modal" separada.*
 
 **documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md (rascunho):**
 ```markdown
-| ID | Bucket | Descrição | Métrica | Modal | Fonte |
+| ID | Bucket | Descrição | Métrica | Prioridade | Fonte |
 |---|---|---|---|---|---|
-| RNF-001 | Desempenho | [descrição] | [métrica ou LACUNA] | DEVE | ... |
+| RNF-001 | Desempenho | [descrição, com DEVE/DEVERIA/PODE embutido] | [métrica ou LACUNA] | [Essencial/Importante/Desejável] | ... |
 ```
 
 **documentos-tecnicos/02-requisitos/02.3-restricoes.md (rascunho):**

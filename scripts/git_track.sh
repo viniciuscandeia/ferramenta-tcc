@@ -6,6 +6,10 @@
 #   git_track.sh commit <PROJETO_DIR> "<mensagem>" — git add -A + commit (somente se houver mudanças)
 #
 # Exit 0 sempre — nunca quebra o fluxo do orquestrador.
+#
+# NOTA: mensagens como GIT_SEM_MUDANCAS, GIT_JA_EXISTE, GIT_NAO_DISPONIVEL e
+# GIT_DIR_INVALIDO são STATUS informativos (stderr/stdout), NÃO erros — o
+# orquestrador as trata silenciosamente (ver content/orchestrator.md §INICIALIZAÇÃO).
 
 set -euo pipefail
 
@@ -28,7 +32,12 @@ if [[ -z "$SUBCMD" || -z "$PROJETO_DIR" ]]; then
   exit 0
 fi
 
-PROJETO_DIR="$(cd "$PROJETO_DIR" 2>/dev/null && pwd || echo "$PROJETO_DIR")"
+# Resolver caminho absoluto; se inacessível, abortar sem quebrar o fluxo
+_PROJETO_DIR_RAW="$PROJETO_DIR"
+if ! PROJETO_DIR="$(cd "$PROJETO_DIR" 2>/dev/null && pwd)"; then
+  echo "GIT_DIR_INVALIDO: diretório inacessível: $_PROJETO_DIR_RAW" >&2
+  exit 0
+fi
 
 # ---------------------------------------------------------------------------
 # Wrapper git — config local para não depender de config global do usuário
@@ -52,8 +61,8 @@ _init() {
     exit 0
   fi
 
-  # Inicializar repo
-  git init "$PROJETO_DIR" --quiet
+  # Inicializar repo (branch determinístico p/ evitar hint ruidoso do git no macOS)
+  git -c init.defaultBranch=main init "$PROJETO_DIR" --quiet
 
   # Criar .gitignore (via shell redirect — não usa tool Write, não dispara gate_guard)
   cat > "$PROJETO_DIR/.gitignore" <<'GITIGNORE'
