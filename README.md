@@ -45,9 +45,10 @@ sudo /Library/TeX/texbin/tlmgr update --self
 sudo /Library/TeX/texbin/tlmgr install fvextra
 ```
 
-> `fvextra` corrige quebra de linha de código inline e blocos no PDF.
-> Sem ele, caminhos longos (ex.: `documentos-tecnicos/02-requisitos/...`) podem
-> ultrapassar a margem direita. A exportação funciona sem ele, mas com o bug visual.
+> `fvextra` corrige a quebra de linha em **blocos de código** no PDF. A exportação
+> funciona sem ele, mas blocos longos podem ultrapassar a margem direita.
+> (Caminhos longos em código inline, ex.: `documentos-tecnicos/02-requisitos/...`,
+> podem quebrar de forma imperfeita na margem — apenas cosmético, não impede o PDF.)
 
 </details>
 
@@ -226,7 +227,7 @@ Para re-exportar o PDF a qualquer momento (útil se o conversor foi instalado ap
 
 **Artefatos gerados ao final:**
 - `documentos-para-leigo/` e `documentos-tecnicos/` — documentação em Markdown por marco
-- `pdf/documentacao-cliente.pdf` — versão para o cliente (todos os docs leigo consolidados)
+- `pdf/documentacao-cliente.pdf` — versão para o cliente (apenas o resumo do produto)
 - `pdf/documentacao-tecnica.pdf` — versão técnica (SRS, diagramas, rastreabilidade)
 
 ---
@@ -239,13 +240,15 @@ ferramenta-tcc/
 │   └── plugin.json        # Manifesto (metadados apenas — sem hooks inline)
 ├── settings.json          # Apenas: {"agent": "orchestrator"}
 ├── hooks/
-│   └── hooks.json         # Todos os 5 hooks em 4 eventos (SessionStart, PreToolUse ×2, PostToolUse, UserPromptSubmit)
+│   └── hooks.json         # 6 hooks em 5 eventos (SessionStart, PreToolUse ×2, PostToolUse, UserPromptSubmit, Stop)
 ├── agents/                # Definições de agente (orchestrator + 5 sub-agentes)
 │   └── orchestrator.md    # Agente principal (system prompt quando plugin habilitado)
 ├── skills/                # 25 skills de elicitação, documentação e exportação
 │   └── exportar-pdf/      # Re-exportação PDF sob demanda (/exportar-pdf)
 ├── scripts/               # Scripts invocados pelos hooks e pelo orquestrador
 │   ├── md_to_pdf.sh       # Conversor MD → PDF (pandoc/md-to-pdf/weasyprint + mmdc para Mermaid)
+│   ├── git_track.sh       # Versionamento automático do projeto gerado (init + commit por etapa)
+│   ├── stop_guard.sh      # Hook Stop — impede encerramento precoce do fluxo
 │   └── lib/blacklist.txt  # Blacklist D1 (jargão proibido)
 ├── content/               # Conteúdo do plugin (não auto-descoberto pelo CC)
 │   ├── orchestrator.md    # Dispatcher central
