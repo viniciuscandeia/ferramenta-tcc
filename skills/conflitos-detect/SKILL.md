@@ -1,5 +1,6 @@
 ---
 name: conflitos-detect
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Verifica se há contradições, duplicatas ou inconsistências entre os itens levantados — e registra cada problema com estratégia de resolução.

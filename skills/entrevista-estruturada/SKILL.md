@@ -1,5 +1,6 @@
 ---
 name: entrevista-estruturada
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Conduz conversa estruturada para entender como o usuário trabalha hoje, o que incomoda e o que seria ideal.

@@ -1,5 +1,6 @@
 ---
 name: traducao-gate
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M1, M2, M3]
 description: Gera duas versões de um artefato de gate — versão normativa (Documento de Visão no M1; IREB §3.3.3 + EARS + RFC 2119 no M2/M3) e versão leigo (linguagem de negócio). O usuário aprova apenas a versão leigo; a equipe técnica recebe a versão normativa.
 when_to_use: Ao final de cada marco (M1, M2, M3) antes de apresentar artefatos ao usuário para aprovação no gate.

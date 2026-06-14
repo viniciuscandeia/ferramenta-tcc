@@ -1,5 +1,6 @@
 ---
 name: contexto-e-limite
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M1]
 description: >-
   Define o que está fora do produto e as restrições conhecidas — a fronteira do sistema.

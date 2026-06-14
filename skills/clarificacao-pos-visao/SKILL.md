@@ -1,5 +1,6 @@
 ---
 name: clarificacao-pos-visao
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M1]
 description: >-
   Resolve lacunas críticas detectadas no Marco 1 antes de avançar — ativa apenas se o produto ainda tiver pontos ambíguos em pelo menos duas categorias.

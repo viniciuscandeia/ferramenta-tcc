@@ -1,5 +1,6 @@
 ---
 name: priorizacao
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Atribui nível de importância e obrigatoriedade a cada funcionalidade e comportamento levantado — define o que vem primeiro, o que vem depois e o que fica de fora desta versão.

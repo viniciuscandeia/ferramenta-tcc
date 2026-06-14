@@ -1,5 +1,6 @@
 ---
 name: stakeholder-mapping
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M1]
 description: >-
   Identifica e mapeia todas as pessoas envolvidas no projeto usando o modelo Stakeholder Onion (camadas: usa/decide-paga/mantém/afetado/regula/adversário).

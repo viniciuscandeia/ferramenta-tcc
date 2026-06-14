@@ -1,5 +1,6 @@
 ---
 name: validacao-checklist-ireb
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M3]
 description: Aplica os 12 critérios de qualidade IREB §3.8 sobre o SRS gerado pelo documenter — 6 critérios por requisito individual e 6 critérios por SRS como documento. Gera seção "Validação IREB §3.8" em analyze-report.md com 1 linha por violação (ID do critério + requisito afetado + severidade). Referência: content/catalogos-seed/conceitos/qualidade-e-validacao.md.
 when_to_use: Invocada pelo checker no Passo 1 do Processo M3. Entrada: documentos-tecnicos/03-documento/03-srs-completo.md + documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md + documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md. Saída: seção em documentos-tecnicos/03-documento/03.1-analyze-report.md (não arquivo separado).

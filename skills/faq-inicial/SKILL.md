@@ -1,5 +1,6 @@
 ---
 name: faq-inicial
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 description: Responde dúvidas comuns do usuário antes de iniciar a documentação do projeto. Invocada quando o usuário escolhe "Tenho dúvidas antes" no início de /iniciar-produto.
 marco: [M1]
 when_to_use: Quando o usuário sinaliza que tem dúvidas antes de começar. Invocar via orchestrator — não invocar diretamente.

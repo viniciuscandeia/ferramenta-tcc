@@ -75,6 +75,9 @@ _init() {
 # Editor
 .vscode/
 .idea/
+
+# Métrica interna (detector de jargão no chat — instrumento de dev, não-entregável)
+_metricas-jargao-chat.log
 GITIGNORE
 
   # Commit inicial (pode estar vazio se o projeto ainda não tem artefatos)

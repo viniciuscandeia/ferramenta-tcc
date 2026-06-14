@@ -1,5 +1,6 @@
 ---
 name: glossario
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Identifica termos do projeto que podem gerar confusão e cria definições claras para cada um — evitando que a mesma palavra signifique coisas diferentes para pessoas diferentes.

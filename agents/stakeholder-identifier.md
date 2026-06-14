@@ -1,4 +1,4 @@
-> **Nota D25:** Este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool (bug [#12890](https://github.com/anthropics/claude-code/issues/12890)/[#34592](https://github.com/anthropics/claude-code/issues/34592), "not planned").
+> **Nota D25:** Carregado pelo orquestrador como persona inline — **não** via `Agent`/`Task()`. Subagentes não têm acesso a `AskUserQuestion` (restrição documentada da plataforma: [code.claude.com/docs/en/sub-agents](https://code.claude.com/docs/en/sub-agents)); como toda elicitação passa por ela (D14), a persona roda no contexto principal.
 
 # stakeholder-identifier — Sub-agente M1
 

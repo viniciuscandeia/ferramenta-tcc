@@ -1,5 +1,6 @@
 ---
 name: recomendacao-implicitos
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Sugere funcionalidades que sistemas similares costumam ter mas que o usuário não mencionou — o "óbvio não-dito".

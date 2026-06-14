@@ -1,5 +1,6 @@
 ---
 name: pautas-reelicitacao
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Lista o que ainda precisa ser detalhado antes de encerrar o Marco 2 — cada item em aberto indica uma pergunta que precisa de resposta para a próxima fase começar.

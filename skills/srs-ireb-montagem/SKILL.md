@@ -1,5 +1,6 @@
 ---
 name: srs-ireb-montagem
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M3]
 description: >-
   Monta o documento completo de especificação do produto com 8 seções — consumindo todos os artefatos produzidos até aqui.

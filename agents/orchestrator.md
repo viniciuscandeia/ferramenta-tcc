@@ -40,5 +40,5 @@ Cada lote de perguntas = 1 chamada `AskUserQuestion` com cada pergunta em seu pr
 | Primitiva | Implementação |
 |---|---|
 | Pergunta interativa (choice, multi-choice, yesno) | `AskUserQuestion` (`multiSelect: true` para multi-choice) |
-| Sub-agente | Persona inline — bugs CC [#12890](https://github.com/anthropics/claude-code/issues/12890)/[#34592](https://github.com/anthropics/claude-code/issues/34592) "not planned" (D25) |
+| Sub-agente | Persona inline (D25) — `AskUserQuestion` indisponível em subagente ([restrição documentada](https://code.claude.com/docs/en/sub-agents)) |
 | Arquivo de estado | `estado-projeto.yaml` na pasta do projeto |

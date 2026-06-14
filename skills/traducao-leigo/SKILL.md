@@ -1,5 +1,6 @@
 ---
 name: traducao-leigo
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M1, M2, M3]
 description: Verifica e reescreve texto para remover jargão técnico de ER, garantindo que o usuário leigo não receba termos da blacklist D1. Invocada por qualquer agente antes de apresentar texto ao usuário.
 when_to_use: Antes de qualquer exibição de texto ao usuário — perguntas, resumos, artefatos, confirmações.

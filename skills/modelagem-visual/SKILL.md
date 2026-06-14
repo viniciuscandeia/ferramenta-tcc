@@ -1,5 +1,6 @@
 ---
 name: modelagem-visual
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M3]
 description: >-
   Gera 3 diagramas Mermaid — Contexto do Sistema, Caso de Uso e Entidade-Relacionamento — a partir dos artefatos já produzidos em M1, M2 e M3, sem nenhuma interação com o usuário.

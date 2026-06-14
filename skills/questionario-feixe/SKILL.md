@@ -1,5 +1,6 @@
 ---
 name: questionario-feixe
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Faz perguntas temáticas em grupos para cobrir áreas do produto que ainda ficaram sem informação suficiente — ativa apenas quando há lacunas em 3 ou mais áreas.

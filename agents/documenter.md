@@ -1,4 +1,4 @@
-> **Nota D25:** Este documento é carregado pelo orquestrador como contexto de persona inline — não é invocado via Agent/Task() tool.
+> **Nota D25:** Carregado pelo orquestrador como persona inline — **não** via `Agent`/`Task()`. Subagentes não têm acesso a `AskUserQuestion` (restrição documentada da plataforma: [code.claude.com/docs/en/sub-agents](https://code.claude.com/docs/en/sub-agents)); como toda elicitação passa por ela (D14), a persona roda no contexto principal.
 
 # documenter — Sub-agente M3 (Geração de Artefatos)
 

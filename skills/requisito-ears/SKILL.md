@@ -1,5 +1,6 @@
 ---
 name: requisito-ears
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M3]
 description: >-
   Formata todos os itens funcionais e de comportamento com estrutura padronizada usando modais de obrigatoriedade (DEVE/DEVERIA/PODE) e padrões de condição (evento, estado, exceção, ubíquo, opcional).

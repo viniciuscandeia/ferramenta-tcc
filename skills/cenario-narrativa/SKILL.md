@@ -1,5 +1,6 @@
 ---
 name: cenario-narrativa
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Pede ao usuário que conte como seria um dia típico de uso do produto e extrai funcionalidades implícitas da narrativa.

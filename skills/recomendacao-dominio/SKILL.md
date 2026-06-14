@@ -1,5 +1,6 @@
 ---
 name: recomendacao-dominio
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Identifica o tipo de produto (loja virtual, app de saúde, painel de relatórios etc.) e sugere funcionalidades típicas daquele setor para confirmar com o usuário.

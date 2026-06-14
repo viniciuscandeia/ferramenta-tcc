@@ -1,5 +1,6 @@
 ---
 name: classificacao-rf-rnf
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Classifica cada item coletado nas fases anteriores em: o que o sistema faz (funcional), como se comporta (comportamental), o que está imposto de fora (restrição) ou o que foi assumido (premissa).

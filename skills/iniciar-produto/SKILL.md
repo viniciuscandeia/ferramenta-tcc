@@ -1,5 +1,6 @@
 ---
 name: iniciar-produto
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 description: Inicia ou retoma o processo de documentação de requisitos do projeto
 ---
 
@@ -22,7 +23,7 @@ O orquestrador irá:
 3. Identificar `marco_corrente` e carregar EXCLUSIVAMENTE `{PLUGIN_ROOT}/content/marcos/{marco_corrente}.md`
 4. Conduzir o usuário pelas fases de documentação com perguntas estruturadas via AskUserQuestion
 
-Nota D25: Sub-agentes NÃO são invocados via Agent/Task() tool (bugs CC #12890/#34592, "not planned"). O orquestrador lê `{PLUGIN_ROOT}/agents/<nome>.md` como persona inline no mesmo contexto.
+Nota D25: Sub-agentes NÃO são invocados via Agent/Task() tool — subagentes não têm acesso a `AskUserQuestion` (restrição documentada da plataforma: code.claude.com/docs/en/sub-agents), e toda elicitação depende dela. O orquestrador lê `{PLUGIN_ROOT}/agents/<nome>.md` como persona inline no mesmo contexto.
 
 Filtragem de skills por marco (C0):
 - Antes de invocar qualquer Agent ou Skill, verificar `estado-projeto.yaml.marco_corrente`

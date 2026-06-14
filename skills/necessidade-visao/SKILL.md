@@ -1,5 +1,6 @@
 ---
 name: necessidade-visao
+disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M1]
 description: >-
   Captura a necessidade central e a visão do produto em linguagem de negócio — primeira skill do Marco 1.
