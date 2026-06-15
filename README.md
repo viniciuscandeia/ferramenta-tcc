@@ -240,7 +240,7 @@ ferramenta-tcc/
 │   └── plugin.json        # Manifesto (metadados apenas — sem hooks inline)
 ├── settings.json          # Apenas: {"agent": "orchestrator"}
 ├── hooks/
-│   └── hooks.json         # 6 hooks em 5 eventos (SessionStart, PreToolUse ×2, PostToolUse, UserPromptSubmit, Stop)
+│   └── hooks.json         # hooks em 8 eventos (SessionStart, PreToolUse, PostToolUse, UserPromptSubmit, Stop, SessionEnd, PreCompact, MessageDisplay)
 ├── agents/                # Definições de agente (orchestrator + 5 sub-agentes)
 │   └── orchestrator.md    # Agente principal (system prompt quando plugin habilitado)
 ├── skills/                # 25 skills de elicitação, documentação e exportação
