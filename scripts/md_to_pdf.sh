@@ -210,6 +210,20 @@ _page_break() {
   esac
 }
 
+# Escape de caracteres especiais do título para a capa (--include-before-body,
+# conteúdo bruto, sem escape automático do pandoc).
+#   _escape_latex: & % $ # _ { } e em-dash (— → ---, evita erro Unicode no pdflatex)
+#   _escape_html : & < >
+_escape_latex() {
+  printf '%s' "$1" | sed \
+    -e 's/&/\\&/g' -e 's/%/\\%/g' -e 's/\$/\\$/g' -e 's/#/\\#/g' \
+    -e 's/_/\\_/g' -e 's/{/\\{/g' -e 's/}/\\}/g' \
+    -e 's/—/---/g'
+}
+_escape_html() {
+  printf '%s' "$1" | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'
+}
+
 # Substituir blocos ```mermaid por imagens PNG renderizadas via mmdc.
 # Blocos que falharem na conversão ficam como código (fallback gracioso).
 # _processar_mermaid <tmp_md> <img_dir>
@@ -262,15 +276,47 @@ _convert() {
     && _preamble_args=(--include-in-header "$PREAMBLE_TEX")
   local -a _lua_args=()
   [[ -f "${LUA_TABELA:-}" ]] && _lua_args=(--lua-filter "$LUA_TABELA")
+
+  # Capa: bloco renderizado via --include-before-body, que o pandoc emite ANTES
+  # do \tableofcontents (LaTeX) e antes da <nav> do sumário (HTML), e que nunca
+  # vira entrada do sumário (conteúdo bruto, não-markdown). Substitui o antigo
+  # --metadata title (\maketitle), cujo posicionamento dependia do template.
+  local _capa=""
+  local -a _capa_args=()
+  case "$ENGINE" in
+    pandoc-xelatex|pandoc-pdflatex)
+      _capa="$(mktemp /tmp/ferramenta_tcc_capa_XXXXXX.tex)"
+      printf '%s\n' \
+        '\begin{center}' \
+        "{\\LARGE\\bfseries $(_escape_latex "$titulo")}\\\\[0.4em]" \
+        '\rule{0.55\linewidth}{0.4pt}' \
+        '\end{center}' \
+        '\vspace{1.5em}' > "$_capa"
+      # title-meta preenche o pdftitle (hyperref) sem disparar \maketitle.
+      _capa_args=(--include-before-body "$_capa" -V title-meta="$titulo")
+      ;;
+    pandoc-wkhtmltopdf|pandoc-default)
+      _capa="$(mktemp /tmp/ferramenta_tcc_capa_XXXXXX.html)"
+      printf '%s\n' \
+        '<div style="text-align:center;margin-bottom:2em;">' \
+        "<div style=\"font-size:2em;font-weight:bold;margin-bottom:0.2em;\">$(_escape_html "$titulo")</div>" \
+        '<hr style="width:55%;border:none;border-top:1px solid #000;">' \
+        '</div>' > "$_capa"
+      _capa_args=(--include-before-body "$_capa" --metadata pagetitle="$titulo")
+      ;;
+  esac
+  # shellcheck disable=SC2064
+  [[ -n "$_capa" ]] && trap "rm -f '$_capa'" RETURN
+
   case "$ENGINE" in
     pandoc-xelatex)
       pandoc "$src" -o "$dst" \
         --pdf-engine=xelatex \
-        --metadata title="$titulo" \
         --toc \
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
         --standalone \
+        "${_capa_args[@]+"${_capa_args[@]}"}" \
         "${_preamble_args[@]+"${_preamble_args[@]}"}" \
         "${_lua_args[@]+"${_lua_args[@]}"}" \
         2> >(grep -vE "Missing character|Float too large for page|^\s+input line [0-9]+\." >&2)
@@ -278,11 +324,11 @@ _convert() {
     pandoc-pdflatex)
       pandoc "$src" -o "$dst" \
         --pdf-engine=pdflatex \
-        --metadata title="$titulo" \
         --toc \
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
         --standalone \
+        "${_capa_args[@]+"${_capa_args[@]}"}" \
         "${_preamble_args[@]+"${_preamble_args[@]}"}" \
         "${_lua_args[@]+"${_lua_args[@]}"}" \
         2> >(grep -vE "Missing character|Float too large for page|^\s+input line [0-9]+\." >&2)
@@ -290,16 +336,16 @@ _convert() {
     pandoc-wkhtmltopdf)
       pandoc "$src" -o "$dst" \
         --pdf-engine=wkhtmltopdf \
-        --metadata title="$titulo" \
         --toc \
         --standalone \
+        "${_capa_args[@]+"${_capa_args[@]}"}" \
         "${_lua_args[@]+"${_lua_args[@]}"}"
       ;;
     pandoc-default)
       pandoc "$src" -o "$dst" \
-        --metadata title="$titulo" \
         --toc \
         --standalone \
+        "${_capa_args[@]+"${_capa_args[@]}"}" \
         "${_lua_args[@]+"${_lua_args[@]}"}"
       ;;
     md-to-pdf)
@@ -334,10 +380,11 @@ _gerar_pdf() {
   trap "rm -f '$tmp_md'; rm -rf '$tmp_img_dir'" RETURN
 
   # Cabeçalho / capa:
-  #  - engines pandoc: o título vai por metadata (--metadata title= em _convert),
-  #    renderizado como title block ANTES do sumário e FORA dele. Body sem H1
-  #    (um H1 no corpo viraria entrada do sumário e apareceria depois dele).
-  #  - engines não-pandoc (sem metadata nem sumário automático): injeta H1 visível.
+  #  - engines pandoc: a capa vai por --include-before-body (em _convert),
+  #    emitida ANTES do sumário e FORA dele (conteúdo bruto, nunca vira entrada
+  #    do sumário). Body sem H1 de título — o H1 dos arquivos-fonte permanece
+  #    como primeira entrada do sumário.
+  #  - engines não-pandoc (sem sumário automático): injeta H1 visível.
   case "$ENGINE" in
     pandoc*)
       : > "$tmp_md"
