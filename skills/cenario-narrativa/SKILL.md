@@ -29,21 +29,20 @@ description: >-
 
 Adaptar perfis ao projeto (usar nomes/papéis de `documentos-tecnicos/01-visao/01-visao-produto.md`).
 
-**Cenário 1 — Usuário principal (text):**
-```
-Imagine um dia típico de [nome do perfil principal] usando [nome do produto].
+A resposta ideal é uma **história**. Como a primitiva `AskUserQuestion` sempre exige opções + campo nativo de escrita livre, o enunciado pede a narrativa completa e as opções são apenas **pontos de partida concretos** do fluxo (derivados da visão/domínio) — o usuário escolhe um gancho **ou** conta a história toda escrevendo. **Proibido** opção de "descrever livremente" (D14 — a nativa "Type something" já cobre).
 
-Descreva como seria a experiência desde o começo: o que ele faz primeiro no produto, o que acontece em seguida, como termina a interação. Pode ser informal — como se estivesse contando uma história.
-```
+**Cenário 1 — Usuário principal (`choice`, `multiSelect: false`):**
+- `question`: "Imagine um dia típico de [perfil principal] usando [produto]. Conte como seria do começo ao fim — o que faz primeiro, o que vem depois, como termina. Você pode escolher um ponto de partida abaixo ou escrever a história do seu jeito."
+- `header`: "Dia típico"
+- Opções: 2–4 pontos de partida concretos derivados da visão/domínio (ex., app de descarte: "Procuro onde descartar", "Cadastro o que vou descartar", "Recebo um aviso e abro o app").
 
-**Cenário 2 — Perfil secundário, se perfis distintos com fluxos diferentes (text):**
-```
-E para [nome do perfil secundário], como seria um uso típico?
-```
+**Cenário 2 — Perfil secundário, se perfis distintos com fluxos diferentes (`choice`, `multiSelect: false`):**
+- `question`: "E para [perfil secundário], como seria um uso típico? Conte a sequência — ou escolha um ponto de partida abaixo."
+- Opções: 2–4 pontos de partida concretos adaptados ao perfil secundário.
 
 **Regra de decisão:** 1 cenário se projeto com perfil único; 2 cenários se perfis distintos com fluxos diferentes. Máximo 2 — exceder viola D14.
 
-Invocar `AskUserQuestion` com 1 ou 2 perguntas tipo `text` (1 chamada única).
+Invocar `AskUserQuestion` com 1 ou 2 perguntas (1 chamada única). A extração (Fase 2) vale tanto para a âncora escolhida quanto para o texto livre — e o HARD-GATE de < 3 sentenças continua sondando expansão se a resposta vier curta.
 
 ## Fase 2 — Extração Silenciosa de RFs Candidatos
 

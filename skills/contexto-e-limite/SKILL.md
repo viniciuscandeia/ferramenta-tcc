@@ -32,23 +32,22 @@ description: >-
 
 **Lote único (≤ 3 perguntas — enxuto porque "dentro" já é inferido):**
 
-1. **O que o produto NÃO vai fazer** (text — obrigatória):
-   ```
-   O que o produto definitivamente NÃO vai fazer? Mesmo que as pessoas esperem — o que está fora?
-   ```
-   *(Se o usuário travar: oferecer candidatos via `AskUserQuestion`, `header: "Fora"`, `multiSelect: true` — ex: para estoque → `(A) Financeiro/caixa  (B) Contabilidade  (C) Gestão de RH  (D) Nenhum destes`. Até 4 candidatos do domínio; a opção "Other" nativa cobre "outro não listado". Se catálogo gerar < 2 candidatos → manter `text` original.)*
+Cada pergunta vai com **âncoras concretas** do domínio (D14 — sem opção de "descrever livremente"; a nativa cobre quem quiser detalhar).
 
-2. **Integrações externas** (text — só se lista provisória da Fase 0 estiver vazia):
-   ```
-   O produto precisa se conectar com outros sistemas ou serviços que você já usa? (ex: pagamento, e-mail, WhatsApp, sistema financeiro)
-   ```
+1. **O que o produto NÃO vai fazer** (`multi-choice` — obrigatória):
+   - `question`: "O que o produto definitivamente NÃO vai fazer? Mesmo que as pessoas esperem. (pode escolher mais de uma ou escrever)"
+   - `header`: "Fora"
+   - Opções: até 4 exclusões candidatas do domínio (ex.: para estoque → "Financeiro/caixa", "Contabilidade", "Gestão de RH") + `"Nenhum destes"`. Se o catálogo gerar < 2 candidatos, usar âncoras genéricas concretas do contexto + `"Nenhum destes"`.
+
+2. **Integrações externas** (`multi-choice` — só se lista provisória da Fase 0 estiver vazia):
+   - `question`: "O produto precisa se conectar com outros sistemas ou serviços que você já usa? (pode escolher mais de uma ou escrever)"
+   - Opções: ex. "Pagamento", "E-mail", "WhatsApp", "Sistema financeiro" + `"Nenhum destes"`.
    *(Se integrações já foram mencionadas antes: omitir esta pergunta e usar a lista provisória.)*
 
-3. **Restrições conhecidas** (text):
-   *(Consultar `{PLUGIN_ROOT}/content/catalogos-seed/restricoes-tipicas.md` para identificar restrições típicas do domínio e incluir exemplos relevantes na pergunta abaixo.)*
-   ```
-   Existe alguma restrição importante? (ex: prazo, orçamento, tecnologia específica que deve ser usada, regras que o produto precisa respeitar)
-   ```
+3. **Restrições conhecidas** (`multi-choice`):
+   - Consultar `{PLUGIN_ROOT}/content/catalogos-seed/restricoes-tipicas.md` para identificar restrições típicas do domínio e usá-las como âncoras.
+   - `question`: "Existe alguma restrição importante? (pode escolher mais de uma ou escrever)"
+   - Opções: ex. "Prazo para entregar", "Orçamento limitado", "Tecnologia específica obrigatória", "Regra/lei a respeitar" + `"Nenhum destes"`.
 
 ## Fase 2 — Síntese e Confirmação do "Dentro"
 

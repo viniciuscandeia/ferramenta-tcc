@@ -95,23 +95,24 @@ Adicionar à blacklist D1 (não são jargão ER, mas anti-padrões de output que
 - **Tipos permitidos:** `choice`, `multi-choice`, `text`, `yesno`
   - `choice` — seleção única, **apenas quando as opções são mutuamente exclusivas**
   - `multi-choice` → `AskUserQuestion` com `multiSelect: true`
-  - `text` — texto livre
+  - `text` — resposta aberta. A primitiva `AskUserQuestion` **sempre** exige 2–4 opções na array e **sempre** injeta o campo nativo de escrita livre ("Type something"). Logo, NÃO existe pergunta "só texto, sem opções": toda pergunta aberta é apresentada com 2–4 **âncoras-exemplo concretas** + o campo nativo. NUNCA criar opção cujo papel seja "escrever livremente" — a nativa já cobre.
   - `yesno` — decisão binária; obrigatório para gates
-- **PRECEDÊNCIA DE TIPO (regra inviolável):** cada pergunta tem um TIPO declarado pela skill de origem. O TESTE DA COMBINAÇÃO e a lista de categorias definem multi vs. single apenas entre perguntas **já declaradas como opções** — **NUNCA convertem uma pergunta narrativa/aberta (`text`) em lista de opções.**
+- **ÂNCORAS CONCRETAS, NUNCA OPÇÃO-RECHEIO (regra inviolável):** como a primitiva sempre exige 2–4 opções, perguntas abertas/narrativas recebem 2–4 **exemplos concretos do contexto do projeto** (derivados da visão, do domínio ou do texto inicial) que servem de ponto de partida — JAMAIS rótulos genéricos de "escreva você mesmo" (ex.: "Vou descrever livremente"). O enunciado convida à resposta completa e indica que dá para escrever do próprio jeito; o campo nativo de escrita livre cobre isso. A riqueza da resposta é protegida pela **sondagem** da skill (ex.: "pode contar um pouco mais?"), não por um botão de texto livre. Para perguntas sem âncoras óbvias (ex.: nome do produto), as opções são **sugestões concretas derivadas do contexto** (ex.: 2–3 nomes candidatos), não recheio.
+- **PRECEDÊNCIA DE TIPO:** cada pergunta tem um TIPO declarado pela skill de origem. O TESTE DA COMBINAÇÃO e a lista de categorias definem multi vs. single entre as opções. Perguntas narrativas com âncoras de "ponto de partida" são `choice` (`multiSelect: false`) — o usuário escolhe um gancho ou escreve a história inteira.
 - **TESTE DA COMBINAÇÃO (obrigatório antes de CADA pergunta de opções):** "O usuário pode legitimamente querer mais de uma destas opções ao mesmo tempo?"
   - SIM → `multiSelect: true`
   - NÃO, são genuinamente exclusivas (faixas de tamanho, níveis aninhados, um único caminho) → `choice`
   - **Na dúvida → `multiSelect: true`.** Custo de permitir múltipla onde só uma se aplica é zero; custo de forçar única onde várias se aplicam é perda de informação.
   - Exceção: gates e decisões binárias permanecem `yesno`.
 - **Sinalização visível obrigatória:** toda pergunta com `multiSelect: true` deve conter no texto da `question` a indicação `(pode escolher mais de uma)` — o leigo precisa saber que pode marcar várias.
-- **Opção "Other" automática (não duplicar):** o Claude Code adiciona automaticamente uma opção "Other" (texto livre) a TODA pergunta. **Nunca** criar `"Outro (escrever)"` manual — duplica a nativa e gasta 1 slot. Para "nenhuma se aplica" (resposta frequente, 1 toque), incluir `"Nenhum destes"` explícito — esse é semanticamente distinto da "Other".
+- **Opção "Other" automática (não duplicar):** o Claude Code adiciona automaticamente uma opção "Other" de texto livre ("Type something") a TODA pergunta. **Proibido** criar manualmente qualquer opção cujo único papel seja escrever livremente — duplica a nativa e gasta 1 slot. **Rótulos banidos** (lista não exaustiva): `"Outro (escrever)"`, `"Vou descrever livremente"`, `"Descrever livremente"`, `"Vou contar com minhas palavras"`, `"Escrever minha resposta"`, `"Prefiro escrever"`, `"Outro"`. Para "nenhuma se aplica" (resposta frequente, 1 toque), incluir `"Nenhum destes"` explícito — semanticamente distinto da "Other". `"Não sei / não tenho certeza ainda"` é opção legítima quando a incerteza tem significado (vira premissa) — não é recheio.
 - **Categorias que, quando apresentadas como opções, quase sempre são `multiSelect: true`:** perfis de pessoas envolvidas; funcionalidades desejadas; dores/frustrações; preocupações de qualidade (desempenho, segurança, privacidade); leis/normas aplicáveis; exclusões de escopo; implícitos a confirmar.
 - **Limites invioláveis da primitiva `AskUserQuestion`:**
   - 1–4 perguntas por chamada
   - **2–4 opções na array por pergunta** — a "Other" automática **não** conta para o mínimo de 2
   - **`header` ≤ 12 caracteres** — preferir 1 palavra
   - `multiSelect: true` exige no mínimo 2 opções na array
-- **Guardas de borda para perguntas de catálogo:** se catálogo gerar < 2 candidatos → completar com `"Nenhum destes"` ou usar `text`. Se gerar > 4 candidatos → escolher os 4 mais relevantes.
+- **Guardas de borda para perguntas de catálogo:** se catálogo gerar < 2 candidatos → completar com âncoras concretas do contexto e/ou `"Nenhum destes"` (nunca com opção-recheio de escrita livre). Se gerar > 4 candidatos → escolher os 4 mais relevantes.
 - **Campo `multiSelect` obrigatório:** toda pergunta de opções deve declarar explicitamente `multiSelect: true` ou `multiSelect: false`. Proibido descrever a pergunta apenas em prosa com tipo implícito.
 - **Idioma:** TODA saída ao usuário deve ser em **português brasileiro** — perguntas, opções de choice, labels de `AskUserQuestion`, descrições, mensagens de boas-vindas, confirmações, mensagens de erro. Sem exceção. Se conteúdo interno (skill, catálogo, exemplo) estiver em inglês, traduzir antes de exibir ao usuário.
 
