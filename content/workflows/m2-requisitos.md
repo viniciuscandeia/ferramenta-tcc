@@ -34,7 +34,7 @@ ENTRADA (artefatos M1 aprovados)
 ║ [B5] pautas-reelicitacao         ║  → lacunas → checkbox com skill-alvo
 ╚═════════════════╤════════════════╝
                   │
-          pautas_abertas?
+        itens [ ] em 02.6?
          /              \
        SIM              NÃO
         │                │

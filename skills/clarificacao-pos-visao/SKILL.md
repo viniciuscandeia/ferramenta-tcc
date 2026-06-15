@@ -67,19 +67,43 @@ Você está na área de saúde. O produto pode precisar seguir mais de uma regra
 (C) Não tenho certeza ainda — vou verificar antes de decidir
 ```
 
-**Modelo: Itens em aberto críticos** (`yesno` ou `choice`):
+**Modelo: Decisor** (`header: "Decisor"`, `multi-choice`, `multiSelect: true`):
+```
+Quem aprova ou paga pelo produto ainda não está definido. Quem seria essa pessoa? (pode escolher mais de uma)
+(A) [cargo candidato 1 inferido do mapa de pessoas — ex: Dono/sócio]
+(B) [cargo candidato 2 — ex: Gerente da área]
+(C) [cargo candidato 3 — ex: Diretor financeiro]
+(D) Não sei ainda — vou confirmar depois
+```
+*Preencher (A)–(C) com cargos REAIS inferidos pelo `stakeholder-mapping` Fase 0 (camadas decide/paga). Aprovador e pagador podem ser pessoas diferentes → `multiSelect: true`. A nativa "Type something" cobre um nome/cargo fora da lista; `"Não sei ainda"` é resposta legítima (vira premissa), não recheio.*
 
-Para decisor `[a identificar]`:
+Exemplo concreto (domínio: clínica):
 ```
-Você mencionou que quem aprova ou paga pelo produto ainda não está definido. Você tem ideia de quem seria essa pessoa ou cargo? (pode ser informal)
+Quem aprova ou paga pelo produto ainda não está definido. Quem seria essa pessoa? (pode escolher mais de uma)
+(A) Dono(a) da clínica
+(B) Gerente administrativo
+(C) Médico(a) responsável
+(D) Não sei ainda — vou confirmar depois
 ```
-*(1 pergunta `text` — exceção ao formato fechado, pois a resposta é um nome/cargo)*
 
-Para metas `[a definir]`:
+**Modelo: Metas de sucesso** (`header: "Sucesso"`, `multi-choice`, `multiSelect: true`):
 ```
-Quando o produto estiver pronto, como você vai saber que valeu a pena? Qual seria um sinal claro de sucesso?
+Quando o produto estiver pronto, como você vai saber que valeu a pena? Quais sinais de sucesso fazem sentido? (pode escolher mais de uma)
+(A) [sinal concreto 1 derivado das dores da Seção 2 — ex: menos retrabalho]
+(B) [sinal concreto 2 — ex: atender mais rápido]
+(C) [sinal concreto 3 — ex: menos reclamações]
+(D) Não sei medir ainda — vamos definir junto
 ```
-*(1 pergunta `text`)*
+*Derivar (A)–(C) do problema/dores REAIS da Seção 2 do artefato (mesmo padrão da síntese de indicadores de sucesso). A nativa cobre uma meta fora da lista.*
+
+Exemplo concreto (domínio: estoque):
+```
+Quando o produto estiver pronto, como você vai saber que valeu a pena? (pode escolher mais de uma)
+(A) Parar de faltar produto sem aviso
+(B) Gastar menos tempo conferindo estoque
+(C) Menos erro de contagem
+(D) Não sei medir ainda — vamos definir junto
+```
 
 ## Fase 2 — Incorporação
 

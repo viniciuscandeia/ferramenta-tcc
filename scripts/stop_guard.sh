@@ -25,7 +25,7 @@
 # NÃO dispara Stop — logo, um Stop com projeto em andamento = parada indevida.
 #
 # Protocolo Claude Code: Stop hook; exit 2 = bloqueia a parada, stderr → modelo.
-# v0.25.2
+# v0.25.3
 
 set -euo pipefail
 
@@ -120,7 +120,7 @@ except Exception:
     print("unknown"); sys.exit(0)
 print("yes" if active else "no")
 PYFLOW
-)
+) || FLOW_ACTIVE=unknown
 
 # Fluxo não rodou nesta sessão → não é parada precoce do produto; permitir.
 [[ "$FLOW_ACTIVE" == "no" ]] && exit 0

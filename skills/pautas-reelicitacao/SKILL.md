@@ -67,7 +67,7 @@ Salvar como `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`.
 ```
 
 ⚡ **AÇÃO OBRIGATÓRIA — SEM TEXTO INTERMEDIÁRIO:**
-Verificar `pautas_abertas.count` e agir imediatamente:
+Verificar a contagem de itens `[ ]` em `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` (= N) e agir imediatamente:
 - N = 0 → Orquestrador executa PRE-FLIGHT do Gate 2 e abre gate via `AskUserQuestion`
 - N ≥ 1 → Orquestrador reinvoca `collector` com arquivo de pautas como instrução de próxima rodada
 
