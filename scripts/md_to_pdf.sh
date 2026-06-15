@@ -266,6 +266,7 @@ _convert() {
     pandoc-xelatex)
       pandoc "$src" -o "$dst" \
         --pdf-engine=xelatex \
+        --metadata title="$titulo" \
         --toc \
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
@@ -277,6 +278,7 @@ _convert() {
     pandoc-pdflatex)
       pandoc "$src" -o "$dst" \
         --pdf-engine=pdflatex \
+        --metadata title="$titulo" \
         --toc \
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
@@ -288,12 +290,14 @@ _convert() {
     pandoc-wkhtmltopdf)
       pandoc "$src" -o "$dst" \
         --pdf-engine=wkhtmltopdf \
+        --metadata title="$titulo" \
         --toc \
         --standalone \
         "${_lua_args[@]+"${_lua_args[@]}"}"
       ;;
     pandoc-default)
       pandoc "$src" -o "$dst" \
+        --metadata title="$titulo" \
         --toc \
         --standalone \
         "${_lua_args[@]+"${_lua_args[@]}"}"
@@ -329,13 +333,24 @@ _gerar_pdf() {
   # shellcheck disable=SC2064
   trap "rm -f '$tmp_md'; rm -rf '$tmp_img_dir'" RETURN
 
-  # Cabeçalho / capa (título único — sem repetir o nome do projeto logo abaixo)
-  {
-    echo "# $titulo"
-    echo ""
-    echo "---"
-    echo ""
-  } > "$tmp_md"
+  # Cabeçalho / capa:
+  #  - engines pandoc: o título vai por metadata (--metadata title= em _convert),
+  #    renderizado como title block ANTES do sumário e FORA dele. Body sem H1
+  #    (um H1 no corpo viraria entrada do sumário e apareceria depois dele).
+  #  - engines não-pandoc (sem metadata nem sumário automático): injeta H1 visível.
+  case "$ENGINE" in
+    pandoc*)
+      : > "$tmp_md"
+      ;;
+    *)
+      {
+        echo "# $titulo"
+        echo ""
+        echo "---"
+        echo ""
+      } > "$tmp_md"
+      ;;
+  esac
 
   # Selecionar pastas a excluir conforme o perfil
   local -a _pastas_excluidas=()
