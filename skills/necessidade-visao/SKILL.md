@@ -38,14 +38,14 @@ description: >-
 
 ## Fase 1 — Descoberta do Problema (5-Whys/JTBD, adaptativo)
 
-**Objetivo:** chegar na dor raiz. Máximo 3 turnos de sondagem. Turno 1 = 1 `AskUserQuestion` multi-choice + 1 adicional `text` se "Outro" marcado; Turnos 2 e 3 = 1 `AskUserQuestion` com 1 pergunta (`text`) cada.
+**Objetivo:** chegar na dor raiz. Máximo 3 turnos de sondagem. Turno 1 = 1 `AskUserQuestion` multi-choice (o campo nativo "Type something" cobre dor própria não listada — sem pergunta extra); Turnos 2 e 3 = 1 `AskUserQuestion` com 1 pergunta cada, sempre com âncoras concretas (D14).
 
-**Turno 0 — Enquadramento do produto (1 `AskUserQuestion`, `text`):**
+**Turno 0 — Enquadramento do produto (1 `AskUserQuestion`, `choice`):**
 
 Antes de mergulhar no problema, entender O QUE será construído:
-```
-Em poucas palavras, o que você quer construir? (que produto ou ferramenta é esse?)
-```
+- `question`: "Em poucas palavras, o que você quer construir? Escolha uma forma abaixo ou escreva com suas palavras."
+- `header`: "Produto"
+- Opções: 2–4 categorias concretas inferidas do domínio (ex.: "Um aplicativo de celular", "Um site ou sistema web", "Um painel de relatórios", "Uma ferramenta interna"). D14 — sem opção de "descrever livremente"; a nativa "Type something" cobre quem quiser escrever.
 - **Pular** se o texto inicial de `/iniciar-produto` já descreveu o produto (usar o que foi dito — não re-perguntar).
 - Guardar como **âncora de produto**: alimenta a pré-extração, a síntese (Fase 4) e a seção `## 1. Visão`. Não pedir features nem detalhar — é só o enquadramento de uma frase.
 - O agente não comenta nem propõe nada sobre o produto; em seguida segue para o Turno 1 (problema).
@@ -65,18 +65,18 @@ Se o problema NÃO foi descrito no texto inicial:
 
 Se o problema JÁ foi descrito no texto inicial: pular para Turno 2 usando o que foi descrito.
 
-**Turno 2 — Sondagem de impacto (5-Whys):**
-Com base nas dores marcadas no Turno 1 (e/ou no texto livre de "Outro"), perguntar:
-```
-O que acontece por causa disso? Qual é a consequência mais concreta — tempo perdido, erros, dinheiro, frustração?
-```
+**Turno 2 — Sondagem de impacto (5-Whys) (`multi-choice`):**
+Com base nas dores marcadas no Turno 1 (e/ou no texto livre de "Outro"):
+- `question`: "O que acontece por causa disso? Qual a consequência mais concreta? (pode escolher mais de uma ou escrever)"
+- `header`: "Impacto"
+- Opções: âncoras concretas adaptadas à dor (ex.: "Tempo perdido", "Erros que se repetem", "Dinheiro/custo extra", "Frustração das pessoas").
 *(Adaptar à resposta anterior — se o impacto já foi mencionado, confirmar em vez de re-perguntar.)*
 
-**Turno 3 — JTBD (Job-to-be-Done) — condicional:**
+**Turno 3 — JTBD (Job-to-be-Done) — condicional (`multi-choice`):**
 Usar SOMENTE se o "progresso desejado" não ficou claro nas respostas anteriores:
-```
-Quando você imagina que esse problema foi resolvido, o que muda na prática? O que você (ou as pessoas afetadas) conseguem fazer que hoje não conseguem?
-```
+- `question`: "Quando esse problema estiver resolvido, o que muda na prática? O que passa a ser possível? (pode escolher mais de uma ou escrever)"
+- `header`: "Resultado"
+- Opções: 2–4 ganhos concretos derivados da dor (ex.: "Fazer em menos tempo", "Sem erros/retrabalho", "Acompanhar tudo num lugar", "Atender mais gente").
 
 **Regras da Fase 1:**
 - Após o Turno 0 (enquadramento), o **agente** não propõe produto/solução/features — os Turnos 1–3 são só sobre o problema
@@ -87,27 +87,23 @@ Quando você imagina que esse problema foi resolvido, o que muda na prática? O 
 
 **Lote compacto (1 `AskUserQuestion`, 2 perguntas):**
 
-1. **Nome do produto** (text):
-   ```
-   Como você chamaria esse produto? Pode ser um nome temporário mesmo.
-   ```
-   *(Se o usuário já mencionou um nome no texto inicial: apresentar como sugestão via choice — "Pode ser [nome mencionado]?" — não re-perguntar aberto.)*
+1. **Nome do produto** (`choice`):
+   - `question`: "Como você chamaria esse produto? Escolha uma sugestão ou escreva o seu (pode ser temporário)."
+   - Opções: 2–3 nomes candidatos concretos sintetizados do conceito do produto. Se o usuário já mencionou um nome no texto inicial, incluí-lo como primeira opção. D14 — sem opção-recheio.
 
-2. **Público principal** (text — só se não ficou claro na Fase 1):
-   ```
-   Pensando nas pessoas que mais vão se beneficiar: quem são elas? (pode descrever informalmente)
-   ```
+2. **Público principal** (`multi-choice` — só se não ficou claro na Fase 1):
+   - `question`: "Pensando nas pessoas que mais vão se beneficiar, quem são elas? (pode escolher mais de uma ou escrever)"
+   - Opções: 2–4 perfis concretos inferidos do contexto (ex.: "Clientes finais", "Funcionários da empresa", "Parceiros/fornecedores", "Equipe interna").
    *(Se o público já ficou claro na Fase 1, inferir e pular esta pergunta.)*
 
 ## Fase 3 — Indicadores de Sucesso
 
-**1 `AskUserQuestion`, 1 pergunta (text):**
+**1 `AskUserQuestion`, 1 pergunta (`multi-choice`):**
+- `question`: "Como você vai saber que esse produto deu certo? (pode escolher mais de uma ou escrever a sua)"
+- `header`: "Sucesso"
+- Opções: 2–4 metas concretas adaptadas ao caso (ex.: "Menos reclamações por mês", "Economizar horas por semana", "Atender mais pedidos", "Menos erros no processo").
 
-```
-Como você vai saber que esse produto resolveu o problema? O que precisa acontecer ou melhorar para você dizer "funcionou"?
-```
-
-*(Exemplos de resposta esperada: "menos de X reclamações por mês", "economizar Y horas por semana", "atender Z pedidos a mais". Se o usuário não souber: registrar `[a definir]` e adicionar aos Itens em Aberto. Esta informação é incorporada à seção §2 do documento de visão — não gera seção separada.)*
+*(Se o usuário não souber: registrar `[a definir]` e adicionar aos Itens em Aberto. Esta informação é incorporada à seção §2 do documento de visão — não gera seção separada.)*
 
 ## Fase 4 — Síntese e Confirmação
 
@@ -144,7 +140,7 @@ Está correto? Alguma coisa precisa mudar?
 Opções: `"Está correto"` / `"Quero ajustar"` / `"Quero explicar melhor"`
 
 - Se "Está correto" → Fase 5
-- Se "Quero ajustar" ou "Quero explicar melhor" → 1 `AskUserQuestion` text ("O que está errado? O que você mudaria?") → re-sintetizar → re-confirmar (máximo 1 rodada extra)
+- Se "Quero ajustar" ou "Quero explicar melhor" → 1 `AskUserQuestion` (`multi-choice`: "O que você quer ajustar? (pode escolher mais de uma ou escrever)" — opções: "O problema", "Quem vai usar", "O benefício/diferencial", "O nome") → re-sintetizar → re-confirmar (máximo 1 rodada extra)
 
 ## Fase 5 — Saída
 

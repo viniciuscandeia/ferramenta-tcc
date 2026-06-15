@@ -12,6 +12,10 @@
 
 set -euo pipefail
 
+# Diretório deste script (para localizar filtros pandoc auxiliares)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LUA_TABELA="$SCRIPT_DIR/pandoc-tabela-wrap.lua"
+
 # ---------------------------------------------------------------------------
 # Configuração: arquivos internos excluídos do técnico (padrões glob, basename)
 # ---------------------------------------------------------------------------
@@ -19,6 +23,7 @@ EXCLUIR_TECNICO=(
   "*elicitacao-raw*"
   "*pautas-reelicitacao*"
   "*analyze-report*"
+  "*03.3-diagramas*"
 )
 
 # Pastas/arquivos de M1 e M2 excluídos do PDF técnico:
@@ -80,56 +85,50 @@ export PATH
 # original — não aborta a geração do gate).
 #   Instalar: sudo tlmgr install fvextra
 # ---------------------------------------------------------------------------
-PREAMBLE_TEX=""
+PREAMBLE_TEX="$(mktemp /tmp/ferramenta_tcc_preamble_XXXXXX)"
+# shellcheck disable=SC2064
+trap "rm -f '$PREAMBLE_TEX'" EXIT
 
+# fvextra (opcional) — corrige blocos de código (```...```) que estouram a margem.
+# Ausente: segue sem esse fix; os demais (overflow, imagens, tabelas) continuam valendo.
 if command -v kpsewhich &>/dev/null && kpsewhich fvextra.sty &>/dev/null; then
-  PREAMBLE_TEX="$(mktemp /tmp/ferramenta_tcc_preamble_XXXXXX)"
-  cat > "$PREAMBLE_TEX" <<'LATEXPREAMBLE'
-% === ferramenta-tcc: fix quebra de linha em PDF LaTeX ===
-% Requer: fvextra  (sudo tlmgr install fvextra)
-
-% Fix 1 — blocos de código fenced (```...```):
-%   Redefine Highlighting env gerada pelo pandoc para permitir quebra em qualquer char.
+  cat > "$PREAMBLE_TEX" <<'LATEXFVEXTRA'
+% Fix 1 — blocos de código fenced: quebra em qualquer caractere (requer fvextra)
 \usepackage{fvextra}
 \fvset{breaklines=true,breakanywhere=true}
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{%
   breaklines=true,breakanywhere=true,commandchars=\\\{\}}
+LATEXFVEXTRA
+else
+  : > "$PREAMBLE_TEX"
+  echo "[md_to_pdf] AVISO: fvextra não encontrado — código pode estourar margem no PDF." >&2
+  echo "[md_to_pdf]   Instalar: sudo tlmgr install fvextra" >&2
+  echo "[md_to_pdf]   Gerando PDF sem fix de quebra de linha em blocos de código." >&2
+fi
 
-% Fix 2 — quebra de código inline (\texttt{...}) longo:
-%   REMOVIDO. A versão anterior redefinia \texttt com um scanner token-a-token
-%   que inseria \discretionary após / . -. Esse scanner vazava para "moving
-%   arguments" (títulos de seção → arquivo .toc e bookmarks do hyperref),
-%   gerando \discretionary literal no .toc e o erro FATAL
-%   "Improper discretionary list" / "Missing { inserted" — que impedia a
-%   geração do PDF técnico (o .toc inclui §3/§4 com caminhos em código inline).
-%   Tentativas de blindar (\DeclareRobustCommand) causavam loop infinito na
-%   geração de bookmarks. Como o ganho era apenas cosmético (caminhos longos
-%   quebrando na margem) e o custo era o PDF inteiro falhar, o fix foi removido.
-%   Mitigação de overflow residual: \emergencystretch abaixo (Fix 3) + \sloppy.
+# Fixes sempre aplicados (independem de fvextra): overflow residual, imagens e tabelas.
+cat >> "$PREAMBLE_TEX" <<'LATEXBASE'
+
+% Fix 3 — rede de segurança para overflows residuais (caminhos longos etc.)
 \sloppy
-
-% Fix 3 — rede de segurança para overflows residuais (inclui caminhos longos
-%   em código inline, antes tratados pelo Fix 2)
 \setlength{\emergencystretch}{10em}
 
 % Fix 4 — imagens (incluindo diagramas Mermaid) escaladas para caber na página
-%   Idêntico ao padrão do template pandoc default.latex.
-%   Imagens menores que a coluna ficam no tamanho natural; maiores são reduzidas.
 \usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \makeatother
-LATEXPREAMBLE
-  # Limpar ao sair do script
-  # shellcheck disable=SC2064
-  trap "rm -f '$PREAMBLE_TEX'" EXIT
-else
-  echo "[md_to_pdf] AVISO: fvextra não encontrado — código pode estourar margem no PDF." >&2
-  echo "[md_to_pdf]   Instalar: sudo tlmgr install fvextra" >&2
-  echo "[md_to_pdf]   Gerando PDF sem fix de quebra de linha." >&2
-fi
+
+% Fix 5 — tabelas: fonte menor e colunas que quebram. As larguras p{} das tabelas
+%   largas são definidas pelo filtro Lua pandoc-tabela-wrap.lua.
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+\AtBeginEnvironment{tabular}{\small}
+LATEXBASE
 
 # ---------------------------------------------------------------------------
 # Detectar mmdc (Mermaid CLI) — opcional, para renderizar diagramas como imagem
@@ -215,28 +214,35 @@ _page_break() {
 # Blocos que falharem na conversão ficam como código (fallback gracioso).
 # _processar_mermaid <tmp_md> <img_dir>
 _processar_mermaid() {
-  local tmp_md="$1" img_dir="$2"
-  python3 - "$tmp_md" "$img_dir" <<'PYEOF'
+  local tmp_md="$1" img_dir="$2" fmt="${3:-png}"
+  python3 - "$tmp_md" "$img_dir" "$fmt" <<'PYEOF'
 import re, subprocess, os, sys
 
-input_file, img_dir = sys.argv[1], sys.argv[2]
+input_file, img_dir, fmt = sys.argv[1], sys.argv[2], sys.argv[3]
 content = open(input_file, encoding='utf-8').read()
 count = [0]
+
+# Nitidez do diagrama: PDF vetorial para engines LaTeX (escala infinita);
+# PNG de alta densidade (escala 3x) para engines HTML (wkhtmltopdf/weasyprint/etc).
+if fmt == 'pdf':
+    ext, extra = 'pdf', ['--pdfFit']
+else:
+    ext, extra = 'png', ['-w', '1400', '-s', '3']
 
 def replace_mermaid(m):
     count[0] += 1
     n = count[0]
     mmd_file = os.path.join(img_dir, f'diagram_{n}.mmd')
-    png_file  = os.path.join(img_dir, f'diagram_{n}.png')
+    out_file = os.path.join(img_dir, f'diagram_{n}.{ext}')
     open(mmd_file, 'w', encoding='utf-8').write(m.group(1).strip())
     try:
         result = subprocess.run(
-            ['mmdc', '-i', mmd_file, '-o', png_file,
-             '-b', 'white', '--quiet', '-w', '600'],
-            capture_output=True, timeout=60
+            ['mmdc', '-i', mmd_file, '-o', out_file,
+             '-b', 'white', '--quiet'] + extra,
+            capture_output=True, timeout=120
         )
-        if result.returncode == 0 and os.path.exists(png_file):
-            return f'![Diagrama {n}]({png_file})\n'
+        if result.returncode == 0 and os.path.exists(out_file):
+            return f'![Diagrama {n}]({out_file})\n'
     except Exception:
         pass
     return m.group(0)  # fallback: mantém bloco mermaid original
@@ -254,41 +260,43 @@ _convert() {
   local -a _preamble_args=()
   [[ -n "${PREAMBLE_TEX:-}" && -f "${PREAMBLE_TEX:-}" ]] \
     && _preamble_args=(--include-in-header "$PREAMBLE_TEX")
+  local -a _lua_args=()
+  [[ -f "${LUA_TABELA:-}" ]] && _lua_args=(--lua-filter "$LUA_TABELA")
   case "$ENGINE" in
     pandoc-xelatex)
       pandoc "$src" -o "$dst" \
         --pdf-engine=xelatex \
         --toc \
-        --metadata title="$titulo" \
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
         --standalone \
         "${_preamble_args[@]+"${_preamble_args[@]}"}" \
+        "${_lua_args[@]+"${_lua_args[@]}"}" \
         2> >(grep -vE "Missing character|Float too large for page|^\s+input line [0-9]+\." >&2)
       ;;
     pandoc-pdflatex)
       pandoc "$src" -o "$dst" \
         --pdf-engine=pdflatex \
         --toc \
-        --metadata title="$titulo" \
         -V geometry:margin=2.5cm \
         -V lang=pt-BR \
         --standalone \
         "${_preamble_args[@]+"${_preamble_args[@]}"}" \
+        "${_lua_args[@]+"${_lua_args[@]}"}" \
         2> >(grep -vE "Missing character|Float too large for page|^\s+input line [0-9]+\." >&2)
       ;;
     pandoc-wkhtmltopdf)
       pandoc "$src" -o "$dst" \
         --pdf-engine=wkhtmltopdf \
         --toc \
-        --metadata title="$titulo" \
-        --standalone
+        --standalone \
+        "${_lua_args[@]+"${_lua_args[@]}"}"
       ;;
     pandoc-default)
       pandoc "$src" -o "$dst" \
         --toc \
-        --metadata title="$titulo" \
-        --standalone
+        --standalone \
+        "${_lua_args[@]+"${_lua_args[@]}"}"
       ;;
     md-to-pdf)
       md-to-pdf "$src" --dest "$dst" 2>/dev/null
@@ -296,7 +304,7 @@ _convert() {
     weasyprint)
       if command -v pandoc &>/dev/null; then
         local tmp_html="${src%.md}.html"
-        pandoc "$src" -o "$tmp_html" --standalone --metadata title="$titulo"
+        pandoc "$src" -o "$tmp_html" --standalone "${_lua_args[@]+"${_lua_args[@]}"}"
         weasyprint "$tmp_html" "$dst"
         rm -f "$tmp_html"
       else
@@ -321,11 +329,9 @@ _gerar_pdf() {
   # shellcheck disable=SC2064
   trap "rm -f '$tmp_md'; rm -rf '$tmp_img_dir'" RETURN
 
-  # Cabeçalho / capa
+  # Cabeçalho / capa (título único — sem repetir o nome do projeto logo abaixo)
   {
     echo "# $titulo"
-    echo ""
-    echo "**$NOME_PROJETO**"
     echo ""
     echo "---"
     echo ""
@@ -376,9 +382,14 @@ _gerar_pdf() {
     echo "" >> "$tmp_md"
   done
 
-  # Renderizar diagramas Mermaid como imagens PNG (se mmdc disponível)
+  # Renderizar diagramas Mermaid (se mmdc disponível): PDF vetorial nas engines
+  # LaTeX (nitidez perfeita), PNG de alta densidade nas demais.
   if [[ -n "$MMDC" ]]; then
-    _processar_mermaid "$tmp_md" "$tmp_img_dir"
+    local _diag_fmt="png"
+    case "$ENGINE" in
+      pandoc-xelatex|pandoc-pdflatex) _diag_fmt="pdf" ;;
+    esac
+    _processar_mermaid "$tmp_md" "$tmp_img_dir" "$_diag_fmt"
   fi
 
   _convert "$tmp_md" "$out_pdf" "$titulo"
