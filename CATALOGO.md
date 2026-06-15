@@ -317,7 +317,7 @@
 
 **Arquivo:** `skills/requisito-ears/SKILL.md`
 
-**Descrição:** Formata todos os RFs e RNFs de M2 com sintaxe EARS (5 padrões), montando a frase completa com o modal RFC 2119 (DEVE/DEVERIA/PODE) embutido. Gera tabela estruturada com colunas: ID | Tipo-EARS | Requisito (frase EARS) | Prioridade | Verificar? — sem coluna "Modal" separada. Base para srs-ireb-montagem.
+**Descrição:** Formata todos os RFs e RNFs de M2 com sintaxe EARS (5 padrões), montando a frase completa com o modal RFC 2119 (DEVE/DEVERIA/PODE) embutido. Gera tabela estruturada com colunas: ID | Classificação | Requisito | Prioridade | Verificar? (RFs) e ID | Categoria | Comportamento | Prioridade | Métrica (RNFs) — sem coluna "Modal" separada (o modal vive embutido na frase). Base para srs-ireb-montagem.
 
 **Quando usar:** Invocada pelo documenter como Passo 1 do Processo M3. Entrada obrigatória: 02.1-requisitos-funcionais.md e 02.2-requisitos-qualidade.md com a coluna "Prioridade" já atribuída pela skill priorizacao (M2).
 

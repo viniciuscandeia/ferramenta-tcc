@@ -83,7 +83,12 @@ Preencher `[DATA-GERAÇÃO]` com a data atual no formato `YYYY-MM-DD`.
 
 Organizar **sempre por módulo** (padrão). Lista plana só como fallback explícito (ver regra abaixo).
 
-**Parágrafo introdutório obrigatório (inserir antes das subseções de módulo):**
+**Dois parágrafos introdutórios obrigatórios (nesta ordem, antes das subseções de módulo):**
+
+Primeiro — como os requisitos são escritos (cita o padrão, lista os nomes, não define cada um):
+> Os requisitos funcionais seguem o padrão **EARS** (Easy Approach to Requirements Syntax): cada requisito é uma frase estruturada que liga uma condição de ativação (quando/enquanto/se/onde, ou nenhuma) ao comportamento esperado do sistema. A coluna **Classificação** indica o padrão EARS de cada requisito — **Ubíquo**, **Evento**, **Estado**, **Indesejado** ou **Opcional**.
+
+Segundo — organização em módulos e prioridade:
 > O sistema foi dividido em grupos de funcionalidades relacionadas — chamados **módulos**. Cada módulo reúne as regras de uma área específica do produto. A coluna **Prioridade** classifica cada regra como **Essencial** (obrigatória nesta versão), **Importante** (recomendada, com alternativa temporária) ou **Desejável** (bom ter, postergável). O verbo de obrigatoriedade (`DEVE`/`DEVERIA`/`PODE`) está embutido na própria frase de cada requisito.
 
 **Diagrama de caso de uso (inserir após o parágrafo introdutório, antes das tabelas):**
@@ -106,19 +111,20 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
    ```markdown
    ## 3. Requisitos Funcionais
 
-   > [parágrafo introdutório aqui]
+   > [parágrafo EARS aqui]
+
+   > [parágrafo de módulos aqui]
 
    [diagrama de caso de uso aqui]
 
    ### 3.1 Módulo de [Nome]
-   | ID | Tipo-EARS | Requisito (frase EARS) | Prioridade | Critério |
+   | ID | Classificação | Requisito | Prioridade | Critério |
    |---|---|---|---|---|
    | RF-001 | Evento | Quando [evento], o sistema DEVE [verbo] [objeto] | Essencial | ... |
 
    ### 3.2 Módulo de [Nome]
    | ID | ...
    ```
-   > **Legenda de prioridade (MoSCoW):** Essencial (Must) · Importante (Should) · Desejável (Could) · Fora desta versão (Won't). Inserir esta legenda uma vez, logo após o parágrafo introdutório de §3.
 
 5. **Fallback — lista plana:** usar SOMENTE se N_RF < 5 **E** não houver nenhum agrupamento natural identificável. Nesse caso: inserir tabela única com todos os RFs e registrar nota:
    > _Nota: menos de 5 requisitos funcionais identificados — agrupamento por módulo omitido._
@@ -132,7 +138,7 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
 Embutir o bloco `## 4. Estrutura de Dados (Entidade-Relacionamento)` de `documentos-tecnicos/03-documento/03.3-diagramas.md`.  
 Se o bloco estiver ausente ou com nota de omissão → copiar a nota de omissão diretamente (não omitir em silêncio).
 
-Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Bucket | Comportamento (frase, com DEVE/DEVERIA/PODE embutido) | Prioridade | Métrica | Critério de aceite. (Sem coluna "Modal" — o verbo de obrigatoriedade vive na frase do comportamento. Repetir a legenda de prioridade MoSCoW, se útil.)
+Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Categoria | Comportamento | Prioridade | Métrica | Critério de aceite. (O verbo de obrigatoriedade DEVE/DEVERIA/PODE vive embutido na frase da coluna "Comportamento" — sem coluna "Modal" separada.)
 Critério de aceite = condição verificável derivada da métrica (ex: "teste de carga com k6 sob 1000 req/s sem degradação > 10%").
 
 **Seção 5 — Interfaces Externas:**

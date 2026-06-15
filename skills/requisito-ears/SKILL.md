@@ -49,7 +49,7 @@ description: >-
 **Por RF:** detectar padrão → montar a **frase EARS completa** (com o modal embutido) → registrar a frase + a prioridade vinda de `priorizacao`. Não criar coluna "Modal" separada.
 Item com padrão ambíguo ou descrição vaga → marcar `[VERIFICAR]`.
 
-**Por RNF:** não aplicar padrão EARS estrutural. Formatar como linha de qualidade com o modal embutido na frase do comportamento: ID | Bucket | Comportamento (frase, com DEVE/DEVERIA/PODE) | Prioridade | Métrica.
+**Por RNF:** não aplicar padrão EARS estrutural. Formatar como linha de qualidade com o modal embutido na frase do comportamento: ID | Categoria | Comportamento (com DEVE/DEVERIA/PODE embutido na frase) | Prioridade | Métrica.
 
 Sujeito é sempre "O sistema" (EARS canônico), embutido na frase. Sem interação com usuário.
 
@@ -60,7 +60,7 @@ Sujeito é sempre "O sistema" (EARS canônico), embutido na frase. Sem interaç�
 
 ## Funcionais
 
-| ID | Tipo-EARS | Requisito (frase EARS) | Prioridade | Verificar? |
+| ID | Classificação | Requisito | Prioridade | Verificar? |
 |---|---|---|---|---|
 | RF-001 | Ubíquo | O sistema DEVE permitir o cadastro de produto | Essencial | — |
 | RF-002 | Evento | Quando um pedido for concluído, o sistema DEVE enviar confirmação por e-mail | Essencial | — |
@@ -71,7 +71,7 @@ Sujeito é sempre "O sistema" (EARS canônico), embutido na frase. Sem interaç�
 
 ## Qualidade
 
-| ID | Bucket | Comportamento (frase) | Prioridade | Métrica |
+| ID | Categoria | Comportamento | Prioridade | Métrica |
 |---|---|---|---|---|
 | RNF-001 | Desempenho | O sistema DEVE responder a requisições | Essencial | < 2s para 95% das chamadas |
 | RNF-002 | Disponibilidade | O sistema DEVE estar disponível | Essencial | 99,5% em 30 dias |

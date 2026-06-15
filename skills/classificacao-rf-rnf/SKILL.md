@@ -40,9 +40,9 @@ description: >-
 
 **Distinção RNF vs Restrição:** RNF = qualidade mensurável de comportamento. Restrição = escolha imposta externamente que o sistema não pode ignorar.
 
-**Buckets de qualidade para RNFs (Wiegers Ch7):**
+**Categorias de qualidade para RNFs (buckets Wiegers Ch7):**
 
-| # | Bucket | Métrica-base |
+| # | Categoria | Métrica-base |
 |---|---|---|
 | 1 | Desempenho | tempo de resposta, throughput, latência |
 | 2 | Capacidade/Escalabilidade | usuários simultâneos, volume de dados |
@@ -56,7 +56,7 @@ description: >-
 
 **Algoritmo por item:**
 1. **RF?** Descreve ação/funcionalidade que o sistema executa → `RF-NNN`
-2. **RNF?** Descreve qualidade mensurável (bucket acima) → `RNF-NNN` + bucket; sem métrica → `LACUNA` no campo
+2. **RNF?** Descreve qualidade mensurável (categoria acima) → `RNF-NNN` + categoria; sem métrica → `LACUNA` no campo
 3. **Restrição?** Escolha imposta de fora → `REST-NNN` + subtipo (legal/técnica/organizacional/temporal)
 4. **Premissa?** Pressuposto não-verificado → `PREM-NNN`
 5. **Nenhum:** item irrelevante ou já coberto → descartar (registrar motivo)
@@ -77,7 +77,7 @@ Sem duplicatas: dois itens que descrevem a mesma coisa → consolidar em 1 com a
 
 **documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md (rascunho):**
 ```markdown
-| ID | Bucket | Descrição | Métrica | Prioridade | Fonte |
+| ID | Categoria | Descrição | Métrica | Prioridade | Fonte |
 |---|---|---|---|---|---|
 | RNF-001 | Desempenho | [descrição, com DEVE/DEVERIA/PODE embutido] | [métrica ou LACUNA] | [Essencial/Importante/Desejável] | ... |
 ```
