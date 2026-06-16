@@ -91,6 +91,8 @@ Primeiro — como os requisitos são escritos (cita o padrão, lista os nomes, n
 Segundo — organização em módulos e prioridade:
 > O sistema foi dividido em grupos de funcionalidades relacionadas — chamados **módulos**. Cada módulo reúne as regras de uma área específica do produto. A coluna **Prioridade** classifica cada regra como **Essencial** (obrigatória nesta versão), **Importante** (recomendada, com alternativa temporária) ou **Desejável** (bom ter, postergável). O verbo de obrigatoriedade (`DEVE`/`DEVERIA`/`PODE`) está embutido na própria frase de cada requisito.
 
+**NÃO inserir legenda de prioridade (MoSCoW).** Os dois parágrafos introdutórios acima já explicam Essencial/Importante/Desejável. Ao copiar as tabelas de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, **descartar** qualquer linha iniciada por `> **Legenda de prioridade` — ela não entra no SRS.
+
 **Diagrama de caso de uso (inserir após o parágrafo introdutório, antes das tabelas):**
 Embutir o bloco `## 2. Caso de Uso — O que o Sistema Faz` de `documentos-tecnicos/03-documento/03.3-diagramas.md`.  
 Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem erro.
@@ -142,6 +144,8 @@ Se o bloco estiver ausente ou com nota de omissão → copiar a nota de omissão
 Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Categoria | Comportamento | Prioridade | Métrica | Critério de aceite. (O verbo de obrigatoriedade DEVE/DEVERIA/PODE vive embutido na frase da coluna "Comportamento" — sem coluna "Modal" separada.)
 Critério de aceite = condição verificável derivada da métrica (ex: "teste de carga com k6 sob 1000 req/s sem degradação > 10%").
 
+**NÃO inserir legenda de prioridade (MoSCoW)** nesta seção. A legenda em `02.x` é combinada RF+RNF e pode ser arrastada junto — ao copiar de `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, descartar qualquer linha iniciada por `> **Legenda de prioridade`.
+
 **Seção 5 — Interfaces Externas:**
 - 5.1 Interfaces: APIs de terceiros, sistemas legados, dispositivos físicos de `documentos-tecnicos/02-requisitos/02.3-restricoes.md` ou `documentos-tecnicos/01-visao/01-visao-produto.md`; se nenhum: "Interfaces externas não identificadas nesta fase — detalhar em fase de design"
 
@@ -169,6 +173,7 @@ Antes de salvar, verificar checklist:
 - [ ] Seções 1–6 obrigatórias presentes (§7 condicional, §8 obrigatória)
 - [ ] Contagem RFs na seção 3 == contagem em `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`
 - [ ] Contagem RNFs na seção 4 == contagem em `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`
+- [ ] Nenhuma linha "Legenda de prioridade (MoSCoW)" presente no documento (§3 e §4)
 - [ ] Seção 6 tem linha para cada RF e RNF
 - [ ] Seção 8 (Glossário) presente com ao menos 1 verbete
 - [ ] Diagrama de contexto embutido em §2.1 (ou nota de fallback)

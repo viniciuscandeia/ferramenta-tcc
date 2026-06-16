@@ -1,7 +1,7 @@
 ---
 name: iniciar-produto
 disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
-description: Inicia ou retoma o processo de documentação de requisitos do projeto
+description: Inicia ou retoma o processo de documentação de requisitos do produto
 ---
 
 ## Inicialização do plugin (passo obrigatório)
