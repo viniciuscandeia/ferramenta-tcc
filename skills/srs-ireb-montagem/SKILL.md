@@ -17,7 +17,7 @@ description: >-
 <HARD-GATE>
 - NÃO executar antes de `requisito-ears` e `modelagem-visual` concluídos (diagramas são embutidos neste passo)
 - NÃO executar sem `documentos-tecnicos/01-visao/01-visao-produto.md`, `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, `documentos-tecnicos/02-requisitos/02.2-requisitos-qualidade.md`, `documentos-tecnicos/02-requisitos/02.3-restricoes.md`, `documentos-tecnicos/02-requisitos/02.5-glossario.md` — artefatos obrigatórios
-- `documentos-tecnicos/03-documento/03.3-diagramas.md` é opcional mas recomendado — se ausente, usar fallback textual para §2.1 e omitir diagramas de §3 e §4
+- `documentos-tecnicos/03-documento/03.3-diagramas.md` é opcional mas recomendado — se ausente, usar fallback textual para §2.1 e omitir o diagrama ER de §2.2. Os diagramas de caso de uso da §3 vêm dos RFs e **não** dependem deste arquivo (gerar sempre)
 - ⛔ STOP se checklist de completude final falhar (seção ausente ou contagem divergente)
 </HARD-GATE>
 
@@ -61,23 +61,34 @@ Preencher `[DATA-GERAÇÃO]` com a data atual no formato `YYYY-MM-DD`.
 | Seção | Título | Fonte |
 |---|---|---|
 | 1 | Introdução | `documentos-tecnicos/01-visao/01-visao-produto.md` (M1) |
-| 2 | Descrição Geral | `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.3-restricoes.md` + `documentos-tecnicos/02-requisitos/02.4-premissas.md` + diagrama de contexto de `documentos-tecnicos/03-documento/03.3-diagramas.md` |
-| 3 | Requisitos Funcionais | Saída de `requisito-ears` — tabela estruturada, agrupada por módulo + diagrama de caso de uso de `03.3-diagramas.md` |
-| 4 | Requisitos de Qualidade | Saída de `requisito-ears` — tabela RNFs com métricas + diagrama ER de `03.3-diagramas.md` (se existir) |
+| 2 | Descrição Geral | `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.3-restricoes.md` + `documentos-tecnicos/02-requisitos/02.4-premissas.md` + diagrama de contexto + diagrama de estrutura de dados (ER) de `documentos-tecnicos/03-documento/03.3-diagramas.md` |
+| 3 | Requisitos Funcionais | Saída de `requisito-ears` — tabela estruturada, agrupada por módulo + **um diagrama de caso de uso por módulo** (gerado na montagem a partir dos RFs do módulo) |
+| 4 | Requisitos de Qualidade | Saída de `requisito-ears` — tabela RNFs com métricas |
 | 5 | Interfaces Externas | `documentos-tecnicos/02-requisitos/02.3-restricoes.md` |
 | 6 | Matriz de Rastreabilidade | Cruzamento: OBJ-NNN (M1) → RF/RNF → Seção SRS → Stakeholder origem |
 | 7 | Conflitos Detectados e Resolvidos | `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` (condicional — só se existir) |
 | 8 | Glossário | `documentos-tecnicos/02-requisitos/02.5-glossario.md` (conteúdo completo) |
+
+**Moldura de diagrama (regra única — aplicar a TODO diagrama do SRS: contexto §2.1, ER §2.2 e os casos de uso por módulo em §3.X):**
+
+Diagramas vindos de `documentos-tecnicos/03-documento/03.3-diagramas.md` (contexto, ER) trazem um heading próprio (`## N. Título`) e uma linha `> Destinado à Seção …`: ao embutir, **descartar os dois** (o `## N.` colidiria com a numeração de seção do SRS). Os diagramas de caso de uso por módulo são **gerados nesta montagem** (não há heading de origem a remover). Em ambos os casos, montar nesta ordem:
+
+1. **Frase de introdução** em prosa (1 linha) — para contexto/ER, reaproveitar a descrição `> Mostra…` do bloco de origem (sem o `>`); para caso de uso por módulo, uma frase curta ("As situações de uso do módulo [Nome]:").
+2. O **bloco ```mermaid** (apenas o conteúdo do diagrama).
+3. **Legenda** em linha própria, em itálico: `_Figura N — <título limpo>._`
+
+Numerar `Figura N` sequencialmente pela ordem no documento, contando **só as figuras efetivamente renderizadas**: Contexto = Figura 1 (§2.1) · Estrutura de Dados/ER = Figura 2 (§2.2) · depois **um diagrama por módulo** em §3.1, §3.2, … (Figura 3, Figura 4, …). Se o ER for omitido (nota de omissão), tudo desce 1 (o primeiro caso de uso vira Figura 2). Sem buracos na numeração.
 
 **Seção 1 — Introdução:**
 - 1.1 Objetivo: problema resolvido, usuários diretos do produto, contexto geral (de `documentos-tecnicos/01-visao/01-visao-produto.md`)
 - 1.2 Referências: artefatos de entrada que compõem este documento
 
 **Seção 2 — Descrição Geral:**
-- 2.1 Contexto do Sistema: embutir o **diagrama de contexto** (bloco `## 1. Contexto do Sistema` de `documentos-tecnicos/03-documento/03.3-diagramas.md`) — se `03.3-diagramas.md` não existir ou o bloco estiver ausente, usar descrição textual ("O sistema X interage com Y por meio de Z").
-- 2.2 Usuários do Produto: listar **somente os usuários diretos** (camada "Usa diretamente") da tabela `## 3. Pessoas Envolvidas` de `documentos-tecnicos/01-visao/01-visao-produto.md`. Formato: tabela Papel | Interesse | Influência.
-- 2.3 Restrições de Design: `documentos-tecnicos/02-requisitos/02.3-restricoes.md` subtipos legal/técnica/organizacional/temporal
-- 2.4 Premissas: `documentos-tecnicos/02-requisitos/02.4-premissas.md` com impacto se falsas; se ausente: "Nenhuma premissa formal registrada nesta fase"
+- 2.1 Contexto do Sistema: embutir o **diagrama de contexto** (bloco `## 1. Contexto do Sistema` de `documentos-tecnicos/03-documento/03.3-diagramas.md`) aplicando a **moldura** acima (Figura 1) — se `03.3-diagramas.md` não existir ou o bloco estiver ausente, usar descrição textual ("O sistema X interage com Y por meio de Z").
+- 2.2 Estrutura de Dados: embutir o bloco cujo título seja `Estrutura de Dados (Entidade-Relacionamento)` de `documentos-tecnicos/03-documento/03.3-diagramas.md` — casar pelo **título**, não pelo número (a numeração do arquivo é dinâmica, então o ER pode estar em `## 3.`, `## 4.` etc.) — aplicando a **moldura** acima (Figura 2). **Esta subseção existe sempre**: se o bloco estiver ausente ou trouxer nota de omissão (glossário < 3 entidades), copiar a nota de omissão diretamente (não omitir em silêncio). O diagrama ER pertence à §2.2 e **nunca** deve aparecer na §6 (Matriz de Rastreabilidade).
+- 2.3 Usuários do Produto: listar **somente os usuários diretos** (camada "Usa diretamente") da tabela `## 3. Pessoas Envolvidas` de `documentos-tecnicos/01-visao/01-visao-produto.md`. Formato: tabela Papel | Interesse | Influência.
+- 2.4 Restrições de Design: `documentos-tecnicos/02-requisitos/02.3-restricoes.md` subtipos legal/técnica/organizacional/temporal
+- 2.5 Premissas: `documentos-tecnicos/02-requisitos/02.4-premissas.md` com impacto se falsas; se ausente: "Nenhuma premissa formal registrada nesta fase"
 
 **Seção 3 — Requisitos Funcionais:**
 
@@ -93,9 +104,20 @@ Segundo — organização em módulos e prioridade:
 
 **NÃO inserir legenda de prioridade (MoSCoW).** Os dois parágrafos introdutórios acima já explicam Essencial/Importante/Desejável. Ao copiar as tabelas de `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md`, **descartar** qualquer linha iniciada por `> **Legenda de prioridade` — ela não entra no SRS.
 
-**Diagrama de caso de uso (inserir após o parágrafo introdutório, antes das tabelas):**
-Embutir o bloco `## 2. Caso de Uso — O que o Sistema Faz` de `documentos-tecnicos/03-documento/03.3-diagramas.md`.  
-Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem erro.
+**Diagrama de caso de uso — UM POR MÓDULO (gerado nesta skill):**
+
+A §3 **não** traz um diagrama global. Cada subseção de módulo (§3.1, §3.2, …) recebe o seu próprio diagrama, posicionado **logo após o título do módulo, antes da tabela de RFs** daquele módulo.
+
+> **Por que gerado aqui, e não em `modelagem-visual`?** O agrupamento por módulo só existe nesta skill (ver Algoritmo de agrupamento abaixo) — `modelagem-visual` roda antes e não conhece os módulos. O caso de uso **global** de `03.3-diagramas.md` segue servindo só ao resumo leigo do cliente; ele **não** é embutido na §3.
+
+Para cada módulo, gerar um `flowchart LR` (atores à esquerda → funcionalidades à direita) seguindo o template do catálogo `content/catalogos-seed/conceitos/modelagem-visual.md §2`, com a **moldura** e estas regras:
+- Incluir as funcionalidades **Essencial** e **Importante** daquele módulo. Rótulo = verbo + objeto, sem sintaxe EARS (ex.: "Cadastrar produto", não "O sistema DEVE permitir cadastrar produto").
+- Ator = sujeito do RF (inferir do EARS; se ambíguo, usar o perfil principal do onion da §2.3).
+- Legenda: `_Figura N — Casos de uso · [Módulo]._` — numerar na ordem do documento (Figura 3, 4, …).
+- Módulo com 1 só funcionalidade: gerar mesmo assim (ator → 1 nó). Módulo "Geral" também recebe diagrama.
+- Os dados vêm dos RFs, não de `03.3-diagramas.md` — gerar mesmo que o arquivo de diagramas não exista.
+
+**Fallback de lista plana** (N_RF < 5, sem módulos — ver regra 5 abaixo): gerar **um único** diagrama de caso de uso global, antes da tabela única, com a moldura (Figura 3).
 
 **Algoritmo de agrupamento (executar antes de inserir os RFs):**
 
@@ -109,7 +131,7 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
 
 3. **Atribuir cada RF ao módulo mais próximo.** RF que não encaixa em nenhum → módulo "Geral".
 
-4. **Gerar seção 3 com subseções por módulo:**
+4. **Gerar seção 3 com subseções por módulo (um diagrama POR módulo):**
    ```markdown
    ## 3. Requisitos Funcionais
 
@@ -117,14 +139,22 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
 
    > [parágrafo de módulos aqui]
 
-   [diagrama de caso de uso aqui]
-
    ### 3.1 Módulo de [Nome]
+
+   As situações de uso do módulo [Nome]:
+   [ diagrama mermaid: flowchart LR — atores → funcionalidades DESTE módulo ]
+   _Figura 3 — Casos de uso · [Módulo]._
+
    | ID | Classificação | Requisito | Prioridade | Critério |
    |---|---|---|---|---|
    | RF-001 | Evento | Quando [evento], o sistema DEVE [verbo] [objeto] | Essencial | ... |
 
    ### 3.2 Módulo de [Nome]
+
+   As situações de uso do módulo [Nome]:
+   [ diagrama mermaid do módulo ]
+   _Figura 4 — Casos de uso · [Módulo]._
+
    | ID | ...
    ```
 
@@ -136,10 +166,7 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
 **Parágrafo introdutório obrigatório (inserir antes da tabela):**
 > Os requisitos de qualidade descrevem **como o sistema deve se comportar**, não o que faz. Estão agrupados por categoria (desempenho, segurança, disponibilidade, etc.) conforme a natureza do comportamento esperado.
 
-**Diagrama ER (inserir após o parágrafo introdutório, se existir):**
-Embutir, **dentro desta §4**, o bloco cujo título seja `Estrutura de Dados (Entidade-Relacionamento)` de `documentos-tecnicos/03-documento/03.3-diagramas.md` — casar pelo **título**, não pelo número da seção (`03.3-diagramas.md` numera os blocos dinamicamente, então o ER pode estar em `## 3.`, `## 4.` etc.).  
-O diagrama ER pertence à §4 e **nunca** deve aparecer na §6 (Matriz de Rastreabilidade).  
-Se o bloco estiver ausente ou com nota de omissão → copiar a nota de omissão diretamente (não omitir em silêncio).
+> _O diagrama de estrutura de dados (ER) **não** pertence a esta seção — ele é embutido na §2.2 Estrutura de Dados. Não inserir nenhum diagrama na §4._
 
 Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Categoria | Comportamento | Prioridade | Métrica | Critério de aceite. (O verbo de obrigatoriedade DEVE/DEVERIA/PODE vive embutido na frase da coluna "Comportamento" — sem coluna "Modal" separada.)
 Critério de aceite = condição verificável derivada da métrica (ex: "teste de carga com k6 sob 1000 req/s sem degradação > 10%").
@@ -177,7 +204,12 @@ Antes de salvar, verificar checklist:
 - [ ] Seção 6 tem linha para cada RF e RNF
 - [ ] Seção 8 (Glossário) presente com ao menos 1 verbete
 - [ ] Diagrama de contexto embutido em §2.1 (ou nota de fallback)
-- [ ] Diagrama de caso de uso embutido em §3 (ou nota de fallback)
+- [ ] Diagrama de estrutura de dados (ER) embutido em §2.2 (ou nota de omissão)
+- [ ] Nenhum diagrama na §4 (o ER vive em §2.2)
+- [ ] Cada módulo de §3 (§3.1, §3.2, …) tem o seu diagrama de caso de uso — ou, no fallback de lista plana, um diagrama único
+- [ ] Nenhum diagrama de caso de uso GLOBAL embutido na §3 (o global serve só ao resumo leigo)
+- [ ] Cada diagrama tem frase de introdução + legenda "Figura N", sem heading órfão `## N.`
+- [ ] Numeração `Figura N` sequencial e sem buracos — se o ER (§2.2) foi omitido, o primeiro caso de uso é Figura 2 (não Figura 3)
 
 Se qualquer item `[ ]`: ⛔ STOP — corrigir antes de salvar.
 

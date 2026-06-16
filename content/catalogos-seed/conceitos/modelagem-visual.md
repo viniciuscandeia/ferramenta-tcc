@@ -84,6 +84,13 @@ flowchart LR
 - Usar descrição do RF sem sintaxe EARS ("Cadastrar produto" não "O sistema DEVE permitir o cadastro de produto")
 - Se RF não tem ator claro → mapear para o ator de maior influência no onion
 
+**Onde cada versão usa este template:**
+- **Global** (este template, aplicado a todos os RFs): vira a visão geral do sistema e a base do
+  resumo **leigo** do cliente.
+- **Por módulo** (versão técnica, §3.X do SRS): o `srs-ireb-montagem` reaproveita este mesmo
+  template para gerar **um diagrama por módulo** — atores × funcionalidades **daquele** módulo —
+  já que o agrupamento por módulo só existe naquele passo de montagem.
+
 ---
 
 ## 3. Diagrama Entidade-Relacionamento (técnico — não leigo)

@@ -54,8 +54,8 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Input: `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.1-requisitos-funcionais.md` + `documentos-tecnicos/02-requisitos/02.5-glossario.md`
 - Gerar `documentos-tecnicos/03-documento/03.3-diagramas.md` com 3 diagramas Mermaid:
   - §1 Contexto do Sistema (obrigatório — embutido em §2.1 do SRS)
-  - §2 Caso de Uso — mapa de funcionalidades (obrigatório — embutido em §3 do SRS)
-  - §3 ER — estrutura de dados (técnico; omitir se glossário < 3 entidades — embutido em §4 do SRS)
+  - §2 Caso de Uso — mapa de funcionalidades **global** (obrigatório — base do resumo leigo; **não** entra na §3 técnica, que usa diagramas por módulo gerados no `srs-ireb-montagem`)
+  - §3 ER — estrutura de dados (técnico; omitir se glossário < 3 entidades — embutido em §2.2 do SRS)
 - O arquivo contém também o subconjunto leigo-safe (§§1–2 com rótulos em linguagem
   de negócio) delimitado por `<!-- LEIGO-SAFE-START -->` / `<!-- LEIGO-SAFE-END -->`,
   consumido pelo Passo 4 (`traducao-gate`)
@@ -66,8 +66,9 @@ Após geração completa, sinalizar `checker` para validação. Em caso de issue
 - Input: artefatos M1 + M2 + saída do Passo 1 + `documentos-tecnicos/03-documento/03.3-diagramas.md`
 - Montar `documentos-tecnicos/03-documento/03-srs-completo.md` com 8 seções completas
 - §2.1: embutir diagrama de contexto de `03.3-diagramas.md`
-- §3: embutir diagrama de caso de uso de `03.3-diagramas.md`
-- §4: embutir diagrama ER de `03.3-diagramas.md` (se existir)
+- §2.2: embutir diagrama ER de `03.3-diagramas.md` (se existir; senão, copiar a nota de omissão)
+- §3: **um diagrama de caso de uso por módulo**, gerado na montagem a partir dos RFs (não embute o global de `03.3-diagramas.md`)
+- §4: sem diagrama (o ER vive na §2.2)
 - §7: conflitos (condicional); §8: glossário completo
 
 **Passo 4 — traducao-gate** (último passo antes de sinalizar checker)

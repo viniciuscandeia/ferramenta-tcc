@@ -125,7 +125,7 @@ Antes de classificar, atualizar `estado-projeto.yaml.agenda_m2`:
 | `documentos-tecnicos/02-requisitos/02.3-restricoes.md` | Normativa | Sempre | Input M3 |
 | `documentos-para-leigo/02-requisitos/02.3-restricoes.md` | Leigo | Após pautas zeradas | Gate 2 |
 | `documentos-tecnicos/02-requisitos/02.4-premissas.md` | Única | Se premissas detectadas | Informativo M3 |
-| `documentos-tecnicos/02-requisitos/02.5-glossario.md` | Única | Sempre | Input M3 (seção 5 SRS IREB §3.3.3) |
+| `documentos-tecnicos/02-requisitos/02.5-glossario.md` | Única | Sempre | Input M3 (seção 8 SRS IREB §3.3.3) |
 | `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md` | Única | Sempre | Controle de loop M2 |
 | `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` | Única | Se ≥ 1 conflito | Informativo; input checker M3 |
 

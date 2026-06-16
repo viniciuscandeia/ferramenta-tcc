@@ -57,6 +57,8 @@ rótulos com espaço entre `["..."]`.
 
 ## Fase 2 — Diagrama de Caso de Uso (obrigatório)
 
+> **Escopo:** este é o caso de uso **global** (visão geral do sistema). Ele alimenta o subconjunto **leigo-safe** — o resumo do cliente recebe um único diagrama simples. A versão **técnica** do documento de requisitos (§3) **não** usa este diagrama global: lá, o `srs-ireb-montagem` gera **um diagrama de caso de uso por módulo** na montagem, porque o agrupamento por módulo só existe naquela etapa.
+
 **Input:** `02.1-requisitos-funcionais.md` (RFs com prioridade Essencial) × onion camada 1
 
 1. Extrair RFs com prioridade Essencial — são as funcionalidades que ganham caso de uso
@@ -78,7 +80,7 @@ rótulos com espaço entre `["..."]`.
    (id, nome, status, data são seguros como padrão)
 3. Inferir relacionamentos das definições e dos RFs (ex: "RF-003 — o sistema DEVE
    listar pedidos de um cliente" → relação Cliente ||--o{ Pedido)
-4. Montar `erDiagram` conforme template catálogo `§4`
+4. Montar `erDiagram` conforme template catálogo `§3`
 
 **Condição de omissão:** se glossário tem < 3 substantivos candidatos a entidade →
 não gerar ER. Registrar:
@@ -113,7 +115,7 @@ Estrutura do arquivo de saída (3 diagramas técnicos + bloco leigo-safe com 2):
 ## 2. Caso de Uso — O que o Sistema Faz
 
 > Mostra as funcionalidades principais e quem as executa.
-> Destinado à Seção 3 do documento de requisitos.
+> Visão geral (global) — alimenta o resumo leigo do cliente. Na versão técnica, a §3 traz um diagrama por módulo, gerado na montagem (srs-ireb-montagem).
 
 [bloco mermaid caso de uso]
 
@@ -122,7 +124,7 @@ Estrutura do arquivo de saída (3 diagramas técnicos + bloco leigo-safe com 2):
 ## 3. Estrutura de Dados (Entidade-Relacionamento)
 
 > Mostra as informações que o sistema armazena e como se relacionam.
-> Versão técnica — destinada à Seção 4 do documento de requisitos.
+> Versão técnica — destinada à Seção 2.2 do documento de requisitos.
 
 [bloco mermaid erDiagram | ou nota de omissão]
 
@@ -157,12 +159,13 @@ Ver `content/catalogos-seed/conceitos/modelagem-visual.md §Regras de rotulagem 
    Invocar imediatamente `Skill("srs-ireb-montagem")`. **PROIBIDO** qualquer TextBlock antes desta chamada.
 
 <!-- internal -->
-## Futuro — Diagramas de Caso de Uso por Módulo (item 13 do feedback)
+## Diagramas de Caso de Uso por Módulo (implementado)
 
-Melhoria futura: gerar um diagrama de caso de uso por módulo de requisitos (§3.X do SRS),
-em vez de um único diagrama global. Requer que o agrupamento de módulos (srs-ireb-montagem)
-seja executado primeiro e que o diagrama receba os módulos como subgraphs.
-Não implementar agora — registrar como ponto de evolução para a próxima versão.
+A versão técnica do SRS traz **um diagrama de caso de uso por módulo** (§3.X), não um único
+diagrama global. Como o agrupamento por módulo só existe no `srs-ireb-montagem` (passo de
+montagem, posterior a esta skill), esses diagramas por módulo são **gerados lá**, a partir dos
+RFs já atribuídos a cada módulo. Esta skill segue gerando o caso de uso **global** — usado como
+visão geral e como base do resumo leigo do cliente.
 <!-- /internal -->
 
 <!-- internal -->

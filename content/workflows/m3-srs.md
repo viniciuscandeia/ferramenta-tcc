@@ -71,10 +71,10 @@ ENTRADA (artefatos M1+M2 aprovados)
 - Input: RFs+RNFs formatados de [A1] + `documentos-tecnicos/01-visao/01-visao-produto.md` + `documentos-tecnicos/02-requisitos/02.5-glossario.md` + `documentos-tecnicos/03-documento/03.3-diagramas.md` (de [A2])
 - Output: `documentos-tecnicos/03-documento/03-srs-completo.md` com 8 seções IREB §3.3.3:
   1. Introdução (escopo, referências)
-  2. Visão geral do sistema (diagrama de contexto embutido em §2.1)
-  3. Requisitos funcionais (RFs em EARS + RFC 2119; diagrama de caso de uso embutido)
-  4. Requisitos de qualidade (RNFs com métricas; diagrama ER embutido, se existir)
-  5. Restrições e premissas
+  2. Visão geral do sistema (diagramas de contexto em §2.1 e de estrutura de dados em §2.2 embutidos)
+  3. Requisitos funcionais (RFs em EARS + RFC 2119; um diagrama de caso de uso por módulo, gerado na montagem)
+  4. Requisitos de qualidade (RNFs com métricas)
+  5. Interfaces externas (APIs, sistemas legados, dispositivos — restrições e premissas vivem em §2.4/§2.5)
   6. Rastreabilidade (esboço — matriz completa gerada em [B3])
   7. Conflitos (condicional)
   8. Glossário

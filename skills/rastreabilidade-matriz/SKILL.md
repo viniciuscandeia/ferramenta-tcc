@@ -40,7 +40,7 @@ when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: documento
 ## Fase 3 — Mapear RF/RNF → SRS
 
 - Para cada RF/RNF: localizar seção em `documentos-tecnicos/03-documento/03-srs-completo.md`
-- Registrar seção exata (§3.X para RFs, §4.X para RNFs, §5.X para restrições)
+- Registrar seção exata (§3.X para RFs, §4.X para RNFs, §2.4 para restrições de design; §5.1 se a restrição for uma interface externa)
 - RF/RNF não encontrado no SRS: registrar "❌ ausente" na coluna Seção SRS
 
 ## Fase 4 — Preencher Stakeholder Origem
@@ -70,7 +70,7 @@ Salvar como `documentos-tecnicos/03-documento/03.2-rastreabilidade.md`:
 | OBJ-004 — Segurança de dados | RNF-002 | Essencial | §4.2 | Todos |
 | OBJ-004 — Segurança de dados | RNF-003 | Essencial | §4.3 | Todos |
 | OBJ-005 — [objetivo sem RF] | ❌ Nenhum RF encontrado | — | — | — |
-| OBJ-001 — Vender produtos online | REST-001 | — | §5.1 | Artesão |
+| OBJ-001 — Vender produtos online | REST-001 | — | §2.4 | Artesão |
 
 ---
 
