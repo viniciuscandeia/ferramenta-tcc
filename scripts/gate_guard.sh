@@ -181,6 +181,7 @@ if [[ "$BASENAME" == "estado-projeto.yaml" ]]; then
       fi
 
       # Verificar seções obrigatórias no artefato normativo
+      # Títulos espelham content/templates/01-documento-visao.md — manter em sincronia ao editar o template.
       if [[ -f "$NORM_FILE" ]]; then
         for SECTION in "## 1. Visão" "## 2. Problema" "## 3. Pessoas Envolvidas" "## 4. Contexto e Limites" "## 5. Premissas"; do
           if ! grep -q "$SECTION" "$NORM_FILE" 2>/dev/null; then

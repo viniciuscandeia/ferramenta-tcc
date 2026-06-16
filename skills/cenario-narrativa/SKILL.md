@@ -4,7 +4,7 @@ disallowed-tools: [WebFetch, WebSearch, NotebookEdit]
 marco: [M2]
 description: >-
   Pede ao usuário que conte como seria um dia típico de uso do produto e extrai funcionalidades implícitas da narrativa.
-  Use após a entrevista inicial do Marco 2, para capturar o que o usuário assume mas não menciona explicitamente.
+  Use na Rodada 2 do Marco 2, após a entrevista inicial, para capturar o que o usuário assume mas não menciona explicitamente.
   Elicit implicit requirements from layperson stakeholder via narrative scenarios; extracts RF candidates silently.
 ---
 

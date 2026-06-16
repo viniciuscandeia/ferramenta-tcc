@@ -52,7 +52,7 @@ Salvar como `documentos-tecnicos/02-requisitos/02.6-pautas-reelicitacao.md`.
 # Pautas de Detalhamento
 
 > Itens que precisam de informação adicional antes de finalizar esta fase.
-> Quando todos os itens estiverem marcados `[x]`, a próxima fase pode começar.
+> Esta lista é refeita a cada rodada; quando não sobrar nenhum item `[ ]`, a próxima fase pode começar.
 
 - [ ] RF-005 não tem critério de aceitação: como saber se o sistema "enviou a notificação com sucesso"? (skill-alvo: entrevista-estruturada)
 - [ ] RNF-002 sem métrica de disponibilidade: qual % de uptime é aceitável? (skill-alvo: entrevista-estruturada)

@@ -65,7 +65,7 @@ Preencher `[DATA-GERAÇÃO]` com a data atual no formato `YYYY-MM-DD`.
 | 3 | Requisitos Funcionais | Saída de `requisito-ears` — tabela estruturada, agrupada por módulo + diagrama de caso de uso de `03.3-diagramas.md` |
 | 4 | Requisitos de Qualidade | Saída de `requisito-ears` — tabela RNFs com métricas + diagrama ER de `03.3-diagramas.md` (se existir) |
 | 5 | Interfaces Externas | `documentos-tecnicos/02-requisitos/02.3-restricoes.md` |
-| 6 | Matriz de Rastreabilidade | Cruzamento: OBJ-NNN (M1) → RF/RNF → spec → test |
+| 6 | Matriz de Rastreabilidade | Cruzamento: OBJ-NNN (M1) → RF/RNF → Seção SRS → Stakeholder origem |
 | 7 | Conflitos Detectados e Resolvidos | `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` (condicional — só se existir) |
 | 8 | Glossário | `documentos-tecnicos/02-requisitos/02.5-glossario.md` (conteúdo completo) |
 
