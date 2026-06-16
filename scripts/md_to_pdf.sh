@@ -128,6 +128,19 @@ cat >> "$PREAMBLE_TEX" <<'LATEXBASE'
 \usepackage{etoolbox}
 \AtBeginEnvironment{longtable}{\small}
 \AtBeginEnvironment{tabular}{\small}
+
+% Numeração de página: corpo numerado (pagestyle plain); capa e sumário contam no
+%   contador mas não exibem o número (pagestyle empty). A capa zera o seu número
+%   via \thispagestyle{empty} (definido no bloco da capa, em _convert).
+\pagestyle{plain}
+% Sumário em página própria e sem número exibido (mas conta). Redefine
+%   \tableofcontents para isolar o sumário entre \clearpage e restaurar o
+%   pagestyle do corpo logo após.
+\let\TCColdtableofcontents\tableofcontents
+\renewcommand{\tableofcontents}{%
+  \clearpage \pagestyle{empty}%
+  \TCColdtableofcontents%
+  \clearpage \pagestyle{plain}}
 LATEXBASE
 
 # ---------------------------------------------------------------------------
@@ -286,12 +299,16 @@ _convert() {
   case "$ENGINE" in
     pandoc-xelatex|pandoc-pdflatex)
       _capa="$(mktemp /tmp/ferramenta_tcc_capa_XXXXXX.tex)"
+      # Capa em folha própria, sem número de página (mas conta no contador).
       printf '%s\n' \
+        '\thispagestyle{empty}' \
+        '\vspace*{0.28\textheight}' \
         '\begin{center}' \
-        "{\\LARGE\\bfseries $(_escape_latex "$titulo")}\\\\[0.4em]" \
-        '\rule{0.55\linewidth}{0.4pt}' \
+        "{\\Huge\\bfseries $(_escape_latex "$titulo")}\\\\[0.6em]" \
+        '\rule{0.55\linewidth}{0.4pt}\\[1.2em]' \
+        "{\\large $(date +%d/%m/%Y)}" \
         '\end{center}' \
-        '\vspace{1.5em}' > "$_capa"
+        '\clearpage' > "$_capa"
       # title-meta preenche o pdftitle (hyperref) sem disparar \maketitle.
       _capa_args=(--include-before-body "$_capa" -V title-meta="$titulo")
       ;;
@@ -308,9 +325,15 @@ _convert() {
   # shellcheck disable=SC2064
   [[ -n "$_capa" ]] && trap "rm -f '$_capa'" RETURN
 
+  # --from=markdown-implicit_figures: renderiza ![](diagrama) como imagem INLINE,
+  #   não como float \begin{figure}. Sem isto, um diagrama grande (ex.: o ER da §4)
+  #   flutua para páginas adiante e cai dentro da §6, antes da matriz. Inline mantém
+  #   o diagrama exatamente onde ele aparece no texto. (Também silencia o aviso
+  #   "Could not deduce format" do arquivo temporário sem extensão.)
   case "$ENGINE" in
     pandoc-xelatex)
       pandoc "$src" -o "$dst" \
+        --from=markdown-implicit_figures \
         --pdf-engine=xelatex \
         --toc \
         -V geometry:margin=2.5cm \
@@ -323,6 +346,7 @@ _convert() {
       ;;
     pandoc-pdflatex)
       pandoc "$src" -o "$dst" \
+        --from=markdown-implicit_figures \
         --pdf-engine=pdflatex \
         --toc \
         -V geometry:margin=2.5cm \
@@ -335,6 +359,7 @@ _convert() {
       ;;
     pandoc-wkhtmltopdf)
       pandoc "$src" -o "$dst" \
+        --from=markdown-implicit_figures \
         --pdf-engine=wkhtmltopdf \
         --toc \
         --standalone \
@@ -343,6 +368,7 @@ _convert() {
       ;;
     pandoc-default)
       pandoc "$src" -o "$dst" \
+        --from=markdown-implicit_figures \
         --toc \
         --standalone \
         "${_capa_args[@]+"${_capa_args[@]}"}" \
@@ -365,6 +391,27 @@ _convert() {
       markdown-pdf "$src" -o "$dst"
       ;;
   esac
+}
+
+# Numera sequencialmente os títulos de seção de nível 2 (## ) do documento.
+# Usado apenas no PDF do cliente: a capa já carrega o título (H1) do documento,
+# então as seções "O que é o seu produto", "O problema que ele resolve", ...
+# passam a aparecer como "1. ...", "2. ...". Numeração determinística (no script,
+# não no LLM). H1 título e listas (-, *) não são tocados.
+# _numerar_secoes_cliente <tmp_md>
+_numerar_secoes_cliente() {
+  python3 - "$1" <<'PYEOF'
+import re, sys
+arquivo = sys.argv[1]
+texto = open(arquivo, encoding='utf-8').read()
+contador = [0]
+def numerar(m):
+    contador[0] += 1
+    return f'## {contador[0]}. {m.group(1)}'
+# Só linhas que começam exatamente com "## " (não "### ") e ainda não numeradas.
+texto = re.sub(r'^## (?!\d+\. )(.+)$', numerar, texto, flags=re.M)
+open(arquivo, 'w', encoding='utf-8').write(texto)
+PYEOF
 }
 
 # Construir PDF a partir de uma pasta de documentos
@@ -443,6 +490,11 @@ _gerar_pdf() {
     cat "$arquivo" >> "$tmp_md"
     echo "" >> "$tmp_md"
   done
+
+  # Numerar as seções (## ) — apenas no PDF do cliente.
+  if [[ "$perfil" == "cliente" ]]; then
+    _numerar_secoes_cliente "$tmp_md"
+  fi
 
   # Renderizar diagramas Mermaid (se mmdc disponível): PDF vetorial nas engines
   # LaTeX (nitidez perfeita), PNG de alta densidade nas demais.

@@ -135,7 +135,8 @@ Se `03.3-diagramas.md` não existir ou o bloco estiver ausente → omitir sem er
 > Os requisitos de qualidade descrevem **como o sistema deve se comportar**, não o que faz. Estão agrupados por categoria (desempenho, segurança, disponibilidade, etc.) conforme a natureza do comportamento esperado.
 
 **Diagrama ER (inserir após o parágrafo introdutório, se existir):**
-Embutir o bloco `## 4. Estrutura de Dados (Entidade-Relacionamento)` de `documentos-tecnicos/03-documento/03.3-diagramas.md`.  
+Embutir, **dentro desta §4**, o bloco cujo título seja `Estrutura de Dados (Entidade-Relacionamento)` de `documentos-tecnicos/03-documento/03.3-diagramas.md` — casar pelo **título**, não pelo número da seção (`03.3-diagramas.md` numera os blocos dinamicamente, então o ER pode estar em `## 3.`, `## 4.` etc.).  
+O diagrama ER pertence à §4 e **nunca** deve aparecer na §6 (Matriz de Rastreabilidade).  
 Se o bloco estiver ausente ou com nota de omissão → copiar a nota de omissão diretamente (não omitir em silêncio).
 
 Inserir tabela RNFs de `requisito-ears`. Por RNF: ID | Categoria | Comportamento | Prioridade | Métrica | Critério de aceite. (O verbo de obrigatoriedade DEVE/DEVERIA/PODE vive embutido na frase da coluna "Comportamento" — sem coluna "Modal" separada.)
@@ -147,7 +148,9 @@ Critério de aceite = condição verificável derivada da métrica (ex: "teste d
 **Seção 6 — Matriz de Rastreabilidade:**
 Tabela: `OBJ-NNN` (objetivo de negócio com ID) | RF/RNF | Seção SRS | Stakeholder origem
 - IDs de objetivo: derivados de `documentos-tecnicos/03-documento/03.2-rastreabilidade.md` (ou rederivados se arquivo ainda não existir — ver `rastreabilidade-matriz`)
-- Esboço nesta fase — a matriz completa com análise de gaps é gerada pelo checker em `03.2-rastreabilidade.md`
+- Esboço nesta fase — a matriz completa com análise de gaps é gerada pelo checker em `03.2-rastreabilidade.md` e entregue como **Apêndice A — Matriz de Rastreabilidade**
+- **Após a tabela**, inserir a frase de remissão em linha própria (itálico):
+  > _A versão completa, com a análise de lacunas, encontra-se no **Apêndice A — Matriz de Rastreabilidade**._
 
 **Seção 7 — Conflitos Detectados e Resolvidos:**
 Incluir **somente se** `documentos-tecnicos/02-requisitos/02.7-conflitos-detectados.md` existir.
@@ -187,5 +190,5 @@ Invocar imediatamente `Skill("traducao-gate")`. **PROIBIDO** qualquer TextBlock 
 
 **Como detectar:** Seção 6 com 0 linhas de dados (só cabeçalho de tabela). Isso é normal neste passo — mas precisa ser explícito.
 
-**O que fazer:** Seção 6 deve ter 1 linha por RF e RNF com coluna Stakeholder preenchida e nota "matriz completa com análise de gaps em 03.2-rastreabilidade.md (gerada na validação)". Nunca deixar a tabela de rastreabilidade completamente vazia.
+**O que fazer:** Seção 6 deve ter 1 linha por RF e RNF com coluna Stakeholder preenchida e a remissão "a versão completa, com análise de lacunas, encontra-se no Apêndice A — Matriz de Rastreabilidade (gerada na validação)". Nunca deixar a tabela de rastreabilidade completamente vazia.
 <!-- /internal -->

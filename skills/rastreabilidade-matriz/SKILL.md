@@ -54,7 +54,7 @@ when_to_use: Invocada pelo checker no Passo 3 do Processo M3. Entrada: documento
 Salvar como `documentos-tecnicos/03-documento/03.2-rastreabilidade.md`:
 
 ```markdown
-# Matriz de Rastreabilidade
+# Apêndice A — Matriz de Rastreabilidade (completa)
 
 > Gerado automaticamente pelo checker em M3 Passo 3.
 > Forward tracing: Objetivo M1 → RF/RNF → Seção SRS → Stakeholder.
