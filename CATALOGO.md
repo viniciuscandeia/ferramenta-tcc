@@ -337,7 +337,7 @@
 
 **Arquivo:** `skills/srs-ireb-montagem/SKILL.md`
 
-**Descrição:** Monta o 03-srs-completo.md com 8 seções IREB §3.3.3 (ISO/IEC/IEEE 29148) — 6 obrigatórias + §7 conflitos (condicional) + §8 glossário —, consumindo todos os artefatos M1+M2, a saída formatada de requisito-ears e os diagramas de modelagem-visual (embutidos em §2.1, §3 e §4). Não gera versão leigo (traducao-gate faz isso no Passo 4 do documenter).
+**Descrição:** Monta o 03-srs-completo.md com 8 seções IREB §3.3.3 (ISO/IEC/IEEE 29148) — 6 obrigatórias + §7 conflitos (condicional) + §8 glossário —, consumindo todos os artefatos M1+M2, a saída formatada de requisito-ears e os diagramas de modelagem-visual (contexto em §2.1, estrutura de dados/ER em §2.2), além de gerar um diagrama de caso de uso por módulo em §3. Não gera versão leigo (traducao-gate faz isso no Passo 4 do documenter).
 
 **Quando usar:** Invocada pelo documenter como Passo 3 do Processo M3. Depende de requisito-ears (Passo 1) e modelagem-visual (Passo 2) terem executado.
 
