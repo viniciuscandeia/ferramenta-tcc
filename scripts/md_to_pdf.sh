@@ -90,25 +90,36 @@ PREAMBLE_TEX="$(mktemp /tmp/ferramenta_tcc_preamble_XXXXXX)"
 trap "rm -f '$PREAMBLE_TEX'" EXIT
 
 # fvextra (opcional) — corrige blocos de código (```...```) que estouram a margem.
-# Ausente: segue sem esse fix; os demais (overflow, imagens, tabelas) continuam valendo.
+# É carregado SOMENTE em documentos que contêm bloco de código de verdade (decisão
+# por documento em _convert). Motivo: com `breakanywhere`, fvextra fazia documentos
+# com muitas tabelas longtable estourarem para 65k+ páginas e o xdvipdfmx abortava
+# (`Page number 65536 too large`). Os artefatos da ferramenta (SRS, rastreabilidade)
+# não têm blocos de código não-mermaid — e os ```mermaid já viram imagem antes do
+# LaTeX —, então fvextra é inútil para eles e só arriscava o blowup.
+#   - Removido `breakanywhere` (causa do loop de paginação); `breaklines` basta.
+#   - Aplicado condicionalmente: ver _preamble_args em _convert.
+FVEXTRA_TEX=""
 if command -v kpsewhich &>/dev/null && kpsewhich fvextra.sty &>/dev/null; then
-  cat > "$PREAMBLE_TEX" <<'LATEXFVEXTRA'
-% Fix 1 — blocos de código fenced: quebra em qualquer caractere (requer fvextra)
+  FVEXTRA_TEX="$(mktemp /tmp/ferramenta_tcc_fvextra_XXXXXX)"
+  # shellcheck disable=SC2064
+  trap "rm -f '$PREAMBLE_TEX' '$FVEXTRA_TEX'" EXIT
+  cat > "$FVEXTRA_TEX" <<'LATEXFVEXTRA'
+% Fix 1 — blocos de código fenced: quebra de linha sem estourar a margem.
+% Sem `breakanywhere` (provoca explosão de paginação com muitas tabelas).
 \usepackage{fvextra}
-\fvset{breaklines=true,breakanywhere=true}
+\fvset{breaklines=true}
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{%
-  breaklines=true,breakanywhere=true,commandchars=\\\{\}}
+  breaklines=true,commandchars=\\\{\}}
 LATEXFVEXTRA
 else
-  : > "$PREAMBLE_TEX"
   echo "[md_to_pdf] AVISO: fvextra não encontrado — código pode estourar margem no PDF." >&2
   echo "[md_to_pdf]   Instalar: sudo tlmgr install fvextra" >&2
   echo "[md_to_pdf]   Gerando PDF sem fix de quebra de linha em blocos de código." >&2
 fi
 
-# Fixes sempre aplicados (independem de fvextra): overflow residual, imagens e tabelas.
-cat >> "$PREAMBLE_TEX" <<'LATEXBASE'
-
+# Preâmbulo base — sempre aplicado (independe de fvextra): overflow residual,
+# imagens e tabelas.
+cat > "$PREAMBLE_TEX" <<'LATEXBASE'
 % Fix 3 — rede de segurança para overflows residuais (caminhos longos etc.)
 \sloppy
 \setlength{\emergencystretch}{10em}
@@ -283,10 +294,17 @@ PYEOF
 # _convert <tmp_md> <out_pdf> <titulo>
 _convert() {
   local src="$1" dst="$2" titulo="$3"
-  # Montar array de args do preâmbulo LaTeX (vazio se fvextra não instalado)
+  # Montar array de args do preâmbulo LaTeX base (sempre aplicado).
   local -a _preamble_args=()
   [[ -n "${PREAMBLE_TEX:-}" && -f "${PREAMBLE_TEX:-}" ]] \
     && _preamble_args=(--include-in-header "$PREAMBLE_TEX")
+  # fvextra só quando o documento tem bloco de código de verdade (``` ... ```), que
+  # é a única coisa que ele corrige. Sem código, incluí-lo só arrisca o blowup do
+  # xdvipdfmx (paginação explosiva). Os ```mermaid já viraram imagem em _gerar_pdf
+  # (antes de _convert), então o grep só detecta código remanescente.
+  if [[ -n "${FVEXTRA_TEX:-}" && -f "${FVEXTRA_TEX:-}" ]] && grep -qE '^```' "$src"; then
+    _preamble_args+=(--include-in-header "$FVEXTRA_TEX")
+  fi
   local -a _lua_args=()
   [[ -f "${LUA_TABELA:-}" ]] && _lua_args=(--lua-filter "$LUA_TABELA")
 
@@ -490,6 +508,19 @@ _gerar_pdf() {
     cat "$arquivo" >> "$tmp_md"
     echo "" >> "$tmp_md"
   done
+
+  # Rebaixar glifos de subscrito Unicode (CO₂ -> CO2): a fonte LaTeX padrão
+  # (lmroman) não os possui e o xelatex os descarta silenciosamente, sumindo com
+  # o caractere no PDF. Preserva o significado sem depender de troca de fonte.
+  python3 - "$tmp_md" <<'PYEOF'
+import sys
+f = sys.argv[1]
+t = open(f, encoding='utf-8').read()
+subs = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9'}
+for a, b in subs.items():
+    t = t.replace(a, b)
+open(f, 'w', encoding='utf-8').write(t)
+PYEOF
 
   # Numerar as seções (## ) — apenas no PDF do cliente.
   if [[ "$perfil" == "cliente" ]]; then
